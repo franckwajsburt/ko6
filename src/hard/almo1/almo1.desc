@@ -1,0 +1,37 @@
+# -*- python -*-
+
+todo = Platform('caba', 'almo1_top.cpp',
+        uses = [
+            Uses('caba:vci_xcache_wrapper', iss_t = 'common:gdb_iss', gdb_iss_t = 'common:mips32el'),
+            Uses('caba:vci_vgsb'),
+            Uses('caba:vci_multi_icu'),
+            Uses('caba:vci_timer'),
+            Uses('caba:vci_simple_ram'),
+            Uses('caba:vci_multi_tty'),
+            Uses('caba:vci_multi_dma'),
+            Uses('caba:vci_block_device'),
+            Uses('caba:vci_framebuffer'),
+            Uses('common:elf_file_loader'),
+            Uses('common:mapping_table'),
+            ],
+        cell_size = 4,
+        plen_size = 8,
+        addr_size = 32,
+        rerror_size = 1,
+        clen_size = 1,
+        rflag_size = 1,
+        srcid_size = 12,
+        pktid_size = 1,
+        trdid_size = 4,
+        wrplen_size = 1
+        )
+
+# Local Variables:
+# tab-width: 4;
+# c-basic-offset: 4;
+# c-file-offsets:((innamespace . 0)(inline-open . 0));
+# indent-tabs-mode: nil;
+# End:
+#
+# vim: filetype=python:expandtab:shiftwidth=4:tabstop=4:softtabstop=4
+

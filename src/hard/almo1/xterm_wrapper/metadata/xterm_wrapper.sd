@@ -1,0 +1,15 @@
+
+# -*- python -*-
+
+__id__ = "$Id: xterm_wrapper.sd 1098 2009-05-11 12:33:31Z nipo $"
+__version__ = "$Revision: 1098 $"
+
+Module('common:xterm_wrapper',
+	classname = 'soclib::common::XtermWrapper',
+	header_files = ['../include/xterm_wrapper.h',],
+	implementation_files = ['../src/xterm_wrapper.cpp',],
+	uses = [
+		Uses('common:exception'),
+		Uses('common:fd_poller'),
+		],
+)

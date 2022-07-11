@@ -1,0 +1,512 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ASSERT	./common/debug_off.h	22;"	d
+ASSERT	./common/debug_off.h	29;"	d
+ASSERT	./common/debug_on.h	50;"	d
+ASSERT	./common/debug_on.h	97;"	d
+ASSERT	./common/debug_on.h	99;"	d
+BINFO_SZ	./ulib/memory.c	36;"	d	file:
+BIP	./common/debug_off.h	18;"	d
+BIP	./common/debug_off.h	25;"	d
+BIP	./common/debug_on.h	46;"	d
+BIP	./common/debug_on.h	58;"	d
+BIP	./common/debug_on.h	60;"	d
+Banner	./kernel/kinit.c	/^static char Banner[] =          \/\/ banner's text defined on several lines$/;"	v	file:
+CEIL	./kernel/klibc.h	50;"	d
+CEIL	./ulib/libc.h	39;"	d
+CacheLineSize	./kernel/kmemory.c	/^static size_t CacheLineSize;            \/\/ max between 16 and the true cache line size$/;"	v	file:
+CacheLineSize	./ulib/memory.c	/^static size_t CacheLineSize;    \/\/ cache line size set by malloc_init()$/;"	v	file:
+D	./kernel/kthread.c	161;"	d	file:
+DELAY	./uapp/barrier/main.c	16;"	d	file:
+DummyPage	./kernel/kmemory.c	/^page_t DummyPage;                       \/\/ this variable is to never have Page undefined$/;"	v
+E2BIG	./common/errno.h	/^    E2BIG   ,   \/\/ Argument list too long $/;"	e	enum:errno_code
+EACCES	./common/errno.h	/^    EACCES  ,   \/\/ Permission denied $/;"	e	enum:errno_code
+EAGAIN	./common/errno.h	/^    EAGAIN  ,   \/\/ Resource temporarily unavailable$/;"	e	enum:errno_code
+EBUSY	./common/errno.h	/^    EBUSY   ,   \/\/ Device or resource busy$/;"	e	enum:errno_code
+EC_BLACK	./common/esc_code.h	25;"	d
+EC_BLACK_BG	./common/esc_code.h	35;"	d
+EC_BLUE	./common/esc_code.h	29;"	d
+EC_BLUE_BG	./common/esc_code.h	39;"	d
+EC_BOLD	./common/esc_code.h	20;"	d
+EC_CYAN	./common/esc_code.h	31;"	d
+EC_CYAN_BG	./common/esc_code.h	41;"	d
+EC_FAINT	./common/esc_code.h	21;"	d
+EC_GREEN	./common/esc_code.h	27;"	d
+EC_GREEN_BG	./common/esc_code.h	37;"	d
+EC_ITALIC	./common/esc_code.h	22;"	d
+EC_MAGENTA	./common/esc_code.h	30;"	d
+EC_MAGENTA_BG	./common/esc_code.h	40;"	d
+EC_ORANGE	./common/esc_code.h	33;"	d
+EC_RED	./common/esc_code.h	26;"	d
+EC_RED_BG	./common/esc_code.h	36;"	d
+EC_RESET	./common/esc_code.h	19;"	d
+EC_UNDERLINE	./common/esc_code.h	23;"	d
+EC_WHITE	./common/esc_code.h	32;"	d
+EC_WHITE_BG	./common/esc_code.h	42;"	d
+EC_YELLOW	./common/esc_code.h	28;"	d
+EC_YELLOW_BG	./common/esc_code.h	38;"	d
+EDEADLK	./common/errno.h	/^    EDEADLK ,   \/\/ Resource deadlock avoided$/;"	e	enum:errno_code
+EFAULT	./common/errno.h	/^    EFAULT  ,   \/\/ Bad address$/;"	e	enum:errno_code
+EFBIG	./common/errno.h	/^    EFBIG   ,   \/\/ File too large$/;"	e	enum:errno_code
+EINTR	./common/errno.h	/^    EINTR   ,   \/\/ Interrupted function call (https:\/\/man7.org\/linux\/man-pages\/man7\/signal.7.html)$/;"	e	enum:errno_code
+EINVAL	./common/errno.h	/^    EINVAL  ,   \/\/ Invalid argument$/;"	e	enum:errno_code
+EIO	./common/errno.h	/^    EIO     ,   \/\/ Input\/output error$/;"	e	enum:errno_code
+ENOBUFS	./common/errno.h	/^    ENOBUFS ,   \/\/ No buffer space available$/;"	e	enum:errno_code
+ENODEV	./common/errno.h	/^    ENODEV  ,   \/\/ No such device$/;"	e	enum:errno_code
+ENOMEM	./common/errno.h	/^    ENOMEM  ,   \/\/ Not enough space\/cannot allocate memory$/;"	e	enum:errno_code
+ENOSPC	./common/errno.h	/^    ENOSPC  ,   \/\/ No space left on device$/;"	e	enum:errno_code
+ENOSYS	./common/errno.h	/^    ENOSYS  ,   \/\/ Function not implemented$/;"	e	enum:errno_code
+ENOTTY	./common/errno.h	/^    ENOTTY  ,   \/\/ Inappropriate I\/O control operation$/;"	e	enum:errno_code
+ENXIO	./common/errno.h	/^    ENXIO   ,   \/\/ No such device or address$/;"	e	enum:errno_code
+EPERM	./common/errno.h	/^    EPERM   ,   \/\/ Operation not permitted$/;"	e	enum:errno_code
+ERANGE	./common/errno.h	/^    ERANGE  ,   \/\/ Result too large$/;"	e	enum:errno_code
+ESRCH	./common/errno.h	/^    ESRCH       \/\/ No such process$/;"	e	enum:errno_code
+EXIT	./ulib/libc.h	42;"	d
+FAILURE	./common/errno.h	/^    FAILURE = -1,$/;"	e	enum:errno_code
+FLOOR	./kernel/klibc.h	51;"	d
+FLOOR	./ulib/libc.h	40;"	d
+FreeUserStack	./kernel/kmemory.c	/^static list_t FreeUserStack;            \/\/ free stack$/;"	v	file:
+G	./kernel/kthread.c	156;"	d	file:
+Heap	./ulib/memory.c	/^} Heap;$/;"	v	typeref:struct:heap_s	file:
+INFO	./common/debug_off.h	21;"	d
+INFO	./common/debug_off.h	28;"	d
+INFO	./common/debug_on.h	49;"	d
+INFO	./common/debug_on.h	82;"	d
+INFO	./common/debug_on.h	84;"	d
+IRQVectorDev	./hal/almo1/harch.c	/^static int   IRQVectorDev[32] = { [0 ... 31] = -1 };$/;"	v	file:
+IRQVectorISR	./hal/almo1/harch.c	/^static isr_t IRQVectorISR[32] = { [0 ... 31] = isr_default };$/;"	v	file:
+KDumpMessage	./hal/almo1/hcpuc.c	/^char * KDumpMessage;$/;"	v
+KMallocTest	./kernel/kmemory.c	/^static list_t KMallocTest[256];         \/\/ free lists, Slab[i]-> i*CacheLineSize, Slab[0]-> pages$/;"	v	file:
+KPANIC_A0	./hal/almo1/hcpu_soc.h	56;"	d
+KPANIC_A1	./hal/almo1/hcpu_soc.h	57;"	d
+KPANIC_A2	./hal/almo1/hcpu_soc.h	58;"	d
+KPANIC_A3	./hal/almo1/hcpu_soc.h	59;"	d
+KPANIC_AT	./hal/almo1/hcpu_soc.h	53;"	d
+KPANIC_BAR	./hal/almo1/hcpu_soc.h	85;"	d
+KPANIC_COUNT	./hal/almo1/hcpu_soc.h	84;"	d
+KPANIC_CR	./hal/almo1/hcpu_soc.h	52;"	d
+KPANIC_EPC	./hal/almo1/hcpu_soc.h	87;"	d
+KPANIC_FP	./hal/almo1/hcpu_soc.h	82;"	d
+KPANIC_GP	./hal/almo1/hcpu_soc.h	80;"	d
+KPANIC_HI	./hal/almo1/hcpu_soc.h	78;"	d
+KPANIC_LO	./hal/almo1/hcpu_soc.h	79;"	d
+KPANIC_RA	./hal/almo1/hcpu_soc.h	83;"	d
+KPANIC_REGS_NR	./hal/almo1/hcpu_soc.h	88;"	d
+KPANIC_S0	./hal/almo1/hcpu_soc.h	68;"	d
+KPANIC_S1	./hal/almo1/hcpu_soc.h	69;"	d
+KPANIC_S2	./hal/almo1/hcpu_soc.h	70;"	d
+KPANIC_S3	./hal/almo1/hcpu_soc.h	71;"	d
+KPANIC_S4	./hal/almo1/hcpu_soc.h	72;"	d
+KPANIC_S5	./hal/almo1/hcpu_soc.h	73;"	d
+KPANIC_S6	./hal/almo1/hcpu_soc.h	74;"	d
+KPANIC_S7	./hal/almo1/hcpu_soc.h	75;"	d
+KPANIC_SP	./hal/almo1/hcpu_soc.h	81;"	d
+KPANIC_SR	./hal/almo1/hcpu_soc.h	86;"	d
+KPANIC_T0	./hal/almo1/hcpu_soc.h	60;"	d
+KPANIC_T1	./hal/almo1/hcpu_soc.h	61;"	d
+KPANIC_T2	./hal/almo1/hcpu_soc.h	62;"	d
+KPANIC_T3	./hal/almo1/hcpu_soc.h	63;"	d
+KPANIC_T4	./hal/almo1/hcpu_soc.h	64;"	d
+KPANIC_T5	./hal/almo1/hcpu_soc.h	65;"	d
+KPANIC_T6	./hal/almo1/hcpu_soc.h	66;"	d
+KPANIC_T7	./hal/almo1/hcpu_soc.h	67;"	d
+KPANIC_T8	./hal/almo1/hcpu_soc.h	76;"	d
+KPANIC_T9	./hal/almo1/hcpu_soc.h	77;"	d
+KPANIC_V0	./hal/almo1/hcpu_soc.h	54;"	d
+KPANIC_V1	./hal/almo1/hcpu_soc.h	55;"	d
+KPanicCauseName	./hal/almo1/hcpuc.c	/^static char *KPanicCauseName[16] = {$/;"	v	file:
+KPanicRegsName	./hal/almo1/hcpuc.c	/^static char *KPanicRegsName[KPANIC_REGS_NR] = {$/;"	v	file:
+KPanicRegsVal	./hal/almo1/hcpuc.c	/^unsigned KPanicRegsVal[KPANIC_REGS_NR];$/;"	v
+LINE_CEIL	./ulib/memory.c	35;"	d	file:
+LINE_FLOOR	./ulib/memory.c	34;"	d	file:
+M	./kernel/kthread.c	157;"	d	file:
+MAGIC_BARRIER	./kernel/ksynchro.c	133;"	d	file:
+MAGIC_HEAP	./common/usermem.h	47;"	d
+MAGIC_STACK	./common/usermem.h	46;"	d
+MaxLinePage	./kernel/kmemory.c	/^static size_t MaxLinePage;              \/\/ Max number of lines in a page = PAGE_SIZE\/CacheLineSize$/;"	v	file:
+NBLINE	./kernel/kmemory.c	81;"	d	file:
+NBSTACK	./kernel/kmemory.c	299;"	d	file:
+NbPages	./kernel/kmemory.c	/^size_t NbPages;                         \/\/ maximum number of pages$/;"	v
+O	./kernel/kthread.c	158;"	d	file:
+Objects	./kernel/kmemory.c	/^static size_t Objects[256];             \/\/ Objects[i]= number of allocated objets of i*CacheLineSize$/;"	v	file:
+P	./kernel/kthread.c	160;"	d	file:
+PAGE_SIZE	./common/usermem.h	44;"	d
+PANIC_IF	./common/debug_on.h	36;"	d
+PANIC_IF	./common/debug_on.h	38;"	d
+PRINTF_MAX	./kernel/klibc.h	49;"	d
+PRINTF_MAX	./ulib/libc.h	38;"	d
+Page	./kernel/kmemory.c	/^page_t *Page = &DummyPage;              \/\/ page descriptor table Page[O] is for page kmb, and so on$/;"	v
+RAND_MAX	./kernel/klibc.h	48;"	d
+RAND_MAX	./ulib/libc.h	37;"	d
+RandNext	./kernel/klibc.c	/^static unsigned long long RandNext = 1;$/;"	v	file:
+S	./kernel/kthread.c	159;"	d	file:
+SUCCESS	./common/errno.h	/^    SUCCESS ,$/;"	e	enum:errno_code
+SYSCALL_BARRIER_DESTROY	./common/syscalls.h	39;"	d
+SYSCALL_BARRIER_INIT	./common/syscalls.h	37;"	d
+SYSCALL_BARRIER_WAIT	./common/syscalls.h	38;"	d
+SYSCALL_CACHELINESIZE	./common/syscalls.h	22;"	d
+SYSCALL_CLOCK	./common/syscalls.h	20;"	d
+SYSCALL_DCACHEBUFINVAL	./common/syscalls.h	23;"	d
+SYSCALL_DCACHEINVAL	./common/syscalls.h	24;"	d
+SYSCALL_DMA_MEMCPY	./common/syscalls.h	21;"	d
+SYSCALL_ERRNO	./common/syscalls.h	26;"	d
+SYSCALL_EXIT	./common/syscalls.h	17;"	d
+SYSCALL_MUTEX_DESTROY	./common/syscalls.h	36;"	d
+SYSCALL_MUTEX_INIT	./common/syscalls.h	33;"	d
+SYSCALL_MUTEX_LOCK	./common/syscalls.h	34;"	d
+SYSCALL_MUTEX_UNLOCK	./common/syscalls.h	35;"	d
+SYSCALL_NR	./common/syscalls.h	41;"	d
+SYSCALL_READ	./common/syscalls.h	18;"	d
+SYSCALL_SBRK	./common/syscalls.h	25;"	d
+SYSCALL_SCHED_DUMP	./common/syscalls.h	31;"	d
+SYSCALL_THREAD_CREATE	./common/syscalls.h	28;"	d
+SYSCALL_THREAD_EXIT	./common/syscalls.h	30;"	d
+SYSCALL_THREAD_JOIN	./common/syscalls.h	32;"	d
+SYSCALL_THREAD_YIELD	./common/syscalls.h	29;"	d
+SYSCALL_WRITE	./common/syscalls.h	19;"	d
+Slab	./kernel/kmemory.c	/^static list_t Slab[256];                \/\/ free lists, Slab[i]-> i*CacheLineSize, Slab[0]-> pages$/;"	v	file:
+SyscallVector	./kernel/ksyscalls.c	/^void *SyscallVector[] = {$/;"	v
+THREAD_MAX	./kernel/kthread.h	23;"	d
+TH_CONTEXT_EPC	./hal/almo1/hcpu_soc.h	41;"	d
+TH_CONTEXT_RA	./hal/almo1/hcpu_soc.h	42;"	d
+TH_CONTEXT_S0	./hal/almo1/hcpu_soc.h	31;"	d
+TH_CONTEXT_S1	./hal/almo1/hcpu_soc.h	32;"	d
+TH_CONTEXT_S2	./hal/almo1/hcpu_soc.h	33;"	d
+TH_CONTEXT_S3	./hal/almo1/hcpu_soc.h	34;"	d
+TH_CONTEXT_S4	./hal/almo1/hcpu_soc.h	35;"	d
+TH_CONTEXT_S5	./hal/almo1/hcpu_soc.h	36;"	d
+TH_CONTEXT_S6	./hal/almo1/hcpu_soc.h	37;"	d
+TH_CONTEXT_S7	./hal/almo1/hcpu_soc.h	38;"	d
+TH_CONTEXT_S8	./hal/almo1/hcpu_soc.h	39;"	d
+TH_CONTEXT_SIZE	./hal/almo1/hcpu_soc.h	44;"	d
+TH_CONTEXT_SP	./hal/almo1/hcpu_soc.h	43;"	d
+TH_CONTEXT_SR	./hal/almo1/hcpu_soc.h	40;"	d
+TH_STATE_DEAD	./kernel/kthread.h	33;"	d
+TH_STATE_READY	./kernel/kthread.h	32;"	d
+TH_STATE_RUNNING	./kernel/kthread.h	31;"	d
+TH_STATE_WAIT	./kernel/kthread.h	34;"	d
+TH_STATE_ZOMBIE	./kernel/kthread.h	35;"	d
+TH_TID	./hal/almo1/hcpu_soc.h	30;"	d
+TTYFifo	./hal/almo1/harch.c	/^static struct tty_fifo_s TTYFifo [NTTYS];$/;"	v	typeref:struct:tty_fifo_s	file:
+ThreadCurrent	./kernel/kthread.c	/^thread_t        ThreadCurrent;          \/\/ pointer to the current thread$/;"	v
+ThreadCurrentIdx	./kernel/kthread.c	/^static int      ThreadCurrentIdx;       \/\/ index of the current running thread$/;"	v	file:
+ThreadTab	./kernel/kthread.c	/^static thread_t ThreadTab[THREAD_MAX];  \/\/ simple table for the all the existing threads$/;"	v	file:
+USTACK_SIZE	./common/usermem.h	45;"	d
+VAR	./common/debug_off.h	19;"	d
+VAR	./common/debug_off.h	26;"	d
+VAR	./common/debug_on.h	47;"	d
+VAR	./common/debug_on.h	69;"	d
+VAR	./common/debug_on.h	72;"	d
+VARN	./common/debug_off.h	20;"	d
+VARN	./common/debug_off.h	27;"	d
+VARN	./common/debug_on.h	48;"	d
+VARN	./common/debug_on.h	70;"	d
+VARN	./common/debug_on.h	73;"	d
+VERBOSE	./kernel/klibc.h	22;"	d
+VERBOSE	./ulib/libc.h	18;"	d
+W	./kernel/kthread.c	155;"	d	file:
+X	./kernel/kinit.c	23;"	d	file:
+X___X	./kernel/kinit.c	24;"	d	file:
+Y	./kernel/kinit.c	22;"	d	file:
+Y	./kernel/kthread.c	154;"	d	file:
+_ALLOC_H_	./kernel/kmemory.h	14;"	d
+_DEBUG_ON_H_	./common/debug_on.h	24;"	d
+_ERRNO_H_	./common/errno.h	14;"	d
+_ESC_CODE_H_	./common/esc_code.h	17;"	d
+_FMT_	./common/debug_on.h	26;"	d
+_HARCH_H_	./hal/harch.h	14;"	d
+_HCPU_H_	./hal/hcpu.h	15;"	d
+_HCPU_SOC_H_	./hal/almo1/hcpu_soc.h	15;"	d
+_HCPU_USER_H_	./hal/almo1/hcpu_user.h	20;"	d
+_KERNEL_	./kernel/klibc.h	19;"	d
+_KLIBC_H_	./kernel/klibc.h	17;"	d
+_KSYNC_H_	./kernel/ksynchro.h	15;"	d
+_KTHREAD_H_	./kernel/kthread.h	15;"	d
+_LIBC_H_	./ulib/libc.h	15;"	d
+_LIST_H_	./common/list.h	71;"	d
+_MALLOC_H_	./ulib/memory.h	14;"	d
+_SYSCALL_H_	./common/syscalls.h	14;"	d
+_THREAD_H_	./ulib/thread.h	15;"	d
+_USERMEM_H_	./common/usermem.h	14;"	d
+__errno_location	./kernel/kthread.c	/^int * __errno_location (void)$/;"	f
+__errno_location	./ulib/libc.c	/^int * __errno_location (void) $/;"	f
+_main_thread	./ulib/crt0.c	/^thread_t _main_thread;$/;"	v
+_start	./ulib/crt0.c	/^void _start (void)$/;"	f
+_user_mem	./ulib/crt0.c	/^usermem_t _user_mem = {$/;"	v
+a0	./uapp/barrier/main.c	/^struct arg_s a0, a1;$/;"	v	typeref:struct:arg_s
+a1	./uapp/barrier/main.c	/^struct arg_s a0, a1;$/;"	v	typeref:struct:
+alloc	./kernel/kmemory.c	/^    char alloc;                         \/\/ number of allocated objects is slab$/;"	m	struct:page_s	file:
+arch_init	./hal/almo1/harch.c	/^void arch_init (int tick)$/;"	f
+arg	./kernel/kthread.c	/^    int arg;                      \/\/\/< thread argument (cast to int)$/;"	m	struct:thread_s	file:
+arg_s	./uapp/barrier/main.c	/^struct arg_s {$/;"	s	file:
+atoi	./kernel/klibc.c	/^int atoi (char *val)$/;"	f
+atoi	./ulib/libc.c	/^int atoi (char *val)$/;"	f
+atomic_inc	./hal/almo1/hcpua.S	/^atomic_inc:$/;"	l
+barrier	./uapp/barrier/main.c	/^thread_barrier_t barrier;$/;"	v
+beg	./ulib/memory.c	/^    block_info_t *beg;          \/\/ Heap beginning$/;"	m	struct:heap_s	file:
+block_info_s	./ulib/memory.c	/^typedef struct block_info_s {   \/\/ small structure always put at the beginning of each blocks$/;"	s	file:
+block_info_t	./ulib/memory.c	/^} block_info_t;$/;"	t	typeref:struct:block_info_s	file:
+boot	./hal/almo1/hcpua.S	/^boot:                                   \/\/ must be 0xBFC0000 for the MIPS$/;"	l
+busy	./kernel/ksynchro.c	/^    unsigned    busy;           \/\/\/< 1 mutex is busy ; 0 mutex is free$/;"	m	struct:thread_mutex_s	file:
+cachelinesize	./hal/almo1/hcpua.S	/^cachelinesize:$/;"	l
+cachelinesize	./ulib/libc.c	/^size_t cachelinesize (void)$/;"	f
+cachelinesize_end	./hal/almo1/hcpua.S	/^cachelinesize_end:$/;"	l
+clear	./hal/almo1/harch.c	/^    int clear;          \/\/ IRQ clear --> disable specific IRQs for this ICU$/;"	m	struct:icu_s	file:
+clock	./hal/almo1/hcpua.S	/^clock:                                  \/\/ clock is a terminal function then don't use the stack$/;"	l
+clock	./ulib/libc.c	/^unsigned clock (void)$/;"	f
+cmp_addr	./kernel/kmemory.c	/^static int cmp_addr (list_t * curr, list_t * new) {$/;"	f	file:
+cmp_name	./common/list.h	/^int cmp_name (list_t * curr, list_t * new) {$/;"	f
+context	./kernel/kthread.c	/^    int context[TH_CONTEXT_SIZE]; \/\/\/< table to store registers when thread lose the cpu$/;"	m	struct:thread_s	file:
+cpuid	./hal/almo1/hcpua.S	/^cpuid:$/;"	l
+data	./hal/almo1/harch.c	/^        char data [20];$/;"	m	struct:tty_fifo_s	file:
+dcache_buf_inval	./ulib/libc.c	/^void dcache_buf_inval (void *buf, size_t size)$/;"	f
+dcache_buf_inval_user	./kernel/ksyscalls.c	/^static int dcache_buf_inval_user (void * buf, size_t size)$/;"	f	file:
+dcache_buf_invalidate	./hal/almo1/hcpua.S	/^dcache_buf_invalidate:$/;"	l
+dcache_inval	./ulib/libc.c	/^void dcache_inval (void *addr)$/;"	f
+dcache_inval_end	./hal/almo1/hcpua.S	/^dcache_inval_end:                       \/\/ do not erase these lines, it is to use$/;"	l
+dcache_inval_loop	./hal/almo1/hcpua.S	/^dcache_inval_loop:$/;"	l
+dcache_inval_user	./kernel/ksyscalls.c	/^static int dcache_inval_user (void * addr)$/;"	f	file:
+dcache_invalidate	./hal/almo1/hcpua.S	/^dcache_invalidate:$/;"	l
+delay	./kernel/klibc.c	/^void delay (unsigned nbcycles)$/;"	f
+delay	./uapp/barrier/main.c	/^    int delay;$/;"	m	struct:arg_s	file:
+delay	./ulib/libc.c	/^void delay (unsigned nbcycles)$/;"	f
+dest	./hal/almo1/harch.c	/^    void * dest;        \/\/ dma's source buffer address$/;"	m	struct:dma_s	file:
+dma_memcpy	./hal/almo1/harch.c	/^void * dma_memcpy (int *dest, int *src, unsigned n)$/;"	f
+dma_memcpy_user	./kernel/ksyscalls.c	/^static void * dma_memcpy_user (int * dest, int * src, size_t n)$/;"	f	file:
+dma_s	./hal/almo1/harch.c	/^struct dma_s {$/;"	s	file:
+end	./ulib/memory.c	/^    block_info_t *end;          \/\/ Heap end$/;"	m	struct:heap_s	file:
+errno	./common/errno.h	24;"	d
+errno_a	./kernel/kthread.c	/^    int *errno_a;                 \/\/\/< errno address for this thread$/;"	m	struct:thread_s	file:
+errno_code	./common/errno.h	/^enum errno_code {$/;"	g
+errno_mess	./common/errno.c	/^char * errno_mess[] = {$/;"	v
+exit	./kernel/klibc.c	/^void exit (int status)$/;"	f
+exit	./ulib/libc.c	/^void exit (int status)$/;"	f
+expected	./kernel/ksynchro.c	/^    size_t      expected;       \/\/\/< number of expected threads$/;"	m	struct:thread_barrier_s	file:
+false	./kernel/klibc.h	45;"	d
+family_s	./common/list.h	/^typedef struct family_s {$/;"	s
+family_t	./common/list.h	/^} family_t;$/;"	t	typeref:struct:family_s
+fgetc	./ulib/libc.c	/^int fgetc (int tty)$/;"	f
+fgets	./ulib/libc.c	/^int fgets (char *buf, int count, int tty)$/;"	f
+firstname	./common/list.h	/^    char *firstname;$/;"	m	struct:person_s
+fprintf	./ulib/libc.c	/^int fprintf(int tty, char *fmt, ...)$/;"	f
+fputc	./ulib/libc.c	/^int fputc (int tty, int c)$/;"	f
+free	./ulib/memory.c	/^void free (void *ptr)$/;"	f
+free_ustack	./kernel/kmemory.c	/^void free_ustack (int * top)$/;"	f
+full	./ulib/memory.c	/^    unsigned full:1;            \/\/ 1 full, 0 free (means empty)$/;"	m	struct:block_info_s	file:
+fun	./kernel/kthread.c	/^    int fun;                      \/\/\/< pointer to the thread function (cast to int)$/;"	m	struct:thread_s	file:
+heap_s	./ulib/memory.c	/^static struct heap_s {          \/\/ user Heap$/;"	s	file:
+highest	./hal/almo1/harch.c	/^    int highest;        \/\/ highest pritority IRQ number for this ICU$/;"	m	struct:icu_s	file:
+icu_get_highest	./hal/almo1/harch.c	/^static int icu_get_highest (int icu)$/;"	f	file:
+icu_s	./hal/almo1/harch.c	/^struct icu_s {$/;"	s	file:
+icu_set_mask	./hal/almo1/harch.c	/^static void icu_set_mask (int icu, int irq)$/;"	f	file:
+irq_disable	./hal/almo1/hcpua.S	/^irq_disable:$/;"	l
+irq_enable	./hal/almo1/harch.c	/^    int irq_enable;     \/\/ IRQ mask$/;"	m	struct:dma_s	file:
+irq_enable	./hal/almo1/hcpua.S	/^irq_enable:$/;"	l
+irq_handler	./hal/almo1/hcpua.S	/^irq_handler:$/;"	l
+irq_kernel	./hal/almo1/hcpua.S	/^irq_kernel:$/;"	l
+irq_restore	./hal/almo1/hcpua.S	/^irq_restore:$/;"	l
+irq_user	./hal/almo1/hcpua.S	/^irq_user:$/;"	l
+isr_default	./hal/almo1/harch.c	/^static void isr_default (int irq)$/;"	f	file:
+isr_t	./hal/almo1/harch.c	/^typedef  void (*isr_t) (int);$/;"	t	file:
+isrcall	./hal/almo1/harch.c	/^void isrcall (void)$/;"	f
+item	./common/list.h	/^    list_t item;$/;"	m	struct:person_s
+join	./kernel/kthread.c	/^    thread_t join;                \/\/\/< expected thread in case of thread_join()$/;"	m	struct:thread_s	file:
+kdump	./hal/almo1/hcpuc.c	/^void kdump (unsigned reg_tab[])$/;"	f
+kentry	./hal/almo1/hcpua.S	/^kentry:                                 \/\/ kernel entry$/;"	l
+kfree	./kernel/kmemory.c	/^void kfree (void * obj, size_t size)$/;"	f
+kinit	./kernel/kinit.c	/^void kinit (void)$/;"	f
+kmalloc	./kernel/kmemory.c	/^void * kmalloc (size_t size)$/;"	f
+kmalloc_print	./kernel/kmemory.c	/^void kmalloc_print (void)$/;"	f
+kmalloc_test	./kernel/kmemory.c	/^void kmalloc_test (size_t turn, size_t size)$/;"	f
+kmb	./kernel/kmemory.c	66;"	d	file:
+kme	./kernel/kmemory.c	67;"	d	file:
+kpanic	./hal/almo1/hcpua.S	/^kpanic:$/;"	l
+kprintf	./kernel/klibc.c	/^int kprintf(char *fmt, ...)$/;"	f
+kstack	./kernel/kthread.c	/^    int kstack[1];                \/\/\/< lowest address of kernel stack of thread (with MAGIC_STACK)$/;"	m	struct:thread_s	file:
+kstack_b	./kernel/kthread.c	/^    int kstack_b;                 \/\/\/< kernel stack beginning (the highest addr, outside the stack)$/;"	m	struct:thread_s	file:
+lastname	./common/list.h	/^    char *lastname;$/;"	m	struct:family_s
+len	./hal/almo1/harch.c	/^    int len;            \/\/ number of bytes to move$/;"	m	struct:dma_s	file:
+list_addfirst	./common/list.h	/^static inline void list_addfirst (list_t * root, list_t * added_item) {$/;"	f
+list_addlast	./common/list.h	/^static inline void list_addlast (list_t * root, list_t * added_item) {$/;"	f
+list_addnext	./common/list.h	193;"	d
+list_addprev	./common/list.h	207;"	d
+list_addsort	./common/list.h	/^static inline void list_addsort (list_t *root, list_t *added_item, int (*cmp)(list_t*A,list_t*B) ) {$/;"	f
+list_first	./common/list.h	/^static inline list_t * list_first (list_t * root) {$/;"	f
+list_foreach	./common/list.h	153;"	d
+list_getfirst	./common/list.h	/^static inline list_t * list_getfirst (list_t * root) {$/;"	f
+list_getlast	./common/list.h	/^static inline list_t * list_getlast (list_t * root) {$/;"	f
+list_init	./common/list.h	/^static inline void list_init (list_t * root) {$/;"	f
+list_isempty	./common/list.h	/^static inline unsigned list_isempty (list_t * root) {$/;"	f
+list_isfirst	./common/list.h	/^static inline unsigned list_isfirst (list_t * root, list_t * item) {$/;"	f
+list_islast	./common/list.h	/^static inline unsigned list_islast (list_t *  root, list_t * item) {$/;"	f
+list_item	./common/list.h	166;"	d
+list_last	./common/list.h	/^static inline list_t * list_last (list_t * root) {$/;"	f
+list_nbobj	./common/list.h	/^static inline unsigned list_nbobj (list_t * root) {$/;"	f
+list_next	./common/list.h	130;"	d
+list_prev	./common/list.h	140;"	d
+list_replace	./common/list.h	/^static inline void list_replace (list_t * old_item, list_t * new_item) {$/;"	f
+list_s	./common/list.h	/^typedef struct list_s {$/;"	s
+list_t	./common/list.h	/^} list_t;$/;"	t	typeref:struct:list_s
+list_unlink	./common/list.h	/^static inline list_t * list_unlink (list_t * item) {$/;"	f
+lock	./kernel/ksynchro.c	/^    spinlock_t  lock;           \/\/\/< protection against parallel modifications$/;"	m	struct:thread_barrier_s	file:
+lock	./kernel/ksynchro.c	/^    spinlock_t  lock;           \/\/\/< protection against parallel modifications$/;"	m	struct:thread_mutex_s	file:
+lock	./kernel/kthread.c	/^    spinlock_t lock;              \/\/\/< lock to protected structure during modification$/;"	m	struct:thread_s	file:
+magic	./kernel/ksynchro.c	/^    int         magic;          \/\/\/< magic number to check the validity of the barrier$/;"	m	struct:thread_barrier_s	file:
+magic	./ulib/memory.c	/^    unsigned magic:7;           \/\/ MAGIC_HEAP : magic number to check the corruption$/;"	m	struct:block_info_s	file:
+main	./common/list.h	/^int main () {$/;"	f
+main	./uapp/barrier/main.c	/^int main (void)$/;"	f
+main	./uapp/hello/main.c	/^int main (void)$/;"	f
+malloc	./ulib/memory.c	/^void * malloc (size_t size)$/;"	f
+malloc_init	./ulib/memory.c	/^void malloc_init (void *beg)$/;"	f
+malloc_print	./ulib/memory.c	/^void malloc_print (size_t level)$/;"	f
+malloc_ustack	./kernel/kmemory.c	/^int * malloc_ustack (void)$/;"	f
+mask	./hal/almo1/harch.c	/^    int mask;           \/\/ IRQ mask to chose what we need for this ICU$/;"	m	struct:icu_s	file:
+memcpy	./kernel/klibc.c	/^void *memcpy (char *dest, char *src, unsigned n)$/;"	f
+memcpy	./ulib/libc.c	/^void *memcpy (char *dest, char *src, unsigned n)$/;"	f
+memory_init	./kernel/kmemory.c	/^void memory_init (void)$/;"	f
+memset	./ulib/libc.c	/^void *memset (void *s, int c, unsigned n)$/;"	f
+merge	./ulib/memory.c	/^static void merge (block_info_t * ptr)$/;"	f	file:
+message	./uapp/barrier/main.c	/^    char *message;$/;"	m	struct:arg_s	file:
+mode	./hal/almo1/harch.c	/^    int mode;           \/\/ timer's mode : bit 0 = ON\/OFF ; bit 1 = IRQ enable$/;"	m	struct:timer_s	file:
+next	./common/list.h	/^    struct list_s * next;   \/\/\/< toward another same type struct in a root or a item list$/;"	m	struct:list_s	typeref:struct:list_s::list_s
+owner	./kernel/ksynchro.c	/^    thread_t    owner;          \/\/\/< a thread has to be locked and unlocked by the same thread$/;"	m	struct:thread_mutex_s	file:
+page_s	./kernel/kmemory.c	/^typedef struct page_s {                 \/\/ page usage description$/;"	s	file:
+page_t	./kernel/kmemory.c	/^} page_t;$/;"	t	typeref:struct:page_s	file:
+period	./hal/almo1/harch.c	/^    int period;         \/\/ timer's period between two IRQ$/;"	m	struct:timer_s	file:
+perror	./ulib/libc.c	/^void perror (char *s) $/;"	f
+person_s	./common/list.h	/^typedef struct person_s {$/;"	s
+person_t	./common/list.h	/^} person_t;$/;"	t	typeref:struct:person_s
+prev	./common/list.h	/^    struct list_s * prev;   \/\/\/< backward$/;"	m	struct:list_s	typeref:struct:list_s::list_s
+print_familly	./common/list.h	/^void print_familly (family_t *family) {$/;"	f
+print_ustack	./kernel/kmemory.c	/^void print_ustack (void)$/;"	f
+pt_read	./hal/almo1/harch.c	/^        int  pt_read;$/;"	m	struct:tty_fifo_s	file:
+pt_write	./hal/almo1/harch.c	/^        int  pt_write;$/;"	m	struct:tty_fifo_s	file:
+question	./common/list.h	/^char * question (char * mess) {$/;"	f
+rand	./kernel/klibc.c	/^int rand (void)                                 \/\/ www.wikiwand.com\/en\/Linear_congruential_generator$/;"	f
+rand	./ulib/libc.c	/^int rand (void)$/;"	f
+randnext	./ulib/libc.c	/^static unsigned randnext = 1;$/;"	v	file:
+read	./hal/almo1/harch.c	/^    int read;           \/\/ tty's input address$/;"	m	struct:tty_s	file:
+read	./ulib/libc.c	/^int read(int fd, void *buf, int count)$/;"	f
+reset	./hal/almo1/harch.c	/^    int reset;          \/\/ IRQ acknowledgement$/;"	m	struct:dma_s	file:
+resetirq	./hal/almo1/harch.c	/^    int resetirq;       \/\/ address to acknowledge the timer's IRQ$/;"	m	struct:timer_s	file:
+retval	./kernel/kthread.c	/^    void *retval;                 \/\/\/< return value$/;"	m	struct:thread_s	file:
+root	./common/list.h	/^    list_t root;$/;"	m	struct:family_s
+sbrk	./kernel/kmemory.c	/^void * sbrk (int increment)$/;"	f
+sbrk	./ulib/memory.c	/^void * sbrk (int incr)$/;"	f
+sched_dump	./kernel/kthread.c	/^void sched_dump (void)$/;"	f
+sched_dump	./ulib/thread.c	/^void sched_dump (void)$/;"	f
+sched_elect	./kernel/kthread.c	/^static __attribute__((noinline)) int sched_elect (void)$/;"	f	file:
+sched_insert	./kernel/kthread.c	/^static void sched_insert (thread_t thread_new)$/;"	f	file:
+sched_switch	./kernel/kthread.c	/^static void sched_switch (void)$/;"	f	file:
+set	./hal/almo1/harch.c	/^    int set;            \/\/ IRQ set   --> enable specific IRQs for this ICU$/;"	m	struct:icu_s	file:
+size	./ulib/memory.c	/^    unsigned size:24;           \/\/ Number of block_info to the next block_info$/;"	m	struct:block_info_s	file:
+slab	./kernel/kmemory.c	/^    char slab;                          \/\/ Which slab does the page belong to? (0 is for page)$/;"	m	struct:page_s	file:
+snprintf	./kernel/klibc.c	/^int snprintf(char *str, unsigned size, char *fmt, ...)$/;"	f
+snprintf	./ulib/libc.c	/^int snprintf(char *str, unsigned size, char *fmt, ...)$/;"	f
+spin_lock	./hal/almo1/hcpua.S	/^spin_lock:$/;"	l
+spin_lock_delay	./hal/almo1/hcpua.S	/^spin_lock_delay:$/;"	l
+spin_lock_sc	./hal/almo1/hcpua.S	/^spin_lock_sc:$/;"	l
+spin_unlock	./hal/almo1/hcpua.S	/^spin_unlock:$/;"	l
+spinlock_t	./hal/hcpu.h	/^typedef unsigned spinlock_t;$/;"	t
+srand	./kernel/klibc.c	/^void srand (unsigned seed)$/;"	f
+srand	./ulib/libc.c	/^void srand (unsigned seed)$/;"	f
+src	./hal/almo1/harch.c	/^    void * src;         \/\/ dma's destination buffer address$/;"	m	struct:dma_s	file:
+start	./kernel/kthread.c	/^    int start;                    \/\/\/< pointer to the function which calls fun(arg)$/;"	m	struct:thread_s	file:
+state	./hal/almo1/harch.c	/^    int state;          \/\/ state of all IRQ signals$/;"	m	struct:icu_s	file:
+state	./kernel/kthread.c	/^    int state;                    \/\/\/< thread state from the scheduler point of view$/;"	m	struct:thread_s	file:
+status	./hal/almo1/harch.c	/^    int status;         \/\/ tty's status address something to read if not null)$/;"	m	struct:tty_s	file:
+strlen	./ulib/libc.c	/^int strlen (char *buf)$/;"	f
+strncpy	./kernel/klibc.c	/^void *strncpy (char *dest, char *src, unsigned n)$/;"	f
+strncpy	./ulib/libc.c	/^void *strncpy (char *dest, char *src, unsigned n)$/;"	f
+syscall_handler	./hal/almo1/hcpua.S	/^syscall_handler:$/;"	l
+t0	./uapp/barrier/main.c	/^thread_t t0, t1;$/;"	v
+t0_fun	./uapp/barrier/main.c	/^void * t0_fun (void * arg)$/;"	f
+t1	./uapp/barrier/main.c	/^thread_t t0, t1;$/;"	v
+test_ustack	./kernel/kmemory.c	/^void test_ustack (size_t turn)$/;"	f
+thread_addlast	./kernel/kthread.c	/^void thread_addlast (list_t * root, thread_t thread)$/;"	f
+thread_barrier_destroy	./kernel/ksynchro.c	/^int thread_barrier_destroy (thread_barrier_t * barrier)$/;"	f
+thread_barrier_destroy	./ulib/thread.c	/^int thread_barrier_destroy (thread_barrier_t * barrier)$/;"	f
+thread_barrier_init	./kernel/ksynchro.c	/^int thread_barrier_init (thread_barrier_t * barrier, size_t count)$/;"	f
+thread_barrier_init	./ulib/thread.c	/^int thread_barrier_init (thread_barrier_t * barrier, size_t count)$/;"	f
+thread_barrier_s	./kernel/ksynchro.c	/^struct thread_barrier_s {$/;"	s	file:
+thread_barrier_t	./kernel/ksynchro.h	/^typedef struct thread_barrier_s * thread_barrier_t;$/;"	t	typeref:struct:thread_barrier_s
+thread_barrier_t	./ulib/thread.h	/^typedef struct thread_barrier_s * thread_barrier_t;$/;"	t	typeref:struct:thread_barrier_s
+thread_barrier_wait	./kernel/ksynchro.c	/^int thread_barrier_wait (thread_barrier_t * barrier)$/;"	f
+thread_barrier_wait	./ulib/thread.c	/^int thread_barrier_wait (thread_barrier_t * barrier)$/;"	f
+thread_bootstrap	./kernel/kthread.c	/^static void thread_bootstrap (void)$/;"	f	file:
+thread_context_init	./hal/almo1/hcpuc.c	/^void thread_context_init (int context[], void * bootstrap, void * stack_pointer)$/;"	f
+thread_context_load	./hal/almo1/hcpua.S	/^thread_context_load:                    \/\/ load all persistant regs and returns 0 of thread_save$/;"	l
+thread_context_save	./hal/almo1/hcpua.S	/^thread_context_save:                    \/\/ saves all persistant registers and returns 1$/;"	l
+thread_create	./kernel/kthread.c	/^int thread_create (thread_t * thread_p, int fun, int arg, int start)$/;"	f
+thread_create	./ulib/thread.c	/^int thread_create (thread_t * thread, void *(*fun) (void *), void *arg)$/;"	f
+thread_exit	./kernel/kthread.c	/^void thread_exit (void *retval)$/;"	f
+thread_exit	./ulib/thread.c	/^void thread_exit (void *retval)$/;"	f
+thread_item	./kernel/kthread.c	/^thread_t thread_item (list_t * item)$/;"	f
+thread_join	./kernel/kthread.c	/^int thread_join (thread_t thread_expected, void **retval)$/;"	f
+thread_join	./ulib/thread.c	/^void thread_join (thread_t thread, void **retval)$/;"	f
+thread_launch	./hal/almo1/hcpua.S	/^thread_launch:                  \/\/ calls either _start() or thread_start(), with args in $4 and $5$/;"	l
+thread_main_load	./kernel/kthread.c	/^void thread_main_load (thread_t thread)$/;"	f
+thread_mutex_destroy	./kernel/ksynchro.c	/^int thread_mutex_destroy (thread_mutex_t * mutex)$/;"	f
+thread_mutex_destroy	./ulib/thread.c	/^int thread_mutex_destroy (thread_mutex_t * mutex)$/;"	f
+thread_mutex_init	./kernel/ksynchro.c	/^int thread_mutex_init (thread_mutex_t * mutex)$/;"	f
+thread_mutex_init	./ulib/thread.c	/^int thread_mutex_init (thread_mutex_t * mutex)$/;"	f
+thread_mutex_lock	./kernel/ksynchro.c	/^int thread_mutex_lock (thread_mutex_t * mutex)$/;"	f
+thread_mutex_lock	./ulib/thread.c	/^int thread_mutex_lock (thread_mutex_t * mutex)$/;"	f
+thread_mutex_s	./kernel/ksynchro.c	/^struct thread_mutex_s {$/;"	s	file:
+thread_mutex_t	./kernel/ksynchro.h	/^typedef struct thread_mutex_s * thread_mutex_t;$/;"	t	typeref:struct:thread_mutex_s
+thread_mutex_t	./ulib/thread.h	/^typedef struct thread_mutex_s * thread_mutex_t;$/;"	t	typeref:struct:thread_mutex_s
+thread_mutex_unlock	./kernel/ksynchro.c	/^int thread_mutex_unlock (thread_mutex_t * mutex)$/;"	f
+thread_mutex_unlock	./ulib/thread.c	/^int thread_mutex_unlock (thread_mutex_t * mutex)$/;"	f
+thread_notify	./kernel/kthread.c	/^void thread_notify (thread_t thread)$/;"	f
+thread_s	./kernel/kthread.c	/^struct thread_s {$/;"	s	file:
+thread_start	./ulib/thread.c	/^static void thread_start (void *(*fun) (void *), void *arg)$/;"	f	file:
+thread_t	./kernel/kthread.h	/^typedef struct thread_s * thread_t;$/;"	t	typeref:struct:thread_s
+thread_t	./ulib/thread.h	/^typedef struct thread_s * thread_t;$/;"	t	typeref:struct:thread_s
+thread_wait	./kernel/kthread.c	/^void thread_wait (void)$/;"	f
+thread_yield	./kernel/kthread.c	/^int thread_yield (void)$/;"	f
+thread_yield	./ulib/thread.c	/^int thread_yield (void)$/;"	f
+tid	./kernel/kthread.c	/^    int tid;                      \/\/\/< thread identifer MUST BE PLACED JUST BEFORE CONTEXT (trace)$/;"	m	struct:thread_s	file:
+timer_init	./hal/almo1/harch.c	/^static void timer_init (int timer, int tick)$/;"	f	file:
+timer_isr	./hal/almo1/harch.c	/^static void timer_isr (int timer)$/;"	f	file:
+timer_s	./hal/almo1/harch.c	/^struct timer_s {$/;"	s	file:
+true	./kernel/klibc.h	46;"	d
+try_malloc	./ulib/memory.c	/^static void* try_malloc (size_t size)$/;"	f	file:
+tty_fifo_pull	./hal/almo1/harch.c	/^static int tty_fifo_pull (struct tty_fifo_s *fifo, int *c)$/;"	f	file:
+tty_fifo_push	./hal/almo1/harch.c	/^static int tty_fifo_push (struct tty_fifo_s *fifo, int c)$/;"	f	file:
+tty_fifo_s	./hal/almo1/harch.c	/^struct tty_fifo_s {$/;"	s	file:
+tty_getc	./kernel/klibc.c	/^int tty_getc (int tty)$/;"	f
+tty_gets	./kernel/klibc.c	/^int tty_gets (int tty, char *buf, int count)$/;"	f
+tty_isr	./hal/almo1/harch.c	/^static void tty_isr (int tty)$/;"	f	file:
+tty_putc	./kernel/klibc.c	/^int tty_putc (int tty, int c)$/;"	f
+tty_puts	./kernel/klibc.c	/^int tty_puts (int tty, char *buf)$/;"	f
+tty_read	./hal/almo1/harch.c	/^int tty_read (int tty, char *buf, unsigned count)$/;"	f
+tty_s	./hal/almo1/harch.c	/^struct tty_s {$/;"	s	file:
+tty_write	./hal/almo1/harch.c	/^int tty_write (int tty, char *buf, unsigned count)$/;"	f
+uheap_beg	./common/usermem.h	/^    int * uheap_beg;        \/\/\/< lowest highest address of the user heap segment$/;"	m	struct:usermem_s
+uheap_end	./common/usermem.h	/^    int * uheap_end;        \/\/\/< highest address of the user heap segment (also named brk)$/;"	m	struct:usermem_s
+uncached_load	./hal/almo1/hcpua.S	/^uncached_load:$/;"	l
+unknown_syscall	./kernel/ksyscalls.c	/^static int unknown_syscall (int a0, int a1, int a2, int a3, int syscall_code)$/;"	f	file:
+unused	./hal/almo1/harch.c	/^    int unused;         \/\/ unused address$/;"	m	struct:tty_s	file:
+unused	./hal/almo1/harch.c	/^    int unused[3];      \/\/ 3 register addresses are not used$/;"	m	struct:icu_s	file:
+unused	./hal/almo1/harch.c	/^    int unused[3];      \/\/ unused addresses$/;"	m	struct:dma_s	file:
+usermem_s	./common/usermem.h	/^typedef struct usermem_s {$/;"	s
+usermem_t	./common/usermem.h	/^} usermem_t;$/;"	t	typeref:struct:usermem_s
+ustack_b	./kernel/kthread.c	/^    int ustack_b;                 \/\/\/< user stack beginning (the highest address, outside the stack)$/;"	m	struct:thread_s	file:
+ustack_beg	./common/usermem.h	/^    int * ustack_beg;       \/\/\/< highest address of the user stack segment$/;"	m	struct:usermem_s
+ustack_e	./kernel/kthread.c	/^    int ustack_e;                 \/\/\/< user stack end (thus the lowest addr)$/;"	m	struct:thread_s	file:
+ustack_end	./common/usermem.h	/^    int * ustack_end;       \/\/\/< lowest address of the user stack segment$/;"	m	struct:usermem_s
+value	./hal/almo1/harch.c	/^    int value;          \/\/ timer's counter : +1 each cycle, can be written$/;"	m	struct:timer_s	file:
+vsnprintf	./kernel/klibc.c	/^static int vsnprintf (char * buffer, unsigned size, char *fmt, va_list ap)$/;"	f	file:
+vsnprintf	./ulib/libc.c	/^static int vsnprintf (char * buffer, unsigned size, char *fmt, va_list ap)$/;"	f	file:
+wait	./kernel/ksynchro.c	/^    list_t      wait;           \/\/\/< list element to chain threads that are wainting for the mutex$/;"	m	struct:thread_barrier_s	file:
+wait	./kernel/ksynchro.c	/^    list_t      wait;           \/\/\/< list element to chain threads that are wainting for the mutex$/;"	m	struct:thread_mutex_s	file:
+wait	./kernel/kthread.c	/^    list_t wait;                  \/\/\/< list element to chain threads waiting for the same resource$/;"	m	struct:thread_s	file:
+waiting	./kernel/ksynchro.c	/^    size_t      waiting;        \/\/\/< number of threads waiting$/;"	m	struct:thread_barrier_s	file:
+write	./hal/almo1/harch.c	/^    int write;          \/\/ tty's output address$/;"	m	struct:tty_s	file:
+write	./ulib/libc.c	/^int write(int fd, void *buf, int count)$/;"	f
+wzero	./kernel/klibc.c	/^void wzero (void *addr, size_t n)$/;"	f
+xdigit	./kernel/klibc.c	/^static char xdigit[] = "0123456789abcdef";      \/\/ hexadecimal digit$/;"	v	file:

@@ -1,0 +1,38 @@
+
+
+# -*- python -*-
+
+__id__ = "$Id: vci_framebuffer.sd 1698 2010-04-14 03:29:34Z nipo $"
+__version__ = "$Revision: 1698 $"
+
+Module('caba:vci_framebuffer',
+	   classname = 'soclib::caba::VciFrameBuffer',
+	   tmpl_parameters = [
+	parameter.Module('vci_param',  default = 'caba:vci_param'),
+	],
+	   header_files = ['../source/include/vci_framebuffer.h',],
+	   implementation_files = ['../source/src/vci_framebuffer.cpp',],
+	   ports = [
+	Port('caba:vci_target', 'p_vci'),
+	Port('caba:bit_in', 'p_resetn', auto = 'resetn'),
+	Port('caba:clock_in', 'p_clk', auto = 'clock'),
+	],
+	   uses = [
+	Uses('caba:base_module'),
+	Uses('caba:vci_target_fsm', default_target = 'true', support_llsc = 'false'),
+	Uses('common:fb_controller'),
+	],
+	instance_parameters = [
+	parameter.IntTab('ident'),
+	parameter.Module('mt', 'common:mapping_table'),
+	parameter.Int('width'),
+	parameter.Int('height'),
+	parameter.Int('subsampling', default = 420),
+	],
+	   extensions = [
+	'dsx:addressable=ident',
+	'dsx:max_segments=1',
+	'dsx:get_ident=ident:p_vci:mt',
+	'dsx:device=framebuffer',
+   ],
+)

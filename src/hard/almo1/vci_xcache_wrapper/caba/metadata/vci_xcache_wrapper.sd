@@ -1,0 +1,50 @@
+
+# -*- python -*-
+
+__id__ = "$Id: vci_xcache_wrapper.sd 2168 2012-03-20 12:03:30Z alain $"
+__version__ = "$Revision: 2168 $"
+
+Module('caba:vci_xcache_wrapper',
+	classname = 'soclib::caba::VciXcacheWrapper',
+	tmpl_parameters = [
+		parameter.Module('vci_param', default = 'caba:vci_param'),
+		parameter.Module('iss_t'),
+		],
+	header_files = [
+		'../source/include/vci_xcache_wrapper.h',
+		],
+	implementation_files = [
+		'../source/src/vci_xcache_wrapper.cpp',
+		],
+	uses = [
+		Uses('caba:base_module'),
+		Uses('caba:write_buffer'),
+		Uses('caba:generic_cache', addr_t = 'uint32_t'),
+		Uses('caba:generic_fifo'),
+		Uses('common:iss2'),
+		Uses('common:mapping_table'),
+		],
+	ports = [
+		Port('caba:vci_initiator', 'p_vci'),
+		Port('caba:bit_in','p_irq', parameter.Constant('n_irq')),
+		Port('caba:bit_in', 'p_resetn', auto = 'resetn'),
+		Port('caba:clock_in', 'p_clk', auto = 'clock'),
+		],
+	instance_parameters = [
+		parameter.Int('ident'),
+		parameter.Module('mt', 'common:mapping_table'),
+		parameter.IntTab('index'),
+		parameter.Int('icache_ways'),
+		parameter.Int('icache_sets'),
+		parameter.Int('icache_words'),
+		parameter.Int('dcache_ways'),
+		parameter.Int('dcache_sets'),
+		parameter.Int('dcache_words'),
+		],
+	extensions = [
+		'dsx:get_ident=index:p_vci:mt',
+		'dsx:cpu=wrapper:iss_t',
+		'dsx:mapping_type=processor:ident',
+   		],
+#	   debug = True,
+)

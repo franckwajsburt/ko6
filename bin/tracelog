@@ -1,0 +1,207 @@
+#!/usr/bin/awk -f
+#---------------------------------------------------------------------------------------------------
+#    _     ___    __
+#   | |__ /'v'\  / /    \date        2021-11-09
+#   | / /(     )/ _ \   \copyright   2021 Sorbonne University https://opensource.org/licenses/MIT
+#   |_\_\ x___x \___/
+# 
+#---------------------------------------------------------------------------------------------------
+#! \file      tracelog
+#! \brief     Script awk useful to simplify the trace done by the simulator
+#! \copyright 2020 Sorbonne Université https://opensource.org/licenses/MIT
+#! two arguments :
+#! - all the desassembled codes 
+#! - execution trace of the simulator
+#! tracelog *.x.s debug.log 
+#---------------------------------------------------------------------------------------------------
+
+BEGIN{
+    printf "\nGenerate trace[cpu].s, may take a while... "
+    FS="(:	|[ >]*)"   # redef field separator either ":\t" or "[ >]*";
+    THREAD_SHIFT[p] = 3;  # shift for the threads
+    DIR["DATA_READ"] = " --> ";
+    DIR["DATA_WRITE"] = " <-- ";
+    DIR["XTN_WRITE"] = " <-- ";
+    DIR["DATA_LL"] = " --> ";
+    DIR["DATA_SC"] = " <-- ";
+    BE["0x1"] = "---1";
+    BE["0x2"] = "--1-";
+    BE["0x4"] = "-1--";
+    BE["0x8"] = "1---";
+    BE["0x3"] = "--11";
+    BE["0xc"] = "11--";
+    BE["0xf"] = "1111";
+    TD["DATA_READ"] = "--> READ  MEMORY @ ";
+    TD["DATA_WRITE"]= "<-- WRITE MEMORY @ ";
+    TD["XTN_WRITE"]= "<-- SYNC WRITE ";
+    TD["DATA_LL"] = "--> LL    MEMORY @ ";
+    TD["DATA_SC"]= "<-- SC   MEMORY @ ";
+    position = 0;
+}
+
+{
+    lastchar = substr($0,length($0),1);
+    split(": / d f l m v",lastchars);
+    tag = 0;
+    for (i in lastchars) { 
+        if (lastchar == lastchars[i]) 
+            tag = 1
+    }
+    if (tag) {
+        split ($0,tags,"[ \t]*")
+        if (tags[1] == "Mmain") tags[1] = "main"; # a M is added at PPTI ??
+        firstchar = substr($0,1,1) ;
+        if ((position == 0) && (firstchar != "!") && (firstchar != ".")) {
+            if (substr(tags[2],1,1) == ".") {
+                position=3 
+                UFILES["<syscall_fct"] = "./ulib/crt0.c";
+            } else {
+                position=1
+                UFILES["<syscall_fct"] = "ulib/crt0.c";
+            }
+        }
+        if (substr(tags[2],position,1) == "u") { 
+            UFILES["<"tags[1]] = tags[2]
+        } else {
+            KFILES["<"tags[1]] = tags[2]
+        }
+    }
+}
+
+# fill database of instructions from disassembled code
+# the condition allows to only keep lines as:
+#    bfc00000:   40806000    mtc0    zero,c0_status
+#    bfc00004:   3c1d8040    lui sp,0x8040
+# the database is then
+#    mem["0xbfc00000"] = 0x40806000    mtc0   zero,c0_status
+#    mem["0xbfc00000"] = 0x3c1d8040    lui sp,0x8040
+#---------------------------------------------------------------------------------------------------
+(length($1) == 8){
+    if ($3 == ":") {
+        lab["0x"$1] = $2;
+        next;
+    }
+    if (NF == 3) {
+        mem["0x"$1]="0x"$2" "$3; 
+    }
+    if (NF == 5) {
+        mem["0x"$1]="0x"$2" "$3" "$4">";
+    }
+    loadstore["0x"$1]=0;
+    if (index($3,"sw")) loadstore["0x"$1]=1;
+    if (index($3,"lw")) loadstore["0x"$1]=1;
+    if (index($3,"sh")) loadstore["0x"$1]=1;
+    if (index($3,"lh")) loadstore["0x"$1]=1;
+    if (index($3,"sb")) loadstore["0x"$1]=1;
+    if (index($3,"lb")) loadstore["0x"$1]=1;
+}
+
+# keep important data from simulator log
+# ***************** cycle 1 ***********************
+# PROC proc_0
+#   <InsReq    valid mode MODE_KERNEL @ 0xbfc00000>
+#   <InsRsp  invalid no error ins 0>
+#   <DataReq invalid mode MODE_HYPER type DATA_READ @ 0 wdata 0 be 0>
+#   <DataRsp invalid no error rdata 0>
+#   ICACHE_MISS_SELECT | DCACHE_IDLE | CMD_IDLE | RSP_IDLE
+# Vgsb : state = IDLE / index_ini = 0 / index_tgt = 0
+# Timer 0 : counter = 0 / mode = 0 / period = 0 / mode = 0 / irq = 0
+# SIMPLE_RAM rom : state = IDLE / latency_count = 0 / flit_count = 0
+# SIMPLE_RAM ram : state = CMD_GET / latency_count = 0 / flit_count = 0y
+#---------------------------------------------------------------------------------------------------
+/PROC/  {split($2,cpu,"_");p=cpu[2]; D[p]=0; I[p]=0; if (PMAX<p) PMAX=p;}
+/cycle/ {cycle=$3}                                                # get cycle number
+/DataReq   valid/ {td[p]=$7;x[p]=$8;ad[p]=$9;be[p]=$13;d[p]=$11}  # get data request
+/DataRsp   valid/ {if ((td[p]=="DATA_READ")||(td[p]=="DATA_LL")) d[p]=$7; if(d[p]==0) d[p]= "0       "; D[p]=1}  # get data response
+/InsReq    valid/ {ai[p]=$7}                                      # get inst request
+#/InsRsp    valid/ {if ((ai[p]!=oai[p])||(i!=$7)){ i=$7; I[p]=1}} # get inst response
+/InsRsp    valid/ {if (ai[p]!=oai[p]) {I[p]=1}}                   # get inst response
+
+# finally write log  
+#---------------------------------------------------------------------------------------------------
+function space() {
+    s=""
+    if (cycle < 1000000) s=s" "
+    if (cycle < 100000)  s=s" "
+    if (cycle < 10000)   s=s" "
+    if (cycle < 1000)    s=s" "
+    if (cycle < 100)     s=s" "
+    if (cycle < 10)      s=s" "
+    for( i=0; i < (TID_SHIFT[p]*THREAD_SHIFT[p])%67; i++) s=s" "
+}
+/cycle/{
+    for (proc=0;proc<=PMAX;proc++) {
+        if (D[proc]) {
+            D[proc]=0;
+            if (TD[td[proc]] != "<-- SYNC WRITE ") {
+                LD[proc]=cycle":"s TD[td[proc]] ad[proc]" BE="BE[be[proc]] DIR[td[proc]] d[proc]; 
+               if (TID_FLAG[proc]) {
+                   TID[proc] = strtonum(d[proc]); 
+                   #LD[proc]=LD[proc] "\nTHREAD " TID[proc]
+                   TID_FLAG[proc] = 0;
+                   TID_SHIFT_FLAG[proc] = 1;
+               }
+            } else { 
+                LD[proc]=cycle":"s TD[td[proc]] x[proc];
+            }
+            space();
+            print LAND[proc],LD[proc] > "trace"proc".s";
+        }
+    }
+} 
+/cycle/{
+    for (proc=0;proc<=PMAX;proc++) {
+        if (I[proc]) {
+            THREAD[proc] = ""
+            if (TID_SHIFT_FLAG[proc]) {# && (strtonum(ai[proc]) < 0x80000000)) {
+                TID_SHIFT[proc] = TID[proc];
+                TID_SHIFT_FLAG[proc] = 0;
+                for (i = 0; i <= 99; i++) THREAD[proc] = THREAD[proc]"-"
+                THREAD[proc] = THREAD[proc] "\nTHREAD: "TID[proc]"\n"
+                for (i = 0; i <= 99; i++) THREAD[proc] = THREAD[proc]"-"
+                THREAD[proc] = THREAD[proc]"\n"
+            }
+            if (strtonum(ai[proc]) >= 0x80000000) {
+                LAND_TYPE[proc] = "k";
+                LAND[proc]="K "; 
+            } else {
+                LAND_TYPE[proc] = "u";
+                LAND[proc]="U ";
+            }
+            LAND[proc] = LAND[proc] TID_SHIFT[proc];
+            for (i = length(LAND[proc]); i < 4; i++) LAND[proc] = LAND[proc] " "
+            space();
+            I[proc]=0;
+            if (lab[ai[proc]]) {
+                line[proc]="-"
+                #if (lab[ai[proc]] == "<thread_launch") line[proc]="-";
+                if (lab[ai[proc]] == "<thread_load")   {line[proc]="-"; TID_FLAG[proc]=1}
+                LB[proc]=cycle":"s lab[ai[proc]]"> "
+                for (i = length(LB[proc]); i < 70; i++) LB[proc] = LB[proc] line[proc];
+                if (LAND_TYPE[proc] == "k")
+                    LB[proc]=LB[proc]" "KFILES[lab[ai[proc]]]
+                else 
+                    LB[proc]=LB[proc]" "UFILES[lab[ai[proc]]]
+                print THREAD[proc]  LAND[proc],LB[proc] > "label"proc".s";
+                LB[proc] = LB[proc]"\n"LAND[proc]" ";
+            }
+            else {
+                LB[proc] = "" 
+                printf ("%s", THREAD[proc]) > "label"proc".s";
+            }
+            LI=cycle":"s ai[proc]"\t"mem[ai[proc]];
+            print THREAD[proc] LAND[proc],LB[proc] LI > "trace"proc".s";
+            oai[proc]=ai[proc];
+        }
+    }
+} 
+{
+    split("|,/,-,\\",wheel,",");
+    ncyc = int(cycle/3000)
+    if (cyc != ncyc) {
+        cyc = ncyc;
+        printf wheel[1+cyc%4]"\b"
+    }
+}
+END {print "done"};
+
