@@ -1,12 +1,12 @@
 # ------------------------------------------------------------------------------
 #    _     ___    __
-#   | |__ /'v'\  / /    \date        2022-06-22
-#   | / /(     )/ _ \   \copyright   2021 Sorbonne University 
+#   | |__ /'v'\  / /    \date        2022-07-13
+#   | / /(     )/ _ \   \copyright   2021 Sorbonne University
 #   |_\_\ \___/ \___/                https://opensource.org/licenses/MIT
-# 
+#
 # ------------------------------------------------------------------------------
 
-# Main directory, you can change it 
+# Main directory, you can change it
 # ---------------------------------
 export kO6=$HOME/kO6
 export SOCLIB=/users/outil/soc/soclib
@@ -22,7 +22,7 @@ export PATH=$kO6/bin:$CCTOOLS/bin:$SOCLIB/utils/bin:$PATH
 export LD_LIBRARY_PATH=$CCTOOLS/lib64:$LD_LIBRARY_PATH
 shopt -s globstar   # allow the ** symbol which replace any pathname
 
-# those lines are sometimes useful because to copy files may change the rigths 
+# those lines are sometimes useful because to copy files may change the rigths
 chmod u+x $kO6/bin/gcc.$GCC/mipsel-unknown-elf/bin/*
 chmod u+x $kO6/bin/gcc.$GCC/bin/*
 chmod u+x $kO6/bin/gcc.$GCC/libexec/gcc/mipsel-unknown-elf/$GCC/*
