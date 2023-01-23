@@ -1,4 +1,4 @@
-# [kO6]
+# kO6
 
 ```
  Small Operating System for Educational Purpose
@@ -35,14 +35,14 @@ The chosen license is the most permissive I could find. In fact, the only requir
 ## Author
 
 
-> [kO6] has been written by Franck Wajsburt - Sorbonne University
+> kO6 has been written by Franck Wajsburt - Sorbonne University
 > contact : franck.wajsburt@lip6.fr
 
 
 ## Presentation
 
 
-[kO6] (*prononce it "kit-O-sys" O is  the letter not the number*) is a small operating system for educationnal purpose. Each part is added gradually, that is why it is a `k`it `O`perating `sys`tem (namely K-O-6).
+kO6 (*prononce it "kit-O-sys" O is  the letter not the number*) is a small operating system for educationnal purpose. Each part is added gradually, that is why it is a `k`it `O`perating `sys`tem (namely K-O-6).
 
 
 ## Configuration
