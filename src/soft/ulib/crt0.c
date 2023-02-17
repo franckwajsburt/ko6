@@ -11,7 +11,7 @@
 \*------------------------------------------------------------------------------------------------*/
 
 #include <libc.h>
-#include <thread.h>
+#include <pthread.h>
 #include <hcpu_user.h>
 
 extern int __bss_origin;        // first int of uninitialized global data
@@ -32,7 +32,7 @@ usermem_t _user_mem = {
 // - thread_load (((kthread_t*)_main_thread)->context);
 
 __attribute__ ((section (".main_thread")))
-thread_t _main_thread;
+pthread_t _main_thread;
 
 __attribute__ ((section (".start")))
 void _start (void)

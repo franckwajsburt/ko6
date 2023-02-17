@@ -1,7 +1,7 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2022-07-04
-# | / /(     )/ _ \   	\copyright  2021-2022 Sorbonne University
+# | |__ /'v'\  / /   	\date       2023-02-17
+# | / /(     )/ _ \   	\copyright  2021-2023 Sorbonne University
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     ulib/Makefile
@@ -13,17 +13,17 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
-SOC	   ?= almo1#					defaut SOC name
-NTTYS  ?= 1#						default number of ttys
-NCPUS  ?= 1#						default number of CPUS
-VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-BLDDIR	= ../../../build#			build directory
-COMDIR	= ../common#				user & kernel common files directory
-HALDIR	= ../hal#					hardware abstraction layer (hal) files directory
-SOCDIR	= $(HALDIR)/$(SOC)#			current soc hardware abstraction layer (hal) files directory
+SOC    ?= almo1#			defaut SOC name
+NTTYS  ?= 1#				default number of ttys
+NCPUS  ?= 1#				default number of CPUS
+VERBOSE?= 0#				verbose mode to print INFO(), BIP(), ASSERT, VAR()
+BLDDIR	= ../../../build#		build directory
+COMDIR	= ../common#			user & kernel common files directory
+HALDIR	= ../hal#			hardware abstraction layer (hal) files directory
+SOCDIR	= $(HALDIR)/$(SOC)#		current soc hardware abstraction layer (hal) files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
-OBJDIR	= $(BLDDIR)/obj#			object files directory
-PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
+OBJDIR	= $(BLDDIR)/obj#		object files directory
+PDFDIR	= $(BLDDIR)/pdf#		pdf files directory
 
 # Sources
 # --------------------------------------------------------------------------------------------------
@@ -31,7 +31,7 @@ PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 SRC     = $(COMDIR)/syscalls.h $(COMDIR)/list.h $(COMDIR)/usermem.h
 SRC    += $(COMDIR)/debug_on.h $(COMDIR)/debug_off.h
 SRC    += $(COMDIR)/errno.h $(COMDIR)/errno.c 
-SRC    += crt0.c libc.h libc.c thread.h thread.c memory.h memory.c
+SRC    += crt0.c libc.h libc.c pthread.h pthread.c memory.h memory.c
 
 # Targets
 # --------------------------------------------------------------------------------------------------

@@ -14,19 +14,19 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
-SOC	   ?= almo1#					defaut SOC name
-NTTYS  ?= 1#						default number of ttys
-NCPUS  ?= 1#						default number of CPUS
-V      ?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
+SOC    ?= almo1#			defaut SOC name
+NTTYS  ?= 1#				default number of ttys
+NCPUS  ?= 1#				default number of CPUS
+V      ?= 0#				verbose mode to print INFO(), BIP(), ASSERT, VAR()
 BLDDIR	= ../../../../build#		build directory
-COMDIR	= ../../common#				user & kernel common files directory
-LIBDIR	= ../../ulib#				library directory (where is ldscript)
-HALDIR	= ../../hal#				hardware abstraction layer (hal) files directory
-SOCDIR	= $(HALDIR)/$(SOC)#			current soc hardware abstraction layer (hal) files directory
+COMDIR	= ../../common#			user & kernel common files directory
+LIBDIR	= ../../ulib#			library directory (where is ldscript)
+HALDIR	= ../../hal#			hardware abstraction layer (hal) files directory
+SOCDIR	= $(HALDIR)/$(SOC)#		current soc hardware abstraction layer (hal) files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
-OBJRDIR	= $(BLDDIR)/obj#			object files directory
+OBJRDIR	= $(BLDDIR)/obj#		object files directory
 OBJDIR	= $(OBJRDIR)/$(CURDIR)#		object files directory
-PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
+PDFDIR	= $(BLDDIR)/pdf#		pdf files directory
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#	the pdf file has the name of directory
 BIN     = $(BLDDIR)/$(CURDIR).x#	the binary file has the name of directory
 
@@ -39,7 +39,7 @@ LDSCRIPT= $(SOCDIR)/user.ld#		ldscript is hal dependent
 # Targets
 # --------------------------------------------------------------------------------------------------
 
-LIB		= crt0.o libc.o thread.o memory.o errno.o
+LIB	= crt0.o libc.o pthread.o memory.o errno.o
 SRCC    = $(filter %.c,$(SRC))
 OBJC    = $(subst .c,.o,$(foreach src,$(SRCC),$(notdir $(src))))
 OBJ     = $(addprefix $(OBJDIR)/,$(OBJC))
@@ -53,21 +53,21 @@ CC     = mipsel-unknown-elf-gcc#	compiler
 LD     = mipsel-unknown-elf-ld#		linker
 OD     = mipsel-unknown-elf-objdump#desassembler
 
-CFLAGS  = -c#						stop after compilation, then produce .o
-CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
-CFLAGS += -mips32r2#				define of MIPS version
-CFLAGS += -std=c99#					define of syntax version of C
-CFLAGS += -fno-common#				do not use common sections for non-static vars (only bss)
-CFLAGS += -fno-builtin#				do not use builtin functions of gcc (such as strlen)
+CFLAGS  = -c#				stop after compilation, then produce .o
+CFLAGS += -Wall -Werror#		gives almost all C warnings and considers them to be errors
+CFLAGS += -mips32r2#			define of MIPS version
+CFLAGS += -std=c99#			define of syntax version of C
+CFLAGS += -fno-common#			do not use common sections for non-static vars (only bss)
+CFLAGS += -fno-builtin#			do not use builtin functions of gcc (such as strlen)
 CFLAGS += -fomit-frame-pointer#		only use of stack pointer ($29)
-CFLAGS += -G0#						do not use global data pointer ($28)
-CFLAGS += -O3#						full optimisation mode of compiler
-CFLAGS += -I. -I$(COMDIR)#			directories where include files like <file.h> are located
-CFLAGS += -I$(LIBDIR)#				directories where include files like <file.h> are located
+CFLAGS += -G0#				do not use global data pointer ($28)
+CFLAGS += -O3#				full optimisation mode of compiler
+CFLAGS += -I. -I$(COMDIR)#		directories where include files like <file.h> are located
+CFLAGS += -I$(LIBDIR)#			directories where include files like <file.h> are located
 CFLAGS += -I$(HALDIR) -I$(SOCDIR)#	directories where include files like <file.h> are located
-CFLAGS += -DNTTYS=$(NTTYS)#			#define NTTYS with the number of ttys in the prototype
-CFLAGS += -DNCPUS=$(NCPUS)#			#define NCPUS with the number of cpus in the prototype
-CFLAGS += -DVERBOSE=$(V)#			verbose if 1, can be toggled with #include <debug_{on,off}.h> 
+CFLAGS += -DNTTYS=$(NTTYS)#		#define NTTYS with the number of ttys in the prototype
+CFLAGS += -DNCPUS=$(NCPUS)#		#define NCPUS with the number of cpus in the prototype
+CFLAGS += -DVERBOSE=$(V)#		verbose if 1, can be toggled with #include <debug_{on,off}.h> 
 
 LDFLAGS = -T $(LDSCRIPT) $(OBJLIB)
 
