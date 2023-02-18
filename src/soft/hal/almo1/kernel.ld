@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-07-03
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  | |__ /'v'\  / /      \date       2023-02-18
+  | / /(     )/ _ \     \copyright  2021-2023 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
   \file     hal/almo1/kernel.ld
@@ -62,10 +62,12 @@ SECTIONS {
     } > ktext_region
     .kdata : {
         *(.*data*)          /* initialized global variables */
-        . = ALIGN(4);       /* move the filling pointer to an word aligned address */
+        . = ALIGN(4);       /* move the filling pointer to a word aligned address */
+    } > kdata_region
+    .kbss : {
         __bss_origin = .;   /* first byte of uninitialized global variables */
         *(.*bss*)           /* uninitialized global variables */
-        . = ALIGN(0x1000);  /* move the filling pointer to a page aligned address */
+        . = ALIGN(4);       /* move the filling pointer to a word aligned address */
         __bss_end = .;      /* first byte after the bss section */
     } > kdata_region
 }
