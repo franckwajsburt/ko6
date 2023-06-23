@@ -1,7 +1,7 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2022-06-20
-# | / /(     )/ _ \   	\copyright  2021-2022 Sorbonne University
+# | |__ /'v'\  / /   	\date       2023-02-24
+# | / /(     )/ _ \   	\copyright  2021-2023 Sorbonne University
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     Makefile
@@ -13,11 +13,11 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
-MAKOPT ?= -s#						comment the -s to get command details
-SOC	   ?= almo1#					defaut SOC name
-NTTYS  ?= 2#						default number of ttys
-NCPUS  ?= 1#						default number of CPUS
-VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
+MAKOPT ?= -s#			comment the -s to get command details
+SOC    ?= almo1#		defaut SOC name
+NTTYS  ?= 2#			default number of ttys
+NCPUS  ?= 1#			default number of CPUS
+VERBOSE?= 0#			verbose mode to print INFO(), BIP(), ASSERT, VAR()
 
 # Rules (here they are used such as simple shell scripts)
 # --------------------------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2022-06-23
-# | / /(     )/ _ \   	\copyright  2021-2022 Sorbonne University
+# | |__ /'v'\  / /   	\date       2023-02-24
+# | / /(     )/ _ \   	\copyright  2021-2023 Sorbonne University
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # see https://www.gnu.org/software/make/manual/make.html for documentation on make 
@@ -10,17 +10,17 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
-APP	   ?= hello#					app name 								
-MAKOPT ?= -s#						comment the -s to get command details
-SOC	   ?= almo1#					defaut SOC name
-NTTYS  ?= 2#						default number of ttys
-NCPUS  ?= 1#						default number of CPUS
-VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-BLDDIR  = build#           			build directory
-SWDIR   = src/soft#        			software directory
-FROM   ?= 000000#					first cycle to trace
-LAST   ?= 500000#					last cycle to execute
-DLOG    = ~/kO6-debug.log#			debug file
+APP    ?= hello#		app name 								
+MAKOPT ?= -s#			comment the -s to get command details
+SOC    ?= almo1#		defaut SOC name
+NTTYS  ?= 2#			default number of ttys
+NCPUS  ?= 1#			default number of CPUS
+VERBOSE?= 0#			verbose mode to print INFO(), BIP(), ASSERT, VAR()
+BLDDIR  = build#        	build directory
+SWDIR   = src/soft#     	software directory
+FROM   ?= 000000#		first cycle to trace
+LAST   ?= 500000#		last cycle to execute
+DLOG    = ~/kO6-debug.log#	debug file
 APPS	= $(shell ls -l src/soft/uapp | grep "^d" | awk '{print $$NF}')
 
 # Tools 
