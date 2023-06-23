@@ -73,6 +73,7 @@ static size_t Objects[256];             // Objects[i]= number of allocated objet
 typedef struct page_s {                 // page usage description
     char slab;                          // Which slab does the page belong to? (0 is for page)
     char alloc;                         // number of allocated objects is slab
+    char is_dirty:1;                    // 1 bit in 1 byte
 } page_t;
 page_t DummyPage;                       // this variable is to never have Page undefined
 page_t *Page = &DummyPage;              // page descriptor table Page[O] is for page kmb, and so on
