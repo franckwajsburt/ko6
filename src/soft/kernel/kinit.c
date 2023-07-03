@@ -17,6 +17,7 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
+#include <libfdt.h>
 #include <klibc.h>
 
 #define Y       EC_BOLD EC_WHITE"'"EC_YELLOW"v"EC_WHITE"'"EC_RESET EC_CYAN
@@ -35,13 +36,24 @@ void kinit (void)
     kprintf (Banner);
     
     extern int __dtb_address;
-    char *fdt = (char*) &__dtb_address;
+    void *fdt = (void *) &__dtb_address;
 
-    if (*(unsigned int*) fdt == 0xedfe0dd0) {
+    if (*(unsigned int *) fdt == 0xedfe0dd0) {
         kprintf("Device tree found at %p\n", fdt);
     } else {
         kprintf("No device tree found\n");
     }
+
+    int cpus_offset = fdt_path_offset(fdt, "/cpus");
+    PANIC_IF(cpus_offset < 0, "Malformed device tree: /cpus not found");
+
+    int cpu_offset = -1;
+    int cores = 0;
+    fdt_for_each_subnode(cpu_offset, fdt, cpus_offset) {
+        cores++;
+    }
+
+    kprintf("Cores: %d\n", cores);
 
     // put bss sections to zero. bss contains uninitialised global variables
     extern int __bss_origin;    // first int of bss section (defined in ldscript kernel.ld)

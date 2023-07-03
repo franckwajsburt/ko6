@@ -32,7 +32,7 @@ void wzero (void *addr, size_t n)
     do { *a++ = 0; } while (n -= sizeof(unsigned));
 }
 
-void *memcpy (char *dest, char *src, unsigned n)
+void *memcpy (char *dest, const char *src, unsigned n)
 {
     char *d = dest;
     while (n--)
@@ -255,4 +255,166 @@ int tty_gets (int tty, char *buf, int count)
     *buf = 0;                                   // add a last 0 to end the string
 
     return res;                                 // returns the number of char read
+}
+
+/*
+ * Code from here is trash I copy/pasted in order to make libfdt work, it's only temporary 
+ */
+
+int memcmp (const void *str1, const void *str2, size_t count)
+{
+  register const unsigned char *s1 = (const unsigned char*)str1;
+  register const unsigned char *s2 = (const unsigned char*)str2;
+
+  while (count-- > 0)
+    {
+      if (*s1++ != *s2++)
+	  return s1[-1] < s2[-1] ? -1 : 1;
+    }
+  return 0;
+}
+
+void bcopy (const void *src, void *dest, size_t len)
+{
+  if (dest < src)
+    {
+      const char *firsts = (const char *) src;
+      char *firstd = (char *) dest;
+      while (len--)
+	*firstd++ = *firsts++;
+    }
+  else
+    {
+      const char *lasts = (const char *)src + (len-1);
+      char *lastd = (char *)dest + (len-1);
+      while (len--)
+        *lastd-- = *lasts--;
+    }
+}
+
+void *memset (void *dest, register int val, register size_t len)
+{
+  register unsigned char *ptr = (unsigned char*)dest;
+  while (len-- > 0)
+    *ptr++ = val;
+  return dest;
+}
+
+void *memmove (void *s1, const void *s2, size_t n)
+{
+  bcopy (s2, s1, n);
+  return s1;
+}
+
+void *memchr (register const void *src_void, int c, size_t length)
+{
+  const unsigned char *src = (const unsigned char *)src_void;
+  
+  while (length-- > 0)
+  {
+    if (*src == c)
+     return (void *)src;
+    src++;
+  }
+  return NULL;
+}
+
+size_t strlen (const char *s)
+{
+  size_t i;
+
+  for (i = 0;; ++i)
+    if (s[i] == '\0')
+      break;
+  return i;
+}
+
+char *strchr (register const char *s, int c)
+{
+  do {
+    if (*s == c)
+      {
+	return (char*)s;
+      }
+  } while (*s++);
+  return (0);
+}
+
+char *strrchr (register const char *s, int c)
+{
+  char *rtnval = 0;
+
+  do {
+    if (*s == c)
+      rtnval = (char*) s;
+  } while (*s++);
+  return (rtnval);
+}
+
+size_t strnlen (const char *s, size_t maxlen)
+{
+  size_t i;
+
+  for (i = 0; i < maxlen; ++i)
+    if (s[i] == '\0')
+      break;
+  return i;
+}
+
+/*
+ * This one has a different copyright: https://github.com/gcc-mirror/gcc/blob/master/libiberty/strtoul.c
+ */
+unsigned long strtoul(const char *nptr, char **endptr, register int base)
+{
+	register const char *s = nptr;
+	register unsigned long acc;
+	register int c;
+	register unsigned long cutoff;
+	register int neg = 0, any, cutlim;
+
+	/*
+	 * See strtol for comments as to the logic used.
+	 */
+	do {
+		c = *s++;
+	} while (c == ' ');
+	if (c == '-') {
+		neg = 1;
+		c = *s++;
+	} else if (c == '+')
+		c = *s++;
+	if ((base == 0 || base == 16) &&
+	    c == '0' && (*s == 'x' || *s == 'X')) {
+		c = s[1];
+		s += 2;
+		base = 16;
+	}
+	if (base == 0)
+		base = c == '0' ? 8 : 10;
+	cutoff = (unsigned long)ULONG_MAX / (unsigned long)base;
+	cutlim = (unsigned long)ULONG_MAX % (unsigned long)base;
+	for (acc = 0, any = 0;; c = *s++) {
+		if ('0' <= c && c <= '9')
+			c -= '0';
+		else if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z'))
+			c -= ('A' <= c && c <= 'Z') ? 'A' - 10 : 'a' - 10;
+		else
+			break;
+		if (c >= base)
+			break;
+		if (any < 0 || acc > cutoff || (acc == cutoff && c > cutlim))
+			any = -1;
+		else {
+			any = 1;
+			acc *= base;
+			acc += c;
+		}
+	}
+	if (any < 0) {
+		acc = ULONG_MAX;
+	} else if (neg)
+		acc = -acc;
+	if (endptr != 0)
+		*endptr = (char *) (any ? s - 1 : nptr);
+	return (acc);
 }

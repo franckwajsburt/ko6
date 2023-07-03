@@ -25,7 +25,7 @@ SOCDIR	= $(HALDIR)/$(SOC)#			current soc hardware abstraction layer (hal) files 
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJDIR	= $(BLDDIR)/obj#			object files directory
 PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
-
+LIBDIR  = ../../lib#				external libraries directory
 # Sources
 # --------------------------------------------------------------------------------------------------
 
@@ -50,6 +50,8 @@ SRCC    = $(filter %.c,$(SRC))
 OBJS    = $(subst .S,.o,$(foreach src,$(SRCS),$(notdir $(src))))
 OBJC    = $(subst .c,.o,$(foreach src,$(SRCC),$(notdir $(src))))
 OBJ     = $(addprefix $(OBJDIR)/,$(OBJS) $(OBJC))
+OBJ 	+= $(LIBDIR)/libfdt/libfdt.a
+
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 BIN     = $(BLDDIR)/$(CURDIR).x
@@ -72,6 +74,7 @@ CFLAGS += -G0#						do not use global data pointer ($28)
 CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += -I. -I$(COMDIR)#			directories where include files like <file.h> are located
 CFLAGS += -I$(HALDIR) -I$(SOCDIR)#	directories where include files like <file.h> are located
+CFLAGS += -I$(LIBDIR)/libfdt#		include external libraries (specifically libfdt.h)
 CFLAGS += -DNTTYS=$(NTTYS)#			#define NTTYS with the number of ttys in the prototype
 CFLAGS += -DNCPUS=$(NCPUS)#			#define NCPUS with the number of cpus in the prototype
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
@@ -200,13 +203,15 @@ depend :
 ../../../build/obj/kthread.o: ./kthread.h ../common/esc_code.h
 ../../../build/obj/kthread.o: ../common/errno.h ../common/syscalls.h
 ../../../build/obj/kthread.o: ./ksynchro.h
-../../../build/obj/kinit.o: ./klibc.h ../common/debug_off.h
-../../../build/obj/kinit.o: ../common/debug_on.h ../common/list.h
-../../../build/obj/kinit.o: ../hal/hcpu.h ../hal/almo1/hcpu_soc.h
-../../../build/obj/kinit.o: ../hal/harch.h ../common/usermem.h ./kmemory.h
-../../../build/obj/kinit.o: ./kthread.h ../common/esc_code.h
-../../../build/obj/kinit.o: ../common/errno.h ../common/syscalls.h
-../../../build/obj/kinit.o: ./ksynchro.h
+../../../build/obj/kinit.o: ../../lib/libfdt/libfdt.h
+../../../build/obj/kinit.o: ../../lib/libfdt/libfdt_env.h ./klibc.h
+../../../build/obj/kinit.o: ../common/debug_off.h ../common/debug_on.h
+../../../build/obj/kinit.o: ../common/list.h ../hal/hcpu.h
+../../../build/obj/kinit.o: ../hal/almo1/hcpu_soc.h ../hal/harch.h
+../../../build/obj/kinit.o: ../common/usermem.h ./kmemory.h ./kthread.h
+../../../build/obj/kinit.o: ../common/esc_code.h ../common/errno.h
+../../../build/obj/kinit.o: ../common/syscalls.h ./ksynchro.h
+../../../build/obj/kinit.o: ../../lib/libfdt/fdt.h
 ../../../build/obj/ksynchro.o: ./klibc.h ../common/debug_off.h
 ../../../build/obj/ksynchro.o: ../common/debug_on.h ../common/list.h
 ../../../build/obj/ksynchro.o: ../hal/hcpu.h ../hal/almo1/hcpu_soc.h

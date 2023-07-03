@@ -79,7 +79,7 @@ extern void wzero (void *addr, size_t n);
  * \param     n  number of bytes to copy
  * \return    the dest buffer address
  */
-extern void *memcpy (char *dest, char *src, unsigned n);
+extern void *memcpy (char *dest, const char *src, unsigned n);
 
 /**
  * \brief     copies the string src, included the ending byte '\0', to the buffer dest
@@ -161,5 +161,26 @@ extern int tty_puts (int tty, char *buf);
  * \return    the number of read chars
  */
 extern int tty_gets (int tty, char *buf, int count);
+
+
+/*
+ * Code from here is trash I copy/pasted in order to make libfdt work, it's only temporary 
+ */
+#define INT_MAX		((int)(~0U >> 1))
+#define INT32_MAX	INT_MAX
+#define UINT_MAX	((unsigned int)~0U)
+#define UINT32_MAX	UINT_MAX
+#define ULONG_MAX 	UINT_MAX
+
+extern int memcmp (const void *str1, const void *str2, size_t count);
+extern void bcopy (const void *src, void *dest, size_t len);
+extern void *memset (void *dest, register int val, register size_t len);
+extern void *memmove (void *s1, const void *s2, size_t n);
+extern void *memchr (register const void *src_void, int c, size_t length);
+extern size_t strlen (const char *s);
+extern char *strchr (register const char *s, int c);
+extern char *strrchr (register const char *s, int c);
+extern size_t strnlen (const char *s, size_t maxlen);
+extern unsigned long strtoul(const char *nptr, char **endptr, register int base);
 
 #endif//_KLIBC_H_

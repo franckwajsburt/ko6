@@ -58,6 +58,7 @@ help:
 	@echo ""
 
 compil: 
+	make -C src/lib/libfdt all
 	make -C $(SWDIR) $(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
 
 pdf:
@@ -72,6 +73,7 @@ debug: clean compil
 	tracelog $(SWDIR)/tags $(BLDDIR)/*.x.s $(DLOG)
 
 clean:
+	make -C src/lib/libfdt clean
 	make -C $(SWDIR) $(MAKOPT) clean
 	@echo "- clean up logs execution files"
 	@-killall xterm soclib-fb 2> /dev/null || true
