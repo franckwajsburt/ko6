@@ -33,6 +33,15 @@ EC_RESET;
 void kinit (void)
 {
     kprintf (Banner);
+    
+    extern int __dtb_address;
+    char *fdt = (char*) &__dtb_address;
+
+    if (*(unsigned int*) fdt == 0xedfe0dd0) {
+        kprintf("Device tree found at %p\n", fdt);
+    } else {
+        kprintf("No device tree found\n");
+    }
 
     // put bss sections to zero. bss contains uninitialised global variables
     extern int __bss_origin;    // first int of bss section (defined in ldscript kernel.ld)

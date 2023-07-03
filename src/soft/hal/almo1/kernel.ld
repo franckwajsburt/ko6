@@ -61,6 +61,8 @@ SECTIONS {
         *(.text)            /* code of any object file (except boot) in kernel code region) */
     } > ktext_region
     .kdata : {
+        __dtb_address = .;
+        *(.dtb)             /* put device tree at the beginning of kernel data */
         *(.*data*)          /* initialized global variables */
         . = ALIGN(4);       /* move the filling pointer to a word aligned address */
     } > kdata_region
