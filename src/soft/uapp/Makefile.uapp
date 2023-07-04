@@ -39,7 +39,9 @@ LDSCRIPT= $(SOCDIR)/user.ld#		ldscript is hal dependent
 # Targets
 # --------------------------------------------------------------------------------------------------
 
-LIB	= crt0.o libc.o pthread.o memory.o errno.o
+LIB		= crt0.o libc.o pthread.o memory.o errno.o
+LIB 	+= cstd.o
+
 SRCC    = $(filter %.c,$(SRC))
 OBJC    = $(subst .c,.o,$(foreach src,$(SRCC),$(notdir $(src))))
 OBJ     = $(addprefix $(OBJDIR)/,$(OBJC))

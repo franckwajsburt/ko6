@@ -13,7 +13,7 @@
  * to be in the public domain
  */
 #include <stddef.h>
-#include "klibc.h"
+#include "cstd.h"
 
 typedef unsigned char		uint8_t;
 typedef unsigned short		uint16_t;

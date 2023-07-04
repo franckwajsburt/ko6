@@ -32,10 +32,7 @@ CFLAGS += -fomit-frame-pointer#			only use of stack pointer ($29)
 CFLAGS += -G0#							do not use global data pointer ($28)
 CFLAGS += -O3#							full optimisation mode of compiler
 CFLAGS += -I.
-CFLAGS += -I../../soft/kernel/
 CFLAGS += -I../../soft/common/
-CFLAGS += -I../../soft/hal/
-CFLAGS += -I../../soft/hal/almo1/
 
 all: mkdir $(OBJDIR)/libfdt.a
 
