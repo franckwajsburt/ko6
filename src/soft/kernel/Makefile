@@ -50,7 +50,7 @@ SRCC    = $(filter %.c,$(SRC))
 OBJS    = $(subst .S,.o,$(foreach src,$(SRCS),$(notdir $(src))))
 OBJC    = $(subst .c,.o,$(foreach src,$(SRCC),$(notdir $(src))))
 OBJ     = $(addprefix $(OBJDIR)/,$(OBJS) $(OBJC))
-OBJ 	+= $(LIBDIR)/libfdt/libfdt.a
+OBJ 	+= $(OBJDIR)/libfdt.a
 
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory

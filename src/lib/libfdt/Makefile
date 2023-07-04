@@ -12,35 +12,43 @@
 
 include Makefile.libfdt
 
-VECHO=echo
+BLDDIR=../../../build
+OBJDIR=$(BLDDIR)/obj
 
-CC     = mipsel-unknown-elf-gcc#	compiler
-LD     = mipsel-unknown-elf-ld#		linker
-OD     = mipsel-unknown-elf-objdump#desassembler
+# Objects from Makefile.libfdt
+LIBFDT_OBJS:=$(addprefix $(OBJDIR)/,$(LIBFDT_OBJS))
 
-CFLAGS  = -c#						stop after compilation, then produce .o
-CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
-CFLAGS += -mips32r2#				define of MIPS version
-CFLAGS += -std=c99#					define of syntax version of C
-CFLAGS += -fno-common#				do not use common sections for non-static vars (only bss)
-CFLAGS += -fno-builtin#				do not use builtin functions of gcc (such as strlen)
-CFLAGS += -fomit-frame-pointer#		only use of stack pointer ($29)
-CFLAGS += -G0#						do not use global data pointer ($28)
-CFLAGS += -O3#						full optimisation mode of compiler
+CC     	= mipsel-unknown-elf-gcc#		compiler
+LD     	= mipsel-unknown-elf-ld#		linker
+OD     	= mipsel-unknown-elf-objdump#	desassembler
+
+CFLAGS  = -c#							stop after compilation, then produce .o
+CFLAGS += -Wall -Werror#				gives almost all C warnings and considers them to be errors
+CFLAGS += -mips32r2#					define of MIPS version
+CFLAGS += -std=c99#						define of syntax version of C
+CFLAGS += -fno-common#					do not use common sections for non-static vars (only bss)
+CFLAGS += -fno-builtin#					do not use builtin functions of gcc (such as strlen)
+CFLAGS += -fomit-frame-pointer#			only use of stack pointer ($29)
+CFLAGS += -G0#							do not use global data pointer ($28)
+CFLAGS += -O3#							full optimisation mode of compiler
 CFLAGS += -I.
 CFLAGS += -I../../soft/kernel/
 CFLAGS += -I../../soft/common/
 CFLAGS += -I../../soft/hal/
 CFLAGS += -I../../soft/hal/almo1/
 
-all: libfdt.a
+all: mkdir $(OBJDIR)/libfdt.a
 
-libfdt.a: $(LIBFDT_OBJS)
-	ar -rc libfdt.a $(LIBFDT_OBJS)
+mkdir:
+	test -d $(BLDDIR) || mkdir $(BLDDIR)
+	test -d $(OBJDIR) || (echo "- mkdir   $(OBJDIR)" ; mkdir $(OBJDIR))
 
-%.o: %.c
+$(OBJDIR)/libfdt.a: $(LIBFDT_OBJS)
+	ar -rc $(OBJDIR)/libfdt.a $(LIBFDT_OBJS)
+
+$(OBJDIR)/%.o: %.c
 	@echo "- compil  --> "$(notdir $@)
 	$(CC) -o $@ $(CFLAGS) $<
 
 clean:
-	rm *.o *.a
+	rm $(LIBFDT_OBJS) $(OBJDIR)/libfdt.a
