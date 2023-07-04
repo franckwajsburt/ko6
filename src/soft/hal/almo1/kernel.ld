@@ -16,7 +16,6 @@
 
 /* Device segments definition */
 
-__tty_regs_map   = 0xd0200000 ;     /* tty's registers map, decribed in harch.c */
 __dma_regs_map   = 0xd1200000 ;     /* dma's registers map */
 __icu_regs_map   = 0xd2200000 ;     /* icu's registers map, decribed in harch.c */
 __timer_regs_map = 0xd3200000 ;     /* tty's registers map, decribed in harch.h */

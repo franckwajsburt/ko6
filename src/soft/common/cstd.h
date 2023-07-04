@@ -118,6 +118,13 @@ extern char *strchr (const char *s, int c);
 extern char *strrchr (const char *s, int c);
 
 /**
+ * \brief     compare two null-terminated strings
+ * \return    return less than, equal to or greater than 0 if s1 is less than, equal to or 
+ *            greater than s2
+*/
+extern int strcmp (const char *s1, const char *s2);
+
+/**
  * \brief     ascii to integer
  *            the number can be negative, the space at beginning are ignored
  * \param     val   string to translate, with a decimal number

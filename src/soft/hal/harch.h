@@ -18,6 +18,12 @@
 //--------------------------------------------------------------------------------------------------
 
 /**
+ * \brief     Read the device tree blob in memory and initialize
+ *            every device on the SoC (ttys, block devices, ...)
+*/
+extern void soc_init ();
+
+/**
  * \brief     Request the initialization of all the architecture
  *            This function configures each used devices
  *            and configures which IRQ are used and how they are connected to the CPU

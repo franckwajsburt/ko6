@@ -175,6 +175,9 @@ depend :
 ../../../build/obj/harch.o: ../common/esc_code.h
 ../../../build/obj/harch.o: ../common/errno.h
 ../../../build/obj/harch.o: ../common/syscalls.h ./ksynchro.h
+../../../build/obj/harch.o: ../../lib/libfdt/libfdt.h
+../../../build/obj/harch.o: ../../lib/libfdt/libfdt_env.h
+../../../build/obj/harch.o: ../../lib/libfdt/fdt.h
 ../../../build/obj/hcpuc.o: ./klibc.h ../common/debug_off.h
 ../../../build/obj/hcpuc.o: ../common/debug_on.h
 ../../../build/obj/hcpuc.o: ../common/cstd.h ../common/list.h
@@ -207,10 +210,8 @@ depend :
 ../../../build/obj/kthread.o: ../common/usermem.h ./kmemory.h ./kthread.h
 ../../../build/obj/kthread.o: ../common/esc_code.h ../common/errno.h
 ../../../build/obj/kthread.o: ../common/syscalls.h ./ksynchro.h
-../../../build/obj/kinit.o: ../../lib/libfdt/libfdt.h
-../../../build/obj/kinit.o: ../../lib/libfdt/libfdt_env.h ../common/cstd.h
-../../../build/obj/kinit.o: ../../lib/libfdt/fdt.h ./klibc.h
-../../../build/obj/kinit.o: ../common/debug_off.h ../common/debug_on.h
+../../../build/obj/kinit.o: ./klibc.h ../common/debug_off.h
+../../../build/obj/kinit.o: ../common/debug_on.h ../common/cstd.h
 ../../../build/obj/kinit.o: ../common/list.h ../hal/hcpu.h
 ../../../build/obj/kinit.o: ../hal/almo1/hcpu_soc.h ../hal/harch.h
 ../../../build/obj/kinit.o: ../common/usermem.h ./kmemory.h ./kthread.h

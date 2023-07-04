@@ -29,6 +29,13 @@
             compatible = "soclib,tty";
         };
 
+        tty@d0200010 {
+            interrupts = <0x0b>;
+            interrupt-parent = <0x02>;
+            reg = <0xd0200010 0x10>;
+            compatible = "soclib,tty";
+        };
+
         dma@1200000 {
 			interrupts = <0x09>;
 			interrupt-parent = <0x02>;

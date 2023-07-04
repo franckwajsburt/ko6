@@ -13,6 +13,7 @@
 \*------------------------------------------------------------------------------------------------*/
 
 #include <klibc.h>      
+#include <libfdt.h>
 
 //--------------------------------------------------------------------------------------------------
 // DMA Definition
@@ -61,7 +62,7 @@ struct tty_s {
     int unused;         // unused address
 };
 
-extern volatile struct tty_s __tty_regs_map[NTTYS];
+volatile struct tty_s *__tty_regs_map[NTTYS];
 
 //--------------------------------------------------------------------------------------------------
 
@@ -76,9 +77,9 @@ extern volatile struct tty_s __tty_regs_map[NTTYS];
  * The fifo is full when it remains only one free cell, then when (pt_write + 1)%size == pt_read
  */
 struct tty_fifo_s {
-        char data [20];
-        int  pt_read;
-        int  pt_write;
+    char data [20];
+    int  pt_read;
+    int  pt_write;
 };
 
 /**
@@ -129,7 +130,7 @@ static int tty_fifo_pull (struct tty_fifo_s *fifo, int *c)
 static void tty_isr (int tty)
 {
     struct tty_fifo_s *fifo = &TTYFifo[ tty%NTTYS ];    // dedicated fifo for this tty
-    int c = __tty_regs_map[tty].read;                   // read the char
+    int c = __tty_regs_map[tty]->read;                  // read the char
     tty_fifo_push (fifo, c);                            // push it the fifo
 }
 
@@ -163,7 +164,7 @@ int tty_write (int tty, char *buf, unsigned count)
     VAR("%d",tty);
 
     while (count--) {                                   // while there are chars
-        __tty_regs_map[ tty ].write = *buf;             // send the char to TTY
+        __tty_regs_map[ tty ]->write = *buf;             // send the char to TTY
         res++;                                          // nb of written char
         buf++;		                                    // but is the next address in buffer
     }
@@ -366,10 +367,112 @@ void arch_init (int tick)
     icu_set_mask (0, 0);            // [CPU n'0].IRQ <-- ICU.PIN[0] <- Interrupt signal timer n'0
     IRQVectorISR [0] = timer_isr;   // tell the kernel which isr to exec for ICU.PIN n'0
     IRQVectorDev [0] = 0;           // device instance attached to ICU.PIN n'0
+}
 
-    for (int tty = 1; tty < NTTYS; tty++) { // TTY 0 is the console thus not used to get chars
-        icu_set_mask (0, 10+tty);           // [CPU 0].IRQ <- ICU.PIN[10+tty] <- Int signal TTY tty
-        IRQVectorISR [10+tty] = tty_isr;    // tell the kernel which isr is for ICU.PIN n'10+tty
-        IRQVectorDev [10+tty] = tty;        // device instance attached to ICU.PIN n'10+tty
+/**
+ * \brief Initialize a TTY with the device tree informations
+ * \param fdt pointer to FDT
+ * \param tty_offset offset of the tty node in the FDT
+ * \param dev device number of the tty
+ * \return 1 if the device was properly defined, else 0
+ */
+unsigned char arch_tty_init(void *fdt, int tty_offset, unsigned int dev)
+{
+    // TODO: handle address-size, or at least crash when it is not supported
+    // we're on a 32Bit system so address-size > 1 is not possible
+    const uint32_t *paddr = (const uint32_t *) fdt_getprop(fdt, tty_offset, "reg", NULL);
+    const uint32_t *pirq  = (const uint32_t *) fdt_getprop(fdt, tty_offset, "interrupts", NULL);
+    
+    if (paddr && pirq) {
+        kprintf("TTY:\t&%x\tIRQ: %x\n", 
+            fdt32_to_cpu(*paddr), 
+            fdt32_to_cpu(*pirq));
+
+        uint32_t addr = fdt32_to_cpu(*paddr);
+        uint32_t irq = fdt32_to_cpu(*pirq);
+        
+        __tty_regs_map[dev] = (struct tty_s*) addr;
+
+        icu_set_mask (0, irq);
+        IRQVectorISR [irq] = tty_isr;
+        IRQVectorDev [irq] = dev;
+
+        return 1;
+    }
+
+    return 0;
+}
+
+/**
+ * Parse the device tree in order to initialize every device
+ * on the SoC
+ */
+void soc_init()
+{
+    // Temporary initialization of the first tty
+    // TODO: Find a solution to have access to tty before initialization
+    __tty_regs_map[0] = (struct tty_s*) 0xd0200000;
+
+    // Fetch the device tree in memory (currently loaded at the beginning of kdata)
+    extern int __dtb_address;
+    void *fdt = (void *) &__dtb_address;
+
+    if (fdt_magic(fdt) == 0xd00dfeed) {
+        kprintf("Device tree found at %p\n", fdt);
+    } else {
+        kprintf("No device tree found\n");
+    }
+
+    //unsigned int ncpus = 0;
+    //int cpus_offset = fdt_path_offset(fdt, "/cpus");
+    //PANIC_IF(cpus_offset < 0, "Malformed device tree: /cpus not found");
+
+    //int cpu_offset = -1;
+    //fdt_for_each_subnode(cpu_offset, fdt, cpus_offset) {
+    //    ncpus++;
+    //}
+
+    //kprintf("NCPUS: %d\n", ncpus);
+
+    int soc_offset = fdt_path_offset(fdt, "/soc");
+    PANIC_IF(soc_offset < 0, "Malformed device tree: /soc not found");
+    
+    unsigned int nttys = 0;
+
+    int node_offset = -1;
+    fdt_for_each_subnode(node_offset, fdt, soc_offset) {
+        const char *compat = fdt_getprop(fdt, node_offset, "compatible", NULL);
+        if (!compat)
+            continue;
+
+        if (!strcmp(compat, "soclib,tty")) {
+            if (arch_tty_init(fdt, node_offset, nttys))
+                nttys++;
+        } else if (!strcmp(compat, "soclib,dma")) {
+            const uint32_t *paddr = (const uint32_t *) fdt_getprop(fdt, node_offset, "reg", NULL);
+            const uint32_t *pirq  = (const uint32_t *) fdt_getprop(fdt, node_offset, "interrupts", NULL);
+
+            if (paddr) {
+                kprintf("DMA:\t&%x\tIRQ: %x\n", fdt32_to_cpu(*paddr), fdt32_to_cpu(*pirq));
+            }
+        } else if (!strcmp(compat, "soclib,icu")) {
+            const uint32_t *paddr = (const uint32_t *) fdt_getprop(fdt, node_offset, "reg", NULL);
+            const uint32_t *pirq  = (const uint32_t *) fdt_getprop(fdt, node_offset, "interrupts", NULL);
+            
+            if (paddr) {
+                kprintf("ICU:\t&%x\tIRQ: %x\n", fdt32_to_cpu(*paddr), fdt32_to_cpu(*pirq));
+            }
+        } else if (!strcmp(compat, "soclib,timer")) {
+            // TODO: maybe timer node should be inside cpu node instead of soc node
+            const uint32_t *paddr = (const uint32_t *) fdt_getprop(fdt, node_offset, "reg", NULL);
+            const uint32_t *pirq  = (const uint32_t *) fdt_getprop(fdt, node_offset, "interrupts", NULL);
+
+            if (paddr) {
+                kprintf("TIMER:\t&%x\tIRQ: %x\n", fdt32_to_cpu(*paddr), fdt32_to_cpu(*pirq));
+            }
+        }
+        /*
+         * TODO: Add other devices
+         */
     }
 }
