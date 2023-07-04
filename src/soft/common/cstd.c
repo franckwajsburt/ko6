@@ -30,10 +30,53 @@ void *memset (void *s, int c, unsigned n)
 
 void *memcpy (char *dest, const char *src, unsigned n)
 {
-  char *d = dest;
-  while (n--)
-    *d++ = *src++;
-  return dest;
+    char *d = dest;
+    while (n--)
+        *d++ = *src++;
+    return dest;
+}
+
+int memcmp (const void *str1, const void *str2, size_t n)
+{
+    const unsigned char *s1 = (const unsigned char*)str1;
+    const unsigned char *s2 = (const unsigned char*)str2;
+
+    while (n-- > 0) {
+        if (*s1++ != *s2++)
+            return s1[-1] < s2[-1] ? -1 : 1;
+    }
+    
+    return 0;
+}
+
+void *memmove (void *dest, const void *src, size_t n)
+{
+    if (dest < src) {
+        const char *firsts = (const char *) src;
+        char *firstd = (char *) dest;
+        while (n--)
+	        *firstd++ = *firsts++;
+    } else {
+        const char *lasts = (const char *)src + (n-1);
+        char *lastd = (char *)dest + (n-1);
+        while (n--)
+            *lastd-- = *lasts--;
+    }
+
+    return dest;
+}
+
+void *memchr (const void *src, int c, size_t n)
+{
+    const unsigned char *csrc = (const unsigned char *)src;
+  
+    while (n-- > 0) {
+        if (*csrc == c)
+            return (void *)csrc;
+        csrc++;
+    }
+
+    return NULL;
 }
 
 int strlen (const char *buf)
@@ -41,6 +84,40 @@ int strlen (const char *buf)
     int n = 0;
     if (buf) while (*buf++) n++;
     return n;
+}
+
+size_t strnlen (const char *s, size_t n)
+{
+    size_t i;
+
+    for (i = 0; i < n; ++i)
+        if (s[i] == '\0')
+            break;
+    
+    return i;
+}
+
+char *strchr (const char *s, int c)
+{
+    do {
+        if (*s == c) {
+	        return (char*)s;
+        }
+    } while (*s++);
+  
+    return (0);
+}
+
+char *strrchr (const char *s, int c)
+{
+    char *rtnval = 0;
+
+    do {
+        if (*s == c)
+            rtnval = (char*) s;
+    } while (*s++);
+  
+    return (rtnval);
 }
 
 void *strncpy (char *dest, char *src, unsigned n)
@@ -179,147 +256,80 @@ int snprintf(char *str, unsigned size, char *fmt, ...)
     return res;
 }
 
-
-/*
- * Code from here is trash I copy/pasted in order to make libfdt work, it's only temporary 
- */
-
-int memcmp (const void *str1, const void *str2, size_t count)
+// https://cplusplus.com/reference/cstdlib/strtol/
+unsigned long int strtoul(char *s, char **endptr, int base)
 {
-  register const unsigned char *s1 = (const unsigned char*)str1;
-  register const unsigned char *s2 = (const unsigned char*)str2;
+    while (*s == ' ' 
+        || *s == '\t' 
+        || *s == '\n'
+        || *s == '\v'
+        || *s == '\f'
+        || *s == '\r')                              // Skip the whitespaces
+        s++;
 
-  while (count-- > 0)
-    {
-      if (*s1++ != *s2++)
-	  return s1[-1] < s2[-1] ? -1 : 1;
+    if (*s == '+')
+        s++;
+
+    if (!base) {                                    // If base is zero, 
+                                                    // try to guess the base from the format 
+        if (*s == '0') {
+            s++;
+            if (*s == 'x' || *s == 'X') {           // 0x, 0X prefix means hexadecimal
+                s++;
+                base = 16;
+            } else if ('0' <= *s && *s <= '9') {    // 0d with d a digit means octal
+                base = 8;
+            }
+        } else if ('0' <= *s && *s <= '9') {        // We found a digit, let's guess decimal
+            base = 10;
+        }
     }
-  return 0;
-}
 
-void bcopy (const void *src, void *dest, size_t len)
-{
-  if (dest < src)
-    {
-      const char *firsts = (const char *) src;
-      char *firstd = (char *) dest;
-      while (len--)
-	*firstd++ = *firsts++;
+    if (!base) {                                    // If after the guessing block we still 
+                                                    // don't know what the base is, abort
+        if (endptr) *endptr = s;
+        return 0;
     }
-  else
-    {
-      const char *lasts = (const char *)src + (len-1);
-      char *lastd = (char *)dest + (len-1);
-      while (len--)
-        *lastd-- = *lasts--;
+
+    unsigned long n = 0;
+    char overflow = 0;
+    char c;
+    while (*s) {
+        c = *s;
+        if ('0' <= c && c <= '9') {                 // Convert a char digit to its value
+            c -= '0';
+        } else if ('a' <= c && c <= 'z') {          // Convert a char to its value 
+                                                    // (A = a = 10, Z = z = 36)
+            c -= 'a';
+            c += 10;
+        } else if ('A' <= c && c <= 'Z') {
+            c -= 'A';
+            c += 10;
+        } else {
+            break;
+        }
+
+        if (c >= base)                              // If the digit is outside the range of 
+                                                    // the base (ex: g is outside hexadecimal
+                                                    // range) the number is not decodable
+            break;
+        
+        if (n < ULONG_MAX / base &&                 // Check that we can multiply with base
+            n * base < ULONG_MAX - c) {             // and add char without overflow
+            n *= base;
+            n += c;
+        } else {
+            overflow = 1;
+            break;
+        }
+
+        s++;
     }
+
+    if (endptr) *endptr = s;
+    if (overflow)
+        return 0;
+
+    return n;
 }
 
-void *memmove (void *s1, const void *s2, size_t n)
-{
-  bcopy (s2, s1, n);
-  return s1;
-}
-
-void *memchr (register const void *src_void, int c, size_t length)
-{
-  const unsigned char *src = (const unsigned char *)src_void;
-  
-  while (length-- > 0)
-  {
-    if (*src == c)
-     return (void *)src;
-    src++;
-  }
-  return NULL;
-}
-
-char *strchr (register const char *s, int c)
-{
-  do {
-    if (*s == c)
-      {
-	return (char*)s;
-      }
-  } while (*s++);
-  return (0);
-}
-
-char *strrchr (register const char *s, int c)
-{
-  char *rtnval = 0;
-
-  do {
-    if (*s == c)
-      rtnval = (char*) s;
-  } while (*s++);
-  return (rtnval);
-}
-
-size_t strnlen (const char *s, size_t maxlen)
-{
-  size_t i;
-
-  for (i = 0; i < maxlen; ++i)
-    if (s[i] == '\0')
-      break;
-  return i;
-}
-
-/*
- * This one has a different copyright: https://github.com/gcc-mirror/gcc/blob/master/libiberty/strtoul.c
- */
-unsigned long strtoul(const char *nptr, char **endptr, register int base)
-{
-	register const char *s = nptr;
-	register unsigned long acc;
-	register int c;
-	register unsigned long cutoff;
-	register int neg = 0, any, cutlim;
-
-	/*
-	 * See strtol for comments as to the logic used.
-	 */
-	do {
-		c = *s++;
-	} while (c == ' ');
-	if (c == '-') {
-		neg = 1;
-		c = *s++;
-	} else if (c == '+')
-		c = *s++;
-	if ((base == 0 || base == 16) &&
-	    c == '0' && (*s == 'x' || *s == 'X')) {
-		c = s[1];
-		s += 2;
-		base = 16;
-	}
-	if (base == 0)
-		base = c == '0' ? 8 : 10;
-	cutoff = (unsigned long)ULONG_MAX / (unsigned long)base;
-	cutlim = (unsigned long)ULONG_MAX % (unsigned long)base;
-	for (acc = 0, any = 0;; c = *s++) {
-		if ('0' <= c && c <= '9')
-			c -= '0';
-		else if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z'))
-			c -= ('A' <= c && c <= 'Z') ? 'A' - 10 : 'a' - 10;
-		else
-			break;
-		if (c >= base)
-			break;
-		if (any < 0 || acc > cutoff || (acc == cutoff && c > cutlim))
-			any = -1;
-		else {
-			any = 1;
-			acc *= base;
-			acc += c;
-		}
-	}
-	if (any < 0) {
-		acc = ULONG_MAX;
-	} else if (neg)
-		acc = -acc;
-	if (endptr != 0)
-		*endptr = (char *) (any ? s - 1 : nptr);
-	return (acc);
-}
