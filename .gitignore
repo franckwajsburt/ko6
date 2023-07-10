@@ -1,0 +1,4 @@
+build/*
+*.dtb
+xterm*
+tags

@@ -137,7 +137,7 @@ static inline list_t * list_first (list_t * root) {
 static inline list_t * list_last (list_t * root) {
     return (list_isempty(root)) ? NULL : root->prev;
 }
-#define list_prev(item) list_prev(item)
+#define list_prev(item) list_last(item)
 
 /**
  * \brief   C instruction to iterate through a list of items from first to last.
