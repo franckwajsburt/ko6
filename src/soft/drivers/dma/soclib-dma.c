@@ -18,7 +18,7 @@ void soclib_dma_init(struct dma_s *dma, unsigned address)
     dma->ops        = &soclib_dma_ops;
 }
 
-void *soclib_dma_memcpy(struct dma_s *dma, unsigned *dst, unsigned *src, unsigned n)
+void *soclib_dma_memcpy(struct dma_s *dma, int *dst, int *src, unsigned n)
 {
     dcache_buf_invalidate(dst, n);                  // if there are lines of this buffer in the cache, forget them
     volatile struct soclib_dma_regs_s *regs = 

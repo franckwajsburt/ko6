@@ -15,6 +15,9 @@
 
 #include <hal/tty.h>
 
+#include <hal/cpu/irq.h>
+#include <kernel/kthread.h>
+
 struct soclib_tty_regs_s {
     int write;
     int status;

@@ -12,6 +12,13 @@
 
 #include <drivers/timer/soclib-timer.h>
 
+static void soclib_timer_set_tick(struct timer_s *timer, unsigned tick)
+{
+    struct soclib_timer_regs_s *regs = 
+        (struct soclib_timer_regs_s *) timer->address;
+    regs->period = tick;
+}
+
 /**
  * \brief     start the timer to periodically raise an IRQ (only used by arch_init)
  */
@@ -26,13 +33,6 @@ static void soclib_timer_init(struct timer_s *timer, unsigned address, unsigned 
     soclib_timer_set_tick(timer, tick);                 // next period
 
     regs->mode = (tick) ? 3 : 0;                        // timer ON with IRQ only if (tick != 0)
-}
-
-static void soclib_timer_set_tick(struct timer_s *timer, unsigned tick)
-{
-    struct soclib_timer_regs_s *regs = 
-        (struct soclib_timer_regs_s *) timer->address;
-    regs->period = tick;
 }
 
 static void soclib_timer_set_event(struct timer_s *timer, void (*f)(void *arg), void *arg)
@@ -51,7 +51,7 @@ struct timer_ops_s soclib_timer_ops = {
  * \brief     isr for timer IRQ (only used by icu_init)
  * \param     timer device instance
  */
-static void soclib_timer_isr (unsigned irq, struct timer_s *timer)
+void soclib_timer_isr (unsigned irq, struct timer_s *timer)
 {
     struct soclib_timer_regs_s *regs = 
         (struct soclib_timer_regs_s *) timer->address;

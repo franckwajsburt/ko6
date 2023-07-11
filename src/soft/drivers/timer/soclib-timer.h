@@ -24,6 +24,6 @@ struct soclib_timer_regs_s {
 
 void soclib_timer_isr(unsigned irq, struct timer_s *timer);
 
-extern struct tty_ops_s soclib_tty_ops;
+extern struct timer_ops_s soclib_timer_ops;
 
 #endif
