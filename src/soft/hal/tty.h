@@ -51,9 +51,44 @@ struct tty_s {
     struct tty_ops_s *ops;
 };
 
-/* Helper functions for TTY's FIFOs */
-int tty_fifo_push(struct tty_fifo_s *fifo, char c);
-int tty_fifo_pull(struct tty_fifo_s *fifo, int *c);
+/**
+ * Helper functions for TTY's FIFOs 
+ * I used inline functions so we don't have to build anything for HAL
+ * since everything is in header files
+ */
+
+/**
+ * \brief   push a character into the tty's FIFO
+ * \param   fifo    structure of fifo to store data
+ * \param   c       char to write
+ * \return  SUCCESS or FAILURE
+ */
+extern inline tty_fifo_push (struct tty_fifo_s *fifo, char c)
+{
+    unsigned pt_write_next = (fifo->pt_write + 1) % sizeof(fifo->data);
+    if (pt_write_next != fifo->pt_read) {
+        fifo->data [fifo->pt_write] = c;
+        fifo->pt_write = pt_write_next;
+        return SUCCESS;   
+    }
+    return FAILURE;
+}
+
+/**
+ * \brief   pop a character from the tty's FIFO
+ * \param   fifo    structure of fifo to store data
+ * \param   c       pointer on char to put the read char 
+ * \return  SUCCESS or FAILURE
+ */
+extern inline int tty_fifo_pull (struct tty_fifo_s *fifo, int *c)
+{
+    if (fifo->pt_read != fifo->pt_write) {
+        *c = fifo->data [fifo->pt_read];
+        fifo->pt_read = (fifo->pt_read + 1)% sizeof(fifo->data);
+        return SUCCESS;
+    }
+    return FAILURE;
+}
 
 /* Helper functions to register and access TTYs per number */
 extern list_s ttyList;

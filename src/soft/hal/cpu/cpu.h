@@ -1,25 +1,21 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-07-03
+  | |__ /'v'\  / /      \date       2023-07-11
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/hcpu.h
+  \file     hal/cpu/cpu.h
   \author   Franck Wajsburt
-  \brief    cpu API which is implemented by hcpuc.c & hcpua.S
+  \brief    Generic CPU functions prototypes
 
 \*------------------------------------------------------------------------------------------------*/
 
-
-#ifndef _HCPU_H_
-#define _HCPU_H_
-#ifndef __ASSEMBLER__   /* the following lines are not included in assembler files */
-
+#ifndef _HAL_CPU_H_
+#define _HAL_CPU_H_
 
 //--------------------------------------------------------------------------------------------------
 // Special registers 
 //--------------------------------------------------------------------------------------------------
-
 
 /**
  * \brief     clock cycle counter
@@ -39,43 +35,8 @@ extern void kpanic (void);
 
 
 //--------------------------------------------------------------------------------------------------
-// L1 Cache operations
-//--------------------------------------------------------------------------------------------------
-
-
-/**
- * \brief   get the cache line size in bytes
- * \return  the size
- */
-extern size_t cachelinesize (void);
-
-/**
- * \brief   invalidate all line of the buffer buf 
- * \param   buf first address
- * \param   size of buffer in bytes
- * \return  nothing
- */
-extern void dcache_buf_invalidate (void *buf, unsigned size);
-
-/**
- * \brief   invalidate all line of the buffer buf 
- * \param   addr address to invalidate
- * \return  nothing
- */
-extern void dcache_invalidate (void *addr);
-
-/**
- * \brief   get the value pointed by addr without use the cache
- *          this function must be used for all shared variables between several cpu
- * \return  the pointed value
- */
-extern unsigned uncached_load (void * addr);
-
-
-//--------------------------------------------------------------------------------------------------
 // Thread management
 //--------------------------------------------------------------------------------------------------
-
 
 /**
  * \brief   Initialize the thread context at the very beginning
@@ -123,69 +84,4 @@ extern int thread_context_load (int context[]);
  */
 extern int thread_launch (int fun, int arg, int start);
 
-
-//--------------------------------------------------------------------------------------------------
-// IRQ mask operations 
-//--------------------------------------------------------------------------------------------------
-
-
-/** 
- * \brief   enable irq (do not change the MIPS mode thus stay in kernel mode)
- * \return  nothing
- */
-extern void irq_enable (void);
-
-/** 
- * \brief   disable irq 
- * \return  the previous state
- */
-extern unsigned irq_disable (void);
-
-/** 
- * \brief   restore an irq state got from disable irq
- * \return  nothing
- */
-extern void irq_retore (unsigned state);
-
-
-//--------------------------------------------------------------------------------------------------
-// spin and atomic operations 
-//--------------------------------------------------------------------------------------------------
-
-
-/**
- * It's a simple word, but it is forbidden to read it directly to not copy it in cache
- */
-typedef unsigned spinlock_t;
-
-/** 
- * \brief   get the lock, block until success
- * \param   lock blocking function until lock is free 
- */
-extern void spin_lock (spinlock_t * lock);
-
-/** 
- * \brief   release the lock 
- * \param   lock freeing the lock
- */
-extern void spin_unlock (spinlock_t * lock);
-
-/** 
- * \brief   add a value to the pointed value, block until success
- * \param   counter pointer to change
- * \param   val value to add
- * \return  the new value
- */
-extern int atomic_add (int * counter, int val);
-
-
-#endif//__ASSEMBLER__
-#endif//_HCPU_H_
-
-
-//--------------------------------------------------------------------------------------------------
-// include specific definitions for the current SoC
-//--------------------------------------------------------------------------------------------------
-
-
-#include <hcpu_soc.h>
+#endif
