@@ -21,7 +21,6 @@ BLDDIR	= ../../../build#			build directory
 COMDIR	= ../common#				user & kernel common files directory
 LIBDIR	= .#						library directory (where is ldscript)
 HALDIR	= ../hal#					hardware abstraction layer (hal) files directory
-SOCDIR	= $(HALDIR)/$(SOC)#			current soc hardware abstraction layer (hal) files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJDIR	= $(BLDDIR)/obj#			object files directory
 PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
@@ -33,8 +32,6 @@ SRC     = $(COMDIR)/debug_on.h $(COMDIR)/debug_off.h
 SRC    += $(COMDIR)/syscalls.h ksyscalls.c
 SRC    += $(COMDIR)/usermem.h $(COMDIR)/list.h
 SRC    += $(COMDIR)/errno.h $(COMDIR)/errno.c $(COMDIR)/esc_code.h
-SRC    += $(HALDIR)/harch.h $(SOCDIR)/harch.c
-SRC    += $(HALDIR)/hcpu.h $(SOCDIR)/hcpu_soc.h $(SOCDIR)/hcpua.S $(SOCDIR)/hcpuc.c $(SOCDIR)/dtb.S
 SRC	   += $(COMDIR)/cstd.c $(COMDIR)/cstd.h
 SRC    += kmemory.c kmemory.h
 SRC    += klibc.c klibc.h
@@ -55,7 +52,6 @@ OBJ 	+= $(OBJDIR)/libfdt.a
 
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
-BIN     = $(BLDDIR)/$(CURDIR).x
 
 # Tools
 # --------------------------------------------------------------------------------------------------
@@ -73,8 +69,8 @@ CFLAGS += -fno-builtin#				do not use builtin functions of gcc (such as strlen)
 CFLAGS += -fomit-frame-pointer#		only use of stack pointer ($29)
 CFLAGS += -G0#						do not use global data pointer ($28)
 CFLAGS += -O3#						full optimisation mode of compiler
-CFLAGS += -I. -I$(COMDIR)#			directories where include files like <file.h> are located
-CFLAGS += -I$(HALDIR) -I$(SOCDIR)#	directories where include files like <file.h> are located
+CFLAGS += -I.. -I. -I$(COMDIR)#		directories where include files like <file.h> are located
+CFLAGS += -I$(HALDIR)#				directories where include files like <file.h> are located
 CFLAGS += -I$(LIBDIR)/libfdt#		include external libraries (specifically libfdt.h)
 CFLAGS += -DNTTYS=$(NTTYS)#			#define NTTYS with the number of ttys in the prototype
 CFLAGS += -DNCPUS=$(NCPUS)#			#define NCPUS with the number of cpus in the prototype
@@ -94,14 +90,11 @@ help:
 	@echo "        pdf     : generate $(PDF) with all source files"
 	@echo ""
 
-compil: depend mkdir mkdtb $(BIN)
+compil: depend mkdir $(OBJ)
 
 mkdir:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
 	test -d $(OBJDIR) || (echo "- mkdir   $(OBJDIR)" ; mkdir $(OBJDIR))
-
-mkdtb:
-	dtc -I dts -O dtb -o $(SOC).dtb $(SOCDIR)/$(SOC).dts
 
 pdf:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
@@ -119,11 +112,6 @@ clean:
 
 # Rules with automatic variables to produce the executable
 # --------------------------------------------------------------------------------------------------
-
-$(BIN) : $(LDSCRIPT) $(OBJ)
-	@echo "- link    --> "$(notdir $@)
-	$(LD) -o $@ -T $^
-	$(OD) -D $@ > $@.s
 
 $(OBJDIR)/%.o : %.c
 	@echo "- compil  --> "$(notdir $@)
@@ -157,73 +145,61 @@ depend :
 # --------------------------------------------------------------------------------------------------
 # DEPENDENCIES
 
-../../../build/obj/ksyscalls.o: ./klibc.h ../common/debug_off.h
-../../../build/obj/ksyscalls.o: ../common/debug_on.h ../common/cstd.h
-../../../build/obj/ksyscalls.o: ../common/list.h ../hal/hcpu.h
-../../../build/obj/ksyscalls.o: ../hal/almo1/hcpu_soc.h ../hal/harch.h
-../../../build/obj/ksyscalls.o: ../common/usermem.h ./kmemory.h ./kthread.h
-../../../build/obj/ksyscalls.o: ../common/esc_code.h ../common/errno.h
-../../../build/obj/ksyscalls.o: ../common/syscalls.h ./ksynchro.h
+../../../build/obj/ksyscalls.o: ../hal/dma.h ../hal/cpu/cache.h ./klibc.h
+../../../build/obj/ksyscalls.o: ../common/debug_off.h ../common/debug_on.h
+../../../build/obj/ksyscalls.o: ../common/cstd.h ../common/list.h
+../../../build/obj/ksyscalls.o: ../hal/cpu/cpu.h ../hal/cpu/atomic.h
+../../../build/obj/ksyscalls.o: ../hal/cpu/irq.h ../hal/platform.h
+../../../build/obj/ksyscalls.o: ../hal/tty.h ../common/errno.h
+../../../build/obj/ksyscalls.o: ../common/list.h ../common/usermem.h
+../../../build/obj/ksyscalls.o: ./kmemory.h ./kthread.h ../common/esc_code.h
+../../../build/obj/ksyscalls.o: ../common/errno.h ../common/syscalls.h
+../../../build/obj/ksyscalls.o: ./ksynchro.h
 ../../../build/obj/errno.o: ../common/errno.h
-../../../build/obj/harch.o: ./klibc.h ../common/debug_off.h
-../../../build/obj/harch.o: ../common/debug_on.h
-../../../build/obj/harch.o: ../common/cstd.h ../common/list.h
-../../../build/obj/harch.o: ../hal/hcpu.h
-../../../build/obj/harch.o: ../hal/almo1/hcpu_soc.h
-../../../build/obj/harch.o: ../hal/harch.h ../common/usermem.h
-../../../build/obj/harch.o: ./kmemory.h ./kthread.h
-../../../build/obj/harch.o: ../common/esc_code.h
-../../../build/obj/harch.o: ../common/errno.h
-../../../build/obj/harch.o: ../common/syscalls.h ./ksynchro.h
-../../../build/obj/harch.o: ../../lib/libfdt/libfdt.h
-../../../build/obj/harch.o: ../../lib/libfdt/libfdt_env.h
-../../../build/obj/harch.o: ../../lib/libfdt/fdt.h
-../../../build/obj/hcpuc.o: ./klibc.h ../common/debug_off.h
-../../../build/obj/hcpuc.o: ../common/debug_on.h
-../../../build/obj/hcpuc.o: ../common/cstd.h ../common/list.h
-../../../build/obj/hcpuc.o: ../hal/hcpu.h
-../../../build/obj/hcpuc.o: ../hal/almo1/hcpu_soc.h
-../../../build/obj/hcpuc.o: ../hal/harch.h ../common/usermem.h
-../../../build/obj/hcpuc.o: ./kmemory.h ./kthread.h
-../../../build/obj/hcpuc.o: ../common/esc_code.h
-../../../build/obj/hcpuc.o: ../common/errno.h
-../../../build/obj/hcpuc.o: ../common/syscalls.h ./ksynchro.h
 ../../../build/obj/cstd.o: ../common/cstd.h
 ../../../build/obj/kmemory.o: ./klibc.h ../common/debug_off.h
 ../../../build/obj/kmemory.o: ../common/debug_on.h ../common/cstd.h
-../../../build/obj/kmemory.o: ../common/list.h ../hal/hcpu.h
-../../../build/obj/kmemory.o: ../hal/almo1/hcpu_soc.h ../hal/harch.h
+../../../build/obj/kmemory.o: ../common/list.h ../hal/cpu/cpu.h
+../../../build/obj/kmemory.o: ../hal/cpu/cache.h ../hal/cpu/atomic.h
+../../../build/obj/kmemory.o: ../hal/cpu/irq.h ../hal/platform.h ../hal/tty.h
+../../../build/obj/kmemory.o: ../common/errno.h ../common/list.h
 ../../../build/obj/kmemory.o: ../common/usermem.h ./kmemory.h ./kthread.h
 ../../../build/obj/kmemory.o: ../common/esc_code.h ../common/errno.h
 ../../../build/obj/kmemory.o: ../common/syscalls.h ./ksynchro.h
 ../../../build/obj/klibc.o: ./klibc.h ../common/debug_off.h
 ../../../build/obj/klibc.o: ../common/debug_on.h ../common/cstd.h
-../../../build/obj/klibc.o: ../common/list.h ../hal/hcpu.h
-../../../build/obj/klibc.o: ../hal/almo1/hcpu_soc.h ../hal/harch.h
+../../../build/obj/klibc.o: ../common/list.h ../hal/cpu/cpu.h
+../../../build/obj/klibc.o: ../hal/cpu/cache.h ../hal/cpu/atomic.h
+../../../build/obj/klibc.o: ../hal/cpu/irq.h ../hal/platform.h ../hal/tty.h
+../../../build/obj/klibc.o: ../common/errno.h ../common/list.h
 ../../../build/obj/klibc.o: ../common/usermem.h ./kmemory.h ./kthread.h
 ../../../build/obj/klibc.o: ../common/esc_code.h ../common/errno.h
 ../../../build/obj/klibc.o: ../common/syscalls.h ./ksynchro.h
 ../../../build/obj/kthread.o: ./klibc.h ../common/debug_off.h
 ../../../build/obj/kthread.o: ../common/debug_on.h ../common/cstd.h
-../../../build/obj/kthread.o: ../common/list.h ../hal/hcpu.h
-../../../build/obj/kthread.o: ../hal/almo1/hcpu_soc.h ../hal/harch.h
+../../../build/obj/kthread.o: ../common/list.h ../hal/cpu/cpu.h
+../../../build/obj/kthread.o: ../hal/cpu/cache.h ../hal/cpu/atomic.h
+../../../build/obj/kthread.o: ../hal/cpu/irq.h ../hal/platform.h ../hal/tty.h
+../../../build/obj/kthread.o: ../common/errno.h ../common/list.h
 ../../../build/obj/kthread.o: ../common/usermem.h ./kmemory.h ./kthread.h
 ../../../build/obj/kthread.o: ../common/esc_code.h ../common/errno.h
 ../../../build/obj/kthread.o: ../common/syscalls.h ./ksynchro.h
 ../../../build/obj/kinit.o: ./klibc.h ../common/debug_off.h
 ../../../build/obj/kinit.o: ../common/debug_on.h ../common/cstd.h
-../../../build/obj/kinit.o: ../common/list.h ../hal/hcpu.h
-../../../build/obj/kinit.o: ../hal/almo1/hcpu_soc.h ../hal/harch.h
+../../../build/obj/kinit.o: ../common/list.h ../hal/cpu/cpu.h
+../../../build/obj/kinit.o: ../hal/cpu/cache.h ../hal/cpu/atomic.h
+../../../build/obj/kinit.o: ../hal/cpu/irq.h ../hal/platform.h ../hal/tty.h
+../../../build/obj/kinit.o: ../common/errno.h ../common/list.h
 ../../../build/obj/kinit.o: ../common/usermem.h ./kmemory.h ./kthread.h
 ../../../build/obj/kinit.o: ../common/esc_code.h ../common/errno.h
 ../../../build/obj/kinit.o: ../common/syscalls.h ./ksynchro.h
 ../../../build/obj/ksynchro.o: ./klibc.h ../common/debug_off.h
 ../../../build/obj/ksynchro.o: ../common/debug_on.h ../common/cstd.h
-../../../build/obj/ksynchro.o: ../common/list.h ../hal/hcpu.h
-../../../build/obj/ksynchro.o: ../hal/almo1/hcpu_soc.h ../hal/harch.h
-../../../build/obj/ksynchro.o: ../common/usermem.h ./kmemory.h ./kthread.h
-../../../build/obj/ksynchro.o: ../common/esc_code.h ../common/errno.h
-../../../build/obj/ksynchro.o: ../common/syscalls.h ./ksynchro.h
-../../../build/obj/hcpua.o: ../hal/hcpu.h
-../../../build/obj/hcpua.o: ../hal/almo1/hcpu_soc.h
-../../../build/obj/hcpua.o: ../common/syscalls.h
+../../../build/obj/ksynchro.o: ../common/list.h ../hal/cpu/cpu.h
+../../../build/obj/ksynchro.o: ../hal/cpu/cache.h ../hal/cpu/atomic.h
+../../../build/obj/ksynchro.o: ../hal/cpu/irq.h ../hal/platform.h
+../../../build/obj/ksynchro.o: ../hal/tty.h ../common/errno.h
+../../../build/obj/ksynchro.o: ../common/list.h ../common/usermem.h
+../../../build/obj/ksynchro.o: ./kmemory.h ./kthread.h ../common/esc_code.h
+../../../build/obj/ksynchro.o: ../common/errno.h ../common/syscalls.h
+../../../build/obj/ksynchro.o: ./ksynchro.h

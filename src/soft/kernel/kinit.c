@@ -37,12 +37,10 @@ void kinit (void)
     extern int __bss_end;       // first int of above bss section (defined in ldscript kernel.ld)
     for (int *a = &__bss_origin; a != &__bss_end; *a++ = 0);
 
-    soc_init();
-    
-    kprintf (Banner);
-
     memory_init();                  // memory initialisation 
     arch_init(200000);              // architecture initialisation takes the tick as argument
+
+    kprintf (Banner);
 
     // First, we have to create the thread structure for the thread main()
     //   thread_create() is the same function used to create the thread main()

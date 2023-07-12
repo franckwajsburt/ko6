@@ -50,6 +50,18 @@ void exit (int status)
     PANIC_IF(true,"\n\nEXIT status = %d\n", status); 
 }
 
+int tty_read (int tty, char *buf, unsigned count)
+{
+    struct tty_s *tty_drv = tty_get(tty);
+    return tty_drv->ops->tty_read(tty_drv, buf, count);
+}
+
+int tty_write (int tty, char *buf, unsigned count)
+{
+    struct tty_s *tty_drv = tty_get(tty);
+    return tty_drv->ops->tty_write(tty_drv, buf, count);
+}
+
 int tty_putc (int tty, int c)
 {
     tty_write (tty, (char *)&c, 1);             // only write one char

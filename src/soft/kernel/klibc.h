@@ -31,17 +31,22 @@
 #include <stdarg.h>     // gcc's builtin include to use variadic function (https://bit.ly/3hLXjyC)
 #include <stddef.h>     // gcc's builtin include with NULL, size_t, (https://bit.ly/3lBw3p6)
 #endif//__DEPEND__
-#include <cstd.h>       // generic C functions
-#include <list.h>       // generic list management
-#include <hcpu.h>       // CPU-dependent function prototypes
-#include <harch.h>      // functions ARCH dependant
-#include <usermem.h>    // user data region usage
-#include <kmemory.h>    // all kernel allocators
-#include <kthread.h>    // thread functions
-#include <esc_code.h>   // ANSI escape code
-#include <errno.h>      // standard error code number
-#include <syscalls.h>   // syscall's codes
-#include <ksynchro.h>   // mutex, barrier and similar functions
+
+#include <cstd.h>               // generic C functions
+#include <list.h>               // generic list management
+#include <hal/cpu/cpu.h>        // CPU registers manipulation function prototypes
+#include <hal/cpu/cache.h>      // L1 cache function prototypes
+#include <hal/cpu/atomic.h>     // Locks
+#include <hal/cpu/irq.h>
+#include <hal/platform.h>
+#include <hal/tty.h>    
+#include <usermem.h>            // user data region usage
+#include <kmemory.h>            // all kernel allocators
+#include <kthread.h>            // thread functions
+#include <esc_code.h>           // ANSI escape code
+#include <errno.h>              // standard error code number
+#include <syscalls.h>           // syscall's codes
+#include <ksynchro.h>           // mutex, barrier and similar functions
 
 #define RAND_MAX 32767  /* maximum random value by default, must be < 0x7FFFFFFE */
 #define PRINTF_MAX 256  /* largest printed message */
@@ -83,6 +88,24 @@ extern int kprintf (char *fmt, ...);
  * \param     status return value of the application
  */
 extern void exit (int status);
+
+/**
+ * \brief Wrapper function that selects the correct TTY based on his number
+ *        and call the read function
+ * \param tty   the TTY's number
+ * \param buf   target buffer where the user's entry will be typed
+ * \param count number of bytes to write into buffer
+ */
+extern int tty_read (int tty, char *buf, unsigned count);
+
+/**
+ * \brief Wrapper function that selects the correct TTY based on his number
+ *        and call the write function
+ * \param tty   the TTY's number
+ * \param buf   target buffer sent to the tty
+ * \param count number of bytes to read into buffer
+ */
+extern int tty_write (int tty, char *buf, unsigned count);
 
 /**
  * \brief     write a single char to the tty
