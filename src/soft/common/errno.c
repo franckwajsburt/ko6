@@ -10,7 +10,7 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <errno.h>
+#include <common/errno.h>
 
 /* 
  * the +1 is because FAILURE == -1, thus we need to shift code of 1

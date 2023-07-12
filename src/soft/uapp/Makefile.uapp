@@ -22,6 +22,7 @@ BLDDIR	= ../../../../build#		build directory
 COMDIR	= ../../common#			user & kernel common files directory
 LIBDIR	= ../../ulib#			library directory (where is ldscript)
 HALDIR	= ../../hal#			hardware abstraction layer (hal) files directory
+SRCDIR  = ../..
 SOCDIR	= $(HALDIR)/$(SOC)#		current soc hardware abstraction layer (hal) files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJRDIR	= $(BLDDIR)/obj#		object files directory
@@ -34,12 +35,12 @@ BIN     = $(BLDDIR)/$(CURDIR).x#	the binary file has the name of directory
 # --------------------------------------------------------------------------------------------------
 
 SRC	   ?= "source files"#			must be defined in all app Makefiles		
-LDSCRIPT= $(SOCDIR)/user.ld#		ldscript is hal dependent
+LDSCRIPT= $(SRCDIR)/platforms/mips/almo1/user.ld#		ldscript is hal dependent
 
 # Targets
 # --------------------------------------------------------------------------------------------------
 
-LIB		= crt0.o libc.o pthread.o memory.o errno.o
+LIB		= crt0.o libc.o pthread.o memory.o errno.o cpu_user.o
 LIB 	+= cstd.o
 
 SRCC    = $(filter %.c,$(SRC))
@@ -64,7 +65,7 @@ CFLAGS += -fno-builtin#			do not use builtin functions of gcc (such as strlen)
 CFLAGS += -fomit-frame-pointer#		only use of stack pointer ($29)
 CFLAGS += -G0#				do not use global data pointer ($28)
 CFLAGS += -O3#				full optimisation mode of compiler
-CFLAGS += -I. -I$(COMDIR)#		directories where include files like <file.h> are located
+CFLAGS += -I. -I../.. -I$(COMDIR)#		directories where include files like <file.h> are located
 CFLAGS += -I$(LIBDIR)#			directories where include files like <file.h> are located
 CFLAGS += -I$(HALDIR) -I$(SOCDIR)#	directories where include files like <file.h> are located
 CFLAGS += -DNTTYS=$(NTTYS)#		#define NTTYS with the number of ttys in the prototype

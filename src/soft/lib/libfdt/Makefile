@@ -12,7 +12,8 @@
 
 include Makefile.libfdt
 
-BLDDIR=../../../build
+SRCDIR=../..
+BLDDIR=../../../../build
 OBJDIR=$(BLDDIR)/obj
 
 # Objects from Makefile.libfdt
@@ -32,9 +33,11 @@ CFLAGS += -fomit-frame-pointer#			only use of stack pointer ($29)
 CFLAGS += -G0#							do not use global data pointer ($28)
 CFLAGS += -O3#							full optimisation mode of compiler
 CFLAGS += -I.
-CFLAGS += -I../../soft/common/
+CFLAGS += -I$(SRCDIR)
 
-all: mkdir $(OBJDIR)/libfdt.a
+all: compil
+
+compil: mkdir $(OBJDIR)/libfdt.a
 
 mkdir:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)

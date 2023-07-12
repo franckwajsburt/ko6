@@ -12,6 +12,8 @@
 
 #include <hal/tty.h>
 
+list_t ttyList;
+
 int tty_fifo_push (struct tty_fifo_s *fifo, char c)
 {
     unsigned pt_write_next = (fifo->pt_write + 1) % sizeof(fifo->data);

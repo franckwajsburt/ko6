@@ -18,9 +18,10 @@ NTTYS  ?= 1#				default number of ttys
 NCPUS  ?= 1#				default number of CPUS
 VERBOSE?= 0#				verbose mode to print INFO(), BIP(), ASSERT, VAR()
 BLDDIR	= ../../../build#		build directory
-COMDIR	= ../common#			user & kernel common files directory
-HALDIR	= ../hal#			hardware abstraction layer (hal) files directory
-SOCDIR	= $(HALDIR)/$(SOC)#		current soc hardware abstraction layer (hal) files directory
+SRCDIR 	= ..
+COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
+HALDIR	= $(SRCDIR)/hal#			hardware abstraction layer (hal) files directory
+SOCDIR	= $(SRCDIR)/platforms/mips/almo1#		current soc hardware abstraction layer (hal) files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJDIR	= $(BLDDIR)/obj#		object files directory
 PDFDIR	= $(BLDDIR)/pdf#		pdf files directory
@@ -32,13 +33,15 @@ SRC     = $(COMDIR)/syscalls.h $(COMDIR)/list.h $(COMDIR)/usermem.h
 SRC    += $(COMDIR)/debug_on.h $(COMDIR)/debug_off.h
 SRC    += $(COMDIR)/errno.h $(COMDIR)/errno.c 
 SRC    += $(COMDIR)/cstd.h $(COMDIR)/cstd.c
+SRC    += $(SOCDIR)/cpu_user.S
 SRC    += crt0.c libc.h libc.c pthread.h pthread.c memory.h memory.c
 
 # Targets
 # --------------------------------------------------------------------------------------------------
 
-SRCC    = $(filter %.c,$(SRC))
+SRCC    = $(filter %.c %.S,$(SRC))
 OBJC    = $(subst .c,.o,$(foreach src,$(SRCC),$(notdir $(src))))
+OBJC    := $(subst .S,.o,$(foreach src,$(OBJC),$(notdir $(src))))
 OBJ     = $(addprefix $(OBJDIR)/,$(OBJC))
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
@@ -58,7 +61,7 @@ CFLAGS += -fno-builtin#				do not use builtin functions of gcc (such as strlen)
 CFLAGS += -fomit-frame-pointer#		only use of stack pointer ($29)
 CFLAGS += -G0#						do not use global data pointer ($28)
 CFLAGS += -O3#						full optimisation mode of compiler
-CFLAGS += -I. -I$(COMDIR)#			directories where include files like <file.h> are located
+CFLAGS += -I. -I.. -I$(COMDIR)#		directories where include files like <file.h> are located
 CFLAGS += -I$(HALDIR) -I$(SOCDIR)#	directory where hal include files are located
 CFLAGS += -DNTTYS=$(NTTYS)#			#define NTTYS with the number of ttys in the prototype
 CFLAGS += -DNCPUS=$(NCPUS)#			#define NCPUS with the number of cpus in the prototype
@@ -111,6 +114,11 @@ $(OBJDIR)/%.o : $(COMDIR)/%.c
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s
 
+$(OBJDIR)/%.o: $(SOCDIR)/cpu_user.S
+	@echo "- compil  --> "$(notdir $@)
+	$(CC) -o $@ $(CFLAGS) $<
+	$(OD) -D $@ > $@.s
+
 # makedepend analyzes the source files to determine automatically what are the dependencies
 # of the object files on the source files (see https://linux.die.net/man/1/makedepend for details)
 depend :
@@ -130,7 +138,6 @@ depend :
 ../../../build/obj/crt0.o: ../common/list.h ../common/syscalls.h ./memory.h
 ../../../build/obj/crt0.o: ../common/usermem.h ../common/errno.h
 ../../../build/obj/crt0.o: ../common/esc_code.h ./pthread.h
-../../../build/obj/crt0.o: ../hal/almo1/hcpu_user.h
 ../../../build/obj/libc.o: ../common/debug_off.h ../common/debug_on.h
 ../../../build/obj/libc.o: ../common/cstd.h ../common/list.h
 ../../../build/obj/libc.o: ../common/syscalls.h ./memory.h

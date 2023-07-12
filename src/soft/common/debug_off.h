@@ -10,7 +10,7 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <debug_on.h>   // def the debugging stuff, the permanent ones, then undo the temporary ones
+#include <common/debug_on.h>   // def the debugging stuff, the permanent ones, then undo the temporary ones
 
 //-------------------------------------------------------------------------------------------------
 

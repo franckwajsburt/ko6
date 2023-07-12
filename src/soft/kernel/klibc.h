@@ -22,9 +22,9 @@
 #define VERBOSE 0       // set the default value
 #endif
 #if VERBOSE==1
-#  include <debug_on.h> // macro BIP, VAR, INFO and ASSERT will print something
+#  include <common/debug_on.h> // macro BIP, VAR, INFO and ASSERT will print something
 #else
-#  include <debug_off.h>// macro BIP, VAR, INFO and ASSERT are ignored
+#  include <common/debug_off.h>// macro BIP, VAR, INFO and ASSERT are ignored
 #endif
 
 #ifndef __DEPEND__      // this condition allows to not include stdarg.h when makedepend is used

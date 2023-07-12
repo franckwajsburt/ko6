@@ -36,17 +36,19 @@ help:
 	@echo ""
 
 compil: tags
-	make -C hal     $(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	make -C drivers $(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	make -C kernel $(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
+	make -C lib/libfdt	$(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
+	make -C hal     	$(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
+	make -C drivers 	$(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
+	make -C kernel 		$(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
 	make -C platforms/mips/almo1 $(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	make -C ulib   $(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	make -C uapp   $(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE) 
+	make -C ulib   		$(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
+	make -C uapp   		$(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE) 
 
 tags:
 	find . -name *.[chS] | xargs ctags
 
 pdf:
+	-make -C lib/libfdt $(MAKOPT) pdf
 	-make -C hal    	$(MAKOPT) pdf
 	-make -C drivers 	$(MAKOPT) pdf
 	-make -C kernel 	$(MAKOPT) pdf
@@ -55,10 +57,11 @@ pdf:
 	-make -C uapp   	$(MAKOPT) pdf 
 
 clean:
-	-make -C hal    	$(MAKOPT) clean NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	-make -C drivers 	$(MAKOPT) clean NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	-make -C kernel 	$(MAKOPT) clean NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	-make -C platforms/mips/almo1 $(MAKOPT) clean NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
+	-make -C lib/libfdt $(MAKOPT) clean
+	-make -C hal    	$(MAKOPT) clean
+	-make -C drivers 	$(MAKOPT) clean
+	-make -C kernel 	$(MAKOPT) clean
+	-make -C platforms/mips/almo1 $(MAKOPT) clean
 	-make -C kernel 	$(MAKOPT) clean
 	-make -C ulib   	$(MAKOPT) clean
 	-make -C uapp   	$(MAKOPT) clean

@@ -17,7 +17,7 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <klibc.h>
+#include <kernel/klibc.h>
 
 #define Y       EC_BOLD EC_WHITE"'"EC_YELLOW"v"EC_WHITE"'"EC_RESET EC_CYAN
 #define X       EC_ORANGE"x"EC_CYAN

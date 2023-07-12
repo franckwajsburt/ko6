@@ -15,7 +15,7 @@
 
 /* TODO: Remove dcache_buf_invalidate from klibc and incoporate it into HAL */
 #include <hal/dma.h>
-#include <klibc.h>
+#include <kernel/klibc.h>
 
 struct soclib_dma_regs_s {
     void * src;         // dma's destination buffer address

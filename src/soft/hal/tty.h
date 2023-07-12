@@ -70,6 +70,9 @@ int tty_fifo_push (struct tty_fifo_s *fifo, char c);
 int tty_fifo_pull (struct tty_fifo_s *fifo, int *c);
 
 /* Helper functions to register and access TTYs per number */
+
+// TODO: think more about this, maybe a static list with an max number
+// of ttys would be better ?
 extern list_t ttyList;
 
 struct tty_s* tty_get(unsigned no);

@@ -12,7 +12,7 @@
 \*------------------------------------------------------------------------------------------------*/
 
 #include <hal/dma.h>
-#include <klibc.h>
+#include <kernel/klibc.h>
 
 static int unknown_syscall (int a0, int a1, int a2, int a3, int syscall_code)
 {

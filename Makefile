@@ -58,22 +58,20 @@ help:
 	@echo ""
 
 compil: 
-	make -C src/lib/libfdt all
 	make -C $(SWDIR) $(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
 
 pdf:
 	make -C $(SWDIR) $(MAKOPT) pdf SOC=$(SOC)
 
 exec: compil
-	$(SX) -KERNEL $(BLDDIR)/kernel.x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)
+	$(SX) -KERNEL $(BLDDIR)/almo1.x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)
 
 debug: clean compil 
-	$(SX) -KERNEL $(BLDDIR)/kernel.x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)\
+	$(SX) -KERNEL $(BLDDIR)/almo1.x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)\
           -DEBUG $(FROM) -NCYCLES $(LAST) > $(DLOG)
 	tracelog $(SWDIR)/tags $(BLDDIR)/*.x.s $(DLOG)
 
 clean:
-	make -C src/lib/libfdt clean
 	make -C $(SWDIR) $(MAKOPT) clean
 	@echo "- clean up logs execution files"
 	@-killall xterm soclib-fb 2> /dev/null || true

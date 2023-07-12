@@ -10,7 +10,7 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <klibc.h>      // external function declarations
+#include <kernel/klibc.h>      // external function declarations
 
 static unsigned long long RandNext = 1;
 
