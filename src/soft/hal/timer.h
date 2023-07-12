@@ -16,7 +16,7 @@
 struct timer_s;
 
 struct timer_ops_s {
-    void (*timer_init)(struct timer_s *timer, unsigned address);
+    void (*timer_init)(struct timer_s *timer, unsigned address, unsigned tick);
     void (*timer_set_tick)(struct timer_s *timer, unsigned tick);
     void (*timer_set_event)(struct timer_s *timer, void (*f)(void *arg), void *arg);
 };

@@ -91,8 +91,8 @@ pdf:
 	sed 's/^/  - /;s/\].*/\]/' $(PDF).log
 
 clean:
-	@echo "- clean up $(BIN) and related build files"
-	-rm *~ $(OBJ) $(OBJDS) $(BIN)* $(PDF) $(PDF).log 2> /dev/null || true
+	@echo "- clean up build files"
+	-rm *~ $(OBJ) $(OBJDS) $(PDF) $(PDF).log 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 

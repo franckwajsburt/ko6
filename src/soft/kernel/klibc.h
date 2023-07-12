@@ -32,21 +32,24 @@
 #include <stddef.h>     // gcc's builtin include with NULL, size_t, (https://bit.ly/3lBw3p6)
 #endif//__DEPEND__
 
-#include <cstd.h>               // generic C functions
-#include <list.h>               // generic list management
-#include <hal/cpu/cpu.h>        // CPU registers manipulation function prototypes
-#include <hal/cpu/cache.h>      // L1 cache function prototypes
+#include <common/cstd.h>               // generic C functions
+#include <common/list.h>               // generic list management
+#include <common/esc_code.h>           // ANSI escape code
+#include <common/errno.h>              // standard error code number
+#include <common/syscalls.h>           // syscall's codes
+#include <common/usermem.h>            // user data region usage
+
 #include <hal/cpu/atomic.h>     // Locks
-#include <hal/cpu/irq.h>
+#include <hal/cpu/cache.h>      // L1 cache function prototypes
 #include <hal/platform.h>
-#include <hal/tty.h>    
-#include <usermem.h>            // user data region usage
-#include <kmemory.h>            // all kernel allocators
-#include <kthread.h>            // thread functions
-#include <esc_code.h>           // ANSI escape code
-#include <errno.h>              // standard error code number
-#include <syscalls.h>           // syscall's codes
-#include <ksynchro.h>           // mutex, barrier and similar functions
+#include <hal/cpu/irq.h>
+#include <hal/cpu/cpu.h>        // CPU registers manipulation function prototypes
+#include <hal/tty.h>
+
+#include <kernel/kmemory.h>            // all kernel allocators
+#include <kernel/kthread.h>            // thread functions
+#include <kernel/ksynchro.h>           // mutex, barrier and similar functions
+
 
 #define RAND_MAX 32767  /* maximum random value by default, must be < 0x7FFFFFFE */
 #define PRINTF_MAX 256  /* largest printed message */

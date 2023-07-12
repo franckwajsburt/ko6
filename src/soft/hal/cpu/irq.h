@@ -13,9 +13,6 @@
 #ifndef _HAL_CPU_IRQ_H_
 #define _HAL_CPU_IRQ_H_
 
-#include <stdint.h>
-#include <stddef.h>
-
 #define MAX_N_IRQS 1024
 
 /**
@@ -82,24 +79,8 @@ struct ite_s {
 // This structure needs to be declared in platform-specific initialization file
 extern struct ite_s interrupt_table[MAX_N_IRQS];
 
-extern inline void register_interrupt(unsigned irq, isr_t handler, void *arg)
-{
-    interrupt_table[irq].handler = handler;
-    interrupt_table[irq].arg = arg;
-}
-
-extern inline void route_interrupt(unsigned irq)
-{
-    struct ite_s ite = interrupt_table[irq];
-    if (ite.handler)
-        ite.handler(irq, ite.arg);
-}
-
-extern inline void unregister_interrupt(unsigned irq)
-{
-    // TODO: register kpanic as a default isr, like the old system
-    interrupt_table[irq].handler = NULL;
-    interrupt_table[irq].arg = NULL;
-}
+void register_interrupt(unsigned irq, isr_t handler, void *arg);
+void route_interrupt(unsigned irq);
+void unregister_interrupt(unsigned irq);
 
 #endif

@@ -278,6 +278,7 @@ int thread_create (thread_t * thread_p, int fun, int arg, int start)
     thread->fun      = fun;                                     // function of the thread
     thread->arg      = arg;                                     // argument of the thread
     thread->errno_a  = (int*)(thread->ustack_b - 4);            // errno is the first int of ustack
+    thread->context  = kmalloc(sizeof(threadContextSize));
     thread_context_init(thread->context,                        // table to store context
                         thread_bootstrap,                       // thread_bootstrap() to begin
                         thread->errno_a);                       // stack pointer addr (here errno)
@@ -331,6 +332,8 @@ void thread_exit (void *retval)
 
     ThreadCurrent->retval = retval;                             // E1: store the return value
     ThreadCurrent->state = TH_STATE_ZOMBIE;                     //     tell that is the end
+    kfree(ThreadCurrent->context, threadContextSize);
+
     spin_lock (&ThreadCurrent->lock);                           // avoid sequence J1 J2 E1 E2 E3 J3
     if (ThreadCurrent->join != NULL)                            // E2: if there is a thread waiting
         ThreadCurrent->join->state = TH_STATE_READY;            // E3: then change its state

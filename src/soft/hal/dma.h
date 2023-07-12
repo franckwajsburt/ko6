@@ -16,7 +16,7 @@
 struct dma_s;
 
 struct dma_ops_s {
-    void (*dma_init)(unsigned address);
+    void (*dma_init)(struct dma_s *dma, unsigned address);
     void *(*dma_memcpy)(struct dma_s *dma, int *dst, int *src, unsigned n);
 };
 

@@ -69,8 +69,7 @@ CFLAGS += -fno-builtin#				do not use builtin functions of gcc (such as strlen)
 CFLAGS += -fomit-frame-pointer#		only use of stack pointer ($29)
 CFLAGS += -G0#						do not use global data pointer ($28)
 CFLAGS += -O3#						full optimisation mode of compiler
-CFLAGS += -I.. -I. -I$(COMDIR)#		directories where include files like <file.h> are located
-CFLAGS += -I$(HALDIR)#				directories where include files like <file.h> are located
+CFLAGS += -I..#						directories where include files like <file.h> are located
 CFLAGS += -I$(LIBDIR)/libfdt#		include external libraries (specifically libfdt.h)
 CFLAGS += -DNTTYS=$(NTTYS)#			#define NTTYS with the number of ttys in the prototype
 CFLAGS += -DNCPUS=$(NCPUS)#			#define NCPUS with the number of cpus in the prototype
@@ -105,8 +104,8 @@ pdf:
 	sed 's/^/  - /;s/\].*/\]/' $(PDF).log
 
 clean:
-	@echo "- clean up $(BIN) and related build files"
-	-rm *~ *.dtb $(OBJ) $(OBJDS) $(BIN)* $(PDF) $(PDF).log 2> /dev/null || true
+	@echo "- clean up build files"
+	-rm *~ *.dtb $(OBJ) $(OBJDS) $(PDF) $(PDF).log 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 
@@ -118,20 +117,11 @@ $(OBJDIR)/%.o : %.c
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s
 
-$(OBJDIR)/%.o : $(SOCDIR)/%.S
-	@echo "- compil  --> "$(notdir $@)
-	$(CC) -o $@ $(CFLAGS) $<
-	$(OD) -D $@ > $@.s
-
 $(OBJDIR)/%.o : $(COMDIR)/%.c
 	@echo "- compil  --> "$(notdir $@)
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s
 
-$(OBJDIR)/%.o : $(SOCDIR)/%.c
-	@echo "- compil  --> "$(notdir $@)
-	$(CC) -o $@ $(CFLAGS) $<
-	$(OD) -D $@ > $@.s
 
 # makedepend analyzes the source files to determine automatically what are the dependencies
 # of the object files on the source files (see https://linux.die.net/man/1/makedepend for details)
@@ -145,10 +135,10 @@ depend :
 # --------------------------------------------------------------------------------------------------
 # DEPENDENCIES
 
-../../../build/obj/ksyscalls.o: ../hal/dma.h ../hal/cpu/cache.h ./klibc.h
-../../../build/obj/ksyscalls.o: ../common/debug_off.h ../common/debug_on.h
-../../../build/obj/ksyscalls.o: ../common/cstd.h ../common/list.h
-../../../build/obj/ksyscalls.o: ../hal/cpu/cpu.h ../hal/cpu/atomic.h
+../../../build/obj/ksyscalls.o: ../hal/dma.h ./klibc.h ../common/debug_off.h
+../../../build/obj/ksyscalls.o: ../common/debug_on.h ../common/cstd.h
+../../../build/obj/ksyscalls.o: ../common/list.h ../hal/cpu/cpu.h
+../../../build/obj/ksyscalls.o: ../hal/cpu/cache.h ../hal/cpu/atomic.h
 ../../../build/obj/ksyscalls.o: ../hal/cpu/irq.h ../hal/platform.h
 ../../../build/obj/ksyscalls.o: ../hal/tty.h ../common/errno.h
 ../../../build/obj/ksyscalls.o: ../common/list.h ../common/usermem.h
