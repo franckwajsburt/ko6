@@ -79,8 +79,27 @@ struct ite_s {
 // This structure needs to be declared in platform-specific initialization file
 extern struct ite_s interrupt_table[MAX_N_IRQS];
 
+/**
+ * \brief Assign an ISR (Interrupt-Service Routine) to an IRQ
+ * \param irq     the irq
+ * \param handler the ISR to call
+ * \param arg     argument given to the ISR
+ * \return nothing
+*/
 void register_interrupt(unsigned irq, isr_t handler, void *arg);
+
+/**
+ * \brief Call the ISR of a given IRQ
+ * \param irq the irq
+ * \return nothing
+*/
 void route_interrupt(unsigned irq);
+
+/**
+ * \brief Remove the ISR linked to an IRQ
+ * \param irq the irq
+ * \return nothing
+*/
 void unregister_interrupt(unsigned irq);
 
 #endif

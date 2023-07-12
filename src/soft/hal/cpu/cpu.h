@@ -38,9 +38,6 @@ extern void kpanic (void);
 // Thread management
 //--------------------------------------------------------------------------------------------------
 
-// Platform-specific files should define this variable
-extern int threadContextSize;
-
 /**
  * \brief   Initialize the thread context at the very beginning
  * \param   context       thread_context table 

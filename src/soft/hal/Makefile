@@ -14,8 +14,7 @@
 
 BLDDIR	= ../../../build#			build directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
-HALDIR 	= ../hal#					hal files directory
-COMDIR 	= ../common#				common files directory
+SRCDIR	= ..#						root of the source files
 OBJDIR	= $(BLDDIR)/obj#			object files directory
 PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 VERBOSE	?= 1
@@ -52,9 +51,7 @@ CFLAGS += -fno-builtin#				do not use builtin functions of gcc (such as strlen)
 CFLAGS += -fomit-frame-pointer#		only use of stack pointer ($29)
 CFLAGS += -G0#						do not use global data pointer ($28)
 CFLAGS += -O3#						full optimisation mode of compiler
-CFLAGS += -I$(HALDIR)#				directories where include files like <file.h> are located
-CFLAGS += -I.. -I../kernel
-CFLAGS += -I../common
+CFLAGS += -I$(SRCDIR)#				directories where include files like <file.h> are located
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
 
 # Rules (here they are used such as simple shell scripts)
@@ -98,7 +95,6 @@ $(OBJDIR)/%.o : %.c
 	@echo "- compil  --> "$(notdir $@)
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s
-
 
 $(OBJDIR)/%.o : cpu/%.c
 	@echo "- compil  --> "$(notdir $@)

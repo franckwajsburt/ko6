@@ -35,11 +35,6 @@ void soclib_icu_acknowledge(struct icu_s *icu, unsigned irq)
     ;
 }
 
-/**
- * \brief     enable device IRQ siqnal
- * \param     icu  icu
- * \param     irq  irq number to enable
- */
 void soclib_icu_unmask(struct icu_s *icu, unsigned irq)
 {
     struct soclib_icu_regs_s *regs =

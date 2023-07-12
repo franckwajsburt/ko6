@@ -14,7 +14,6 @@
 #define _SOCLIB_TTY_H_
 
 #include <hal/tty.h>
-
 #include <hal/cpu/irq.h>
 #include <kernel/kthread.h>
 

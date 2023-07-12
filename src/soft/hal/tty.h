@@ -22,7 +22,23 @@ struct tty_s;
 
 struct tty_ops_s {
     void (*tty_init)(struct tty_s *tty, unsigned address, unsigned baudrate);
+
+    /**
+     * \brief   Generic function that write to the tty device
+     * \param   tty     the tty device
+     * \param   buf     the buffer to write to the tty
+     * \param   count   the number of bytes to write
+     * \return  number of bytes actually written
+    */
     int (*tty_write)(struct tty_s *tty, char *buf, unsigned count);
+
+    /**
+     * \brief   Generic function that reads from the tty device
+     * \param   tty     the tty device
+     * \param   buf     the buffer that will receive the data from the tty
+     * \param   count   the number of bytes that should be written into the buffer
+     * \return  number of bytes actually read
+    */
     int (*tty_read)(struct tty_s *tty, char *buf, unsigned count);
 };
 
@@ -45,10 +61,10 @@ struct tty_fifo_s {
 struct tty_s {
     unsigned address;           // memory-mapped register addresses
     unsigned baudrate;          // tty baudrate
-    list_t list;
-    unsigned no;
+    list_t list;                // linked-list entry into the tty's list
+    unsigned no;                // number of the tty entry in the tty's list
     struct tty_fifo_s fifo;
-    struct tty_ops_s *ops;
+    struct tty_ops_s *ops;      // driver specific operations linked to the tty
 };
 
 /* Helper functions for TTY's FIFOs */
@@ -71,12 +87,31 @@ int tty_fifo_pull (struct tty_fifo_s *fifo, int *c);
 
 /* Helper functions to register and access TTYs per number */
 
-// TODO: think more about this, maybe a static list with an max number
-// of ttys would be better ?
+/**
+ * TODO: think more about this, maybe a static list with an max number
+ *        of ttys would be better ?
+ */       
 extern list_t ttyList;
 
+/**
+ * \brief   return the tty device associated to the number given
+ * \param   no the tty's number
+ * \return  tty device
+*/
 struct tty_s* tty_get(unsigned no);
+
+/**
+ * \brief   adds a tty to the ttys linked list
+ * \param   tty the tty device
+ * \return  the new associated number of the added tty
+*/
 unsigned tty_add(struct tty_s *tty);
+
+/**
+ * \brief   remove a tty to the tty linked list by his number
+ * \param   no the tty's number
+ * \return  nothing
+*/
 void tty_del(unsigned no);
 
 #endif

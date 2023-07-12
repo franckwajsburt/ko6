@@ -17,12 +17,22 @@ struct dma_s;
 
 struct dma_ops_s {
     void (*dma_init)(struct dma_s *dma, unsigned address);
+
+    /**
+     * \brief Generic function that copy a buffer from a memory location to another using
+     *        a DMA device
+     * \param   dma the DMA device
+     * \param   dst destination buffer
+     * \param   src source buffer
+     * \param   n   number of bytes to write
+     * \return  destination buffer address
+    */
     void *(*dma_memcpy)(struct dma_s *dma, int *dst, int *src, unsigned n);
 };
 
 struct dma_s {
-    unsigned address;
-    struct dma_ops_s *ops;
+    unsigned address;       // DMA device address
+    struct dma_ops_s *ops;  // driver-specific operations
 };
 
 extern struct dma_s dma;

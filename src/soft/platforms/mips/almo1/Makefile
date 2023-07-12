@@ -13,15 +13,12 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
-SOC    ?= almo1#					defaut SOC name
 NTTYS  ?= 1#						default number of ttys
 NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-SRCDIR  = ../../..
+SRCDIR  = ../../..#					root source dir, allow us to make include via absolute path
 BLDDIR	= ../../../../../build#		build directory
-COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
 LIBDIR	= .#						library directory (where is ldscript)
-HALDIR	= $(SRCDIR)/hal#			hardware abstraction layer (hal) files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 SOCDIR	= $(CURDIR)#					current soc hardware abstraction layer (hal) files directory
 OBJDIR	= $(BLDDIR)/obj#			object files directory
@@ -68,7 +65,6 @@ CFLAGS += -fomit-frame-pointer#		only use of stack pointer ($29)
 CFLAGS += -G0#						do not use global data pointer ($28)
 CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += -I. -I$(SRCDIR)#			directories where include files like <file.h> are located
-CFLAGS += -I$(HALDIR) -I$(COMDIR)
 CFLAGS += -DNTTYS=$(NTTYS)#			#define NTTYS with the number of ttys in the prototype
 CFLAGS += -DNCPUS=$(NCPUS)#			#define NCPUS with the number of cpus in the prototype
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
@@ -125,11 +121,6 @@ $(OBJDIR)/%.o : %.S
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s
 
-$(OBJDIR)/%.o : %.c
-	@echo "- compil  --> "$(notdir $@)
-	$(CC) -o $@ $(CFLAGS) $<
-	$(OD) -D $@ > $@.s
-
 # makedepend analyzes the source files to determine automatically what are the dependencies
 # of the object files on the source files (see https://linux.die.net/man/1/makedepend for details)
 depend :
@@ -166,7 +157,6 @@ depend :
 ../../../../../build/obj/platform.o: ../../../hal/cpu/irq.h
 ../../../../../build/obj/platform.o: ../../../kernel/kthread.h
 ../../../../../build/obj/platform.o: ../../../drivers/dma/soclib-dma.h
-../../../../../build/obj/platform.o: ../../../hal/dma.h
 ../../../../../build/obj/platform.o: ../../../kernel/klibc.h
 ../../../../../build/obj/platform.o: ../../../common/debug_off.h
 ../../../../../build/obj/platform.o: ../../../common/debug_on.h
@@ -180,5 +170,6 @@ depend :
 ../../../../../build/obj/platform.o: ../../../hal/cpu/cpu.h
 ../../../../../build/obj/platform.o: ../../../kernel/kmemory.h
 ../../../../../build/obj/platform.o: ../../../kernel/ksynchro.h
+../../../../../build/obj/platform.o: ../../../hal/dma.h
 ../../../../../build/obj/cpua.o: ../../../platforms/mips/almo1/cpu.h
 ../../../../../build/obj/cpua.o: ../../../common/syscalls.h

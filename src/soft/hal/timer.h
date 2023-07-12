@@ -17,21 +17,42 @@ struct timer_s;
 
 struct timer_ops_s {
     void (*timer_init)(struct timer_s *timer, unsigned address, unsigned tick);
+
+    /**
+     * \brief   Generic function that allows the kernel to set the number of ticks
+     *          after which we want an interrupt
+     * \param   timer the timer device
+     * \param   tick  the number of ticks
+     * \return  nothing
+    */
     void (*timer_set_tick)(struct timer_s *timer, unsigned tick);
+
+    /**
+     * \brief   Generic function that sets the event that will be triggered after a timer
+     *          interrupt
+     * \param   timer   the timer device
+     * \param   f       the function to be called
+     * \param   arg     the arg passed to the function
+     * \return  nothing
+    */
     void (*timer_set_event)(struct timer_s *timer, void (*f)(void *arg), void *arg);
 };
 
+/**
+ * Structure describing what to do when we receive a timer interrupt
+ */
 struct timer_event_s {
-    void (*f)(void *arg);
-    void *arg;
+    void (*f)(void *arg);           // function triggered
+    void *arg;                      // argument passed to the function
 };
 
 struct timer_s {
-    unsigned address;
-    struct timer_event_s event;
-    struct timer_ops_s *ops;
+    unsigned address;               // timer's address
+    struct timer_event_s event;     // event triggered each nticks
+    struct timer_ops_s *ops;        // driver-specific operations
 };
 
+// TODO: at this moment, only one global timer is supported
 extern struct timer_s timer;
 
 #endif

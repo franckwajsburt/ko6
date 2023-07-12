@@ -326,7 +326,6 @@ void thread_exit (void *retval)
 
     ThreadCurrent->retval = retval;                             // E1: store the return value
     ThreadCurrent->state = TH_STATE_ZOMBIE;                     //     tell that is the end
-    kfree(ThreadCurrent->context, threadContextSize);
 
     spin_lock (&ThreadCurrent->lock);                           // avoid sequence J1 J2 E1 E2 E3 J3
     if (ThreadCurrent->join != NULL)                            // E2: if there is a thread waiting

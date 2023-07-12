@@ -19,9 +19,6 @@ static void soclib_timer_set_tick(struct timer_s *timer, unsigned tick)
     regs->period = tick;
 }
 
-/**
- * \brief     start the timer to periodically raise an IRQ (only used by arch_init)
- */
 static void soclib_timer_init(struct timer_s *timer, unsigned address, unsigned tick)
 {
     timer->address  = address;
@@ -47,10 +44,6 @@ struct timer_ops_s soclib_timer_ops = {
     .timer_set_tick = soclib_timer_set_tick
 };
 
-/**
- * \brief     isr for timer IRQ (only used by icu_init)
- * \param     timer device instance
- */
 void soclib_timer_isr (unsigned irq, struct timer_s *timer)
 {
     struct soclib_timer_regs_s *regs = 

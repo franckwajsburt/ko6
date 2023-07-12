@@ -16,7 +16,6 @@
 //--------------------------------------------------------------------------------------------------
 // Thread management
 //--------------------------------------------------------------------------------------------------
-int threadContextSize = TH_CONTEXT_SIZE;
 
 void thread_context_init (int context[], void * bootstrap, void * stack_pointer)
 {
