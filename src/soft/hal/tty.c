@@ -12,7 +12,10 @@
 
 #include <hal/tty.h>
 
-list_t ttyList;
+list_t ttyList = {
+    .next = &ttyList,
+    .prev = &ttyList
+};
 
 int tty_fifo_push (struct tty_fifo_s *fifo, char c)
 {
@@ -50,7 +53,7 @@ struct tty_s* tty_get(unsigned no)
 unsigned tty_add(struct tty_s *tty)
 {
     struct list_s *last = list_last(&ttyList);
-    if (list_last(&ttyList) == &ttyList)
+    if (list_last(&ttyList) == NULL)
         tty->no = 0;
     else
         tty->no = list_item(last, struct tty_s, list)->no + 1;

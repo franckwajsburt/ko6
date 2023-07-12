@@ -19,7 +19,6 @@
 // When the declarations are static, that is because, they are only used in this file
 //--------------------------------------------------------------------------------------------------
 
-
 /**
  * \brief   thread_s structure which contains all we need to define a thread
  *          the size of thread_s struct is a multiple of a page and have to be aligned (on a page)
@@ -45,11 +44,7 @@ struct thread_s {
     int fun;                      ///< pointer to the thread function (cast to int)
     int arg;                      ///< thread argument (cast to int)
     int tid;                      ///< thread identifer MUST BE PLACED JUST BEFORE CONTEXT (trace)
-    // TODO: see if this the correct way to handle context,
-    // as a reminder, we can't use a statically defined variable since we don't know what the context
-    // size is when we build the kernel, maybe the correct thing to do would be editing makefile to 
-    // use platform defines when the kernel is built
-    int *context;                   ///< table to store registers when thread lose the cpu
+    int context[TH_CONTEXT_SIZE]; ///< table to store registers when thread lose the cpu
     int kstack[1];                ///< lowest address of kernel stack of thread (with MAGIC_STACK)
 };
 
@@ -278,7 +273,6 @@ int thread_create (thread_t * thread_p, int fun, int arg, int start)
     thread->fun      = fun;                                     // function of the thread
     thread->arg      = arg;                                     // argument of the thread
     thread->errno_a  = (int*)(thread->ustack_b - 4);            // errno is the first int of ustack
-    thread->context  = kmalloc(sizeof(threadContextSize));
     thread_context_init(thread->context,                        // table to store context
                         thread_bootstrap,                       // thread_bootstrap() to begin
                         thread->errno_a);                       // stack pointer addr (here errno)

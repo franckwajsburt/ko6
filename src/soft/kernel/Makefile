@@ -74,6 +74,7 @@ CFLAGS += -I$(LIBDIR)/libfdt#		include external libraries (specifically libfdt.h
 CFLAGS += -DNTTYS=$(NTTYS)#			#define NTTYS with the number of ttys in the prototype
 CFLAGS += -DNCPUS=$(NCPUS)#			#define NCPUS with the number of cpus in the prototype
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
+CFLAGS += -DTH_CONTEXT_SIZE=13
 
 # Rules (here they are used such as simple shell scripts)
 # --------------------------------------------------------------------------------------------------

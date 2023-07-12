@@ -66,7 +66,7 @@ pdf:
 exec: compil
 	$(SX) -KERNEL $(BLDDIR)/almo1.x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)
 
-debug: clean compil 
+debug: compil 
 	$(SX) -KERNEL $(BLDDIR)/almo1.x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)\
           -DEBUG $(FROM) -NCYCLES $(LAST) > $(DLOG)
 	tracelog $(SWDIR)/tags $(BLDDIR)/*.x.s $(DLOG)
