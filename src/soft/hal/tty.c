@@ -37,33 +37,3 @@ int tty_fifo_pull (struct tty_fifo_s *fifo, int *c)
     }
     return FAILURE;
 }
-
-/* Helper functions to register and access TTYs per number */
-
-struct tty_s* tty_get(unsigned no)
-{
-    list_foreach(&ttyList, item) {
-        struct tty_s *tty = list_item(item, struct tty_s, list);
-        if (tty->no == no)
-            return tty;
-    }
-    return NULL;
-}
-
-unsigned tty_add(struct tty_s *tty)
-{
-    struct list_s *last = list_last(&ttyList);
-    if (list_last(&ttyList) == NULL)
-        tty->no = 0;
-    else
-        tty->no = list_item(last, struct tty_s, list)->no + 1;
-    list_addlast(&ttyList, &tty->list);
-    return tty->no;
-}
-
-void tty_del(unsigned no)
-{
-    struct tty_s *tty = tty_get(no);
-    if (tty)
-        list_unlink(&tty->list);
-}

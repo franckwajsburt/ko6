@@ -15,6 +15,7 @@
 
 #include <common/errno.h>
 #include <common/list.h>
+#include <hal/dev.h>
 
 #define TTY_FIFO_DEPTH 20
 
@@ -67,6 +68,9 @@ struct tty_s {
     struct tty_ops_s *ops;      // driver specific operations linked to the tty
 };
 
+#define tty_alloc() (struct tty_s*) (dev_alloc(TTY_DEV, sizeof(struct tty_s))->data)
+#define tty_get(no) (struct tty_s*) (dev_get(TTY_DEV, no)->data)
+
 /* Helper functions for TTY's FIFOs */
 
 /**
@@ -84,34 +88,5 @@ int tty_fifo_push (struct tty_fifo_s *fifo, char c);
  * \return  SUCCESS or FAILURE
  */
 int tty_fifo_pull (struct tty_fifo_s *fifo, int *c);
-
-/* Helper functions to register and access TTYs per number */
-
-/**
- * TODO: think more about this, maybe a static list with an max number
- *        of ttys would be better ?
- */       
-extern list_t ttyList;
-
-/**
- * \brief   return the tty device associated to the number given
- * \param   no the tty's number
- * \return  tty device
-*/
-struct tty_s* tty_get(unsigned no);
-
-/**
- * \brief   adds a tty to the ttys linked list
- * \param   tty the tty device
- * \return  the new associated number of the added tty
-*/
-unsigned tty_add(struct tty_s *tty);
-
-/**
- * \brief   remove a tty to the tty linked list by his number
- * \param   no the tty's number
- * \return  nothing
-*/
-void tty_del(unsigned no);
 
 #endif

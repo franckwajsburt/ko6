@@ -3,3 +3,6 @@ build/*
 xterm*
 tags
 *.bak
+trace0.s
+label0.s
+

@@ -43,7 +43,7 @@ OBJ 	+= $(OBJDIR)/soclib-dma.o $(OBJDIR)/soclib-icu.o
 OBJ 	+= $(OBJDIR)/soclib-timer.o $(OBJDIR)/soclib-tty.o
 OBJ 	+= $(OBJDIR)/kinit.o $(OBJDIR)/klibc.o $(OBJDIR)/kmemory.o
 OBJ 	+= $(OBJDIR)/ksynchro.o $(OBJDIR)/ksyscalls.o $(OBJDIR)/kthread.o
-OBJ 	+= $(OBJDIR)/tty.o $(OBJDIR)/irq.o
+OBJ 	+= $(OBJDIR)/tty.o $(OBJDIR)/irq.o $(OBJDIR)/dev.o
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 BIN     = $(BLDDIR)/$(CURDIR).x
@@ -143,7 +143,7 @@ depend :
 ../../../../../build/obj/cpuc.o: ../../../hal/platform.h
 ../../../../../build/obj/cpuc.o: ../../../hal/cpu/irq.h
 ../../../../../build/obj/cpuc.o: ../../../hal/cpu/cpu.h ../../../hal/tty.h
-../../../../../build/obj/cpuc.o: ../../../kernel/kmemory.h
+../../../../../build/obj/cpuc.o: ../../../hal/dev.h ../../../kernel/kmemory.h
 ../../../../../build/obj/cpuc.o: ../../../kernel/kthread.h
 ../../../../../build/obj/cpuc.o: ../../../kernel/ksynchro.h
 ../../../../../build/obj/platform.o: ../../../drivers/timer/soclib-timer.h
@@ -154,9 +154,7 @@ depend :
 ../../../../../build/obj/platform.o: ../../../hal/tty.h
 ../../../../../build/obj/platform.o: ../../../common/errno.h
 ../../../../../build/obj/platform.o: ../../../common/list.h
-../../../../../build/obj/platform.o: ../../../hal/cpu/irq.h
-../../../../../build/obj/platform.o: ../../../kernel/kthread.h
-../../../../../build/obj/platform.o: ../../../drivers/dma/soclib-dma.h
+../../../../../build/obj/platform.o: ../../../hal/dev.h
 ../../../../../build/obj/platform.o: ../../../kernel/klibc.h
 ../../../../../build/obj/platform.o: ../../../common/debug_off.h
 ../../../../../build/obj/platform.o: ../../../common/debug_on.h
@@ -167,9 +165,12 @@ depend :
 ../../../../../build/obj/platform.o: ../../../hal/cpu/atomic.h
 ../../../../../build/obj/platform.o: ../../../hal/cpu/cache.h
 ../../../../../build/obj/platform.o: ../../../hal/platform.h
+../../../../../build/obj/platform.o: ../../../hal/cpu/irq.h
 ../../../../../build/obj/platform.o: ../../../hal/cpu/cpu.h
 ../../../../../build/obj/platform.o: ../../../kernel/kmemory.h
+../../../../../build/obj/platform.o: ../../../kernel/kthread.h
 ../../../../../build/obj/platform.o: ../../../kernel/ksynchro.h
+../../../../../build/obj/platform.o: ../../../drivers/dma/soclib-dma.h
 ../../../../../build/obj/platform.o: ../../../hal/dma.h
 ../../../../../build/obj/cpua.o: ../../../platforms/mips/almo1/cpu.h
 ../../../../../build/obj/cpua.o: ../../../common/syscalls.h

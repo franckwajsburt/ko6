@@ -15,18 +15,6 @@ extern int __tty_regs_map;
 extern int __dma_regs_map;
 
 /**
- * Devices present on the soc
- * TODO: the current architecture supports only one CPU, so one ICu, one DMA, one timer,
- *       ect ... the next major thing to do is update the current system to allow dynamic
- *       allocation of devices
-*/
-struct timer_s timer;
-struct icu_s icu;
-struct tty_s tty0;
-struct tty_s tty1;
-struct dma_s dma;
-
-/**
  * For the SoC almo1, IRQ n'x (that is ICU.PIN[x]) is wired to the Interrup Signal of device n'y
  *
  * There are at most 14 IRQs for almo1, but the real number depends of the prototype paramaters
@@ -47,30 +35,33 @@ struct dma_s dma;
 void arch_init(int tick)
 {
     // Initialize soclib ICU
-    soclib_icu_ops.icu_init(&icu, (unsigned) &__icu_regs_map);
+    struct icu_s *icu = icu_alloc();
+    soclib_icu_ops.icu_init(icu, (unsigned) &__icu_regs_map);
 
     // Initialize timer and set the event to thread_yield, which
     // will cause a schedule each ntick
-    soclib_timer_ops.timer_init(&timer, (unsigned) &__timer_regs_map, tick);
-    timer.ops->timer_set_event(&timer, (void (*)(void *)) thread_yield, (void *) 0);
+    struct timer_s *timer = timer_alloc();
+    soclib_timer_ops.timer_init(timer, (unsigned) &__timer_regs_map, tick);
+    timer->ops->timer_set_event(timer, (void (*)(void *)) thread_yield, (void *) 0);
 
     // Enable timer interrupts
-    icu.ops->icu_unmask(&icu, 0);
-    register_interrupt(0, (isr_t) soclib_timer_isr, &timer);
+    icu->ops->icu_unmask(icu, 0);
+    register_interrupt(0, (isr_t) soclib_timer_isr, timer);
 
     // Initialize two ttys and register therm
-    soclib_tty_ops.tty_init(&tty0, (unsigned) &__tty_regs_map, 0);
-    icu.ops->icu_unmask(&icu, 10);
-    register_interrupt(10, (isr_t) soclib_tty_isr, &tty0);
-    tty_add(&tty0);
+    struct tty_s *tty = tty_alloc();
+    soclib_tty_ops.tty_init(tty, (unsigned) &__tty_regs_map, 0);
+    icu->ops->icu_unmask(icu, 10);
+    register_interrupt(10, (isr_t) soclib_tty_isr, tty);
     
-    soclib_tty_ops.tty_init(&tty1, (unsigned) &__tty_regs_map + 0x10, 0);
-    icu.ops->icu_unmask(&icu, 11);
-    register_interrupt(11, (isr_t) soclib_tty_isr, &tty1);
-    tty_add(&tty1);
+    tty = tty_alloc();
+    soclib_tty_ops.tty_init(tty, (unsigned) &__tty_regs_map + 0x10, 0);
+    icu->ops->icu_unmask(icu, 11);
+    register_interrupt(11, (isr_t) soclib_tty_isr, tty);
 
     // Initialize the DMA
-    soclib_dma_ops.dma_init(&dma, (unsigned) &__dma_regs_map);
+    struct dma_s *dma = dma_alloc();
+    soclib_dma_ops.dma_init(dma, (unsigned) &__dma_regs_map);
 }
 
 /**
@@ -82,6 +73,7 @@ void arch_init(int tick)
  */
 void isrcall()
 {
-    int irq = icu.ops->icu_get_highest(&icu);   // IRQ nb with the highest prio
-    route_interrupt(irq);                       // launch the ISR for the bound device
+    struct icu_s *icu = icu_get(cpuid());           // get the ICU which has dev.no == cpuid()
+    int irq = icu->ops->icu_get_highest(icu);       // IRQ nb with the highest prio
+    route_interrupt(irq);                           // launch the ISR for the bound device
 }

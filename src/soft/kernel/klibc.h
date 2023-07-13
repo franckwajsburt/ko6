@@ -45,6 +45,7 @@
 #include <hal/cpu/irq.h>
 #include <hal/cpu/cpu.h>        // CPU registers manipulation function prototypes
 #include <hal/tty.h>
+#include <hal/dev.h> 
 
 #include <kernel/kmemory.h>            // all kernel allocators
 #include <kernel/kthread.h>            // thread functions

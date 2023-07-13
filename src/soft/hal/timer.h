@@ -51,8 +51,7 @@ struct timer_s {
     struct timer_event_s event;     // event triggered each nticks
     struct timer_ops_s *ops;        // driver-specific operations
 };
-
-// TODO: at this moment, only one global timer is supported
-extern struct timer_s timer;
+#define timer_alloc() (struct timer_s*) (dev_alloc(TIMER_DEV, sizeof(struct timer_s))->data)
+#define timer_get(no) (struct timer_s*) (dev_get(TIMER_DEV, no)->data)
 
 #endif

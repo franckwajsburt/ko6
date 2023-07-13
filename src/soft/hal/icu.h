@@ -63,8 +63,7 @@ struct icu_s {
     unsigned address;           // ICU's address
     struct icu_ops_s *ops;      // driver-specific operations
 };
-
-/* ICU must be defined once somewhere */
-extern struct icu_s icu;
+#define icu_alloc() (struct icu_s*) (dev_alloc(ICU_DEV, sizeof(struct icu_s))->data)
+#define icu_get(no) (struct icu_s*) (dev_get(ICU_DEV, no)->data)
 
 #endif

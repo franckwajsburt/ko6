@@ -34,7 +34,7 @@ struct dma_s {
     unsigned address;       // DMA device address
     struct dma_ops_s *ops;  // driver-specific operations
 };
-
-extern struct dma_s dma;
+#define dma_alloc() (struct dma_s*) (dev_alloc(DMA_DEV, sizeof(struct dma_s))->data)
+#define dma_get(no) (struct dma_s*) (dev_get(DMA_DEV, no)->data)
 
 #endif

@@ -8,7 +8,7 @@
 
 # Main directory, you can change it
 # ---------------------------------
-export kO6=$USER/ko6
+export kO6=$HOME/ko6
 export SOCLIB=/users/outil/soc/soclib
 export SOC=almo1
 
