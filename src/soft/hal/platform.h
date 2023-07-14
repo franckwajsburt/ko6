@@ -19,7 +19,8 @@
  *            and configures which IRQ are used and how they are connected to the CPU
  *            thanks to the ICU Mask
  * \param     tick is the time in cycles between to IRQ for the timer
+ * \return    -1 if initialization fails, else 0
  */
-extern void arch_init (int tick);
+extern int arch_init (int tick);
 
 #endif

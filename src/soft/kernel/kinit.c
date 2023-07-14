@@ -38,7 +38,8 @@ void kinit (void)
     for (int *a = &__bss_origin; a != &__bss_end; *a++ = 0);
 
     memory_init();                  // memory initialisation 
-    arch_init(200000);              // architecture initialisation takes the tick as argument
+    if (arch_init(200000) < 0)      // architecture initialisation takes the tick as argument
+        goto sleep;                 // initialization failed, just sleep
 
     kprintf (Banner);
 
@@ -75,4 +76,8 @@ void kinit (void)
 
     // We never return of thread_load() here because thread_load() change $31 to thread_bootstap()
     PANIC_IF(true,"Impossible to be here");
+
+    // In case anything goes wrong during initialization
+sleep:
+    while (1) ;
 }

@@ -27,7 +27,7 @@ PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 # Sources
 # --------------------------------------------------------------------------------------------------
 
-SRC = cpua.S cpuc.c platform.c
+SRC = cpua.S cpuc.c platform.c dtb.S
 LDSCRIPT= kernel.ld#				ldscript is hal dependent
 
 # Targets
@@ -44,6 +44,7 @@ OBJ 	+= $(OBJDIR)/soclib-timer.o $(OBJDIR)/soclib-tty.o
 OBJ 	+= $(OBJDIR)/kinit.o $(OBJDIR)/klibc.o $(OBJDIR)/kmemory.o
 OBJ 	+= $(OBJDIR)/ksynchro.o $(OBJDIR)/ksyscalls.o $(OBJDIR)/kthread.o
 OBJ 	+= $(OBJDIR)/tty.o $(OBJDIR)/irq.o $(OBJDIR)/dev.o
+OBJ 	+= $(OBJDIR)/libfdt.a
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 BIN     = $(BLDDIR)/$(CURDIR).x
@@ -83,11 +84,14 @@ help:
 	@echo "        pdf     : generate $(PDF) with all source files"
 	@echo ""
 
-compil: depend mkdir $(BIN)
+compil: depend mkdir mkdtb $(BIN)
 
 mkdir:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
 	test -d $(OBJDIR) || (echo "- mkdir   $(OBJDIR)" ; mkdir $(OBJDIR))
+
+mkdtb:
+	dtc -I dts -O dtb -o almo1.dtb almo1.dts
 
 pdf:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
@@ -99,7 +103,7 @@ pdf:
 
 clean:
 	@echo "- clean up $(BIN) and related build files"
-	-rm *~ $(OBJ) $(OBJDS) $(BIN) $(PDF) $(PDF).log 2> /dev/null || true
+	-rm *~ *.dtb $(OBJ) $(OBJDS) $(BIN) $(PDF) $(PDF).log 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 
@@ -107,6 +111,7 @@ clean:
 # --------------------------------------------------------------------------------------------------
 
 $(BIN) : $(LDSCRIPT) $(OBJ)
+	@echo $(OBJ)
 	@echo "- link    --> "$(notdir $@)
 	$(LD) -o $@ -T $^
 	$(OD) -D $@ > $@.s
@@ -172,5 +177,8 @@ depend :
 ../../../../../build/obj/platform.o: ../../../kernel/ksynchro.h
 ../../../../../build/obj/platform.o: ../../../drivers/dma/soclib-dma.h
 ../../../../../build/obj/platform.o: ../../../hal/dma.h
+../../../../../build/obj/platform.o: ../../../lib/libfdt/libfdt.h
+../../../../../build/obj/platform.o: ../../../lib/libfdt/libfdt_env.h
+../../../../../build/obj/platform.o: ../../../lib/libfdt/fdt.h
 ../../../../../build/obj/cpua.o: ../../../platforms/mips/almo1/cpu.h
 ../../../../../build/obj/cpua.o: ../../../common/syscalls.h
