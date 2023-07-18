@@ -12,20 +12,19 @@
 
 include Makefile.libfdt
 
-SRCDIR=../..
-BLDDIR=../../../../build
-OBJDIR=$(BLDDIR)/obj
+SOC		?= almo1
+
+SRCDIR	=	../..
+BLDDIR	=	../../../../build
+OBJDIR	=	$(BLDDIR)/obj
 
 # Objects from Makefile.libfdt
 LIBFDT_OBJS:=$(addprefix $(OBJDIR)/,$(LIBFDT_OBJS))
 
-CC     	= mipsel-unknown-elf-gcc#		compiler
-LD     	= mipsel-unknown-elf-ld#		linker
-OD     	= mipsel-unknown-elf-objdump#	desassembler
+include $(SRCDIR)/platforms/$(SOC)/Makefile.$(SOC)
 
 CFLAGS  = -c#							stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#				gives almost all C warnings and considers them to be errors
-CFLAGS += -mips32r2#					define of MIPS version
 CFLAGS += -std=c99#						define of syntax version of C
 CFLAGS += -fno-common#					do not use common sections for non-static vars (only bss)
 CFLAGS += -fno-builtin#					do not use builtin functions of gcc (such as strlen)

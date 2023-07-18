@@ -12,12 +12,14 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
+SOC 	?= almo1
+VERBOSE	?= 1
+
 BLDDIR	= ../../../build#			build directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 SRCDIR	= ..#						root of the source files
 OBJDIR	= $(BLDDIR)/obj#			object files directory
 PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
-VERBOSE	?= 1
 
 # Sources
 # --------------------------------------------------------------------------------------------------
@@ -38,13 +40,10 @@ PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-CC     = mipsel-unknown-elf-gcc#	compiler
-LD     = mipsel-unknown-elf-ld#		linker
-OD     = mipsel-unknown-elf-objdump#desassembler
+include $(SRCDIR)/platforms/$(SOC)/Makefile.$(SOC)
 
-CFLAGS  = -c#						stop after compilation, then produce .o
+CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
-CFLAGS += -mips32r2#				define of MIPS version
 CFLAGS += -std=c99#					define of syntax version of C
 CFLAGS += -fno-common#				do not use common sections for non-static vars (only bss)
 CFLAGS += -fno-builtin#				do not use builtin functions of gcc (such as strlen)

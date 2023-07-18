@@ -35,7 +35,7 @@ BIN     = $(BLDDIR)/$(CURDIR).x#	the binary file has the name of directory
 # --------------------------------------------------------------------------------------------------
 
 SRC	   ?= "source files"#			must be defined in all app Makefiles		
-LDSCRIPT= $(SRCDIR)/platforms/mips/almo1/user.ld#		ldscript is hal dependent
+LDSCRIPT= $(SRCDIR)/platforms/almo1/user.ld#		ldscript is hal dependent
 
 # Targets
 # --------------------------------------------------------------------------------------------------
@@ -52,13 +52,10 @@ OBJLIB	= $(addprefix $(OBJRDIR)/,$(LIB))
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-CC     = mipsel-unknown-elf-gcc#	compiler
-LD     = mipsel-unknown-elf-ld#		linker
-OD     = mipsel-unknown-elf-objdump#desassembler
+include $(SRCDIR)/platforms/$(SOC)/Makefile.$(SOC)
 
 CFLAGS  = -c#				stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#		gives almost all C warnings and considers them to be errors
-CFLAGS += -mips32r2#			define of MIPS version
 CFLAGS += -std=c99#			define of syntax version of C
 CFLAGS += -fno-common#			do not use common sections for non-static vars (only bss)
 CFLAGS += -fno-builtin#			do not use builtin functions of gcc (such as strlen)

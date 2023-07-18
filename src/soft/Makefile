@@ -36,13 +36,13 @@ help:
 	@echo ""
 
 compil: tags
-	make -C lib/libfdt	$(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	make -C hal     	$(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	make -C drivers 	$(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	make -C kernel 		$(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	make -C platforms/mips/almo1 $(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	make -C ulib   		$(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	make -C uapp   		$(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE) 
+	make -C lib/libfdt	$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
+	make -C hal     	$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
+	make -C drivers 	$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
+	make -C kernel 		$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
+	make -C platforms/almo1 $(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
+	make -C ulib   		$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
+	make -C uapp   		$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE) 
 
 tags:
 	find . -name *.[chS] | xargs ctags
@@ -61,7 +61,7 @@ clean:
 	-make -C hal    	$(MAKOPT) clean
 	-make -C drivers 	$(MAKOPT) clean
 	-make -C kernel 	$(MAKOPT) clean
-	-make -C platforms/mips/almo1 $(MAKOPT) clean
+	-make -C platforms/almo1 $(MAKOPT) clean
 	-make -C kernel 	$(MAKOPT) clean
 	-make -C ulib   	$(MAKOPT) clean
 	-make -C uapp   	$(MAKOPT) clean

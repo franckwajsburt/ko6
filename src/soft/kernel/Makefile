@@ -18,13 +18,15 @@ NTTYS  ?= 1#						default number of ttys
 NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
 BLDDIR	= ../../../build#			build directory
-COMDIR	= ../common#				user & kernel common files directory
+SRCDIR 	= ..
+COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
 LIBDIR	= .#						library directory (where is ldscript)
-HALDIR	= ../hal#					hardware abstraction layer (hal) files directory
+HALDIR	= $(SRCDIR)/hal#			hardware abstraction layer (hal) files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJDIR	= $(BLDDIR)/obj#			object files directory
 PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 LIBDIR  = ../../lib#				external libraries directory
+
 # Sources
 # --------------------------------------------------------------------------------------------------
 
@@ -56,13 +58,10 @@ PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-CC     = mipsel-unknown-elf-gcc#	compiler
-LD     = mipsel-unknown-elf-ld#		linker
-OD     = mipsel-unknown-elf-objdump#desassembler
+include $(SRCDIR)/platforms/$(SOC)/Makefile.$(SOC)
 
-CFLAGS  = -c#						stop after compilation, then produce .o
+CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
-CFLAGS += -mips32r2#				define of MIPS version
 CFLAGS += -std=c99#					define of syntax version of C
 CFLAGS += -fno-common#				do not use common sections for non-static vars (only bss)
 CFLAGS += -fno-builtin#				do not use builtin functions of gcc (such as strlen)
@@ -74,7 +73,6 @@ CFLAGS += -I$(LIBDIR)/libfdt#		include external libraries (specifically libfdt.h
 CFLAGS += -DNTTYS=$(NTTYS)#			#define NTTYS with the number of ttys in the prototype
 CFLAGS += -DNCPUS=$(NCPUS)#			#define NCPUS with the number of cpus in the prototype
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
-CFLAGS += -DTH_CONTEXT_SIZE=13
 
 # Rules (here they are used such as simple shell scripts)
 # --------------------------------------------------------------------------------------------------

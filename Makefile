@@ -58,16 +58,16 @@ help:
 	@echo ""
 
 compil: 
-	make -C $(SWDIR) $(MAKOPT) compil NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
+	make -C $(SWDIR) $(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
 
 pdf:
 	make -C $(SWDIR) $(MAKOPT) pdf SOC=$(SOC)
 
 exec: compil
-	$(SX) -KERNEL $(BLDDIR)/almo1.x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)
+	$(SX) -KERNEL $(BLDDIR)/$(SOC).x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)
 
 debug: compil 
-	$(SX) -KERNEL $(BLDDIR)/almo1.x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)\
+	$(SX) -KERNEL $(BLDDIR)/$(SOC).x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)\
           -DEBUG $(FROM) -NCYCLES $(LAST) > $(DLOG)
 	tracelog $(SWDIR)/tags $(BLDDIR)/*.x.s $(DLOG)
 

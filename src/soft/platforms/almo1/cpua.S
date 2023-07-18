@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/almo1/hcpua.S
+  \file     platforms/almo1/cpua.S
   \author   Franck Wajsburt
   \brief    cpu specific assembly code which implement a part of hcpu.h API
             - There are several independant parts :
@@ -19,7 +19,7 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <platforms/mips/almo1/cpu.h>
+#include <platforms/almo1/cpu.h>
 #include <common/syscalls.h>
 
 //--------------------------------------------------------------------------------------------------

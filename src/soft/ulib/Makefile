@@ -13,18 +13,18 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
-SOC    ?= almo1#			defaut SOC name
-NTTYS  ?= 1#				default number of ttys
-NCPUS  ?= 1#				default number of CPUS
-VERBOSE?= 0#				verbose mode to print INFO(), BIP(), ASSERT, VAR()
-BLDDIR	= ../../../build#		build directory
+SOC    ?= almo1#					defaut SOC name
+NTTYS  ?= 1#						default number of ttys
+NCPUS  ?= 1#						default number of CPUS
+VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
+BLDDIR	= ../../../build#			build directory
 SRCDIR 	= ..
 COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
 HALDIR	= $(SRCDIR)/hal#			hardware abstraction layer (hal) files directory
-SOCDIR	= $(SRCDIR)/platforms/mips/almo1#		current soc hardware abstraction layer (hal) files directory
+SOCDIR	= $(SRCDIR)/platforms/almo1#current soc hardware abstraction layer (hal) files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
-OBJDIR	= $(BLDDIR)/obj#		object files directory
-PDFDIR	= $(BLDDIR)/pdf#		pdf files directory
+OBJDIR	= $(BLDDIR)/obj#			object files directory
+PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 
 # Sources
 # --------------------------------------------------------------------------------------------------
@@ -49,12 +49,10 @@ PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-CC     = mipsel-unknown-elf-gcc#	compiler
-OD     = mipsel-unknown-elf-objdump#desassembler
+include $(SRCDIR)/platforms/$(SOC)/Makefile.$(SOC)
 
 CFLAGS  = -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
-CFLAGS += -mips32r2#				define of MIPS version
 CFLAGS += -std=c99#					define of syntax version of C
 CFLAGS += -fno-common#				do not use common sections for non-static vars (only bss)
 CFLAGS += -fno-builtin#				do not use builtin functions of gcc (such as strlen)
