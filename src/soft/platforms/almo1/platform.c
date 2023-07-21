@@ -1,6 +1,6 @@
+#include <drivers/chardev/soclib-tty.h>
 #include <drivers/timer/soclib-timer.h>
 #include <drivers/icu/soclib-icu.h>
-#include <drivers/tty/soclib-tty.h>
 #include <drivers/dma/soclib-dma.h>
 #include <kernel/kthread.h>
 #include <kernel/klibc.h>
@@ -66,9 +66,9 @@ int arch_tty_init(void *fdt)
         unsigned irq = get_irq(fdt, tty_off);
 
         // Allocate the structure and add it in the global device list
-        struct tty_s *tty = tty_alloc();
+        struct chardev_s *tty = chardev_alloc();
         // Initialize the device
-        soclib_tty_ops.tty_init(tty, addr, 0);
+        soclib_tty_ops.chardev_init(tty, addr, 0);
         // Unmask the interrupt
         icu->ops->icu_unmask(icu, irq);
         // Register the corresponding ISR

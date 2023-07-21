@@ -43,7 +43,7 @@ OBJ 	+= $(OBJDIR)/soclib-dma.o $(OBJDIR)/soclib-icu.o
 OBJ 	+= $(OBJDIR)/soclib-timer.o $(OBJDIR)/soclib-tty.o
 OBJ 	+= $(OBJDIR)/kinit.o $(OBJDIR)/klibc.o $(OBJDIR)/kmemory.o
 OBJ 	+= $(OBJDIR)/ksynchro.o $(OBJDIR)/ksyscalls.o $(OBJDIR)/kthread.o
-OBJ 	+= $(OBJDIR)/tty.o $(OBJDIR)/irq.o $(OBJDIR)/dev.o
+OBJ 	+= $(OBJDIR)/chardev.o $(OBJDIR)/irq.o $(OBJDIR)/dev.o
 OBJ 	+= $(OBJDIR)/libfdt.a
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
@@ -136,15 +136,11 @@ depend :
 ../../../../build/obj/cpuc.o: ../../common/usermem.h ../../hal/cpu/atomic.h
 ../../../../build/obj/cpuc.o: ../../hal/cpu/cache.h ../../hal/platform.h
 ../../../../build/obj/cpuc.o: ../../hal/cpu/irq.h ../../hal/cpu/cpu.h
-../../../../build/obj/cpuc.o: ../../hal/tty.h ../../hal/dev.h
+../../../../build/obj/cpuc.o: ../../hal/chardev.h ../../hal/dev.h
 ../../../../build/obj/cpuc.o: ../../kernel/kmemory.h ../../kernel/kthread.h
 ../../../../build/obj/cpuc.o: ../../kernel/ksynchro.h
-../../../../build/obj/platform.o: ../../drivers/timer/soclib-timer.h
-../../../../build/obj/platform.o: ../../hal/timer.h
-../../../../build/obj/platform.o: ../../drivers/icu/soclib-icu.h
-../../../../build/obj/platform.o: ../../hal/icu.h
-../../../../build/obj/platform.o: ../../drivers/tty/soclib-tty.h
-../../../../build/obj/platform.o: ../../hal/tty.h ../../common/errno.h
+../../../../build/obj/platform.o: ../../drivers/chardev/soclib-tty.h
+../../../../build/obj/platform.o: ../../hal/chardev.h ../../common/errno.h
 ../../../../build/obj/platform.o: ../../common/list.h ../../hal/dev.h
 ../../../../build/obj/platform.o: ../../kernel/klibc.h
 ../../../../build/obj/platform.o: ../../common/debug_off.h
@@ -158,6 +154,10 @@ depend :
 ../../../../build/obj/platform.o: ../../kernel/kmemory.h
 ../../../../build/obj/platform.o: ../../kernel/kthread.h
 ../../../../build/obj/platform.o: ../../kernel/ksynchro.h
+../../../../build/obj/platform.o: ../../drivers/timer/soclib-timer.h
+../../../../build/obj/platform.o: ../../hal/timer.h
+../../../../build/obj/platform.o: ../../drivers/icu/soclib-icu.h
+../../../../build/obj/platform.o: ../../hal/icu.h
 ../../../../build/obj/platform.o: ../../drivers/dma/soclib-dma.h
 ../../../../build/obj/platform.o: ../../hal/dma.h ../../lib/libfdt/libfdt.h
 ../../../../build/obj/platform.o: ../../lib/libfdt/libfdt_env.h

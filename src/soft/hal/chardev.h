@@ -4,43 +4,43 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/tty.h
+  \file     hal/chardev.h
   \author   Franck Wajsburt, Nolan Bled
-  \brief    Generic TTY functions prototypes
+  \brief    Generic CHARDEV functions prototypes
 
 \*------------------------------------------------------------------------------------------------*/
 
-#ifndef _HAL_TTY_H_
-#define _HAL_TTY_H_
+#ifndef _HAL_CHARDEV_H_
+#define _HAL_CHARDEV_H_
 
 #include <common/errno.h>
 #include <common/list.h>
 #include <hal/dev.h>
 
-#define TTY_FIFO_DEPTH 20
+#define CHARDEV_FIFO_DEPTH 20
 
-struct tty_s;
+struct chardev_s;
 
-struct tty_ops_s {
-    void (*tty_init)(struct tty_s *tty, unsigned address, unsigned baudrate);
+struct chardev_ops_s {
+    void (*chardev_init)(struct chardev_s *chardev, unsigned address, unsigned baudrate);
 
     /**
-     * \brief   Generic function that write to the tty device
-     * \param   tty     the tty device
-     * \param   buf     the buffer to write to the tty
+     * \brief   Generic function that write to the chardev device
+     * \param   chardev     the chardev device
+     * \param   buf     the buffer to write to the chardev
      * \param   count   the number of bytes to write
      * \return  number of bytes actually written
     */
-    int (*tty_write)(struct tty_s *tty, char *buf, unsigned count);
+    int (*chardev_write)(struct chardev_s *chardev, char *buf, unsigned count);
 
     /**
-     * \brief   Generic function that reads from the tty device
-     * \param   tty     the tty device
-     * \param   buf     the buffer that will receive the data from the tty
+     * \brief   Generic function that reads from the chardev device
+     * \param   chardev     the chardev device
+     * \param   buf     the buffer that will receive the data from the chardev
      * \param   count   the number of bytes that should be written into the buffer
      * \return  number of bytes actually read
     */
-    int (*tty_read)(struct tty_s *tty, char *buf, unsigned count);
+    int (*chardev_read)(struct chardev_s *chardev, char *buf, unsigned count);
 };
 
 /**
@@ -53,40 +53,40 @@ struct tty_ops_s {
  * then when we push a data, we write it at pt_write, the we increment pt_write % fifo_size.
  * The fifo is full when it remains only one free cell, then when (pt_write + 1)%size == pt_read
  */
-struct tty_fifo_s {
-    char data [TTY_FIFO_DEPTH];
+struct chardev_fifo_s {
+    char data [CHARDEV_FIFO_DEPTH];
     unsigned pt_read;
     unsigned pt_write;
 };
 
-struct tty_s {
+struct chardev_s {
     unsigned address;           // memory-mapped register addresses
-    unsigned baudrate;          // tty baudrate
-    list_t list;                // linked-list entry into the tty's list
-    unsigned no;                // number of the tty entry in the tty's list
-    struct tty_fifo_s fifo;
-    struct tty_ops_s *ops;      // driver specific operations linked to the tty
+    unsigned baudrate;          // chardev baudrate
+    list_t list;                // linked-list entry into the chardev's list
+    unsigned no;                // number of the chardev entry in the chardev's list
+    struct chardev_fifo_s fifo;
+    struct chardev_ops_s *ops;      // driver specific operations linked to the chardev
 };
 
-#define tty_alloc() (struct tty_s*) (dev_alloc(TTY_DEV, sizeof(struct tty_s))->data)
-#define tty_get(no) (struct tty_s*) (dev_get(TTY_DEV, no)->data)
+#define chardev_alloc() (struct chardev_s*) (dev_alloc(CHAR_DEV, sizeof(struct chardev_s))->data)
+#define chardev_get(no) (struct chardev_s*) (dev_get(CHAR_DEV, no)->data)
 
-/* Helper functions for TTY's FIFOs */
+/* Helper functions for CHARDEV's FIFOs */
 
 /**
- * \brief   push a character into the tty's FIFO
+ * \brief   push a character into the chardev's FIFO
  * \param   fifo    structure of fifo to store data
  * \param   c       char to write
  * \return  SUCCESS or FAILURE
  */
-int tty_fifo_push (struct tty_fifo_s *fifo, char c);
+int chardev_fifo_push (struct chardev_fifo_s *fifo, char c);
 
 /**
- * \brief   pop a character from the tty's FIFO
+ * \brief   pop a character from the chardev's FIFO
  * \param   fifo    structure of fifo to store data
  * \param   c       pointer on char to put the read char 
  * \return  SUCCESS or FAILURE
  */
-int tty_fifo_pull (struct tty_fifo_s *fifo, int *c);
+int chardev_fifo_pull (struct chardev_fifo_s *fifo, int *c);
 
 #endif

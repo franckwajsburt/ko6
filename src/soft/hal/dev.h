@@ -55,7 +55,7 @@
 #include <kernel/klibc.h>
 
 enum dev_tag_e {
-    TTY_DEV,
+    CHAR_DEV,
     ICU_DEV,
     DMA_DEV,
     TIMER_DEV

@@ -13,7 +13,7 @@
 #ifndef _SOCLIB_TTY_H_
 #define _SOCLIB_TTY_H_
 
-#include <hal/tty.h>
+#include <hal/chardev.h>
 #include <hal/cpu/irq.h>
 #include <kernel/kthread.h>
 
@@ -24,8 +24,8 @@ struct soclib_tty_regs_s {
     int unused;
 };
 
-void soclib_tty_isr(unsigned irq, struct tty_s *tty);
+void soclib_tty_isr(unsigned irq, struct chardev_s *cdev);
 
-extern struct tty_ops_s soclib_tty_ops;
+extern struct chardev_ops_s soclib_tty_ops;
 
 #endif

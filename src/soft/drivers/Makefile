@@ -31,7 +31,7 @@ PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 SRC	=	dma/soclib-dma.c
 SRC +=	icu/soclib-icu.c
 SRC += 	timer/soclib-timer.c
-SRC += 	tty/soclib-tty.c
+SRC += 	chardev/soclib-tty.c
 
 # Targets
 # --------------------------------------------------------------------------------------------------
@@ -117,7 +117,7 @@ $(OBJDIR)/%.o : timer/%.c
 	$(OD) -D $@ > $@.s
 
 
-$(OBJDIR)/%.o : tty/%.c
+$(OBJDIR)/%.o : chardev/%.c
 	@echo "- compil  --> "$(notdir $@)
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s

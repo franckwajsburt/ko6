@@ -4,20 +4,20 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/tty.c
+  \file     hal/chardev.c
   \author   Franck Wajsburt, Nolan Bled
   \brief    TTYs management helper functions
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <hal/tty.h>
+#include <hal/chardev.h>
 
-list_t ttyList = {
-    .next = &ttyList,
-    .prev = &ttyList
+list_t chardevList = {
+    .next = &chardevList,
+    .prev = &chardevList
 };
 
-int tty_fifo_push (struct tty_fifo_s *fifo, char c)
+int chardev_fifo_push (struct chardev_fifo_s *fifo, char c)
 {
     unsigned pt_write_next = (fifo->pt_write + 1) % sizeof(fifo->data);
     if (pt_write_next != fifo->pt_read) {
@@ -28,7 +28,7 @@ int tty_fifo_push (struct tty_fifo_s *fifo, char c)
     return FAILURE;
 }
 
-int tty_fifo_pull (struct tty_fifo_s *fifo, int *c)
+int chardev_fifo_pull (struct chardev_fifo_s *fifo, int *c)
 {
     if (fifo->pt_read != fifo->pt_write) {
         *c = fifo->data [fifo->pt_read];

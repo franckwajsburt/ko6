@@ -10,22 +10,22 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <drivers/tty/soclib-tty.h>
+#include <drivers/chardev/soclib-tty.h>
 
-static void soclib_tty_init(struct tty_s *tty, unsigned address, unsigned baudrate)
+static void soclib_tty_init(struct chardev_s *cdev, unsigned address, unsigned baudrate)
 {
-    tty->ops        = &soclib_tty_ops;
-    tty->address    = address;
-    tty->baudrate   = baudrate;
+    cdev->ops        = &soclib_tty_ops;
+    cdev->address    = address;
+    cdev->baudrate   = baudrate;
 }
 
-static int soclib_tty_read(struct tty_s *tty, char *buf, unsigned count)
+static int soclib_tty_read(struct chardev_s *cdev, char *buf, unsigned count)
 {
     int res = 0;                                        // nb of read char
     int c;                                              // char read
 
     while (count--) {
-        while (tty_fifo_pull(&tty->fifo, &c) == FAILURE) {  // wait for a char from the keyboard
+        while (chardev_fifo_pull(&cdev->fifo, &c) == FAILURE) {  // wait for a char from the keyboard
             thread_yield();                                 // nothing then we yield the processor
             irq_enable();                                   // get few characters if thread is alone
             irq_disable();                                  // close enter
@@ -36,11 +36,11 @@ static int soclib_tty_read(struct tty_s *tty, char *buf, unsigned count)
     return res;                                         // return the number of char read
 }
 
-static int soclib_tty_write(struct tty_s *tty, char *buf, unsigned count)
+static int soclib_tty_write(struct chardev_s *cdev, char *buf, unsigned count)
 {
     int res = 0;                                        // nb of written char
     struct soclib_tty_regs_s *regs = 
-        (struct soclib_tty_regs_s *) tty->address;      // access the registers
+        (struct soclib_tty_regs_s *) cdev->address;      // access the registers
     
     while (count--) {                                   // while there are chars
         regs->write = *buf;                             // send the char to TTY
@@ -51,16 +51,16 @@ static int soclib_tty_write(struct tty_s *tty, char *buf, unsigned count)
     return res;
 }
 
-struct tty_ops_s soclib_tty_ops = {
-    .tty_init = soclib_tty_init,
-    .tty_read = soclib_tty_read,
-    .tty_write = soclib_tty_write
+struct chardev_ops_s soclib_tty_ops = {
+    .chardev_init = soclib_tty_init,
+    .chardev_read = soclib_tty_read,
+    .chardev_write = soclib_tty_write
 };
 
-void soclib_tty_isr(unsigned irq, struct tty_s *tty)
+void soclib_tty_isr(unsigned irq, struct chardev_s *cdev)
 {
     struct soclib_tty_regs_s *regs = 
-        (struct soclib_tty_regs_s *) tty->address;
+        (struct soclib_tty_regs_s *) cdev->address;
     char c = regs->read;
-    tty_fifo_push(&tty->fifo, c);
+    chardev_fifo_push(&cdev->fifo, c);
 }

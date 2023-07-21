@@ -52,18 +52,18 @@ void exit (int status)
 
 int tty_read (int tty, char *buf, unsigned count)
 {
-    struct tty_s *tty_drv = tty_get(tty);
-    if (tty_drv)
-        return tty_drv->ops->tty_read(tty_drv, buf, count);
+    struct chardev_s *cdev = chardev_get(tty);
+    if (cdev)
+        return cdev->ops->chardev_read(cdev, buf, count);
     // TODO: do a more specific error if the TTY is unavailable
     return -1;
 }
 
 int tty_write (int tty, char *buf, unsigned count)
 {
-    struct tty_s *tty_drv = tty_get(tty);
-    if (tty_drv)
-        return tty_drv->ops->tty_write(tty_drv, buf, count);
+    struct chardev_s *cdev = chardev_get(tty);
+    if (cdev)
+        return cdev->ops->chardev_write(cdev, buf, count);
     return -1;
 }
 
