@@ -44,6 +44,7 @@ static int soclib_tty_write(struct tty_s *tty, char *buf, unsigned count)
     
     while (count--) {                                   // while there are chars
         regs->write = *buf;                             // send the char to TTY
+        delay(150);
         res++;                                          // nb of written char
         buf++;		                                    // but is the next address in buffer
     }
