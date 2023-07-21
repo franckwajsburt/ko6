@@ -10,22 +10,48 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <drivers/tty/ns16550.h>
+#include <drivers/chardev/ns16550.h>
 
-static void ns16550_init(struct tty_s *tty, unsigned address, unsigned baudrate)
+static void ns16550_init(struct chardev_s *cdev, unsigned address, unsigned baudrate)
 {
-    tty->ops        = &ns16550_ops;
-    tty->address    = address;
-    tty->baudrate   = baudrate;
+    cdev->ops        = &ns16550_ops;
+    cdev->address    = address;
+    cdev->baudrate   = baudrate;
+
+    volatile struct ns16550_general_regs_s *gregs =
+        (struct ns16550_general_regs_s *) address;
+
+    // Enable only the interrupt that tells us we receive a character
+    // TODO: in the future, we could also manage de THR Empty interrupt
+    gregs->ier = NS16550_INT_DATA_READY; 
+    
+    // Disable hw FIFO
+    gregs->fcr = 0;
+
+    // 8 bits word length, no parity
+    gregs->lcr = NS16550_WORD_LENGTH_8;
+
+    // Set baudrate 
+    gregs->lcr |= NS16550_ENABLE_DLAB;
+    
+    volatile struct ns16550_dlab_regs_s *dregs =
+        (struct ns16550_dlab_regs_s *) address;
+    // can't find it elsewhere but xv6 assume a 1843200hz frequency for the uart
+    // TODO: handle the PSD register
+    unsigned short dl = 1843200 / (16 * baudrate);
+    dregs->dll = dl & 0xff;
+    dregs->dlm = (dl & 0xff00) >> 8;
+
+    gregs->lcr &= ~(NS16550_ENABLE_DLAB);
 }
 
-static int ns16550_read(struct tty_s *tty, char *buf, unsigned count)
+static int ns16550_read(struct chardev_s *cdev, char *buf, unsigned count)
 {
     int res = 0;                                        // nb of read char
     int c;                                              // char read
 
     while (count--) {
-        while (tty_fifo_pull(&tty->fifo, &c) == FAILURE) {  // wait for a char from the keyboard
+        while (chardev_fifo_pull(&cdev->fifo, &c) == FAILURE) {  // wait for a char from the keyboard
             thread_yield();                                 // nothing then we yield the processor
             irq_enable();                                   // get few characters if thread is alone
             irq_disable();                                  // close enter
@@ -36,11 +62,11 @@ static int ns16550_read(struct tty_s *tty, char *buf, unsigned count)
     return res;                                         // return the number of char read
 }
 
-static int ns16550_write(struct tty_s *tty, char *buf, unsigned count)
+static int ns16550_write(struct chardev_s *cdev, char *buf, unsigned count)
 {
     int res = 0;                                        // nb of written char
-    struct ns16550_general_regs_s *regs = 
-        (struct ns16550_general_regs_s *) tty->address;      // access the registers
+    volatile struct ns16550_general_regs_s *regs = 
+        (struct ns16550_general_regs_s *) cdev->address;      // access the registers
     
     while (count--) {                                   // while there are chars
         regs->hr = *buf;                                // send the char to TTY
@@ -50,16 +76,16 @@ static int ns16550_write(struct tty_s *tty, char *buf, unsigned count)
     return res;
 }
 
-struct tty_ops_s ns16550_ops = {
-    .tty_init = ns16550_init,
-    .tty_read = ns16550_read,
-    .tty_write = ns16550_write
+struct chardev_ops_s ns16550_ops = {
+    .chardev_init = ns16550_init,
+    .chardev_read = ns16550_read,
+    .chardev_write = ns16550_write
 };
 
-void ns16550_isr(unsigned irq, struct tty_s *tty)
+void ns16550_isr(unsigned irq, struct chardev_s *cdev)
 {
-    struct ns16550_general_regs_s *regs = 
-        (struct ns16550_general_regs_s *) tty->address;
+    volatile struct ns16550_general_regs_s *regs = 
+        (struct ns16550_general_regs_s *) cdev->address;
     char c = regs->hr;
-    tty_fifo_push(&tty->fifo, c);
+    chardev_fifo_push(&cdev->fifo, c);
 }
