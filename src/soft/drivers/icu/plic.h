@@ -1,5 +1,5 @@
-#ifndef _SOCLIB_ICU_H_
-#define _SOCLIB_ICU_H_
+#ifndef _PLIC_H_
+#define _PLIC_H_
 
 #include <kernel/klibc.h>
 #include <hal/icu.h>

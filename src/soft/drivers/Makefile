@@ -30,7 +30,7 @@ PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 
 SRC	=	dma/soclib-dma.c
 SRC +=	icu/soclib-icu.c icu/plic.c
-SRC += 	timer/soclib-timer.c
+SRC += 	timer/soclib-timer.c timer/clint-timer.c
 SRC += 	chardev/soclib-tty.c chardev/ns16550.c
 
 # Targets

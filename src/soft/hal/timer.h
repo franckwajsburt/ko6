@@ -48,6 +48,7 @@ struct timer_event_s {
 
 struct timer_s {
     unsigned address;               // timer's address
+    unsigned period;                // number of ticks between two events
     struct timer_event_s event;     // event triggered each nticks
     struct timer_ops_s *ops;        // driver-specific operations
 };
