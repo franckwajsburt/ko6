@@ -51,13 +51,12 @@ PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 
 include $(SRCDIR)/platforms/$(SOC)/Makefile.$(SOC)
 
-CFLAGS  = -c#						stop after compilation, then produce .o
+CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
 CFLAGS += -std=c99#					define of syntax version of C
 CFLAGS += -fno-common#				do not use common sections for non-static vars (only bss)
 CFLAGS += -fno-builtin#				do not use builtin functions of gcc (such as strlen)
 CFLAGS += -fomit-frame-pointer#		only use of stack pointer ($29)
-CFLAGS += -G0#						do not use global data pointer ($28)
 CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += -I. -I.. -I$(COMDIR)#		directories where include files like <file.h> are located
 CFLAGS += -I$(HALDIR) -I$(SOCDIR)#	directory where hal include files are located
