@@ -11,6 +11,7 @@
 \*------------------------------------------------------------------------------------------------*/
 
 #include <drivers/timer/soclib-timer.h>
+#include <kernel/klibc.h>
 
 static void soclib_timer_set_tick(struct timer_s *timer, unsigned tick)
 {
