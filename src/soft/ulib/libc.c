@@ -38,7 +38,7 @@ void delay (unsigned nbcycles)
 {
     unsigned old_time, expected_time;
 
-    old_time = clock ();                        // get the number od cycles at first
+    old_time = clock ();                        // get the number of cycles at first
     expected_time = old_time + nbcycles;        // compute the number of cycles to reach
     while (clock () < expected_time);           // wait for expected time
 }

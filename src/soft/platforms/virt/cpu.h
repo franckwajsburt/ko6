@@ -79,9 +79,9 @@
 #define KPANIC_T5        29
 #define KPANIC_T6        30
 #define KPANIC_MCYCLE    31
-#define KPANIC_MTVAL     33
-#define KPANIC_MSTATUS   34
-#define KPANIC_MEPC      35
-#define KPANIC_REGS_NR   36
+#define KPANIC_MTVAL     32
+#define KPANIC_MSTATUS   33
+#define KPANIC_MEPC      34
+#define KPANIC_REGS_NR   35
 
 #endif//_CPU_H_

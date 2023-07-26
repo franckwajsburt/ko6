@@ -82,10 +82,9 @@ static char *KPanicCauseName[16] = {
  * \brief   dump all registers values from a table filled by kpanic() then exit program
  *          this function cannot be static because it is used by hcpua.S file
  */
-void kdump (unsigned reg_tab[])
+void kdump (unsigned cause, unsigned reg_tab[])
 {
     int nl = 0;
-    int cause = (KPanicRegsVal[0] >> 2) & 0xF;
     char * message = (KDumpMessage) ? KDumpMessage : KPanicCauseName[cause];
 
     kprintf ("\n[%d] <%p> KERNEL PANIC: %s\n\n",
@@ -93,12 +92,14 @@ void kdump (unsigned reg_tab[])
             KPanicRegsVal[KPANIC_MEPC],                 // faulty instruction address
             message);                                   // Comprehensive cause name
     for (int i = 0; i < KPANIC_REGS_NR; i++) {
-        kprintf ("%s : %p     ", KPanicRegsName[i], KPanicRegsVal[i]);
+        kprintf ("%s : %p\t", KPanicRegsName[i], KPanicRegsVal[i]);
         if (++nl == 4) {
             kprintf ("\n");
             nl = 0;
         }
     }
+    kprintf("\n");
+
     sched_dump();
     while (1); // never returns
 }

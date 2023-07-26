@@ -54,5 +54,6 @@ struct timer_s {
 };
 #define timer_alloc() (struct timer_s*) (dev_alloc(TIMER_DEV, sizeof(struct timer_s))->data)
 #define timer_get(no) (struct timer_s*) (dev_get(TIMER_DEV, no)->data)
+#define timer_count() (dev_next_no(TIMER_DEV) - 1)
 
 #endif

@@ -90,15 +90,11 @@ int arch_timer_init(void *fdt, unsigned tick)
 
     while (timer_off != -FDT_ERR_NOTFOUND) {
         unsigned addr = get_base_address(fdt, timer_off);
-        unsigned irq = get_irq(fdt, timer_off);
 
         struct timer_s *timer = timer_alloc();
         clint_timer_ops.timer_init(timer, addr, tick);
         timer->ops->timer_set_event(timer, 
             (void (*)(void *)) thread_yield, (void *) 0);
-
-        icu->ops->icu_unmask(icu, irq);
-        register_interrupt(irq, (isr_t) clint_timer_isr, timer);
    
         timer_off = fdt_node_offset_by_compatible(fdt, timer_off, "sifive,clint0");
     }
@@ -152,10 +148,19 @@ int arch_init(void *fdt, int tick)
  *          and to launch the right ISR of the right device instance by using IRQVector tables.
  * TODO: maybe this should also be a "standard" function, declared in a HAL file
  */
-void isrcall()
+void isrcall(uint32_t mcause)
 {
-    struct icu_s *icu = icu_get(cpuid());           // get the ICU which has dev.no == cpuid()
-    int irq = icu->ops->icu_get_highest(icu);       // IRQ nb with the highest prio
-    route_interrupt(irq);                           // launch the ISR for the bound device
-    icu->ops->icu_acknowledge(icu, irq);
+    // Check if this a timer or an external interrupt
+    mcause &= ~(1 << 31);
+    if (mcause == 7) {
+        // Machine Timer interrupt
+        struct timer_s *timer = timer_get(0); // TODO: see if we should use cpuid() here instead of 0
+        clint_timer_isr(0, timer);
+    } else if (mcause == 11) {
+        // Machine external interrupt
+        struct icu_s *icu = icu_get(cpuid());           // get the ICU which has dev.no == cpuid()
+        int irq = icu->ops->icu_get_highest(icu);       // IRQ nb with the highest prio
+        route_interrupt(irq);                           // launch the ISR for the bound device
+        icu->ops->icu_acknowledge(icu, irq);
+    }
 }

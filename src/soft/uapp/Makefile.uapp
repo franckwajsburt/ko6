@@ -34,8 +34,8 @@ BIN     = $(BLDDIR)/$(CURDIR).x#	the binary file has the name of directory
 # Sources
 # --------------------------------------------------------------------------------------------------
 
-SRC	   ?= "source files"#			must be defined in all app Makefiles		
-LDSCRIPT= $(SRCDIR)/platforms/almo1/user.ld#		ldscript is hal dependent
+SRC	   ?= "source files"#							must be defined in all app Makefiles		
+LDSCRIPT= $(SRCDIR)/platforms/$(SOC)/user.ld#		ldscript is hal dependent
 
 # Targets
 # --------------------------------------------------------------------------------------------------

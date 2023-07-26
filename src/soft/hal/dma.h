@@ -36,5 +36,6 @@ struct dma_s {
 };
 #define dma_alloc() (struct dma_s*) (dev_alloc(DMA_DEV, sizeof(struct dma_s))->data)
 #define dma_get(no) (struct dma_s*) (dev_get(DMA_DEV, no)->data)
+#define dma_count() (dev_next_no(DMA_DEV) - 1)
 
 #endif

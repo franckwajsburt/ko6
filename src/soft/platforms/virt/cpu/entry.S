@@ -33,6 +33,13 @@ boot:                                   // qemu put pc at 0x80000000
     csrw    mtvec,  t0                  // set interrupt vector
     
     /* TODO: use pmp to protect kernel area */
+    // we need to disable protection on the memory
+    // not occupied by the kernel because by default
+    // U-mode cannot address any memory
+    not     t0, x0
+    csrw    pmpaddr0, t0
+    csrwi   pmpcfg0, 0b00011111         // NAPOT RWX
+     
     la      sp,     __kdata_end         // define stack ptr (first address after kdata region)
     mv      a0,     a1                  // qemu put fdt address in a1, we give it to kinit as a first argument
     call    kinit
@@ -70,6 +77,9 @@ kentry:                                 // kernel entry
 
 syscall_handler:
     // there's no need to restore t0/t1 since this is a syscall
+    // we still need to restore sp
+    addi    sp, sp, 8
+    
     la      t0, ThreadCurrent   // get the addr of the current thread pointer address
     lw      t0, 0(t0)           // get the current thread pointer
     lw      t0, 0(t0)           // get the kernel SP of the current thread
@@ -81,14 +91,13 @@ syscall_handler:
     addi    t0, t0, 4           // t0 <- MEPC+4 (return address)
     sw      ra, 1*4(sp)         // save ra because it will be erased
     sw      t0, 0*4(sp)         // save MEPC+4 (return address of syscall)
-    mv      a4, a0              // put syscall_code as last arg for debugging purposes
 
     la      t0, SyscallVector       // t0 <- table of syscall functions
-    andi    a0, a0, SYSCALL_NR-1    // apply syscall mask
-    sll     a0, a0, 2               // compute syscall index (mutiply by 4)
-    add     a0, t0, a0              // a0 <- & SyscallVector[a0]
-    lw      a0, (a0)                // at the end: a0 <- SyscallVector[a0]
-    jalr    a0                      // call service function
+    andi    t1, a4, SYSCALL_NR-1    // apply syscall mask
+    sll     t1, t1, 2               // compute syscall index (mutiply by 4)
+    add     t1, t0, t1              // a0 <- & SyscallVector[a0]
+    lw      t1, (t1)                // at the end: a0 <- SyscallVector[a0]
+    jalr    t1                      // call service function
 
     lw      t0, 0*4(sp)             // get return address of syscall
     lw      ra, 1*4(sp)             // restore $31 (return address of syscall function)
@@ -146,6 +155,7 @@ irq_kernel:
     sw      t5, 1*4(sp)
     sw      t6, 0*4(sp)
 
+    csrr    a0, mcause
     jal     isrcall     // call the right isr
 
     // restore all temporary registers and ra

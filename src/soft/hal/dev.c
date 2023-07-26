@@ -7,11 +7,6 @@ list_t devList = {      // Do the same thing the function list_init does
 
 unsigned dev_next_no(enum dev_tag_e tag)
 {
-    /**
-     * Find the last element added with corresponding tag
-     * To do so, we loop through the device list in a reverse order
-     * Once we found the last device, we add one to his number
-    */
     list_foreach_rev(&devList, item) {
         struct dev_s *dev = list_item(item, struct dev_s, list);
         if (dev->tag == tag)

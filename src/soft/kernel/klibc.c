@@ -52,6 +52,10 @@ void exit (int status)
 
 int tty_read (int tty, char *buf, unsigned count)
 {
+    /* If the tty is not available, default to 0 */
+    if (tty > chardev_count())
+        tty = 0;
+
     struct chardev_s *cdev = chardev_get(tty);
     if (cdev)
         return cdev->ops->chardev_read(cdev, buf, count);
@@ -61,6 +65,10 @@ int tty_read (int tty, char *buf, unsigned count)
 
 int tty_write (int tty, char *buf, unsigned count)
 {
+    /* If the tty is not available, default to 0 */
+    if (tty > chardev_count())
+        tty = 0;
+        
     struct chardev_s *cdev = chardev_get(tty);
     if (cdev)
         return cdev->ops->chardev_write(cdev, buf, count);

@@ -1,11 +1,11 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2023-02-18
+  | |__ /'v'\  / /      \date       2023-07-26
   | / /(     )/ _ \     \copyright  2021-2023 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/almo1/user.ld
-  \author   Franck Wajsburt
+  \file     platforms/virt/user.ld
+  \author   Nolan Bled
   \brief    user application ldscript (SoC dependant)
 
 \*------------------------------------------------------------------------------------------------*/

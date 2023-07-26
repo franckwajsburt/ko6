@@ -65,5 +65,6 @@ struct icu_s {
 };
 #define icu_alloc() (struct icu_s*) (dev_alloc(ICU_DEV, sizeof(struct icu_s))->data)
 #define icu_get(no) (struct icu_s*) (dev_get(ICU_DEV, no)->data)
+#define icu_count() (dev_next_no(ICU_DEV) - 1)
 
 #endif

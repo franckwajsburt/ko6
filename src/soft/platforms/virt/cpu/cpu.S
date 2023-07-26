@@ -91,6 +91,7 @@ kpanic:
     sw      t4, KPANIC_MEPC*4(t1)
 
     // jump to kdump(KPanicRegsVal)
-    mv      a0, t1
+    csrr    a0, mcause
+    mv      a1, t1
     la      t0, kdump
     jr      t0

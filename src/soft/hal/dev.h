@@ -71,6 +71,15 @@ struct dev_s {
 extern list_t devList;
 
 /**
+ * \brief   Find the last element added with corresponding tag
+ *          To do so, we loop through the device list in a reverse order
+ *          Once we found the last device, we add one to his number
+ * \param   tag type of the device (tty, icu, ...)
+ * \return  the next no (last device of this type no + 1)
+*/
+unsigned dev_next_no(enum dev_tag_e tag);
+
+/**
  * \brief   Allocate enough size in kernel heap to store device meta data (tag, no, list)
  *          and device data (struct tty_s, struct icu_s, ...) and add it into the global device
  *          list

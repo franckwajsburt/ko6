@@ -70,6 +70,7 @@ struct chardev_s {
 
 #define chardev_alloc() (struct chardev_s*) (dev_alloc(CHAR_DEV, sizeof(struct chardev_s))->data)
 #define chardev_get(no) (struct chardev_s*) (dev_get(CHAR_DEV, no)->data)
+#define chardev_count() (dev_next_no(CHAR_DEV) - 1)
 
 /* Helper functions for CHARDEV's FIFOs */
 
