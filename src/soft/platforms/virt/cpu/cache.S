@@ -24,6 +24,7 @@ cachelinesize:
 .globl dcache_buf_invalidate    // ---------- void dcache_buf_invalidate (void *buf, unsigned size);
 .globl dcache_invalidate        // -------------- void dcache_invalidate (void *addr);
 dcache_buf_invalidate:
+dcache_invalidate:
     ret                 // the is no way to invalidate dcache in riscv
                         // + qemu is assumed to have cache coherency
 

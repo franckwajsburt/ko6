@@ -21,3 +21,8 @@ syscall_fct:            # syscall_fct function label
     lw  $2,16($29)      # since syscall has 5 parameters, the fifth is in the stack"
     syscall             # EPC=addr_of_syscall; j 0x80000180; c0_sr.EXL=1; c0_cause.XCODE=8
     jr  $31             # $31 must not have changed
+
+.globl sbrk_s
+sbrk_s:
+    sw  $2,0($29)
+    jr  $31

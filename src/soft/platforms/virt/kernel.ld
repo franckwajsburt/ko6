@@ -23,6 +23,7 @@ __ktext_length   = 0x00020000 ;
 __kdata_origin   = 0x80021000 ;     /* first byte address of kernel data region */
 __kdata_length   = 0x003E0000 ;
 __kdata_end      = __kdata_origin + __kdata_length ; /* first addr after kernel data region */
+
 __text_origin    = 0x81000000 ;     /* first byte address of user code region */
 __text_length    = 0x00100000 ;
 __data_origin    = 0x81100000 ;     /* first byte address of user data region */
@@ -60,7 +61,9 @@ SECTIONS {
     .kbss : {
         __bss_origin = .;   /* first byte of uninitialized global variables */
         *(.*bss*)           /* uninitialized global variables */
-        . = ALIGN(4);       /* move the filling pointer to a word aligned address */
+        . = ALIGN(4096);    /* move the filling pointer to a page aligned address 
+                             * since we'll use it in kmemory, memory_init will fail with 
+                             * an unaligned address */
         __bss_end = .;      /* first byte after the bss section */
     } > kdata_region
 }

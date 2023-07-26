@@ -30,7 +30,7 @@ EC_WHITE
 "  |_\\_\\"EC_CYAN  X___X    EC_WHITE"\\___/\n\n"
 EC_RESET;
 
-void kinit (void)
+void kinit (void *fdt)
 {
     // put bss sections to zero. bss contains uninitialised global variables
     extern int __bss_origin;    // first int of bss section (defined in ldscript kernel.ld)
@@ -38,7 +38,7 @@ void kinit (void)
     for (int *a = &__bss_origin; a != &__bss_end; *a++ = 0);
 
     memory_init();                  // memory initialisation 
-    if (arch_init(200000) < 0)      // architecture initialisation takes the tick as argument
+    if (arch_init(fdt, 200000) < 0) // architecture initialisation takes the tick as argument
         goto sleep;                 // initialization failed, just sleep
 
     kprintf (Banner);

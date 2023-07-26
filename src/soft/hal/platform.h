@@ -18,9 +18,10 @@
  *            This function configures each used devices
  *            and configures which IRQ are used and how they are connected to the CPU
  *            thanks to the ICU Mask
+ * \param     fdt is the pointer to the flattened device tree
  * \param     tick is the time in cycles between to IRQ for the timer
  * \return    -1 if initialization fails, else 0
  */
-extern int arch_init (int tick);
+extern int arch_init (void *fdt, int tick);
 
 #endif

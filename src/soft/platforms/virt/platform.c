@@ -1,16 +1,19 @@
-#include <drivers/chardev/soclib-tty.h>
-#include <drivers/timer/soclib-timer.h>
-#include <drivers/icu/soclib-icu.h>
-#include <drivers/dma/soclib-dma.h>
+#include <drivers/timer/clint-timer.h>
+#include <drivers/chardev/ns16550.h>
+#include <drivers/icu/plic.h>
+
 #include <kernel/kthread.h>
 #include <kernel/klibc.h>
+
 #include <hal/cpu/irq.h>
+
 #include <lib/libfdt/libfdt.h>
 
 unsigned get_base_address(void *fdt, int offset)
 {
+    /* We fetch the second element since address-cells = 2 */
     return fdt32_to_cpu(
-        *(unsigned *) fdt_getprop(fdt, offset, "reg", NULL));
+        ((unsigned *) fdt_getprop(fdt, offset, "reg", NULL))[1]);
 }
 
 unsigned get_irq(void *fdt, int offset)
@@ -21,14 +24,14 @@ unsigned get_irq(void *fdt, int offset)
 
 void arch_icu_init(void *fdt)
 {
-    int icu_off = fdt_node_offset_by_compatible(fdt, -1, "soclib,icu");
+    int icu_off = fdt_node_offset_by_compatible(fdt, -1, "riscv,plic0");
     while (icu_off != -FDT_ERR_NOTFOUND) {
         unsigned addr = get_base_address(fdt, icu_off);
 
         struct icu_s *icu = icu_alloc();
-        soclib_icu_ops.icu_init(icu, addr);
+        plic_ops.icu_init(icu, addr);
 
-        icu_off = fdt_node_offset_by_compatible(fdt, icu_off, "soclib,icu");
+        icu_off = fdt_node_offset_by_compatible(fdt, icu_off, "riscv,plic0");
     }
 }
 
@@ -52,7 +55,7 @@ int arch_tty_init(void *fdt)
         return -1;
 
     // Find the first TTY device
-    int tty_off = fdt_node_offset_by_compatible(fdt, -1, "soclib,tty");
+    int tty_off = fdt_node_offset_by_compatible(fdt, -1, "ns16550a");
 
     // Loop until we can't find any more compatible ttys in the device tree
     while (tty_off != -FDT_ERR_NOTFOUND) {
@@ -63,14 +66,14 @@ int arch_tty_init(void *fdt)
         // Allocate the structure and add it in the global device list
         struct chardev_s *tty = chardev_alloc();
         // Initialize the device
-        soclib_tty_ops.chardev_init(tty, addr, 0);
+        ns16550_ops.chardev_init(tty, addr, 9600);
         // Unmask the interrupt
         icu->ops->icu_unmask(icu, irq);
         // Register the corresponding ISR
-        register_interrupt(irq, (isr_t) soclib_tty_isr, tty);
+        register_interrupt(irq, (isr_t) ns16550_isr, tty);
    
         // Find the next compatible tty
-        tty_off = fdt_node_offset_by_compatible(fdt, tty_off, "soclib,tty");
+        tty_off = fdt_node_offset_by_compatible(fdt, tty_off, "ns16550a");
     }
 
     return 0;
@@ -83,38 +86,24 @@ int arch_timer_init(void *fdt, unsigned tick)
     if (!icu)
         return -1;
 
-    int timer_off = fdt_node_offset_by_compatible(fdt, -1, "soclib,timer");
+    int timer_off = fdt_node_offset_by_compatible(fdt, -1, "sifive,clint0");
 
     while (timer_off != -FDT_ERR_NOTFOUND) {
         unsigned addr = get_base_address(fdt, timer_off);
         unsigned irq = get_irq(fdt, timer_off);
 
         struct timer_s *timer = timer_alloc();
-        soclib_timer_ops.timer_init(timer, addr, tick);
+        clint_timer_ops.timer_init(timer, addr, tick);
         timer->ops->timer_set_event(timer, 
             (void (*)(void *)) thread_yield, (void *) 0);
 
         icu->ops->icu_unmask(icu, irq);
-        register_interrupt(irq, (isr_t) soclib_timer_isr, timer);
+        register_interrupt(irq, (isr_t) clint_timer_isr, timer);
    
-        timer_off = fdt_node_offset_by_compatible(fdt, timer_off, "soclib,timer");
+        timer_off = fdt_node_offset_by_compatible(fdt, timer_off, "sifive,clint0");
     }
 
     return 0;
-}
-
-void arch_dma_init(void *fdt)
-{
-    // TODO: handle DMA interrupts
-    int dma_off = fdt_node_offset_by_compatible(fdt, -1, "soclib,dma");
-    while (dma_off != -FDT_ERR_NOTFOUND) {
-        unsigned addr = get_base_address(fdt, dma_off);
-
-        struct dma_s *dma = dma_alloc();
-        soclib_dma_ops.dma_init(dma, addr);
-
-        dma_off = fdt_node_offset_by_compatible(fdt, dma_off, "soclib,dma");
-    }
 }
 
 /**
@@ -148,8 +137,6 @@ int arch_init(void *fdt, int tick)
     if (arch_tty_init(fdt) < 0)
         return -1;
 
-    arch_dma_init(fdt);
-
     // Finish by the timer (we don't want to schedule anything until everything
     // is initialized)
     if (arch_timer_init(fdt, tick) < 0)
@@ -170,4 +157,5 @@ void isrcall()
     struct icu_s *icu = icu_get(cpuid());           // get the ICU which has dev.no == cpuid()
     int irq = icu->ops->icu_get_highest(icu);       // IRQ nb with the highest prio
     route_interrupt(irq);                           // launch the ISR for the bound device
+    icu->ops->icu_acknowledge(icu, irq);
 }

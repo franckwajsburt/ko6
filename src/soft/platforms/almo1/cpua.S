@@ -44,6 +44,7 @@ boot:                                   // must be 0xBFC0000 for the MIPS
     mtc0    $0,     $12                 // erase $c0_sr thus ERL because except must be 0x80000180
     la      $29,    __kdata_end         // define stack ptr (first address after kdata region)
     la      $26,    kinit               // get address of kinit() function
+    la      $4,     __dtb_address
     jr      $26                         // goto kinit()
 
 .section    .kentry,"ax"                // "ax": allocated executable

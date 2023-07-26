@@ -93,4 +93,4 @@ kpanic:
     // jump to kdump(KPanicRegsVal)
     mv      a0, t1
     la      t0, kdump
-    j       t0
+    jr      t0

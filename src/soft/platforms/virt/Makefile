@@ -27,7 +27,9 @@ PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 # Sources
 # --------------------------------------------------------------------------------------------------
 
-SRC = cpuc.c cpu/atomic.S cpu/irq.S cpu/thread.S cpu/cpu.S cpu/cache.S
+SRC = platform.c cpuc.c \
+	  cpu/atomic.S cpu/irqs.S cpu/thread.S \
+	  cpu/cpu.S cpu/cache.S cpu/entry.S
 LDSCRIPT= kernel.ld#				ldscript is hal dependent
 
 # Targets
@@ -39,8 +41,8 @@ OBJS    = $(subst .S,.o,$(foreach src,$(SRCS),$(notdir $(src))))
 OBJC    = $(subst .c,.o,$(foreach src,$(SRCC),$(notdir $(src))))
 OBJ     = $(addprefix $(OBJDIR)/,$(OBJS) $(OBJC))
 OBJ 	+= $(OBJDIR)/cstd.o $(OBJDIR)/errno.o
-OBJ 	+= $(OBJDIR)/soclib-dma.o $(OBJDIR)/soclib-icu.o
-OBJ 	+= $(OBJDIR)/soclib-timer.o $(OBJDIR)/soclib-tty.o
+OBJ 	+= $(OBJDIR)/plic.o
+OBJ 	+= $(OBJDIR)/clint-timer.o $(OBJDIR)/ns16550.o
 OBJ 	+= $(OBJDIR)/kinit.o $(OBJDIR)/klibc.o $(OBJDIR)/kmemory.o
 OBJ 	+= $(OBJDIR)/ksynchro.o $(OBJDIR)/ksyscalls.o $(OBJDIR)/kthread.o
 OBJ 	+= $(OBJDIR)/chardev.o $(OBJDIR)/irq.o $(OBJDIR)/dev.o
@@ -124,6 +126,27 @@ depend :
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRCC) $(SRCS)
 # DEPENDENCIES
 
+../../../../build/obj/platform.o: ../../drivers/timer/clint-timer.h
+../../../../build/obj/platform.o: ../../hal/timer.h
+../../../../build/obj/platform.o: ../../drivers/chardev/ns16550.h
+../../../../build/obj/platform.o: ../../hal/chardev.h ../../common/errno.h
+../../../../build/obj/platform.o: ../../common/list.h ../../hal/dev.h
+../../../../build/obj/platform.o: ../../kernel/klibc.h
+../../../../build/obj/platform.o: ../../common/debug_off.h
+../../../../build/obj/platform.o: ../../common/debug_on.h ../../common/cstd.h
+../../../../build/obj/platform.o: ../../common/esc_code.h
+../../../../build/obj/platform.o: ../../common/syscalls.h
+../../../../build/obj/platform.o: ../../common/usermem.h
+../../../../build/obj/platform.o: ../../hal/cpu/atomic.h
+../../../../build/obj/platform.o: ../../hal/cpu/cache.h ../../hal/platform.h
+../../../../build/obj/platform.o: ../../hal/cpu/thread.h ../../hal/cpu/irq.h
+../../../../build/obj/platform.o: ../../hal/cpu/cpu.h ../../kernel/kmemory.h
+../../../../build/obj/platform.o: ../../kernel/kthread.h
+../../../../build/obj/platform.o: ../../kernel/ksynchro.h
+../../../../build/obj/platform.o: ../../drivers/icu/plic.h ../../hal/icu.h
+../../../../build/obj/platform.o: ../../lib/libfdt/libfdt.h
+../../../../build/obj/platform.o: ../../lib/libfdt/libfdt_env.h
+../../../../build/obj/platform.o: ../../lib/libfdt/fdt.h
 ../../../../build/obj/cpuc.o: ../../platforms/virt/cpu.h ../../kernel/klibc.h
 ../../../../build/obj/cpuc.o: ../../common/debug_off.h
 ../../../../build/obj/cpuc.o: ../../common/debug_on.h ../../common/cstd.h
@@ -131,9 +154,10 @@ depend :
 ../../../../build/obj/cpuc.o: ../../common/errno.h ../../common/syscalls.h
 ../../../../build/obj/cpuc.o: ../../common/usermem.h ../../hal/cpu/atomic.h
 ../../../../build/obj/cpuc.o: ../../hal/cpu/cache.h ../../hal/platform.h
-../../../../build/obj/cpuc.o: ../../hal/cpu/irq.h ../../hal/cpu/cpu.h
-../../../../build/obj/cpuc.o: ../../hal/chardev.h ../../hal/dev.h
-../../../../build/obj/cpuc.o: ../../kernel/kmemory.h ../../kernel/kthread.h
-../../../../build/obj/cpuc.o: ../../kernel/ksynchro.h
+../../../../build/obj/cpuc.o: ../../hal/cpu/thread.h ../../hal/cpu/irq.h
+../../../../build/obj/cpuc.o: ../../hal/cpu/cpu.h ../../hal/chardev.h
+../../../../build/obj/cpuc.o: ../../hal/dev.h ../../kernel/kmemory.h
+../../../../build/obj/cpuc.o: ../../kernel/kthread.h ../../kernel/ksynchro.h
 ../../../../build/obj/cpu/thread.o: ../../platforms/virt/cpu.h
 ../../../../build/obj/cpu/cpu.o: ../../platforms/virt/cpu.h
+../../../../build/obj/cpu/entry.o: ../../common/syscalls.h

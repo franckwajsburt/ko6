@@ -23,7 +23,7 @@ LIBFDT_OBJS:=$(addprefix $(OBJDIR)/,$(LIBFDT_OBJS))
 
 include $(SRCDIR)/platforms/$(SOC)/Makefile.$(SOC)
 
-CFLAGS  = -c#							stop after compilation, then produce .o
+CFLAGS += -c#							stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#				gives almost all C warnings and considers them to be errors
 CFLAGS += -std=c99#						define of syntax version of C
 CFLAGS += -fno-common#					do not use common sections for non-static vars (only bss)

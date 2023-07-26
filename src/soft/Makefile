@@ -40,7 +40,7 @@ compil: tags
 	make -C hal     	$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
 	make -C drivers 	$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
 	make -C kernel 		$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	make -C platforms/almo1 $(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
+	make -C platforms/$(SOC) $(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
 	make -C ulib   		$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
 	make -C uapp   		$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE) 
 
@@ -52,7 +52,7 @@ pdf:
 	-make -C hal    	$(MAKOPT) pdf
 	-make -C drivers 	$(MAKOPT) pdf
 	-make -C kernel 	$(MAKOPT) pdf
-	-make -C kernel 	$(MAKOPT) pdf SOC=$(SOC)
+	-make -C platforms/$(SOC) 	$(MAKOPT) pdf SOC=$(SOC)
 	-make -C ulib   	$(MAKOPT) pdf
 	-make -C uapp   	$(MAKOPT) pdf 
 
@@ -61,7 +61,7 @@ clean:
 	-make -C hal    	$(MAKOPT) clean
 	-make -C drivers 	$(MAKOPT) clean
 	-make -C kernel 	$(MAKOPT) clean
-	-make -C platforms/almo1 $(MAKOPT) clean
+	-make -C platforms/$(SOC) $(MAKOPT) clean
 	-make -C kernel 	$(MAKOPT) clean
 	-make -C ulib   	$(MAKOPT) clean
 	-make -C uapp   	$(MAKOPT) clean
