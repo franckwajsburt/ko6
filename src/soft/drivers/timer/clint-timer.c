@@ -16,7 +16,7 @@ static void clint_timer_set_tick(struct timer_s *timer, unsigned tick)
 {
     // We have to options: either set mtimecmp, or reset mtime
     *(unsigned*) (timer->address + CLINT_MTIMECMP_OFFSET) =
-        *(unsigned*) (timer->address + CLINT_MTIME_OFFSET) + tick;
+        (*(unsigned*) (timer->address + CLINT_MTIME_OFFSET)) + tick;
     timer->period = tick;
 }
 

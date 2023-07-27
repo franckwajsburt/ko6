@@ -50,14 +50,14 @@ struct ns16550_general_regs_s {
     unsigned char lsr;
     unsigned char msr;
     unsigned char spr;
-};
+} __attribute__((packed));
 
 struct ns16550_dlab_regs_s {
     unsigned char dll;
     unsigned char dlm;
     unsigned char __ignore[5];
     unsigned char psd;
-};
+} __attribute__((packed));
 
 void ns16550_isr(unsigned irq, struct chardev_s *cdev);
 

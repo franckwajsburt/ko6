@@ -83,14 +83,14 @@ help:
 compil: depend mkdir $(BIN)
 
 exec: compil
-	qemu-system-riscv32 -M virt \
+	/home/sesi/risc-v/qemu/build/qemu-system-riscv32 -M virt \
 						-nographic \
 						-bios none \
 						-kernel $(BLDDIR)/kernel-$(SOC).x \
 						-device loader,file=$(BLDDIR)/$(APP).x
 
 debug: compil 
-	qemu-system-riscv32 -M virt \
+	/home/sesi/risc-v/qemu/build/qemu-system-riscv32 -M virt \
 						-nographic \
 						-bios none \
 						-kernel $(BLDDIR)/kernel-$(SOC).x \

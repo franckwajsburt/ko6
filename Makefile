@@ -60,10 +60,12 @@ pdf:
 	make -C $(SWDIR) $(MAKOPT) pdf SOC=$(SOC)
 
 exec: compil
-	make -C $(SOCDIR) exec
+	make -C $(SOCDIR) exec NTTYS=$(NTTYS) NCPUS=$(NCPUS) \
+		VERBOSE=$(VERBOSE) FROM=$(FROM) LAST=$(LAST)
 
 debug: compil
-	make -C $(SOCDIR) debug
+	make -C $(SOCDIR) debug NTTYS=$(NTTYS) NCPUS=$(NCPUS) \
+		VERBOSE=$(VERBOSE) FROM=$(FROM) LAST=$(LAST)
 
 clean:
 	make -C $(SWDIR) $(MAKOPT) clean

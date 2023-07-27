@@ -69,6 +69,8 @@ int arch_tty_init(void *fdt)
         ns16550_ops.chardev_init(tty, addr, 9600);
         // Unmask the interrupt
         icu->ops->icu_unmask(icu, irq);
+        icu->ops->icu_set_priority(icu, irq, 1);
+        
         // Register the corresponding ISR
         register_interrupt(irq, (isr_t) ns16550_isr, tty);
    
@@ -135,7 +137,9 @@ int arch_init(void *fdt, int tick)
 
     // Finish by the timer (we don't want to schedule anything until everything
     // is initialized)
-    if (arch_timer_init(fdt, tick) < 0)
+    // TODO: find a way to make tick portable
+    (void) tick;
+    if (arch_timer_init(fdt, 10000000) < 0)
         return -1;
 
     return 0;

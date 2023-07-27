@@ -20,6 +20,20 @@ static void ns16550_init(struct chardev_s *cdev, unsigned address, unsigned baud
 
     volatile struct ns16550_general_regs_s *gregs =
         (struct ns16550_general_regs_s *) address;
+    volatile struct ns16550_dlab_regs_s *dregs =
+        (struct ns16550_dlab_regs_s *) address;
+
+    // Set baudrate 
+    gregs->lcr |= NS16550_ENABLE_DLAB;
+
+    // can't find it elsewhere but xv6 assume a 1843200hz frequency for the uart
+    // TODO: handle the PSD register
+    unsigned short dl = 1843200 / (16 * baudrate);
+    dregs->dll = dl & 0xff;
+    dregs->dlm = (dl & 0xff00) >> 8;
+
+    // 8 bits word length, no parity
+    gregs->lcr = NS16550_WORD_LENGTH_8;
 
     // Enable only the interrupt that tells us we receive a character
     // TODO: in the future, we could also manage de THR Empty interrupt
@@ -27,22 +41,6 @@ static void ns16550_init(struct chardev_s *cdev, unsigned address, unsigned baud
     
     // Disable hw FIFO
     gregs->fcr = 0;
-
-    // 8 bits word length, no parity
-    gregs->lcr = NS16550_WORD_LENGTH_8;
-
-    // Set baudrate 
-    gregs->lcr |= NS16550_ENABLE_DLAB;
-    
-    volatile struct ns16550_dlab_regs_s *dregs =
-        (struct ns16550_dlab_regs_s *) address;
-    // can't find it elsewhere but xv6 assume a 1843200hz frequency for the uart
-    // TODO: handle the PSD register
-    unsigned short dl = 1843200 / (16 * baudrate);
-    dregs->dll = dl & 0xff;
-    dregs->dlm = (dl & 0xff00) >> 8;
-
-    gregs->lcr &= ~(NS16550_ENABLE_DLAB);
 }
 
 static int ns16550_read(struct chardev_s *cdev, char *buf, unsigned count)
