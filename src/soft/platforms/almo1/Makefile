@@ -18,6 +18,7 @@ NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
 SRCDIR  = ../..#					root source dir, allow us to make include via absolute path
 BLDDIR	= ../../../../build#		build directory
+BINDIR 	= ../../../../bin#			tools directory
 LIBDIR	= .#						library directory (where is ldscript)
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 SOCDIR	= $(CURDIR)#					current soc hardware abstraction layer (hal) files directory
@@ -47,10 +48,11 @@ OBJ 	+= $(OBJDIR)/chardev.o $(OBJDIR)/irq.o $(OBJDIR)/dev.o
 OBJ 	+= $(OBJDIR)/libfdt.a
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
-BIN     = $(BLDDIR)/$(CURDIR).x
+BIN     = $(BLDDIR)/kernel-$(SOC).x
 
 # Tools
 # --------------------------------------------------------------------------------------------------
+SX      = $(SOC).x#                 prototype simulator
 
 include $(SRCDIR)/platforms/almo1/Makefile.almo1
 
@@ -67,7 +69,7 @@ CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <deb
 # Rules (here they are used such as simple shell scripts)
 # --------------------------------------------------------------------------------------------------
 
-.PHONY: help compil mkdir pdf clean depend
+.PHONY: help compil exec debug mkdir pdf clean depend
 
 help:
 	@echo ""
@@ -86,6 +88,14 @@ mkdir:
 
 mkdtb:
 	dtc -I dts -O dtb -o almo1.dtb almo1.dts
+
+exec: compil
+	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)
+
+debug: compil 
+	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)\
+          -DEBUG $(FROM) -NCYCLES $(LAST) > $(DLOG)
+	tracelog $(SWDIR)/tags $(BLDDIR)/*.x.s $(DLOG)
 
 pdf:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)

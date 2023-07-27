@@ -49,7 +49,7 @@ OBJ 	+= $(OBJDIR)/chardev.o $(OBJDIR)/irq.o $(OBJDIR)/dev.o
 OBJ 	+= $(OBJDIR)/libfdt.a
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
-BIN     = $(BLDDIR)/$(CURDIR).x
+BIN     = $(BLDDIR)/kernel-$(SOC).x
 
 # Tools
 # --------------------------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <deb
 # Rules (here they are used such as simple shell scripts)
 # --------------------------------------------------------------------------------------------------
 
-.PHONY: help compil mkdir pdf clean depend
+.PHONY: help compil exec debug mkdir pdf clean depend
 
 help:
 	@echo ""
@@ -81,6 +81,22 @@ help:
 	@echo ""
 
 compil: depend mkdir $(BIN)
+
+exec: compil
+	qemu-system-riscv32 -M virt \
+						-nographic \
+						-bios none \
+						-kernel $(BLDDIR)/kernel-$(SOC).x \
+						-device loader,file=$(BLDDIR)/$(APP).x
+
+debug: compil 
+	qemu-system-riscv32 -M virt \
+						-nographic \
+						-bios none \
+						-kernel $(BLDDIR)/kernel-$(SOC).x \
+						-device loader,file=$(BLDDIR)/$(APP).x \
+						-s \
+						-S
 
 mkdir:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)

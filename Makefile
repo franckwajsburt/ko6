@@ -18,15 +18,11 @@ NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
 BLDDIR  = build#           			build directory
 SWDIR   = src/soft#        			software directory
+SOCDIR	= $(SWDIR)/platforms/$(SOC)#SOC specific sources directory
 FROM   ?= 000000#					first cycle to trace
 LAST   ?= 500000#					last cycle to execute
 DLOG    = ~/kO6-debug.log#			debug file
 APPS	= $(shell ls -l src/soft/uapp | grep "^d" | awk '{print $$NF}')
-
-# Tools 
-# --------------------------------------------------------------------------------------------------
-
-SX      = bin/$(SOC).x#                 prototype simulator
 
 # Rules (here they are used such as simple shell scripts)
 # --------------------------------------------------------------------------------------------------
@@ -64,12 +60,10 @@ pdf:
 	make -C $(SWDIR) $(MAKOPT) pdf SOC=$(SOC)
 
 exec: compil
-	$(SX) -KERNEL $(BLDDIR)/$(SOC).x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)
+	make -C $(SOCDIR) exec
 
-debug: compil 
-	$(SX) -KERNEL $(BLDDIR)/$(SOC).x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)\
-          -DEBUG $(FROM) -NCYCLES $(LAST) > $(DLOG)
-	tracelog $(SWDIR)/tags $(BLDDIR)/*.x.s $(DLOG)
+debug: compil
+	make -C $(SOCDIR) debug
 
 clean:
 	make -C $(SWDIR) $(MAKOPT) clean
