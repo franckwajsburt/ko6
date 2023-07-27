@@ -70,7 +70,7 @@ int arch_tty_init(void *fdt)
         // Unmask the interrupt
         icu->ops->icu_unmask(icu, irq);
         icu->ops->icu_set_priority(icu, irq, 1);
-        
+
         // Register the corresponding ISR
         register_interrupt(irq, (isr_t) ns16550_isr, tty);
    

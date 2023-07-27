@@ -33,13 +33,20 @@ boot:                                   // qemu put pc at 0x80000000
     csrw    mtvec,  t0                  // set interrupt vector
     
     /* TODO: use pmp to protect kernel area */
+    la      t0,     0x201fffff          // 0x80000000 - 0x81000000
+    csrw    pmpaddr0, t0
+    la      t1, 0b00011000         // NAPOT ---
+
     // we need to disable protection on the memory
     // not occupied by the kernel because by default
     // U-mode cannot address any memory
     not     t0, x0
-    csrw    pmpaddr0, t0
-    csrwi   pmpcfg0, 0b00011111         // NAPOT RWX
-     
+    csrw    pmpaddr1, t0
+    la      t0, 0b00011111         // NAPOT RWX
+    slli    t0, t0, 8
+    or      t0, t1, t0
+    csrw    pmpcfg0, t0
+
     la      sp,     __kdata_end         // define stack ptr (first address after kdata region)
     mv      a0,     a1                  // qemu put fdt address in a1, we give it to kinit as a first argument
     call    kinit
