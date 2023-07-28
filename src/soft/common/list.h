@@ -137,7 +137,7 @@ static inline list_t * list_first (list_t * root) {
 static inline list_t * list_last (list_t * root) {
     return (list_isempty(root)) ? NULL : root->prev;
 }
-#define list_prev(item) list_prev(item)
+#define list_prev(item) list_last(item)
 
 /**
  * \brief   C instruction to iterate through a list of items from first to last.
@@ -155,6 +155,23 @@ static inline list_t * list_last (list_t * root) {
     for(ITEM = (ROOT)->next, _NEXT=(ITEM)->next;\
         (ITEM) != (ROOT);                       \
         ITEM = _NEXT, _NEXT = _NEXT->next )
+
+/**
+ * \brief   C instruction to iterate through a list of items from last to first.
+ *          list_foreach will iterate as many times as there are items in the ROOT list.
+ *          At each iteration, ITEM is defined with the current item:
+ *          the first, the second, until the last.
+ *          If you need several foreach() in the same function, you have to create a block
+ *          (by adding braces): { foreach(root, item){ your instructions } }
+ *          in order to handle the implicit local variables needed for list_foreach().
+ * \param   ROOT root of list
+ * \param   ITEM : create a list_t pointer, named _ITEM
+ */
+#define list_foreach_rev(ROOT,ITEM)             \
+    list_t * _NEXT, * ITEM;                     \
+    for(ITEM = (ROOT)->prev, _NEXT=(ITEM)->prev;\
+        (ITEM) != (ROOT);                       \
+        ITEM = _NEXT, _NEXT = _NEXT->prev )
 
 /**
  * \brief   Macro to get the address of the container of a list item.

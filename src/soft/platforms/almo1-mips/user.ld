@@ -14,10 +14,6 @@
  * -----------------------------------------------------------------------------
  */
 
-/* Device segments definition */
-
-__tty_regs_map   = 0xd0200000 ;     /* tty's registers map */
-
 /* Memory segments definition */
 
 __text_origin    = 0x7F400000 ; /* first byte address of user code region */

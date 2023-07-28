@@ -59,7 +59,7 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <klibc.h>                      
+#include <kernel/klibc.h>                      
 
 extern char __bss_end;                  // first char above bss section see kernel.ld (page aligned)
 extern char __kdata_end;                // first char above the kernel data region (page aligned)

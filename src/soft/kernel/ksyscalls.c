@@ -11,7 +11,8 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <klibc.h>
+#include <hal/arch/dma.h>
+#include <kernel/klibc.h>
 
 static int unknown_syscall (int a0, int a1, int a2, int a3, int syscall_code)
 {
@@ -31,7 +32,15 @@ static void * dma_memcpy_user (int * dest, int * src, size_t n)
     if ((unsigned)src+n >= 0x80000000) return NULL;
     if ((unsigned)dest+n >= 0x80000000) return NULL;
     if (n >= 0x80000000) return NULL;
-    return dma_memcpy (dest, src, n);
+
+    // Get the DMA device
+    struct dma_s *dma = dma_get(0);
+    if (!dma)
+        // If no DMA is available, do a reguler memcpy
+        // TODO: verify this isn't dangerous
+        return memcpy((char*) dest, (char*) src, n * 4);
+    else
+        return dma->ops->dma_memcpy (dma, dest, src, n);
 }
 
 static int dcache_buf_inval_user (void * buf, size_t size)

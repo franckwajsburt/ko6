@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/almo1/hcpua.S
+  \file     platforms/almo1/cpua.S
   \author   Franck Wajsburt
   \brief    cpu specific assembly code which implement a part of hcpu.h API
             - There are several independant parts :
@@ -19,10 +19,16 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
+#include <platforms/almo1-mips/cpu.h>
+#include <common/syscalls.h>
 
-#include <hcpu.h>
-#include <syscalls.h>
+//--------------------------------------------------------------------------------------------------
+// Binary device tree
+// almo1.dtb has been generated from the almo1.dts file during build with the dtc tool 
+//--------------------------------------------------------------------------------------------------
 
+.section .dtb
+.incbin "almo1.dtb"
 
 //--------------------------------------------------------------------------------------------------
 // Boot code
@@ -38,6 +44,7 @@ boot:                                   // must be 0xBFC0000 for the MIPS
     mtc0    $0,     $12                 // erase $c0_sr thus ERL because except must be 0x80000180
     la      $29,    __kdata_end         // define stack ptr (first address after kdata region)
     la      $26,    kinit               // get address of kinit() function
+    la      $4,     __dtb_address
     jr      $26                         // goto kinit()
 
 .section    .kentry,"ax"                // "ax": allocated executable

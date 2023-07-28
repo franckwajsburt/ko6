@@ -27,6 +27,7 @@
 #include <stdarg.h>     // gcc's builtin include to use variadic function (https://bit.ly/3hLXjyC)
 #include <stddef.h>     // gcc's builtin include with NULL, size_t, (https://bit.ly/3lBw3p6)
 #endif
+#include <cstd.h>       // generic C functions
 #include <list.h>       // generic list management
 #include <syscalls.h>   // kernel services
 #include <memory.h>     // user allocator
@@ -59,6 +60,12 @@ extern void perror (char *s);
  * \param     status return value of the application
  */
 extern void exit (int status);
+
+/**
+ * \brief     stop until a delay mesured in cycles
+ * \param     nbcycles number of cycle to wait
+ */
+extern void delay (unsigned nbcycles);
 
 /**
  * \brief     reads in at most count characters from fd and stores them into buf.
@@ -117,44 +124,6 @@ extern int rand (void);
 extern void srand (unsigned seed);
 
 /**
- * \brief     copies buffer src to the buffer dest (the buffers must be disjoints)
- * \param     dest destination buffer
- * \param     src  source buffer
- * \param     n  number of bytes to copy
- * \return    the dest buffer address
- */
-extern void *memcpy (char *dest, char *src, unsigned n);
-
-/**
- * \brief     copies the string src, included the ending byte '\0', to the buffer dest
- * \param     dest buffer where the source string must be copied
- * \param     src  the source string
- * \param     n    size of the dest buffer
- * \return    the dest buffer address
- */
-extern void *strncpy (char *dest, char *src, unsigned n);
-
-/**
- * \brief     calculates the length of the string s, excluding the terminating null byte
- * \return    the number of characters
- */
-extern int strlen (char *buf);
-
-/**
- * \brief     stop until a delay mesured in cycles
- * \param     nbcycles number of cycle to wait
- */
-extern void delay (unsigned nbcycles);
-
-/**
- * \brief     ascii to integer
- * \param     val   string to translate, with a decimal number
- * \return    the integer corresponding to val
- * \details   the number can be negative, the space at beginning are ignored
- */
-extern int atoi (char *val);
-
-/**
  * \brief     write un single char on tty
  * \param     tty   tty number (between 0 and TTY_MAX-1)
  * \param     c     char to print
@@ -186,15 +155,5 @@ extern int fgets (char *s, int size, int tty);
  * \return    number of printed char
  */
 extern int fprintf (int tty, char *fmt, ...);
-
-/**
- * \brief     this a simplified version which handles only: %c, %s, $d, %x and %p
- * \param     str   buffer of chars where string is formed
- * \param     size  size of buffer
- * \param     fmt   formated string
- * \param     ...   variadic arguments, i.e. variable number of arguments
- * \return    number of printed char
- */
-extern int snprintf(char *buffer, unsigned size, char *fmt, ...);
 
 #endif//_LIBC_H_

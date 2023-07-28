@@ -11,14 +11,13 @@
 \*------------------------------------------------------------------------------------------------*/
 
 
-#include <klibc.h>
+#include <kernel/klibc.h>
 
 
 //--------------------------------------------------------------------------------------------------
 // Type declarations with mandatory external accessor functions + scheduler variables
 // When the declarations are static, that is because, they are only used in this file
 //--------------------------------------------------------------------------------------------------
-
 
 /**
  * \brief   thread_s structure which contains all we need to define a thread
@@ -327,6 +326,7 @@ void thread_exit (void *retval)
 
     ThreadCurrent->retval = retval;                             // E1: store the return value
     ThreadCurrent->state = TH_STATE_ZOMBIE;                     //     tell that is the end
+
     spin_lock (&ThreadCurrent->lock);                           // avoid sequence J1 J2 E1 E2 E3 J3
     if (ThreadCurrent->join != NULL)                            // E2: if there is a thread waiting
         ThreadCurrent->join->state = TH_STATE_READY;            // E3: then change its state

@@ -1,0 +1,77 @@
+/dts-v1/;
+
+/ {
+	#address-cells = <0x01>;
+	#size-cells = <0x01>;
+	compatible = "soclib-mips";
+
+    cpus {
+        cpu {
+            phandle = <0x01>;
+            device_type = "cpu";
+            compatible = "mips";
+
+            #address-cells = <0x01>;
+            #interrupt-cells = <0x01>;
+            interrupt-controller;
+        };
+    };
+
+    soc {
+	    #address-cells = <0x01>;
+	    #size-cells = <0x01>;
+		compatible = "vci";
+
+        tty@d0200000 {
+			interrupts = <0x0a>;
+			interrupt-parent = <0x02>;
+            reg = <0xd0200000 0x10>;
+            compatible = "soclib,tty";
+        };
+
+        tty@d0200010 {
+            interrupts = <0x0b>;
+            interrupt-parent = <0x02>;
+            reg = <0xd0200010 0x10>;
+            compatible = "soclib,tty";
+        };
+
+        dma@1200000 {
+			interrupts = <0x09>;
+			interrupt-parent = <0x02>;
+            reg = <0xd1200000 0x10>;
+            compatible = "soclib,dma";
+        };     
+
+        icu@d2200000 {
+    		#address-cells = <0x01>;
+			#interrupt-cells = <0x01>;
+			interrupt-controller;
+			compatible = "soclib,icu";
+
+			phandle = <0x02>;
+			reg = <0xd2200000 0x20>;
+			interrupts = <0x00>;
+            interrupt-parent = <0x01>;
+        };
+
+        timer@d3200000 {
+			interrupts = <0x00>;
+			interrupt-parent = <0x02>;
+            reg = <0xd3200000 0x10>;
+            compatible = "soclib,timer";
+        };     
+
+        bd@d5200000 {
+			interrupts = <0x08>;
+			interrupt-parent = <0x02>;
+            reg = <0xd5200000 0x10>;
+            compatible = "soclib,bd";
+        };     
+
+        fbf@52200000 {
+            reg = <0x52200000 0x401000>;
+            compatible = "soclib,fbf";
+        };
+    };
+};

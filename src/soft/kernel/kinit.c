@@ -17,7 +17,7 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <klibc.h>
+#include <kernel/klibc.h>
 
 #define Y       EC_BOLD EC_WHITE"'"EC_YELLOW"v"EC_WHITE"'"EC_RESET EC_CYAN
 #define X       EC_ORANGE"x"EC_CYAN
@@ -30,17 +30,18 @@ EC_WHITE
 "  |_\\_\\"EC_CYAN  X___X    EC_WHITE"\\___/\n\n"
 EC_RESET;
 
-void kinit (void)
+void kinit (void *fdt)
 {
-    kprintf (Banner);
-
     // put bss sections to zero. bss contains uninitialised global variables
     extern int __bss_origin;    // first int of bss section (defined in ldscript kernel.ld)
     extern int __bss_end;       // first int of above bss section (defined in ldscript kernel.ld)
     for (int *a = &__bss_origin; a != &__bss_end; *a++ = 0);
 
     memory_init();                  // memory initialisation 
-    arch_init(200000);              // architecture initialisation takes the tick as argument
+    if (arch_init(fdt, 200000) < 0) // architecture initialisation takes the tick as argument
+        goto sleep;                 // initialization failed, just sleep
+
+    kprintf (Banner);
 
     // First, we have to create the thread structure for the thread main()
     //   thread_create() is the same function used to create the thread main()
@@ -75,4 +76,8 @@ void kinit (void)
 
     // We never return of thread_load() here because thread_load() change $31 to thread_bootstap()
     PANIC_IF(true,"Impossible to be here");
+
+    // In case anything goes wrong during initialization
+sleep:
+    while (1) ;
 }

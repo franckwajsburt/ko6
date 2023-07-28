@@ -13,17 +13,18 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
-SOC    ?= almo1#			defaut SOC name
-NTTYS  ?= 1#				default number of ttys
-NCPUS  ?= 1#				default number of CPUS
-VERBOSE?= 0#				verbose mode to print INFO(), BIP(), ASSERT, VAR()
-BLDDIR	= ../../../build#		build directory
-COMDIR	= ../common#			user & kernel common files directory
-HALDIR	= ../hal#			hardware abstraction layer (hal) files directory
-SOCDIR	= $(HALDIR)/$(SOC)#		current soc hardware abstraction layer (hal) files directory
+SOC    ?= almo1-mips#				defaut SOC name
+NTTYS  ?= 1#						default number of ttys
+NCPUS  ?= 1#						default number of CPUS
+VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
+BLDDIR	= ../../../build#			build directory
+SRCDIR 	= ..
+COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
+HALDIR	= $(SRCDIR)/hal#			hardware abstraction layer (hal) files directory
+SOCDIR	= $(SRCDIR)/platforms/$(SOC)#current soc hardware abstraction layer (hal) files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
-OBJDIR	= $(BLDDIR)/obj#		object files directory
-PDFDIR	= $(BLDDIR)/pdf#		pdf files directory
+OBJDIR	= $(BLDDIR)/obj#			object files directory
+PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 
 # Sources
 # --------------------------------------------------------------------------------------------------
@@ -31,13 +32,16 @@ PDFDIR	= $(BLDDIR)/pdf#		pdf files directory
 SRC     = $(COMDIR)/syscalls.h $(COMDIR)/list.h $(COMDIR)/usermem.h
 SRC    += $(COMDIR)/debug_on.h $(COMDIR)/debug_off.h
 SRC    += $(COMDIR)/errno.h $(COMDIR)/errno.c 
+SRC    += $(COMDIR)/cstd.h $(COMDIR)/cstd.c
+SRC    += $(SOCDIR)/cpu_user.S
 SRC    += crt0.c libc.h libc.c pthread.h pthread.c memory.h memory.c
 
 # Targets
 # --------------------------------------------------------------------------------------------------
 
-SRCC    = $(filter %.c,$(SRC))
+SRCC    = $(filter %.c %.S,$(SRC))
 OBJC    = $(subst .c,.o,$(foreach src,$(SRCC),$(notdir $(src))))
+OBJC    := $(subst .S,.o,$(foreach src,$(OBJC),$(notdir $(src))))
 OBJ     = $(addprefix $(OBJDIR)/,$(OBJC))
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
@@ -45,19 +49,16 @@ PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-CC     = mipsel-unknown-elf-gcc#	compiler
-OD     = mipsel-unknown-elf-objdump#	desassembler
+include $(SRCDIR)/platforms/$(SOC)/$(SOC).mk
 
-CFLAGS  = -c#				stop after compilation, then produce .o
-CFLAGS += -Wall -Werror#		gives almost all C warnings and considers them to be errors
-CFLAGS += -mips32r2#			define of MIPS version
-CFLAGS += -std=c99#			define of syntax version of C
-CFLAGS += -fno-common#			do not use common sections for non-static vars (only bss)
-CFLAGS += -fno-builtin#			do not use builtin functions of gcc (such as strlen)
+CFLAGS += -c#						stop after compilation, then produce .o
+CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
+CFLAGS += -std=c99#					define of syntax version of C
+CFLAGS += -fno-common#				do not use common sections for non-static vars (only bss)
+CFLAGS += -fno-builtin#				do not use builtin functions of gcc (such as strlen)
 CFLAGS += -fomit-frame-pointer#		only use of stack pointer ($29)
-CFLAGS += -G0#				do not use global data pointer ($28)
-CFLAGS += -O3#				full optimisation mode of compiler
-CFLAGS += -I. -I$(COMDIR)#		directories where include files like <file.h> are located
+CFLAGS += -O3#						full optimisation mode of compiler
+CFLAGS += -I. -I.. -I$(COMDIR)#		directories where include files like <file.h> are located
 CFLAGS += -I$(HALDIR) -I$(SOCDIR)#	directory where hal include files are located
 CFLAGS += -DNTTYS=$(NTTYS)#		#define NTTYS with the number of ttys in the prototype
 CFLAGS += -DNCPUS=$(NCPUS)#		#define NCPUS with the number of cpus in the prototype
@@ -110,6 +111,11 @@ $(OBJDIR)/%.o : $(COMDIR)/%.c
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s
 
+$(OBJDIR)/%.o: $(SOCDIR)/cpu_user.S
+	@echo "- compil  --> "$(notdir $@)
+	$(CC) -o $@ $(CFLAGS) $<
+	$(OD) -D $@ > $@.s
+
 # makedepend analyzes the source files to determine automatically what are the dependencies
 # of the object files on the source files (see https://linux.die.net/man/1/makedepend for details)
 depend :
@@ -123,6 +129,7 @@ depend :
 
 ../../../build/obj/debug_off.o: ../common/debug_on.h
 ../../../build/obj/errno.o: ../common/errno.h
+<<<<<<< HEAD
 ../../../build/obj/crt0.o: ./libc.h ../common/debug_off.h
 ../../../build/obj/crt0.o: ../common/debug_on.h ../common/list.h
 ../../../build/obj/crt0.o: ../common/syscalls.h ./memory.h
@@ -146,5 +153,32 @@ depend :
 ../../../build/obj/memory.o: ./libc.h ../common/debug_off.h
 ../../../build/obj/memory.o: ../common/debug_on.h ../common/list.h
 ../../../build/obj/memory.o: ../common/syscalls.h ./memory.h
+=======
+../../../build/obj/cstd.o: ../common/cstd.h
+../../../build/obj/crt0.o: ./libc.h ../common/debug_off.h
+../../../build/obj/crt0.o: ../common/debug_on.h ../common/cstd.h
+../../../build/obj/crt0.o: ../common/list.h ../common/syscalls.h ./memory.h
+../../../build/obj/crt0.o: ../common/usermem.h ../common/errno.h
+../../../build/obj/crt0.o: ../common/esc_code.h ./pthread.h
+../../../build/obj/libc.o: ../common/debug_off.h ../common/debug_on.h
+../../../build/obj/libc.o: ../common/cstd.h ../common/list.h
+../../../build/obj/libc.o: ../common/syscalls.h ./memory.h
+../../../build/obj/libc.o: ../common/usermem.h ../common/errno.h
+../../../build/obj/libc.o: ../common/esc_code.h
+../../../build/obj/libc.o: ./libc.h ../common/debug_off.h
+../../../build/obj/libc.o: ../common/debug_on.h ../common/cstd.h
+../../../build/obj/libc.o: ../common/list.h ../common/syscalls.h ./memory.h
+../../../build/obj/libc.o: ../common/usermem.h ../common/errno.h
+../../../build/obj/libc.o: ../common/esc_code.h
+../../../build/obj/pthread.o: ./libc.h ../common/debug_off.h
+../../../build/obj/pthread.o: ../common/debug_on.h ../common/cstd.h
+../../../build/obj/pthread.o: ../common/list.h ../common/syscalls.h
+../../../build/obj/pthread.o: ./memory.h ../common/usermem.h
+../../../build/obj/pthread.o: ../common/errno.h ../common/esc_code.h
+../../../build/obj/pthread.o: ./pthread.h
+../../../build/obj/memory.o: ./libc.h ../common/debug_off.h
+../../../build/obj/memory.o: ../common/debug_on.h ../common/cstd.h
+../../../build/obj/memory.o: ../common/list.h ../common/syscalls.h ./memory.h
+>>>>>>> virt-riscv
 ../../../build/obj/memory.o: ../common/usermem.h ../common/errno.h
 ../../../build/obj/memory.o: ../common/esc_code.h

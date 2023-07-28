@@ -13,7 +13,7 @@
 #ifndef _ALLOC_H_
 #define _ALLOC_H_
 
-#include <usermem.h>
+#include <common/usermem.h>
 
 /**
  * \brief   initialize all the kernel memory allocators

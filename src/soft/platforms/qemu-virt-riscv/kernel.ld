@@ -14,25 +14,19 @@
  * -------------------------------------------------------------------------------------------------
  */
 
-/* Device segments definition */
-
-__tty_regs_map   = 0xd0200000 ;     /* tty's registers map, decribed in harch.c */
-__dma_regs_map   = 0xd1200000 ;     /* dma's registers map */
-__icu_regs_map   = 0xd2200000 ;     /* icu's registers map, decribed in harch.c */
-__timer_regs_map = 0xd3200000 ;     /* tty's registers map, decribed in harch.h */
-
 /* Memory segments definition */
 
-__boot_origin    = 0xbfc00000 ;     /* first byte address of boot region */
+__boot_origin    = 0x80000000 ;     /* first byte address of boot region */
 __boot_length    = 0x00001000 ;     /* boot region size */
-__ktext_origin   = 0x80000000 ;     /* first byte address of kernel code region */
+__ktext_origin   = 0x80001000 ;     /* first byte address of kernel code region */
 __ktext_length   = 0x00020000 ;
-__kdata_origin   = 0x80020000 ;     /* first byte address of kernel data region */
+__kdata_origin   = 0x80021000 ;     /* first byte address of kernel data region */
 __kdata_length   = 0x003E0000 ;
 __kdata_end      = __kdata_origin + __kdata_length ; /* first addr after kernel data region */
-__text_origin    = 0x7F400000 ;     /* first byte address of user code region */
+
+__text_origin    = 0x81000000 ;     /* first byte address of user code region */
 __text_length    = 0x00100000 ;
-__data_origin    = 0x7F500000 ;     /* first byte address of user data region */
+__data_origin    = 0x81100000 ;     /* first byte address of user data region */
 __data_length    = 0x00B00000 ;
 __data_end       = __data_origin  + __data_length  ; /* first addr after user data region */
 
@@ -67,7 +61,9 @@ SECTIONS {
     .kbss : {
         __bss_origin = .;   /* first byte of uninitialized global variables */
         *(.*bss*)           /* uninitialized global variables */
-        . = ALIGN(4);       /* move the filling pointer to a word aligned address */
+        . = ALIGN(4096);    /* move the filling pointer to a page aligned address 
+                             * since we'll use it in kmemory, memory_init will fail with 
+                             * an unaligned address */
         __bss_end = .;      /* first byte after the bss section */
     } > kdata_region
 }

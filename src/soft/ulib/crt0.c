@@ -12,7 +12,6 @@
 
 #include <libc.h>
 #include <pthread.h>
-#include <hcpu_user.h>
 
 extern int __bss_origin;        // first int of uninitialized global data
 extern int __bss_end;           // first int of above the uninitialized global data
