@@ -10,7 +10,7 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <hal/chardev.h>
+#include <hal/arch/chardev.h>
 
 list_t chardevList = {
     .next = &chardevList,

@@ -9,7 +9,7 @@
   \brief    cpu specific assembly code which implement a part of cpu HAL
 \*------------------------------------------------------------------------------------------------*/
 
-#include <platforms/virt/cpu.h>
+#include <platforms/qemu-virt-riscv/cpu.h>
 
 //--------------------------------------------------------------------------------------------------
 // Thread management

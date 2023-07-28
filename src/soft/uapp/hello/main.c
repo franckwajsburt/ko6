@@ -14,6 +14,6 @@
 
 int main (void)
 {
-    fprintf (0, "Hello world !\n");
+    fprintf (1, "Hello world !\n");
     return 0;
 }

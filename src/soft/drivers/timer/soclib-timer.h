@@ -13,7 +13,7 @@
 #ifndef _SOCLIB_TIMER_H_
 #define _SOCLIB_TIMER_H_
 
-#include <hal/timer.h>
+#include <hal/arch/timer.h>
 
 struct soclib_timer_regs_s {
     int value;          // timer's counter : +1 each cycle, can be written

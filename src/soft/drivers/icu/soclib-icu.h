@@ -1,7 +1,7 @@
 #ifndef _SOCLIB_ICU_H_
 #define _SOCLIB_ICU_H_
 
-#include <hal/icu.h>
+#include <hal/arch/icu.h>
 
 struct soclib_icu_regs_s {
     int state;          // state of all IRQ signals

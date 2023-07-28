@@ -41,12 +41,12 @@
 
 #include <hal/cpu/atomic.h>     // Locks
 #include <hal/cpu/cache.h>      // L1 cache function prototypes
-#include <hal/platform.h>
+#include <hal/arch/platform.h>
 #include <hal/cpu/thread.h>
 #include <hal/cpu/irq.h>
 #include <hal/cpu/cpu.h>        // CPU registers manipulation function prototypes
-#include <hal/chardev.h>
-#include <hal/dev.h> 
+#include <hal/arch/chardev.h>
+#include <hal/arch/dev.h> 
 
 #include <kernel/kmemory.h>            // all kernel allocators
 #include <kernel/kthread.h>            // thread functions

@@ -13,7 +13,7 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
-SOC    ?= almo1#					defaut SOC name
+SOC    ?= almo1-mips#				defaut SOC name
 NTTYS  ?= 1#						default number of ttys
 NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
@@ -49,7 +49,7 @@ PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-include $(SRCDIR)/platforms/$(SOC)/Makefile.$(SOC)
+include $(SRCDIR)/platforms/$(SOC)/$(SOC).mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors

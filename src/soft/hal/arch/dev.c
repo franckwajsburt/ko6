@@ -1,4 +1,4 @@
-#include <hal/dev.h>
+#include <hal/arch/dev.h>
 
 list_t devList = {      // Do the same thing the function list_init does
     .next = &devList,

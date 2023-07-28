@@ -14,7 +14,7 @@
 #define _SOCLIB_DMA_H_
 
 #include <kernel/klibc.h>
-#include <hal/dma.h>
+#include <hal/arch/dma.h>
 
 struct soclib_dma_regs_s {
     void * src;         // dma's destination buffer address

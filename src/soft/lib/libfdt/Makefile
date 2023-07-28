@@ -12,7 +12,7 @@
 
 include Makefile.libfdt
 
-SOC		?= almo1
+SOC		?= almo1-mips
 
 SRCDIR	=	../..
 BLDDIR	=	../../../../build
@@ -21,7 +21,7 @@ OBJDIR	=	$(BLDDIR)/obj
 # Objects from Makefile.libfdt
 LIBFDT_OBJS:=$(addprefix $(OBJDIR)/,$(LIBFDT_OBJS))
 
-include $(SRCDIR)/platforms/$(SOC)/Makefile.$(SOC)
+include $(SRCDIR)/platforms/$(SOC)/$(SOC).mk
 
 CFLAGS += -c#							stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#				gives almost all C warnings and considers them to be errors

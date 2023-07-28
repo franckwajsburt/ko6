@@ -12,7 +12,7 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
-SOC 	?= almo1
+SOC 	?= almo1-mips
 VERBOSE	?= 1
 
 BLDDIR	= ../../../build#			build directory
@@ -24,7 +24,7 @@ PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 # Sources
 # --------------------------------------------------------------------------------------------------
 
-SRC		= dev.c chardev.c cpu/irq.c
+SRC		= arch/dev.c arch/chardev.c cpu/irq.c
 
 # Targets
 # --------------------------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-include $(SRCDIR)/platforms/$(SOC)/Makefile.$(SOC)
+include $(SRCDIR)/platforms/$(SOC)/$(SOC).mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
@@ -89,7 +89,7 @@ clean:
 # Rules with automatic variables to produce the executable
 # --------------------------------------------------------------------------------------------------
 
-$(OBJDIR)/%.o : %.c
+$(OBJDIR)/%.o : arch/%.c
 	@echo "- compil  --> "$(notdir $@)
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s

@@ -13,7 +13,7 @@
 #ifndef _NS16550_H_
 #define _NS16550_H_
 
-#include <hal/chardev.h>
+#include <hal/arch/chardev.h>
 #include <hal/cpu/irq.h>
 #include <kernel/kthread.h>
 

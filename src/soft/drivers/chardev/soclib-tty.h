@@ -13,7 +13,7 @@
 #ifndef _SOCLIB_TTY_H_
 #define _SOCLIB_TTY_H_
 
-#include <hal/chardev.h>
+#include <hal/arch/chardev.h>
 #include <hal/cpu/irq.h>
 #include <kernel/kthread.h>
 

@@ -13,7 +13,7 @@
 #ifndef _CLINT_TIMER_H_
 #define _CLINT_TIMER_H_
 
-#include <hal/timer.h>
+#include <hal/arch/timer.h>
 
 #define CLINT_MTIMECMP_OFFSET 0x4000
 #define CLINT_MTIME_OFFSET    0xbff8

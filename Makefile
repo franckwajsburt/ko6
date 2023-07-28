@@ -12,7 +12,7 @@
 
 APP	   ?= hello#					app name 								
 MAKOPT ?= -s#						comment the -s to get command details
-SOC	   ?= almo1#					defaut SOC name
+SOC	   ?= almo1-mips#				defaut SOC name
 NTTYS  ?= 2#						default number of ttys
 NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()

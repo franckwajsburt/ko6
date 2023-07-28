@@ -54,7 +54,7 @@ BIN     = $(BLDDIR)/kernel-$(SOC).x
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-include $(SRCDIR)/platforms/virt/Makefile.virt
+include $(SRCDIR)/platforms/qemu-virt-riscv/qemu-virt-riscv.mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
@@ -143,37 +143,39 @@ depend :
 # DEPENDENCIES
 
 ../../../../build/obj/platform.o: ../../drivers/timer/clint-timer.h
-../../../../build/obj/platform.o: ../../hal/timer.h
+../../../../build/obj/platform.o: ../../hal/arch/timer.h
 ../../../../build/obj/platform.o: ../../drivers/chardev/ns16550.h
-../../../../build/obj/platform.o: ../../hal/chardev.h ../../common/errno.h
-../../../../build/obj/platform.o: ../../common/list.h ../../hal/dev.h
-../../../../build/obj/platform.o: ../../kernel/klibc.h
+../../../../build/obj/platform.o: ../../hal/arch/chardev.h
+../../../../build/obj/platform.o: ../../common/errno.h ../../common/list.h
+../../../../build/obj/platform.o: ../../hal/arch/dev.h ../../kernel/klibc.h
 ../../../../build/obj/platform.o: ../../common/debug_off.h
 ../../../../build/obj/platform.o: ../../common/debug_on.h ../../common/cstd.h
 ../../../../build/obj/platform.o: ../../common/esc_code.h
 ../../../../build/obj/platform.o: ../../common/syscalls.h
 ../../../../build/obj/platform.o: ../../common/usermem.h
 ../../../../build/obj/platform.o: ../../hal/cpu/atomic.h
-../../../../build/obj/platform.o: ../../hal/cpu/cache.h ../../hal/platform.h
+../../../../build/obj/platform.o: ../../hal/cpu/cache.h
+../../../../build/obj/platform.o: ../../hal/arch/platform.h
 ../../../../build/obj/platform.o: ../../hal/cpu/thread.h ../../hal/cpu/irq.h
 ../../../../build/obj/platform.o: ../../hal/cpu/cpu.h ../../kernel/kmemory.h
 ../../../../build/obj/platform.o: ../../kernel/kthread.h
 ../../../../build/obj/platform.o: ../../kernel/ksynchro.h
-../../../../build/obj/platform.o: ../../drivers/icu/plic.h ../../hal/icu.h
+../../../../build/obj/platform.o: ../../drivers/icu/plic.h
+../../../../build/obj/platform.o: ../../hal/arch/icu.h
 ../../../../build/obj/platform.o: ../../lib/libfdt/libfdt.h
 ../../../../build/obj/platform.o: ../../lib/libfdt/libfdt_env.h
 ../../../../build/obj/platform.o: ../../lib/libfdt/fdt.h
-../../../../build/obj/cpuc.o: ../../platforms/virt/cpu.h ../../kernel/klibc.h
-../../../../build/obj/cpuc.o: ../../common/debug_off.h
+../../../../build/obj/cpuc.o: ../../platforms/qemu-virt-riscv/cpu.h
+../../../../build/obj/cpuc.o: ../../kernel/klibc.h ../../common/debug_off.h
 ../../../../build/obj/cpuc.o: ../../common/debug_on.h ../../common/cstd.h
 ../../../../build/obj/cpuc.o: ../../common/list.h ../../common/esc_code.h
 ../../../../build/obj/cpuc.o: ../../common/errno.h ../../common/syscalls.h
 ../../../../build/obj/cpuc.o: ../../common/usermem.h ../../hal/cpu/atomic.h
-../../../../build/obj/cpuc.o: ../../hal/cpu/cache.h ../../hal/platform.h
+../../../../build/obj/cpuc.o: ../../hal/cpu/cache.h ../../hal/arch/platform.h
 ../../../../build/obj/cpuc.o: ../../hal/cpu/thread.h ../../hal/cpu/irq.h
-../../../../build/obj/cpuc.o: ../../hal/cpu/cpu.h ../../hal/chardev.h
-../../../../build/obj/cpuc.o: ../../hal/dev.h ../../kernel/kmemory.h
+../../../../build/obj/cpuc.o: ../../hal/cpu/cpu.h ../../hal/arch/chardev.h
+../../../../build/obj/cpuc.o: ../../hal/arch/dev.h ../../kernel/kmemory.h
 ../../../../build/obj/cpuc.o: ../../kernel/kthread.h ../../kernel/ksynchro.h
-../../../../build/obj/cpu/thread.o: ../../platforms/virt/cpu.h
-../../../../build/obj/cpu/cpu.o: ../../platforms/virt/cpu.h
+../../../../build/obj/cpu/thread.o: ../../platforms/qemu-virt-riscv/cpu.h
+../../../../build/obj/cpu/cpu.o: ../../platforms/qemu-virt-riscv/cpu.h
 ../../../../build/obj/cpu/entry.o: ../../common/syscalls.h

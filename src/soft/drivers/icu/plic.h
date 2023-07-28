@@ -2,7 +2,7 @@
 #define _PLIC_H_
 
 #include <kernel/klibc.h>
-#include <hal/icu.h>
+#include <hal/arch/icu.h>
 
 /**
  * Context are a pair (cpu, mode)

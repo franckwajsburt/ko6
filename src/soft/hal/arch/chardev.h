@@ -15,7 +15,7 @@
 
 #include <common/errno.h>
 #include <common/list.h>
-#include <hal/dev.h>
+#include <hal/arch/dev.h>
 
 #define CHARDEV_FIFO_DEPTH 20
 
