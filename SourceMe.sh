@@ -10,7 +10,7 @@
 # ---------------------------------
 export kO6=$HOME/ko6
 export SOCLIB=/users/outil/soc/soclib
-export SOC=almo1
+export SOC=almo1-mips
 
 echo $kO6
 

@@ -12,7 +12,9 @@
  * I used memcmp/strlen/memcpy from the libiberty source which are supposed
  * to be in the public domain
  */
+#ifndef __DEPEND__      // this condition allows to not include stdarg.h when makedepend is used
 #include <stddef.h>
+#endif
 #include <common/cstd.h>
 
 typedef unsigned char		uint8_t;
