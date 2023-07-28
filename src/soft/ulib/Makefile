@@ -129,31 +129,6 @@ depend :
 
 ../../../build/obj/debug_off.o: ../common/debug_on.h
 ../../../build/obj/errno.o: ../common/errno.h
-<<<<<<< HEAD
-../../../build/obj/crt0.o: ./libc.h ../common/debug_off.h
-../../../build/obj/crt0.o: ../common/debug_on.h ../common/list.h
-../../../build/obj/crt0.o: ../common/syscalls.h ./memory.h
-../../../build/obj/crt0.o: ../common/usermem.h ../common/errno.h
-../../../build/obj/crt0.o: ../common/esc_code.h ./pthread.h
-../../../build/obj/crt0.o: ../hal/almo1/hcpu_user.h
-../../../build/obj/libc.o: ../common/debug_off.h ../common/debug_on.h
-../../../build/obj/libc.o: ../common/list.h ../common/syscalls.h ./memory.h
-../../../build/obj/libc.o: ../common/usermem.h ../common/errno.h
-../../../build/obj/libc.o: ../common/esc_code.h
-../../../build/obj/libc.o: ./libc.h ../common/debug_off.h
-../../../build/obj/libc.o: ../common/debug_on.h ../common/list.h
-../../../build/obj/libc.o: ../common/syscalls.h ./memory.h
-../../../build/obj/libc.o: ../common/usermem.h ../common/errno.h
-../../../build/obj/libc.o: ../common/esc_code.h
-../../../build/obj/pthread.o: ./libc.h ../common/debug_off.h
-../../../build/obj/pthread.o: ../common/debug_on.h ../common/list.h
-../../../build/obj/pthread.o: ../common/syscalls.h ./memory.h
-../../../build/obj/pthread.o: ../common/usermem.h ../common/errno.h
-../../../build/obj/pthread.o: ../common/esc_code.h ./pthread.h
-../../../build/obj/memory.o: ./libc.h ../common/debug_off.h
-../../../build/obj/memory.o: ../common/debug_on.h ../common/list.h
-../../../build/obj/memory.o: ../common/syscalls.h ./memory.h
-=======
 ../../../build/obj/cstd.o: ../common/cstd.h
 ../../../build/obj/crt0.o: ./libc.h ../common/debug_off.h
 ../../../build/obj/crt0.o: ../common/debug_on.h ../common/cstd.h
@@ -179,6 +154,5 @@ depend :
 ../../../build/obj/memory.o: ./libc.h ../common/debug_off.h
 ../../../build/obj/memory.o: ../common/debug_on.h ../common/cstd.h
 ../../../build/obj/memory.o: ../common/list.h ../common/syscalls.h ./memory.h
->>>>>>> virt-riscv
 ../../../build/obj/memory.o: ../common/usermem.h ../common/errno.h
 ../../../build/obj/memory.o: ../common/esc_code.h

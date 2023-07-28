@@ -133,72 +133,6 @@ depend :
 # --------------------------------------------------------------------------------------------------
 # DEPENDENCIES
 
-<<<<<<< HEAD
-../../../build/obj/ksyscalls.o: ./klibc.h ../common/debug_off.h
-../../../build/obj/ksyscalls.o: ../common/debug_on.h ../common/list.h
-../../../build/obj/ksyscalls.o: ../hal/hcpu.h ../hal/almo1/hcpu_soc.h
-../../../build/obj/ksyscalls.o: ../hal/harch.h ../common/usermem.h
-../../../build/obj/ksyscalls.o: ./kmemory.h ./kthread.h ../common/esc_code.h
-../../../build/obj/ksyscalls.o: ../common/errno.h ../common/syscalls.h
-../../../build/obj/ksyscalls.o: ./ksynchro.h
-../../../build/obj/errno.o: ../common/errno.h
-../../../build/obj/harch.o: ./klibc.h ../common/debug_off.h
-../../../build/obj/harch.o: ../common/debug_on.h
-../../../build/obj/harch.o: ../common/list.h ../hal/hcpu.h
-../../../build/obj/harch.o: ../hal/almo1/hcpu_soc.h
-../../../build/obj/harch.o: ../hal/harch.h ../common/usermem.h
-../../../build/obj/harch.o: ./kmemory.h ./kthread.h
-../../../build/obj/harch.o: ../common/esc_code.h
-../../../build/obj/harch.o: ../common/errno.h
-../../../build/obj/harch.o: ../common/syscalls.h ./ksynchro.h
-../../../build/obj/hcpuc.o: ./klibc.h ../common/debug_off.h
-../../../build/obj/hcpuc.o: ../common/debug_on.h
-../../../build/obj/hcpuc.o: ../common/list.h ../hal/hcpu.h
-../../../build/obj/hcpuc.o: ../hal/almo1/hcpu_soc.h
-../../../build/obj/hcpuc.o: ../hal/harch.h ../common/usermem.h
-../../../build/obj/hcpuc.o: ./kmemory.h ./kthread.h
-../../../build/obj/hcpuc.o: ../common/esc_code.h
-../../../build/obj/hcpuc.o: ../common/errno.h
-../../../build/obj/hcpuc.o: ../common/syscalls.h ./ksynchro.h
-../../../build/obj/kmemory.o: ./klibc.h ../common/debug_off.h
-../../../build/obj/kmemory.o: ../common/debug_on.h ../common/list.h
-../../../build/obj/kmemory.o: ../hal/hcpu.h ../hal/almo1/hcpu_soc.h
-../../../build/obj/kmemory.o: ../hal/harch.h ../common/usermem.h ./kmemory.h
-../../../build/obj/kmemory.o: ./kthread.h ../common/esc_code.h
-../../../build/obj/kmemory.o: ../common/errno.h ../common/syscalls.h
-../../../build/obj/kmemory.o: ./ksynchro.h
-../../../build/obj/klibc.o: ./klibc.h ../common/debug_off.h
-../../../build/obj/klibc.o: ../common/debug_on.h ../common/list.h
-../../../build/obj/klibc.o: ../hal/hcpu.h ../hal/almo1/hcpu_soc.h
-../../../build/obj/klibc.o: ../hal/harch.h ../common/usermem.h ./kmemory.h
-../../../build/obj/klibc.o: ./kthread.h ../common/esc_code.h
-../../../build/obj/klibc.o: ../common/errno.h ../common/syscalls.h
-../../../build/obj/klibc.o: ./ksynchro.h
-../../../build/obj/kthread.o: ./klibc.h ../common/debug_off.h
-../../../build/obj/kthread.o: ../common/debug_on.h ../common/list.h
-../../../build/obj/kthread.o: ../hal/hcpu.h ../hal/almo1/hcpu_soc.h
-../../../build/obj/kthread.o: ../hal/harch.h ../common/usermem.h ./kmemory.h
-../../../build/obj/kthread.o: ./kthread.h ../common/esc_code.h
-../../../build/obj/kthread.o: ../common/errno.h ../common/syscalls.h
-../../../build/obj/kthread.o: ./ksynchro.h
-../../../build/obj/kinit.o: ./klibc.h ../common/debug_off.h
-../../../build/obj/kinit.o: ../common/debug_on.h ../common/list.h
-../../../build/obj/kinit.o: ../hal/hcpu.h ../hal/almo1/hcpu_soc.h
-../../../build/obj/kinit.o: ../hal/harch.h ../common/usermem.h ./kmemory.h
-../../../build/obj/kinit.o: ./kthread.h ../common/esc_code.h
-../../../build/obj/kinit.o: ../common/errno.h ../common/syscalls.h
-../../../build/obj/kinit.o: ./ksynchro.h
-../../../build/obj/ksynchro.o: ./klibc.h ../common/debug_off.h
-../../../build/obj/ksynchro.o: ../common/debug_on.h ../common/list.h
-../../../build/obj/ksynchro.o: ../hal/hcpu.h ../hal/almo1/hcpu_soc.h
-../../../build/obj/ksynchro.o: ../hal/harch.h ../common/usermem.h ./kmemory.h
-../../../build/obj/ksynchro.o: ./kthread.h ../common/esc_code.h
-../../../build/obj/ksynchro.o: ../common/errno.h ../common/syscalls.h
-../../../build/obj/ksynchro.o: ./ksynchro.h
-../../../build/obj/hcpua.o: ../hal/hcpu.h
-../../../build/obj/hcpua.o: ../hal/almo1/hcpu_soc.h
-../../../build/obj/hcpua.o: ../common/syscalls.h
-=======
 ../../../build/obj/ksyscalls.o: ../hal/arch/dma.h ../kernel/klibc.h
 ../../../build/obj/ksyscalls.o: ../common/debug_off.h ../common/debug_on.h
 ../../../build/obj/ksyscalls.o: ../common/cstd.h ../common/list.h
@@ -262,4 +196,3 @@ depend :
 ../../../build/obj/ksynchro.o: ../hal/cpu/cpu.h ../hal/arch/chardev.h
 ../../../build/obj/ksynchro.o: ../hal/arch/dev.h ../kernel/kmemory.h
 ../../../build/obj/ksynchro.o: ../kernel/kthread.h ../kernel/ksynchro.h
->>>>>>> virt-riscv
