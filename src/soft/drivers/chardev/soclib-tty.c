@@ -40,8 +40,8 @@ static int soclib_tty_write(struct chardev_s *cdev, char *buf, unsigned count)
 {
     int res = 0;                                        // nb of written char
     struct soclib_tty_regs_s *regs = 
-        (struct soclib_tty_regs_s *) cdev->address;      // access the registers
-    
+        (struct soclib_tty_regs_s *) cdev->address;     // access the registers
+
     while (count--) {                                   // while there are chars
         regs->write = *buf;                             // send the char to TTY
         delay(150);

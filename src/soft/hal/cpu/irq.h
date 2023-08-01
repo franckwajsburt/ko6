@@ -19,14 +19,14 @@
  * Generic IRQs functions
  */
 
-/** 
+/**
  * \brief   enable irq (do not change the MIPS mode thus stay in kernel mode)
  * \return  nothing
  */
 extern void irq_enable (void);
 
-/** 
- * \brief   disable irq 
+/**
+ * \brief   disable irq
  * \return  nothing
  */
 extern unsigned irq_disable (void);

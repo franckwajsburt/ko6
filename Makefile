@@ -4,23 +4,23 @@
 # | / /(     )/ _ \   	\copyright  2021-2023 Sorbonne University
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
-# see https://www.gnu.org/software/make/manual/make.html for documentation on make 
-#--------------------------------------------------------------------------------------------------
+# see https://www.gnu.org/software/make/manual/make.html for documentation on make
+#---------------------------------------------------------------------------------------------------
 
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
-APP	   ?= hello#					app name 								
-MAKOPT ?= -s#						comment the -s to get command details
-SOC	   ?= almo1-mips#				defaut SOC name
-NTTYS  ?= 2#						default number of ttys
-NCPUS  ?= 1#						default number of CPUS
-VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
+APP    ?= hello#				app name
+MAKOPT ?= -s#					comment the -s to get command details
+SOC    ?= almo1-mips#				defaut SOC name
+NTTYS  ?= 2#					default number of ttys
+NCPUS  ?= 1#					default number of CPUS
+VERBOSE?= 0#					verbose mode to print INFO(), BIP(), ASSERT, VAR()
 BLDDIR  = build#           			build directory
 SWDIR   = src/soft#        			software directory
-SOCDIR	= $(SWDIR)/platforms/$(SOC)#SOC specific sources directory
-FROM   ?= 000000#					first cycle to trace
-LAST   ?= 500000#					last cycle to execute
+SOCDIR	= $(SWDIR)/platforms/$(SOC)#		SOC specific sources directory
+FROM   ?= 000000#				first cycle to trace
+LAST   ?= 500000#				last cycle to execute
 DLOG    = ~/kO6-debug.log#			debug file
 APPS	= $(shell ls -l src/soft/uapp | grep "^d" | awk '{print $$NF}')
 
@@ -53,7 +53,7 @@ help:
 	@echo "        VERBOSE: verbose mode for (see common/debug_*.h) (default $(VERBOSE))"
 	@echo ""
 
-compil: 
+compil:
 	make -C $(SWDIR) $(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
 
 pdf:
@@ -73,6 +73,7 @@ clean:
 	@-killall xterm soclib-fb 2> /dev/null || true
 	@-rm -f /tmp/fbf.* $(DLOG) xterm* label*.s trace*.s 2> /dev/null || true
 	@-rm -rf $(BLDDIR) 2> /dev/null || true
+	@find . -name *~ | xargs rm -f
 
 # Generate as many rules as app in uapp directory
 # if there an application named "test" then "make test" execute "make exec APP=test"

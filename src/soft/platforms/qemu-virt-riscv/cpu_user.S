@@ -6,12 +6,12 @@
 
   \file     platform/virt/cpu_user.S
   \author   Nolan Bled
-  \brief    CPU specific user functions 
-            - This file contains cpu-dependant functions used by user applications. 
+  \brief    CPU specific user functions
+            - This file contains cpu-dependant functions used by user applications.
             - This functions could be static inline functions because or even macros,
-              instead this is real code in .h file that is not very clean, 
+              instead this is real code in .h file that is not very clean,
               but I don't want theses functions inlined in order to see them in the trace execution
-            - system calls 
+            - system calls
             - FIXME spinlock or atomic add should be appeared.
 
 \*------------------------------------------------------------------------------------------------*/

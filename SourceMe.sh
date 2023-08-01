@@ -8,9 +8,10 @@
 
 # Main directory, you can change it
 # ---------------------------------
-export kO6=$HOME/ko6
+export kO6=$HOME/Documents/ko6
 export SOCLIB=/users/outil/soc/soclib
 export SOC=almo1-mips
+export SOC=qemu-virt-riscv
 
 echo $kO6
 

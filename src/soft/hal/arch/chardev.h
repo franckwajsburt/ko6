@@ -60,12 +60,13 @@ struct chardev_fifo_s {
 };
 
 struct chardev_s {
-    unsigned address;           // memory-mapped register addresses
-    unsigned baudrate;          // chardev baudrate
-    list_t list;                // linked-list entry into the chardev's list
-    unsigned no;                // number of the chardev entry in the chardev's list
-    struct chardev_fifo_s fifo;
+    unsigned address;               // memory-mapped register addresses
+    unsigned baudrate;              // chardev baudrate
+    list_t list;                    // linked-list entry into the chardev's list
+    unsigned no;                    // number of the chardev entry in the chardev's list
+    struct chardev_fifo_s fifo;     // required if the incoming data rate is too high for processing
     struct chardev_ops_s *ops;      // driver specific operations linked to the chardev
+    void * driver_data;             // private pointer for driver specific info
 };
 
 #define chardev_alloc() (struct chardev_s*) (dev_alloc(CHAR_DEV, sizeof(struct chardev_s))->data)

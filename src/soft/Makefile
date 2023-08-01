@@ -13,11 +13,11 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
-MAKOPT ?= -s#						comment the -s to get command details
-SOC	   ?= almo1-mips#				defaut SOC name
-NTTYS  ?= 2#						default number of ttys
-NCPUS  ?= 1#						default number of CPUS
-VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
+MAKOPT ?= -s#			comment the -s to get command details
+SOC    ?= almo1-mips#		defaut SOC name
+NTTYS  ?= 2#			default number of ttys
+NCPUS  ?= 1#			default number of CPUS
+VERBOSE?= 0#			verbose mode to print INFO(), BIP(), ASSERT, VAR()
 
 # Rules (here they are used such as simple shell scripts)
 # --------------------------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ tags:
 	find . -name *.[chS] | xargs ctags
 
 pdf:
-	-make -C lib/libfdt $(MAKOPT) pdf
+	-make -C lib/libfdt 	$(MAKOPT) pdf
 	-make -C hal    	$(MAKOPT) pdf
 	-make -C drivers 	$(MAKOPT) pdf
 	-make -C kernel 	$(MAKOPT) pdf
@@ -57,7 +57,7 @@ pdf:
 	-make -C uapp   	$(MAKOPT) pdf 
 
 clean:
-	-make -C lib/libfdt $(MAKOPT) clean
+	-make -C lib/libfdt 	$(MAKOPT) clean
 	-make -C hal    	$(MAKOPT) clean
 	-make -C drivers 	$(MAKOPT) clean
 	-make -C kernel 	$(MAKOPT) clean

@@ -68,7 +68,7 @@ int arch_tty_init(void *fdt)
         icu->ops->icu_unmask(icu, irq);
         // Register the corresponding ISR
         register_interrupt(irq, (isr_t) soclib_tty_isr, tty);
-   
+
         // Find the next compatible tty
         tty_off = fdt_node_offset_by_compatible(fdt, tty_off, "soclib,tty");
     }
@@ -91,12 +91,12 @@ int arch_timer_init(void *fdt, unsigned tick)
 
         struct timer_s *timer = timer_alloc();
         soclib_timer_ops.timer_init(timer, addr, tick);
-        timer->ops->timer_set_event(timer, 
+        timer->ops->timer_set_event(timer,
             (void (*)(void *)) thread_yield, (void *) 0);
 
         icu->ops->icu_unmask(icu, irq);
         register_interrupt(irq, (isr_t) soclib_timer_isr, timer);
-   
+
         timer_off = fdt_node_offset_by_compatible(fdt, timer_off, "soclib,timer");
     }
 
