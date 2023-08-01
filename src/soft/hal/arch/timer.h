@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/timer.h
+  \file     hal/arch/timer.h
   \author   Franck Wajsburt, Nolan Bled
   \brief    Timer API
 

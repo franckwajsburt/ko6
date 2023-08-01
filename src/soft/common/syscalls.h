@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     commmon/syscall.h
+  \file     common/syscall.h
   \author   Franck Wajsburt
   \brief    Syscall numbers and system call function prototype (CPU specific)
 

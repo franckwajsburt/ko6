@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     commmon/debug_on.h
+  \file     common/debug_on.h
   \author   Franck Wajsburt
   \brief    Debug messages
             Permanent

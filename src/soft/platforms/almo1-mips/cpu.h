@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     platform/almo1/cpu.h
+  \file     platforms/almo1-mips/cpu.h
   \author   Franck Wajsburt
   \brief    CPU specific defines
 

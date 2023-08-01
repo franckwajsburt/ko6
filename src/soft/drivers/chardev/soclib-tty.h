@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     drivers/tty/soclib-tty.h
+  \file     drivers/chardev/soclib-tty.h
   \author   Franck Wajsburt, Nolan Bled
   \brief    Soclib TTY driver
 
@@ -24,8 +24,16 @@ struct soclib_tty_regs_s {
     int unused;
 };
 
-void soclib_tty_isr(unsigned irq, struct chardev_s *cdev);
+/**
+ * \brief   ISR for the soclib tty device
+            The only interrupt handled is the one raised when a character
+            is received by the tty device
+ * \param   irq the irq linked to this isr 
+ * \param   cdev the device linked to this isr
+ * \return  nothing
+ */
+extern void soclib_tty_isr(unsigned irq, struct chardev_s *cdev);
 
-extern struct chardev_ops_s soclib_tty_ops;
+extern struct chardev_ops_s SoclibTTYOps;
 
 #endif

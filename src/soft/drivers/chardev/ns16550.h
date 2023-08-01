@@ -7,6 +7,7 @@
   \file     drivers/tty/ns16550.h
   \author   Nolan Bled
   \brief    NS16550 UART driver
+            For a complete description, see http://caro.su/msx/ocm_de1/16550.pdf
 
 \*------------------------------------------------------------------------------------------------*/
 
@@ -40,27 +41,37 @@
 
 #define NS16550_ENABLE_DLAB     128
 
+/* General purpose registers, accessible when LCR.DLAB = 0 */
 struct ns16550_general_regs_s {
-    unsigned char hr;
-    unsigned char ier;
-    unsigned char isr;
-    unsigned char fcr;
-    unsigned char lcr;
-    unsigned char mcr;
-    unsigned char lsr;
-    unsigned char msr;
-    unsigned char spr;
+    unsigned char hr;   /* Transmission/Reception character */
+    unsigned char ier;  /* Interrupt Enable Register */
+    unsigned char isr;  /* Interrupt Status Register */
+    unsigned char fcr;  /* FIFO Control Register */
+    unsigned char lcr;  /* Line Control Register */
+    unsigned char mcr;  /* Modem Control Register */
+    unsigned char lsr;  /* Line Status Register */
+    unsigned char msr;  /* Modem Status Register */
+    unsigned char spr;  /* Scratchpad Register */
 } __attribute__((packed));
 
+/* Baudrate control registers, accessible when LCR.DLAB = 1 */
 struct ns16550_dlab_regs_s {
-    unsigned char dll;
-    unsigned char dlm;
+    unsigned char dll;          /* Divisor Latch least significant byte*/
+    unsigned char dlm;          /* Divisor Latch most significiant byte */
     unsigned char __ignore[5];
-    unsigned char psd;
+    unsigned char psd;          /* Prescaler Division Factor */
 } __attribute__((packed));
 
-void ns16550_isr(unsigned irq, struct chardev_s *cdev);
+/**
+ * \brief   Interrupt Service Routine for NS16550 UART
+ *          The ISR push received character into the software fifo
+ *          (cdev->fifo)
+ * \param   irq the irq linked to this ISR
+ * \param   cdev the device linked to this ISR
+ * \return  nothing
+ */
+extern void ns16550_isr(unsigned irq, struct chardev_s *cdev);
 
-extern struct chardev_ops_s ns16550_ops;
+extern struct chardev_ops_s NS16550Ops;
 
 #endif

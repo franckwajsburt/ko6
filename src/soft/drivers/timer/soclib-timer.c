@@ -13,6 +13,12 @@
 #include <drivers/timer/soclib-timer.h>
 #include <kernel/klibc.h>
 
+/**
+ * \brief   Set the number of ticks between two soclib timer interrupts 
+ * \param   timer timer device
+ * \param   tick number of ticks
+ * \return  nothing
+ */
 static void soclib_timer_set_tick(struct timer_s *timer, unsigned tick)
 {
     struct soclib_timer_regs_s *regs = 
@@ -20,10 +26,17 @@ static void soclib_timer_set_tick(struct timer_s *timer, unsigned tick)
     regs->period = tick;
 }
 
+/**
+ * \brief   soclib timer initialization 
+ * \param   timer timer device to initialize
+ * \param   address address of the device
+ * \param   tick number of ticks between two interrupts
+ * \return  nothing
+ */
 static void soclib_timer_init(struct timer_s *timer, unsigned address, unsigned tick)
 {
     timer->address  = address;
-    timer->ops      = &soclib_timer_ops;
+    timer->ops      = &SoclibTimerOps;
 
     struct soclib_timer_regs_s *regs = 
         (struct soclib_timer_regs_s *) timer->address;
@@ -33,13 +46,19 @@ static void soclib_timer_init(struct timer_s *timer, unsigned address, unsigned 
     regs->mode = (tick) ? 3 : 0;                        // timer ON with IRQ only if (tick != 0)
 }
 
+/**
+ * \brief   Set the event that will triggered by a soclib timer interrupt
+ * \param   f the function corresponding to the event
+ * \param   arg argument that will be passed to the function
+ * \return  nothing
+ */
 static void soclib_timer_set_event(struct timer_s *timer, void (*f)(void *arg), void *arg)
 {
     timer->event.f = f;
     timer->event.arg = arg;
 }
 
-struct timer_ops_s soclib_timer_ops = {
+struct timer_ops_s SoclibTimerOps = {
     .timer_init = soclib_timer_init,
     .timer_set_event = soclib_timer_set_event,
     .timer_set_tick = soclib_timer_set_tick
@@ -49,7 +68,8 @@ void soclib_timer_isr (unsigned irq, struct timer_s *timer)
 {
     struct soclib_timer_regs_s *regs = 
         (struct soclib_timer_regs_s *) timer->address;
-    regs->resetirq = 1;    // IRQ acknoledgement to lower the interrupt signal
+    /* IRQ acknoledgement to lower the interrupt signal */
+    regs->resetirq = 1;
     
     if (timer->event.f)
         timer->event.f(timer->event.arg);

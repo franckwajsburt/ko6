@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/chardev.h
+  \file     hal/arch/chardev.h
   \author   Franck Wajsburt, Nolan Bled
   \brief    Generic CHARDEV functions prototypes
 
@@ -16,6 +16,7 @@
 #include <common/errno.h>
 #include <common/list.h>
 #include <hal/arch/dev.h>
+#include <hal/cpu/atomic.h>
 
 #define CHARDEV_FIFO_DEPTH 20
 
@@ -62,9 +63,7 @@ struct chardev_fifo_s {
 struct chardev_s {
     unsigned address;               // memory-mapped register addresses
     unsigned baudrate;              // chardev baudrate
-    list_t list;                    // linked-list entry into the chardev's list
-    unsigned no;                    // number of the chardev entry in the chardev's list
-    struct chardev_fifo_s fifo;     // required if the incoming data rate is too high for processing
+    struct chardev_fifo_s fifo;
     struct chardev_ops_s *ops;      // driver specific operations linked to the chardev
     void * driver_data;             // private pointer for driver specific info
 };
@@ -81,7 +80,7 @@ struct chardev_s {
  * \param   c       char to write
  * \return  SUCCESS or FAILURE
  */
-int chardev_fifo_push (struct chardev_fifo_s *fifo, char c);
+extern int chardev_fifo_push (struct chardev_fifo_s *fifo, char c);
 
 /**
  * \brief   pop a character from the chardev's FIFO
@@ -89,6 +88,6 @@ int chardev_fifo_push (struct chardev_fifo_s *fifo, char c);
  * \param   c       pointer on char to put the read char 
  * \return  SUCCESS or FAILURE
  */
-int chardev_fifo_pull (struct chardev_fifo_s *fifo, int *c);
+extern int chardev_fifo_pull (struct chardev_fifo_s *fifo, int *c);
 
 #endif

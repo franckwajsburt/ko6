@@ -7,6 +7,8 @@
   \file     drivers/timer/clint-timer.h
   \author   Nolan Bled
   \brief    CLINT timer driver
+            The CLINT used by qemu is based on the one made by SiFive
+            Reference: https://sifive.cdn.prismic.io/sifive%2Fc89f6e5a-cf9e-44c3-a3db-04420702dcc1_sifive+e31+manual+v19.08.pdf
 
 \*------------------------------------------------------------------------------------------------*/
 
@@ -18,8 +20,14 @@
 #define CLINT_MTIMECMP_OFFSET 0x4000
 #define CLINT_MTIME_OFFSET    0xbff8
 
-void clint_timer_isr(unsigned irq, struct timer_s *timer);
+/**
+ * \brief   ISR of the CLINT device
+ * \param   irq irq linked to the ISR 
+ * \param   timer device linked to the ISR
+ * \return  nothing
+ */
+extern void clint_timer_isr(unsigned irq, struct timer_s *timer);
 
-extern struct timer_ops_s clint_timer_ops;
+extern struct timer_ops_s ClintTimerOps;
 
 #endif

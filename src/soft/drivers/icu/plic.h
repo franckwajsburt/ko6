@@ -1,3 +1,15 @@
+/*------------------------------------------------------------------------------------------------*\
+   _     ___    __
+  | |__ /'v'\  / /      \date       2023-08-01
+  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+
+  \file     drivers/icu/plic.h
+  \author   Nolan Bled
+  \brief    PLIC driver 
+
+\*------------------------------------------------------------------------------------------------*/
+
 #ifndef _PLIC_H_
 #define _PLIC_H_
 
@@ -58,6 +70,6 @@
                                 PLIC_CLAIM_OFFSET + \
                                 PLIC_S_CONTEXT(cpu) * 0x1000)
 
-extern struct icu_ops_s plic_ops;
+extern struct icu_ops_s PlicOps;
 
 #endif

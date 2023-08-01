@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     commmon/user_mem.h
+  \file     common/user_mem.h
   \author   Franck Wajsburt
   \brief    User application memory description 
 

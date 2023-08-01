@@ -25,6 +25,6 @@ struct soclib_dma_regs_s {
     int unused[3];      // unused addresses
 };
 
-extern struct dma_ops_s soclib_dma_ops;
+extern struct dma_ops_s SoclibDMAOps;
 
 #endif

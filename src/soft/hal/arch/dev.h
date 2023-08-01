@@ -1,3 +1,15 @@
+/*------------------------------------------------------------------------------------------------*\
+   _     ___    __
+  | |__ /'v'\  / /      \date       2023-08-01
+  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+
+  \file     hal/arch/dev.h
+  \author   Nolan Bled
+  \brief    Generic device management functions
+
+\*------------------------------------------------------------------------------------------------*/
+
 /**
  * To simplify device operations, this module provides functions and structures to allocate
  * and release devices dynamically. When the platform is initialized (arch_init) it should detect
@@ -68,7 +80,7 @@ struct dev_s {
     char data[];        // Device specific data, should be filled with (struct tty_s, struct icu_s, ...)
 };
 
-extern list_t devList;
+extern list_t DevList;
 
 /**
  * \brief   Find the last element added with corresponding tag
@@ -77,7 +89,7 @@ extern list_t devList;
  * \param   tag type of the device (tty, icu, ...)
  * \return  the next no (last device of this type no + 1)
 */
-unsigned dev_next_no(enum dev_tag_e tag);
+extern unsigned dev_next_no(enum dev_tag_e tag);
 
 /**
  * \brief   Allocate enough size in kernel heap to store device meta data (tag, no, list)
@@ -87,7 +99,7 @@ unsigned dev_next_no(enum dev_tag_e tag);
  * \param   size size of the device-specific structure (ex: sizeof(struct_s))
  * \return  the allocated device
 */
-struct dev_s *dev_alloc(enum dev_tag_e tag, unsigned dsize);
+extern struct dev_s *dev_alloc(enum dev_tag_e tag, unsigned dsize);
 
 /**
  * \brief   Get a device based on its type and on its minor number
@@ -95,7 +107,7 @@ struct dev_s *dev_alloc(enum dev_tag_e tag, unsigned dsize);
  * \param   no minor number of the device
  * \return  the corresponding device if found, NULL if not
 */
-struct dev_s *dev_get(enum dev_tag_e tag, unsigned no);
+extern struct dev_s *dev_get(enum dev_tag_e tag, unsigned no);
 
 /**
  * \brief   Release a created device (kfree + list_unlink)
@@ -103,6 +115,6 @@ struct dev_s *dev_get(enum dev_tag_e tag, unsigned no);
  * \param   dsize size of device-specific structure
  * \return  nothing
 */
-void          dev_free(struct dev_s *dev, unsigned dsize);
+extern void          dev_free(struct dev_s *dev, unsigned dsize);
 
 #endif

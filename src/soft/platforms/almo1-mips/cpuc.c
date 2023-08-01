@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/almo1/hcpuc.c
+  \file     platforms/almo1-mips/cpuc.c
   \author   Franck Wajsburt
   \brief    CPU specific c code which implement a part of hcpu.h API
 

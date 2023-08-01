@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     platform/almo1/cpu_user.S
+  \file     platform/almo1-mips/cpu_user.S
   \author   Franck Wajsburt
   \brief    CPU specific user functions 
             - This file contains cpu-dependant functions used by user applications. 

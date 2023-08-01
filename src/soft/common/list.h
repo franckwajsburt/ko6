@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     commmon/list.h
+  \file     common/list.h
   \author   Franck Wajsburt
   \brief    Management of double chained lists
 

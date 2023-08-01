@@ -141,7 +141,7 @@ extern int atoi (char *val);
  * \param     ap    variadic arguments, i.e. variable number of arguments
  * \return    number of printed char
  */
-int vsnprintf (char * buffer, unsigned size, char *fmt, va_list ap);
+extern int vsnprintf (char * buffer, unsigned size, char *fmt, va_list ap);
 
 /**
  * \brief     write a formated string to the str buffer

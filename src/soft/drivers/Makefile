@@ -98,6 +98,12 @@ clean:
 # Rules with automatic variables to produce the executable
 # --------------------------------------------------------------------------------------------------
 
+$(OBJDIR)/%.o : %.c
+	@echo "- compil  --> "$(notdir $@)
+	$(CC) -o $@ $(CFLAGS) $<
+	$(OD) -D $@ > $@.s
+
+
 $(OBJDIR)/%.o : dma/%.c
 	@echo "- compil  --> "$(notdir $@)
 	$(CC) -o $@ $(CFLAGS) $<

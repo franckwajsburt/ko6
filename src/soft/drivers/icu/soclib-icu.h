@@ -1,3 +1,15 @@
+/*------------------------------------------------------------------------------------------------*\
+   _     ___    __
+  | |__ /'v'\  / /      \date       2023-08-01
+  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+
+  \file     drivers/icu/soclib-icu.h
+  \author   Franck Wajsburt, Nolan Bled
+  \brief    Soclib ICU driver
+
+\*------------------------------------------------------------------------------------------------*/
+
 #ifndef _SOCLIB_ICU_H_
 #define _SOCLIB_ICU_H_
 
@@ -12,6 +24,6 @@ struct soclib_icu_regs_s {
     int unused[3];      // 3 register addresses are not used
 };
 
-extern struct icu_ops_s soclib_icu_ops;
+extern struct icu_ops_s SoclibICUOps;
 
 #endif

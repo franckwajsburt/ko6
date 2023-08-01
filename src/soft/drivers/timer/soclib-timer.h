@@ -22,8 +22,14 @@ struct soclib_timer_regs_s {
     int resetirq;       // address to acknowledge the timer's IRQ
 };
 
-void soclib_timer_isr(unsigned irq, struct timer_s *timer);
+/**
+ * \brief   ISR of the soclib timer device
+ * \param   irq irq linked to the ISR 
+ * \param   timer device linked to the ISR
+ * \return  nothing
+ */
+extern void soclib_timer_isr(unsigned irq, struct timer_s *timer);
 
-extern struct timer_ops_s soclib_timer_ops;
+extern struct timer_ops_s SoclibTimerOps;
 
 #endif

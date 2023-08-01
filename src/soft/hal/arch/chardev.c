@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/chardev.c
+  \file     hal/arch/chardev.c
   \author   Franck Wajsburt, Nolan Bled
   \brief    TTYs management helper functions
 
