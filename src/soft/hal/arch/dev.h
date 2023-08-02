@@ -66,6 +66,7 @@
 #include <common/list.h>
 #include <kernel/klibc.h>
 
+/** \brief Devices Types */
 enum dev_tag_e {
     CHAR_DEV,
     ICU_DEV,
@@ -73,11 +74,12 @@ enum dev_tag_e {
     TIMER_DEV
 };
 
+/** \brief Device Driver informations */
 struct dev_s {
-    enum dev_tag_e tag; // Identify the type of the device (tty, icu, ...)
-    unsigned no;        // Minor device number (tty0, tty1, ...)
-    list_t list;        // List entry in the global device list
-    char data[];        // Device specific data, should be filled with (struct tty_s, struct icu_s, ...)
+    enum dev_tag_e tag; //< Identify the type of the device (tty, icu, ...)
+    unsigned no;        //< Minor device number (tty0, tty1, ...)
+    list_t list;        //< List entry in the global device list
+    char data[];        //< Device specific data, should be filled with (struct tty_s, struct icu_s, ...)
 };
 
 extern list_t DevList;
@@ -96,7 +98,7 @@ extern unsigned dev_next_no(enum dev_tag_e tag);
  *          and device data (struct tty_s, struct icu_s, ...) and add it into the global device
  *          list
  * \param   tag type of the device (tty, icu, ...)
- * \param   size size of the device-specific structure (ex: sizeof(struct_s))
+ * \param   dsize size of the device-specific structure (ex: sizeof(struct_s))
  * \return  the allocated device
 */
 extern struct dev_s *dev_alloc(enum dev_tag_e tag, unsigned dsize);
@@ -113,7 +115,6 @@ extern struct dev_s *dev_get(enum dev_tag_e tag, unsigned no);
  * \brief   Release a created device (kfree + list_unlink)
  * \param   dev the device to release
  * \param   dsize size of device-specific structure
- * \return  nothing
 */
 extern void          dev_free(struct dev_s *dev, unsigned dsize);
 

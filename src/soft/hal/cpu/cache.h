@@ -27,14 +27,12 @@ extern size_t cachelinesize (void);
  * \brief   invalidate all line of the buffer buf 
  * \param   buf first address
  * \param   size of buffer in bytes
- * \return  nothing
  */
 extern void dcache_buf_invalidate (void *buf, unsigned size);
 
 /**
  * \brief   invalidate all line of the buffer buf 
  * \param   addr address to invalidate
- * \return  nothing
  */
 extern void dcache_invalidate (void *addr);
 

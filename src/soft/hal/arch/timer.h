@@ -15,7 +15,17 @@
 
 struct timer_s;
 
+/** 
+ * \brief Functions prototypes of the timer device, they should be implemented
+ *        by a device driver. They serve as an interface between the kernel and
+ *        the driver
+ */
 struct timer_ops_s {
+    /**
+     * \brief   Generic function to initialize the timer device
+     * \param   address the base address of the memory-mapped registers
+     * \param   tick number of ticks between to timer interrupts
+     */
     void (*timer_init)(struct timer_s *timer, unsigned address, unsigned tick);
 
     /**
@@ -23,7 +33,6 @@ struct timer_ops_s {
      *          after which we want an interrupt
      * \param   timer the timer device
      * \param   tick  the number of ticks
-     * \return  nothing
     */
     void (*timer_set_tick)(struct timer_s *timer, unsigned tick);
 
@@ -33,24 +42,22 @@ struct timer_ops_s {
      * \param   timer   the timer device
      * \param   f       the function to be called
      * \param   arg     the arg passed to the function
-     * \return  nothing
     */
     void (*timer_set_event)(struct timer_s *timer, void (*f)(void *arg), void *arg);
 };
 
-/**
- * Structure describing what to do when we receive a timer interrupt
- */
+/** \brief Structure describing what to do when we receive a timer interrupt */
 struct timer_event_s {
-    void (*f)(void *arg);           // function triggered
-    void *arg;                      // argument passed to the function
+    void (*f)(void *arg);           //< function triggered
+    void *arg;                      //< argument passed to the function
 };
 
+/** \brief Timer driver informations */
 struct timer_s {
-    unsigned address;               // timer's address
-    unsigned period;                // number of ticks between two events
-    struct timer_event_s event;     // event triggered each nticks
-    struct timer_ops_s *ops;        // driver-specific operations
+    unsigned address;               //< timer's address
+    unsigned period;                //< number of ticks between two events
+    struct timer_event_s event;     //< event triggered each nticks
+    struct timer_ops_s *ops;        //< driver-specific operations
 };
 #define timer_alloc() (struct timer_s*) (dev_alloc(TIMER_DEV, sizeof(struct timer_s))->data)
 #define timer_get(no) (struct timer_s*) (dev_get(TIMER_DEV, no)->data)

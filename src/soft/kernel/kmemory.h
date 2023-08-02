@@ -70,7 +70,7 @@ void test_ustack (size_t turn);
 
 /**
  * \brief   change the boundary of the heap
- * \param   addr  is the new boundary, maybe greater or smaller than the current one
+ * \param   increment integer added to the current heap boundary
  * \return  SUCCESS or FAILURE 
  */
 void * sbrk (int increment);

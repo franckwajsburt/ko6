@@ -23,7 +23,7 @@
 
 /**
  * \brief   Get the base address of a FDT device node (reg property)
- *          TODO: take in account the #cells attribute of a node
+ *          TODO: take in account the cells attribute of a node
  * \param   fdt address of the FDT in memory 
  * \param   offset offset of the node in the FDT
  * \return  the address contained by the reg property

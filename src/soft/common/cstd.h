@@ -29,7 +29,7 @@
 
 /**
  * \brief     set every byte in a buffer to a same value
- * \param     dest buffer address
+ * \param     s buffer address
  * \param     c value to write
  * \param     n number of bytes to write
 */
@@ -88,6 +88,7 @@ extern void *strncpy (char *dest, char *src, unsigned n);
 
 /**
  * \brief     calculates the length of the string s, excluding the terminating null byte
+ * \param     buf input string
  * \return    the number of characters
  */
 extern int strlen (const char *buf);
@@ -119,6 +120,8 @@ extern char *strrchr (const char *s, int c);
 
 /**
  * \brief     compare two null-terminated strings
+ * \param     s1 first string
+ * \param     s2 second string
  * \return    return less than, equal to or greater than 0 if s1 is less than, equal to or 
  *            greater than s2
 */
@@ -135,10 +138,10 @@ extern int atoi (char *val);
 /**
  * \brief     write a formated string to the str buffer
  *            this a simplified version which handles only: %c, %s, $d, %x and %p
- * \param     str   buffer of chars where string is formed
- * \param     size  size of buffer
- * \param     fmt   formated string
- * \param     ap    variadic arguments, i.e. variable number of arguments
+ * \param     buffer  buffer of chars where string is formed
+ * \param     size    size of buffer
+ * \param     fmt     formated string
+ * \param     ap      variadic arguments, i.e. variable number of arguments
  * \return    number of printed char
  */
 extern int vsnprintf (char * buffer, unsigned size, char *fmt, va_list ap);
@@ -146,9 +149,9 @@ extern int vsnprintf (char * buffer, unsigned size, char *fmt, va_list ap);
 /**
  * \brief     write a formated string to the str buffer
  *            this a simplified version which handles only: %c, %s, $d, %x and %p
- * \param     str   buffer of chars where string is formed
- * \param     size  size of buffer
- * \param     fmt   formated string
+ * \param     buffer    buffer of chars where string is formed
+ * \param     size      size of buffer
+ * \param     fmt       formated string
  * \param     ...   variadic arguments, i.e. variable number of arguments
  * \return    number of printed char
  */

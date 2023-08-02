@@ -21,20 +21,17 @@
 
 /**
  * \brief   enable irq (do not change the MIPS mode thus stay in kernel mode)
- * \return  nothing
  */
 extern void irq_enable (void);
 
 /**
  * \brief   disable irq
- * \return  nothing
  */
 extern unsigned irq_disable (void);
 
 /**
  * Interrupt table helper functions
  */
-
 
 /**
  * isr_t is a type of an isr function
@@ -71,12 +68,12 @@ extern unsigned irq_disable (void);
  */
 typedef  void (*isr_t) (unsigned, void*);
 
+/** \brief Interrupt Table Entry, describe what to do for a specific IRQ */
 struct ite_s {
-    isr_t handler;
-    void *arg;
+    isr_t handler;  //< function called for this entry
+    void *arg;      //< parameter passed to the function
 };
 
-// This structure needs to be declared in platform-specific initialization file
 extern struct ite_s InterruptTable[MAX_N_IRQS];
 
 /**
@@ -84,22 +81,19 @@ extern struct ite_s InterruptTable[MAX_N_IRQS];
  * \param irq     the irq
  * \param handler the ISR to call
  * \param arg     argument given to the ISR
- * \return nothing
-*/
+ */
 extern void register_interrupt(unsigned irq, isr_t handler, void *arg);
 
 /**
  * \brief Call the ISR of a given IRQ
  * \param irq the irq
- * \return nothing
-*/
+ */
 extern void route_interrupt(unsigned irq);
 
 /**
  * \brief Remove the ISR linked to an IRQ
  * \param irq the irq
- * \return nothing
-*/
+ */
 extern void unregister_interrupt(unsigned irq);
 
 #endif

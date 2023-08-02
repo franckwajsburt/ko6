@@ -254,7 +254,7 @@ int * malloc_ustack (void)
 /**
  * \brief   compare two item address, used by list_addsort in free_ustack()
  * \param   curr    is the current item in the list
- * \param   newx    is the new item to insert
+ * \param   new     is the new item to insert
  * \return  a positive if current > new
  */ 
 static int cmp_addr (list_t * curr, list_t * new) {

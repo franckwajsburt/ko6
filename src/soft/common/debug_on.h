@@ -63,7 +63,7 @@
 /**
  * \brief   Write a value of a variable
  * \param   fmt type i.e. %d, %p, etc.
- * \param   arg Variadic aguments used to form the string
+ * \param   var Variadic aguments used to form the string
  */
 #ifdef _KERNEL_
 #define VAR(fmt,var) kprintf("-- %s: "#var"\t "#fmt,__func__,var)
