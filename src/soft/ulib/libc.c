@@ -13,15 +13,15 @@
 #include <libc.h>       // external function declarations
 
 /**
- * the return address is in user space but we need to implement a better thread local storage 
+ * the return address is in user space but we need to implement a better thread local storage
  * so for now, that is the kernel that know where errno is placed
  */
-int * __errno_location (void) 
+int * __errno_location (void)
 {
     return (int *)syscall_fct( 0, 0, 0, 0, SYSCALL_ERRNO);
 }
 
-void perror (char *s) 
+void perror (char *s)
 {
     if (s && *s)
         fprintf (0, "%s: %s\n", s, errno_mess[errno + 1]); // first number of errno is -1
@@ -117,8 +117,10 @@ int fgets (char *buf, int count, int tty)
     while ((count != 0) && (c != '\n')) {       // as long as we can or need to get a char
 
         read (tty, &c, 1);                      // read only 1 char
+        if (c == '\n')                          // if c is the line feed (10)
+            read (tty, &c, 1);                  // drop it and read the next one
         if (c == '\r')                          // if c is the carriage return (13)
-            read (tty, &c, 1);                  // get the next that is line feed (10)
+                c = '\n';                       // change it for '\n', that is what fgets waits for
 
         if ((c == 8)||(c == 127)) {             // 8 = backspace, 127 = delete
             if (res) {                          // go back in the buffer if possible
@@ -128,9 +130,9 @@ int fgets (char *buf, int count, int tty)
                 res--;
             }
             continue;                           // ask for another key
-        } else
+        } else {
             write (tty, &c, 1);                 // loop back to the tty
-
+        }
         *buf = c;                               // write the char into the buffer
         buf++;                                  // increments the writing pointer
         count--;                                // decrements the remaining space
