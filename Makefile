@@ -67,6 +67,9 @@ debug: compil
 	make -C $(SOCDIR) debug NTTYS=$(NTTYS) NCPUS=$(NCPUS) \
 		VERBOSE=$(VERBOSE) FROM=$(FROM) LAST=$(LAST)
 
+doc:
+	doxygen doxygen.cfg
+
 clean:
 	make -C $(SWDIR) $(MAKOPT) clean
 	@echo "- clean up logs execution files"
