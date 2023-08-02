@@ -42,7 +42,8 @@ mkdir:
 	test -d $(OBJDIR) || (echo "- mkdir   $(OBJDIR)" ; mkdir $(OBJDIR))
 
 $(OBJDIR)/libfdt.a: $(LIBFDT_OBJS)
-	ar -rc $(OBJDIR)/libfdt.a $(LIBFDT_OBJS)
+	ar -rc $@ $(LIBFDT_OBJS)
+	$(RL) $@
 
 $(OBJDIR)/%.o: %.c
 	@echo "- compil  --> "$(notdir $@)

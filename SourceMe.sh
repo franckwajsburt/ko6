@@ -19,7 +19,7 @@ echo $kO6
 # ----------------------------------------------------------------
 export GCC=7.1.0
 export CCTOOLS=$kO6/bin/gcc.$GCC
-export PATH=$kO6/bin:$CCTOOLS/bin:$SOCLIB/utils/bin:$PATH
+export PATH=$PATH:$kO6/bin:$CCTOOLS/bin:$SOCLIB/utils/bin
 export LD_LIBRARY_PATH=$CCTOOLS/lib64:$LD_LIBRARY_PATH
 shopt -s globstar   # allow the ** symbol which replace any pathname
 

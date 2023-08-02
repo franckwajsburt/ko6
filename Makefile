@@ -10,17 +10,17 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
-APP    ?= hello#				app name
-MAKOPT ?= -s#					comment the -s to get command details
+APP    ?= hello#					app name
+MAKOPT ?= -s#						comment the -s to get command details
 SOC    ?= almo1-mips#				defaut SOC name
-NTTYS  ?= 2#					default number of ttys
-NCPUS  ?= 1#					default number of CPUS
-VERBOSE?= 0#					verbose mode to print INFO(), BIP(), ASSERT, VAR()
+NTTYS  ?= 2#						default number of ttys
+NCPUS  ?= 1#						default number of CPUS
+VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
 BLDDIR  = build#           			build directory
 SWDIR   = src/soft#        			software directory
-SOCDIR	= $(SWDIR)/platforms/$(SOC)#		SOC specific sources directory
-FROM   ?= 000000#				first cycle to trace
-LAST   ?= 500000#				last cycle to execute
+SOCDIR	= $(SWDIR)/platforms/$(SOC)#SOC specific sources directory
+FROM   ?= 000000#					first cycle to trace
+LAST   ?= 500000#					last cycle to execute
 DLOG    = ~/kO6-debug.log#			debug file
 APPS	= $(shell ls -l src/soft/uapp | grep "^d" | awk '{print $$NF}')
 
@@ -36,7 +36,7 @@ help:
 	@echo "    Target "
 	@echo "        app    : execute app which is one of the application name of uapp"
 	@echo "                 "$(APPS)
-	@echo "                 example : make "$(word 1, $(APPS))" --> execute app "$(word 1, $(APPS))
+	@echo "                 ex: make "$(word 1, $(APPS))" --> execute app "$(word 1, $(APPS))
 	@echo "        compil : compiles all sources"
 	@echo "        pdf    : generate sources.pdf with all source files"
 	@echo "        clean  : clean up all compiled files"
@@ -54,7 +54,7 @@ help:
 	@echo ""
 
 compil:
-	make -C $(SWDIR) $(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
+	make -C $(SWDIR) $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
 
 pdf:
 	make -C $(SWDIR) $(MAKOPT) pdf SOC=$(SOC)

@@ -20,7 +20,7 @@ SRCDIR  = ../..#					root source dir, allow us to make include via absolute path
 BLDDIR	= ../../../../build#		build directory
 LIBDIR	= .#						library directory (where is ldscript)
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
-SOCDIR	= $(CURDIR)#					current soc hardware abstraction layer (hal) files directory
+SOCDIR	= $(CURDIR)#				current soc hardware abstraction layer (hal) files directory
 OBJDIR	= $(BLDDIR)/obj#			object files directory
 PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 

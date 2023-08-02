@@ -1,9 +1,9 @@
 #-------------------------------------------------------------------------------------------------*\
-#  _     ___    __  
+#  _     ___    __
 # | |__ /'v'\  / /      \date		2023-02-24
 # | / /(     )/ _ \     \copyright	2021-2023 Sorbonne University
-# |_\_\ x___x \___/			https://opensource.org/licenses/MIT 
-# 
+# |_\_\ x___x \___/			https://opensource.org/licenses/MIT
+#
 # \file     uapp/Makefile
 # \author   Franck Wajsburt
 # \brief    Makefile to produce all the application executables
@@ -30,11 +30,11 @@ help:
 	@echo "        pdf     : generate pdf with all source files for all APPS"
 	@echo ""
 
-# Macro-generations of all the rules : 
-#  | clean : hello/clean ... and so on for all APPS 
-#  | hello/clean :; make clean -C hello $(MAKOPT) ...  
+# Macro-generations of all the rules :
+#  | clean : hello/clean ... and so on for all APPS
+#  | hello/clean :; make clean -C hello $(MAKOPT) ...
 #  | ... as many rules as APPS
-#  | compil : hello/compil ...  and so on for all APPS 
+#  | compil : hello/compil ...  and so on for all APPS
 #  | ... as many rules as APPS
 # --------------------------------------------------------------------------------------------------
 

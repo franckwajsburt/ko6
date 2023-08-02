@@ -1,6 +1,7 @@
 CC     = mipsel-unknown-elf-gcc#	compiler
 LD     = mipsel-unknown-elf-ld#		linker
-OD     = mipsel-unknown-elf-objdump#desassembler
+OD     = mipsel-unknown-elf-objdump#    desassembler
+RL     = mipsel-unknown-elf-ranlib#     index of library
 
 CFLAGS =    -mips32r2#				define of MIPS version
 CFLAGS +=   -G0#				    do not use global data pointer ($28)

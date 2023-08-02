@@ -2,7 +2,7 @@
 # generic makefile to compile the soclib hardware simulator
 # --------------------------------------------------------------------------------------------------
 
-# Parameters 
+# Parameters
 # --------------------------------------------------------------------------------------------------
 
 SOC     = $(notdir $(shell pwd))# 	SOC name is the name of the current directory
@@ -15,7 +15,7 @@ REPOS   = $(BLDDIR)/systemcass#		soclib object files (see soclib.conf)
 
 .PHONY: dep all clean cleanall mkdir
 
-help    : 
+help    :
 	@echo ""
 	@echo "Usage : make <dep|all|clean|cleanall> [-s]"
 	@echo ""
@@ -33,7 +33,7 @@ all: cleanall dep
 mkdir:
 	test -d $(BLDDIR) || (echo "- mkdir   $(BLDDIR)" ; mkdir $(BLDDIR))
 
-clean   : 
+clean   :
 	@echo "- clean up all binary files of the [$(SOC)] simulator"
 	soclib-cc -x -X -P -p $(SOC).desc
 	-rm -r $(REPOS) 2> /dev/null || true

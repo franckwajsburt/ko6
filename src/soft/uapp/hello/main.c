@@ -14,6 +14,11 @@
 
 int main (void)
 {
-    fprintf (1, "Hello world !\n");
+    char name[64];
+    fprintf( 0, "Hello world!\n");
+    fprintf( 0, "What's your name? ");
+    fgets( name, sizeof(name), 0);
+    name[ strlen(name)-1 ]=0;
+    fprintf( 0, "Hello %s!\n", name);
     return 0;
 }
