@@ -62,7 +62,6 @@ pdf:
 	-make -C uapp   	$(MAKOPT) pdf
 
 clean:
-	rm tags tags.log
 	-make -C lib/libfdt $(MAKOPT) clean
 	-make -C kfs    	$(MAKOPT) clean
 	-make -C hal    	$(MAKOPT) clean
@@ -71,3 +70,4 @@ clean:
 	-make -C platforms/$(SOC) $(MAKOPT) clean
 	-make -C ulib   	$(MAKOPT) clean
 	-make -C uapp   	$(MAKOPT) clean
+	-rm tags tags.log 2> /dev/null
