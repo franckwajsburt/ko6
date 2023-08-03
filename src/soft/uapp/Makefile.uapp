@@ -14,27 +14,27 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
-SOC    ?= almo1-mips#		defaut SOC name
-NTTYS  ?= 1#				default number of ttys
-NCPUS  ?= 1#				default number of CPUS
-V      ?= 0#				verbose mode to print INFO(), BIP(), ASSERT, VAR()
+SOC    ?= almo1-mips#				defaut SOC name
+NTTYS  ?= 1#						default number of ttys
+NCPUS  ?= 1#						default number of CPUS
+V      ?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
 BLDDIR	= ../../../../build#		build directory
-COMDIR	= ../../common#			user & kernel common files directory
-LIBDIR	= ../../ulib#			library directory (where is ldscript)
-HALDIR	= ../../hal#			hardware abstraction layer (hal) files directory
+COMDIR	= ../../common#				user & kernel common files directory
+LIBDIR	= ../../ulib#				library directory (where is ldscript)
+HALDIR	= ../../hal#				hardware abstraction layer (hal) files directory
 SRCDIR  = ../..
-SOCDIR	= $(HALDIR)/$(SOC)#		current soc hardware abstraction layer (hal) files directory
+SOCDIR	= $(HALDIR)/$(SOC)#			current soc hardware abstraction layer (hal) files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
-OBJRDIR	= $(BLDDIR)/obj#		object files directory
+OBJRDIR	= $(BLDDIR)/obj#			object files directory
 OBJDIR	= $(OBJRDIR)/$(CURDIR)#		object files directory
-PDFDIR	= $(BLDDIR)/pdf#		pdf files directory
+PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#	the pdf file has the name of directory
 BIN     = $(BLDDIR)/$(CURDIR).x#	the binary file has the name of directory
 
 # Sources
 # --------------------------------------------------------------------------------------------------
 
-SRC	   ?= "source files"#							must be defined in all app Makefiles		
+SRC	   ?= "source files"#							must be defined in all app Makefiles
 LDSCRIPT= $(SRCDIR)/platforms/$(SOC)/user.ld#		ldscript is hal dependent
 
 # Targets
@@ -54,19 +54,19 @@ OBJLIB	= $(addprefix $(OBJRDIR)/,$(LIB))
 
 include $(SRCDIR)/platforms/$(SOC)/$(SOC).mk
 
-CFLAGS += -c#				stop after compilation, then produce .o
-CFLAGS += -Wall -Werror#		gives almost all C warnings and considers them to be errors
-CFLAGS += -std=c99#			define of syntax version of C
-CFLAGS += -fno-common#			do not use common sections for non-static vars (only bss)
-CFLAGS += -fno-builtin#			do not use builtin functions of gcc (such as strlen)
+CFLAGS += -c#						stop after compilation, then produce .o
+CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
+CFLAGS += -std=c99#					define of syntax version of C
+CFLAGS += -fno-common#				do not use common sections for non-static vars (only bss)
+CFLAGS += -fno-builtin#				do not use builtin functions of gcc (such as strlen)
 CFLAGS += -fomit-frame-pointer#		only use of stack pointer ($29)
-CFLAGS += -O3#				full optimisation mode of compiler
-CFLAGS += -I. -I../.. -I$(COMDIR)#		directories where include files like <file.h> are located
-CFLAGS += -I$(LIBDIR)#			directories where include files like <file.h> are located
+CFLAGS += -O3#						full optimisation mode of compiler
+CFLAGS += -I. -I../.. -I$(COMDIR)#	directories where include files like <file.h> are located
+CFLAGS += -I$(LIBDIR)#				directories where include files like <file.h> are located
 CFLAGS += -I$(HALDIR) -I$(SOCDIR)#	directories where include files like <file.h> are located
-CFLAGS += -DNTTYS=$(NTTYS)#		#define NTTYS with the number of ttys in the prototype
-CFLAGS += -DNCPUS=$(NCPUS)#		#define NCPUS with the number of cpus in the prototype
-CFLAGS += -DVERBOSE=$(V)#		verbose if 1, can be toggled with #include <debug_{on,off}.h> 
+CFLAGS += -DNTTYS=$(NTTYS)#			#define NTTYS with the number of ttys in the prototype
+CFLAGS += -DNCPUS=$(NCPUS)#			#define NCPUS with the number of cpus in the prototype
+CFLAGS += -DVERBOSE=$(V)#			verbose if 1, can be toggled with #include <debug_{on,off}.h> 
 
 LDFLAGS += -T $(LDSCRIPT) $(OBJLIB)
 
@@ -80,7 +80,7 @@ help:
 	@echo "Usage : make <compil|clean|pdf>"
 	@echo ""
 	@echo "        compil  : compile all sources"
-	@echo "        clean   : clean up all compiled files"
+	@echo "        clean   : clean all compiled files"
 	@echo "        pdf     : generate $(PDF) with all source files"
 	@echo ""
 
@@ -100,7 +100,7 @@ pdf:
 	sed 's/^/  - /;s/\].*/\]/' $(PDF).log
 
 clean:
-	@echo "- clean up $(BIN) and related build files"
+	@echo "- clean $(notdir $(BIN)) and related build files"
 	-rm *~ $(OBJ) $(OBJDS) $(BIN)* $(PDF) $(PDF).log 2> /dev/null || true
 	-rmdir $(OBJDIR) 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
@@ -124,8 +124,7 @@ $(OBJDIR)/%.o : %.c $(OBJLIB)
 depend :
 	@echo "- makedepend for $(CURDIR)"
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRC)
-	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/$(SOCDIR)/:/:' Makefile > Makefile.bak
-	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/$(COMDIR)/:/:' Makefile.bak > Makefile
-	rm Makefile.bak
+	echo /usr/bin/sed '/^# DEPENDENCIES/,$$s:/$(SOCDIR)/:/:' Makefile > Makefile.bak
+	echo mv Makefile.bak Makefile
 
 # --------------------------------------------------------------------------------------------------

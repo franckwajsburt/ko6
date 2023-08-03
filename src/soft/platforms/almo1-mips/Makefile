@@ -76,7 +76,7 @@ help:
 	@echo "Usage : make <compil|clean|pdf>"
 	@echo ""
 	@echo "        compil  : compile all sources"
-	@echo "        clean   : clean up all compiled files"
+	@echo "        clean   : clean all compiled files"
 	@echo "        pdf     : generate $(PDF) with all source files"
 	@echo ""
 
@@ -92,7 +92,7 @@ mkdtb:
 exec: compil
 	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)
 
-debug: compil 
+debug: compil
 	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)\
           -DEBUG $(FROM) -NCYCLES $(LAST) > $(DLOG)
 	tracelog $(SWDIR)/tags $(BLDDIR)/*.x.s $(DLOG)
@@ -106,7 +106,7 @@ pdf:
 	sed 's/^/  - /;s/\].*/\]/' $(PDF).log
 
 clean:
-	@echo "- clean up $(BIN) and related build files"
+	@echo "- clean $(notdir $(BIN)) and related build files"
 	-rm *~ *.dtb $(OBJ) $(OBJDS) $(BIN) $(PDF) $(PDF).log 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
@@ -135,3 +135,7 @@ $(OBJDIR)/%.o : %.S
 depend :
 	@echo "- makedepend for $(CURDIR)"
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRCC) $(SRCS)
+	echo /usr/bin/sed '/^# DEPENDENCIES/,$$s:/$(SOCDIR)/:/:' Makefile > Makefile.bak
+	echo mv Makefile.bak Makefile
+
+# --------------------------------------------------------------------------------------------------

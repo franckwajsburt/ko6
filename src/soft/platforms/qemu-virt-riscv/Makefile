@@ -76,7 +76,7 @@ help:
 	@echo "Usage : make <compil|clean|pdf>"
 	@echo ""
 	@echo "        compil  : compile all sources"
-	@echo "        clean   : clean up all compiled files"
+	@echo "        clean   : clean all compiled files"
 	@echo "        pdf     : generate $(PDF) with all source files"
 	@echo ""
 
@@ -89,7 +89,7 @@ exec: compil
 						-kernel $(BLDDIR)/kernel-$(SOC).x \
 						-device loader,file=$(BLDDIR)/$(APP).x \
 						-d guest_errors
-debug: compil 
+debug: compil
 	xterm -exterm -e  qemu-system-riscv32 -M virt \
 						-nographic \
 						-bios none \
@@ -111,7 +111,7 @@ pdf:
 	sed 's/^/  - /;s/\].*/\]/' $(PDF).log
 
 clean:
-	@echo "- clean up $(BIN) and related build files"
+	@echo "- clean $(notdir $(BIN)) and related build files"
 	-rm *~ $(OBJ) $(OBJDS) $(BIN) $(PDF) $(PDF).log 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
@@ -120,7 +120,6 @@ clean:
 # --------------------------------------------------------------------------------------------------
 
 $(BIN) : $(LDSCRIPT) $(OBJ)
-	@echo $(OBJ)
 	@echo "- link    --> "$(notdir $@)
 	$(LD) $(LDFLAGS) -o $@ -T $^
 	$(OD) -D $@ > $@.s
@@ -140,3 +139,7 @@ $(OBJDIR)/%.o : cpu/%.S
 depend :
 	@echo "- makedepend for $(CURDIR)"
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRCC) $(SRCS)
+	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/cpu/:/:' Makefile > Makefile.bak
+	mv Makefile.bak Makefile
+
+# --------------------------------------------------------------------------------------------------

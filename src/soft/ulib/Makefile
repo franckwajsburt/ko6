@@ -18,7 +18,7 @@ NTTYS  ?= 1#						default number of ttys
 NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
 BLDDIR	= ../../../build#			build directory
-SRCDIR 	= ..
+SRCDIR 	= ..#						directory of all sources
 COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
 HALDIR	= $(SRCDIR)/hal#			hardware abstraction layer (hal) files directory
 SOCDIR	= $(SRCDIR)/platforms/$(SOC)#current soc hardware abstraction layer (hal) files directory
@@ -121,7 +121,7 @@ $(OBJDIR)/%.o: $(SOCDIR)/cpu_user.S
 depend :
 	@echo "- makedepend for $(CURDIR)"
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRC)
-	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/$(COMDIR)/:/:' Makefile > Makefile.bak
+	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/../common/:/:' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 
 # --------------------------------------------------------------------------------------------------

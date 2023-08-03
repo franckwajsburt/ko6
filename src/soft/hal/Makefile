@@ -7,6 +7,7 @@
 # \file     drivers/Makefile
 # \author   Nolan Bled
 # \brief    Makefile to produce the HAL helper functions (TTYs and IRQs)
+#
 #--------------------------------------------------------------------------------------------------
 
 # Parameters
@@ -62,7 +63,7 @@ help:
 	@echo "Usage : make <compil|clean|pdf>"
 	@echo ""
 	@echo "        compil  : compile all sources"
-	@echo "        clean   : clean up all compiled files"
+	@echo "        clean   : clean all compiled files"
 	@echo "        pdf     : generate $(PDF) with all source files"
 	@echo ""
 
@@ -81,7 +82,7 @@ pdf:
 	sed 's/^/  - /;s/\].*/\]/' $(PDF).log
 
 clean:
-	@echo "- clean up build files"
+	@echo "- clean $(CURDIR) and related build files"
 	-rm *~ $(OBJ) $(OBJDS) $(PDF) $(PDF).log 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
@@ -99,3 +100,13 @@ $(OBJDIR)/%.o : cpu/%.c
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s
 
+# makedepend analyzes the source files to determine automatically what are the dependencies
+# of the object files on the source files (see https://linux.die.net/man/1/makedepend for details)
+depend :
+	@echo "- makedepend for $(CURDIR)"
+	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRCC) $(SRCS)
+	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/arch/:/:' Makefile |\
+	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/cpu/:/:'  > Makefile.bak
+	mv Makefile.bak Makefile
+
+# --------------------------------------------------------------------------------------------------

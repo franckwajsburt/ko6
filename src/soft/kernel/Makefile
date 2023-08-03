@@ -14,15 +14,15 @@
 # --------------------------------------------------------------------------------------------------
 
 SOC    ?= almo1-mips#				defaut SOC name
-NTTYS  ?= 1#					default number of ttys
-NCPUS  ?= 1#					default number of CPUS
-VERBOSE?= 0#					verbose mode to print INFO(), BIP(), ASSERT, VAR()
+NTTYS  ?= 1#						default number of ttys
+NCPUS  ?= 1#						default number of CPUS
+VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
 BLDDIR	= ../../../build#			build directory
-SRCDIR 	= ..
+SRCDIR 	= ..#						directory of all sources
 COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
-LIBDIR	= .#					library directory (where is ldscript)
+LIBDIR	= .#						library directory (where is ldscript)
 HALDIR	= $(SRCDIR)/hal#			hardware abstraction layer (hal) files directory
-CURDIR 	= $(notdir $(shell pwd))#		name of curent directory
+CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJDIR	= $(BLDDIR)/obj#			object files directory
 PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 LIBDIR  = ../../lib#				external libraries directory
@@ -83,7 +83,7 @@ help:
 	@echo "Usage : make <compil|clean|pdf>"
 	@echo ""
 	@echo "        compil  : compile all sources"
-	@echo "        clean   : clean up all compiled files"
+	@echo "        clean   : clean all compiled files"
 	@echo "        pdf     : generate $(PDF) with all source files"
 	@echo ""
 
@@ -102,7 +102,7 @@ pdf:
 	sed 's/^/  - /;s/\].*/\]/' $(PDF).log
 
 clean:
-	@echo "- clean up build files"
+	@echo "- clean $(CURDIR) and related build files"
 	-rm *~ *.dtb $(OBJ) $(OBJDS) $(PDF) $(PDF).log 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
@@ -120,14 +120,12 @@ $(OBJDIR)/%.o : $(COMDIR)/%.c
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s
 
-
 # makedepend analyzes the source files to determine automatically what are the dependencies
 # of the object files on the source files (see https://linux.die.net/man/1/makedepend for details)
 depend :
 	@echo "- makedepend for $(CURDIR)"
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRCC) $(SRCS)
-	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/$(SOCDIR)/:/:' Makefile > Makefile.bak
-	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/$(COMDIR)/:/:' Makefile.bak > Makefile
-	rm Makefile.bak
+	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/../common/:/:' Makefile > Makefile.bak
+	mv Makefile.bak Makefile
 
 # --------------------------------------------------------------------------------------------------

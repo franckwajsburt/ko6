@@ -21,7 +21,7 @@ help    :
 	@echo ""
 	@echo "        dep     : compile the $(SOC) simulator if required"
 	@echo "        clean   : delete compiled files but the $(SOC) simulator"
-	@echo "        cleanall: clean up then delete $(SOC) simulator"
+	@echo "        cleanall: clean then delete $(SOC) simulator"
 	@echo "        all     : do \"make cleanall dep\""
 	@echo "        -s      : silent mode"
 	@echo ""
@@ -34,7 +34,7 @@ mkdir:
 	test -d $(BLDDIR) || (echo "- mkdir   $(BLDDIR)" ; mkdir $(BLDDIR))
 
 clean   :
-	@echo "- clean up all binary files of the [$(SOC)] simulator"
+	@echo "- clean all binary files of the [$(SOC)] simulator"
 	soclib-cc -x -X -P -p $(SOC).desc
 	-rm -r $(REPOS) 2> /dev/null || true
 	-rm $(TARGET) 2> /dev/null || true

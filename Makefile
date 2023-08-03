@@ -39,7 +39,7 @@ help:
 	@echo "                 ex: make "$(word 1, $(APPS))" --> execute app "$(word 1, $(APPS))
 	@echo "        compil : compiles all sources"
 	@echo "        pdf    : generate sources.pdf with all source files"
-	@echo "        clean  : clean up all compiled files"
+	@echo "        clean  : clean all compiled files"
 	@echo "        exec   : executes the prototype (defaults $(APP) on $(SOC))"
 	@echo "        debug  : Executes and generates logs (trace[cpu].s & label[cpu].s)"
 	@echo ""
@@ -54,7 +54,7 @@ help:
 	@echo ""
 
 compil:
-	make -C $(SWDIR) $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
+	make -C $(SWDIR) $(MAKOPT) MAKOPT=$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
 
 pdf:
 	make -C $(SWDIR) $(MAKOPT) pdf SOC=$(SOC)
@@ -67,15 +67,15 @@ debug: compil
 	make -C $(SOCDIR) debug NTTYS=$(NTTYS) NCPUS=$(NCPUS) \
 		VERBOSE=$(VERBOSE) FROM=$(FROM) LAST=$(LAST)
 
-doc:
+doxygen:
 	doxygen doxygen.cfg
 
 clean:
-	make -C $(SWDIR) $(MAKOPT) clean
-	@echo "- clean up logs execution files"
+	make -C $(SWDIR) $(MAKOPT) MAKOPT=$(MAKOPT) clean
+	@echo "- clean logs execution files"
 	@-killall xterm soclib-fb 2> /dev/null || true
 	@-rm -f /tmp/fbf.* $(DLOG) xterm* label*.s trace*.s 2> /dev/null || true
-	@-rm -rf $(BLDDIR) 2> /dev/null || true
+	@-rm -rf $(BLDDIR) doxygen 2> /dev/null || true
 	@find . -name *~ | xargs rm -f
 
 # Generate as many rules as app in uapp directory
