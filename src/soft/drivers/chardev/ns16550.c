@@ -19,9 +19,9 @@
  *              * Configure register: 8bits word, no parity check, 1 stop bit
  *              * Enable interrupts
  *              * Disable FIFO
+ * \param   cdev the char device
  * \param   address the base NS16550 MMIO address
  * \param   baudrate the baudrate of the UART
- * \return  nothing
  */
 static void ns16550_init(struct chardev_s *cdev, unsigned address, unsigned baudrate)
 {

@@ -43,6 +43,7 @@ static void clint_timer_init(struct timer_s *timer, unsigned address, unsigned t
 
 /**
  * \brief   Set the event that will triggered by a CLINT interrupt
+ * \param   timer the timer device
  * \param   f the function corresponding to the event
  * \param   arg argument that will be passed to the function
  * \return  nothing

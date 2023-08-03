@@ -135,7 +135,6 @@ $(OBJDIR)/%.o : %.S
 depend :
 	@echo "- makedepend for $(CURDIR)"
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRCC) $(SRCS)
-	echo /usr/bin/sed '/^# DEPENDENCIES/,$$s:/$(SOCDIR)/:/:' Makefile > Makefile.bak
-	echo mv Makefile.bak Makefile
+	rm Makefile.bak
 
 # --------------------------------------------------------------------------------------------------

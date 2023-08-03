@@ -41,25 +41,25 @@
 
 #define NS16550_ENABLE_DLAB     128
 
-/* General purpose registers, accessible when LCR.DLAB = 0 */
+/** \brief NS16550 general purpose register map, accessible when LCR.DLAB = 0 */
 struct ns16550_general_regs_s {
-    unsigned char hr;   /* Transmission/Reception character */
-    unsigned char ier;  /* Interrupt Enable Register */
-    unsigned char isr;  /* Interrupt Status Register */
-    unsigned char fcr;  /* FIFO Control Register */
-    unsigned char lcr;  /* Line Control Register */
-    unsigned char mcr;  /* Modem Control Register */
-    unsigned char lsr;  /* Line Status Register */
-    unsigned char msr;  /* Modem Status Register */
-    unsigned char spr;  /* Scratchpad Register */
+    unsigned char hr;   //< Transmission/Reception character
+    unsigned char ier;  //< Interrupt Enable Register
+    unsigned char isr;  //< Interrupt Status Register
+    unsigned char fcr;  //< FIFO Control Register
+    unsigned char lcr;  //< Line Control Register
+    unsigned char mcr;  //< Modem Control Register
+    unsigned char lsr;  //< Line Status Register
+    unsigned char msr;  //< Modem Status Register
+    unsigned char spr;  //< Scratchpad Register
 } __attribute__((packed));
 
-/* Baudrate control registers, accessible when LCR.DLAB = 1 */
+/** \brief NS16550 Baudrate control registers, accessible when LCR.DLAB = 1 */
 struct ns16550_dlab_regs_s {
-    unsigned char dll;          /* Divisor Latch least significant byte*/
-    unsigned char dlm;          /* Divisor Latch most significiant byte */
-    unsigned char __ignore[5];
-    unsigned char psd;          /* Prescaler Division Factor */
+    unsigned char dll;          //< Divisor Latch least significant byte
+    unsigned char dlm;          //< Divisor Latch most significiant byte
+    unsigned char __ignore[5];  //< Padding
+    unsigned char psd;          //< Prescaler Division Factor
 } __attribute__((packed));
 
 /**
@@ -68,7 +68,6 @@ struct ns16550_dlab_regs_s {
  *          (cdev->fifo)
  * \param   irq the irq linked to this ISR
  * \param   cdev the device linked to this ISR
- * \return  nothing
  */
 extern void ns16550_isr(unsigned irq, struct chardev_s *cdev);
 

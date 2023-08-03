@@ -78,7 +78,7 @@ int * __errno_location (void)
  * \brief   Insert a new thread, in the scheduler
  *          The scheduler is a simple table of all the threads
  *          To insert a new thread, we need to find a place.
- * \param   thread is the thread to insert
+ * \param   thread_new is the thread to insert
  * \return  nothing
  */
 static void sched_insert (thread_t thread_new)

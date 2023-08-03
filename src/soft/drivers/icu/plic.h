@@ -17,13 +17,15 @@
 #include <hal/arch/icu.h>
 
 /**
- * Context are a pair (cpu, mode)
- * On qemu, M-mode are even number and S-mode odd, by exemple:
- * (cpu0, M-mode) is context 0
- * (cpu0, S-mode) is context 1
- * (cpu1, M-mode) is context 2, ect ...
+ * \brief Return the M-context no based on the cpu no
+ *        Context are a pair (cpu, mode)
+ *        On qemu, M-mode are even number and S-mode odd, by exemple:
+ *          (cpu0, M-mode) is context 0
+ *          (cpu0, S-mode) is context 1
+ *          (cpu1, M-mode) is context 2, ect ...
  */
 #define PLIC_M_CONTEXT(cpu) (2*(cpu))
+/** \brief Return the S-context no based on the cpu no */
 #define PLIC_S_CONTEXT(cpu) (2*(cpu)+1)
 
 /**

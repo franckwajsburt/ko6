@@ -15,7 +15,17 @@
 
 struct dma_s;
 
+/** 
+ * \brief Functions prototypes of the DMA device, they should be implemented
+ *        by a device driver. They serve as an interface between the kernel and
+ *        the driver
+ */
 struct dma_ops_s {
+    /**
+     * \brief Generic function that initialize a DMA device
+     * \param dma the dma device
+     * \param address the base address of the memory-mapped registers
+     */
     void (*dma_init)(struct dma_s *dma, unsigned address);
 
     /**
@@ -30,9 +40,10 @@ struct dma_ops_s {
     void *(*dma_memcpy)(struct dma_s *dma, int *dst, int *src, unsigned n);
 };
 
+/** \brief DMA device specific information */
 struct dma_s {
-    unsigned address;       // DMA device address
-    struct dma_ops_s *ops;  // driver-specific operations
+    unsigned address;       //< DMA device address
+    struct dma_ops_s *ops;  //< driver-specific operations
 };
 #define dma_alloc() (struct dma_s*) (dev_alloc(DMA_DEV, sizeof(struct dma_s))->data)
 #define dma_get(no) (struct dma_s*) (dev_get(DMA_DEV, no)->data)

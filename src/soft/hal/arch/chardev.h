@@ -22,7 +22,18 @@
 
 struct chardev_s;
 
+/** 
+ * \brief Functions prototypes of character device, they should be implemented
+ *        by a device driver. They serve as an interface between the kernel and
+ *        the driver
+ */
 struct chardev_ops_s {
+    /**
+     * \brief   Generic function that initialize the chardev device
+     * \param   chardev the char device
+     * \param   address base address of the device memory-mapped registers 
+     * \param   baudrate the device baudrate
+     */
     void (*chardev_init)(struct chardev_s *chardev, unsigned address, unsigned baudrate);
 
     /**
@@ -45,27 +56,28 @@ struct chardev_ops_s {
 };
 
 /**
- * Simple fifo (1 writer - 1 reader)
- *   - data      buffer of data
- *   - pt_write  write pointer for L fifos (0 at the beginning)
- *   - pt_read   read pointer for L fifos (0 at the beginning)
+ * \brief Simple fifo (1 writer - 1 reader)
+ *          - data      buffer of data
+ *          - pt_write  write pointer for L fifos (0 at the beginning)
+ *          - pt_read   read pointer for L fifos (0 at the beginning)
  *
- * data[] is used as a circular array. At the beginning (pt_read == pt_write) means an empty fifo
- * then when we push a data, we write it at pt_write, the we increment pt_write % fifo_size.
- * The fifo is full when it remains only one free cell, then when (pt_write + 1)%size == pt_read
+ *        data[] is used as a circular array. At the beginning (pt_read == pt_write) means an empty fifo
+ *        then when we push a data, we write it at pt_write, the we increment pt_write % fifo_size.
+ *        The fifo is full when it remains only one free cell, then when (pt_write + 1)%size == pt_read
  */
 struct chardev_fifo_s {
-    char data [CHARDEV_FIFO_DEPTH];
-    unsigned pt_read;
-    unsigned pt_write;
+    char data [CHARDEV_FIFO_DEPTH]; //< Circular array
+    unsigned pt_read;               //< Read pointer
+    unsigned pt_write;              //< Write pointer
 };
 
+/** \brief Character device informations */
 struct chardev_s {
-    unsigned address;               // memory-mapped register addresses
-    unsigned baudrate;              // chardev baudrate
-    struct chardev_fifo_s fifo;
-    struct chardev_ops_s *ops;      // driver specific operations linked to the chardev
-    void * driver_data;             // private pointer for driver specific info
+    unsigned address;               //< memory-mapped register addresses
+    unsigned baudrate;              //< chardev baudrate
+    struct chardev_fifo_s fifo;     //< chardev fifo
+    struct chardev_ops_s *ops;      //< driver specific operations linked to the chardev
+    void * driver_data;             //< private pointer for driver specific info
 };
 
 #define chardev_alloc() (struct chardev_s*) (dev_alloc(CHAR_DEV, sizeof(struct chardev_s))->data)
