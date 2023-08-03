@@ -139,7 +139,7 @@ $(OBJDIR)/%.o : cpu/%.S
 depend :
 	@echo "- makedepend for $(CURDIR)"
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRCC) $(SRCS)
-	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/cpu/:/:' Makefile > Makefile.bak
+	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/obj/cpu/:/obj/:' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 
 # --------------------------------------------------------------------------------------------------

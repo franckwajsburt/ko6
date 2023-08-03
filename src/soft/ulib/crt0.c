@@ -18,7 +18,7 @@ extern int __bss_end;           // first int of above the uninitialized global d
 extern int __data_end;          // last address of the free user data region
 extern int main (void);         // tell the compiler that main() exists
 
-__attribute__ ((section (".usermem")))
+__attribute__((section (".usermem")))
 usermem_t _user_mem = {
     .ustack_end   = &__data_end,// at the begining there is no stack.
     .ustack_beg   = &__data_end,// last address of the free user data region
@@ -30,10 +30,10 @@ usermem_t _user_mem = {
 // - thread_create_kernel (&_main_thread, 0, 0, (int)&_start);
 // - thread_load (((kthread_t*)_main_thread)->context);
 
-__attribute__ ((section (".main_thread")))
+__attribute__((section (".main_thread")))
 pthread_t _main_thread;
 
-__attribute__ ((section (".start")))
+__attribute__((section (".start")))
 void _start (void)
 {
     int res;

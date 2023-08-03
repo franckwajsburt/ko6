@@ -46,7 +46,10 @@ compil: tags
 	make -C uapp   		$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
 
 tags:
-	find . -name *.[chS] | xargs ctags
+	@echo "- Create tags for vim"
+	@find . -name *.[chS] | xargs ctags 2> tags.log
+	@awk '/in files/{print "    "$$5,"and",$$7,$$(NF-2)}' tags.log
+	@awk '/in file /{print "    Replication",$$5,$$NF}' tags.log|sed 's/,/:/'
 
 pdf:
 	-make -C lib/libfdt $(MAKOPT) pdf
@@ -59,7 +62,8 @@ pdf:
 	-make -C uapp   	$(MAKOPT) pdf
 
 clean:
-	-make -C lib/libfdt 	$(MAKOPT) clean
+	rm tags tags.log
+	-make -C lib/libfdt $(MAKOPT) clean
 	-make -C kfs    	$(MAKOPT) clean
 	-make -C hal    	$(MAKOPT) clean
 	-make -C drivers 	$(MAKOPT) clean

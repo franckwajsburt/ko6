@@ -58,6 +58,7 @@ mkdir:
 	test -d $(OBJDIR) || (echo "- mkdir   $(OBJDIR)" ; mkdir $(OBJDIR))
 
 $(OBJDIR)/libfdt.a: $(LIBFDT_OBJS)
+	@echo "- archive --> "$(notdir $@)
 	ar -rc $@ $(LIBFDT_OBJS)
 	$(RL) $@
 

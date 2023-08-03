@@ -14,7 +14,7 @@
 
 //------------------------------------------------------------------------------- private definition
 
-static size_t CacheLineSize;    // cache line size set by malloc_init()
+static size_t CacheLineSize;    // cache line size set by malloc_init
 
 typedef struct block_info_s {   // small structure always put at the beginning of each blocks
     unsigned full:1;            // 1 full, 0 free (means empty)
@@ -27,8 +27,8 @@ static struct heap_s {          // user Heap
     block_info_t *end;          // Heap end
 } Heap;
 
-// C Macros to align a pointer p to the current cache line address or the next one 
-// For example, let the CacheLineSize is 0x10 Bytes (4 int), then 
+// C Macros to align a pointer p to the current cache line address or the next one
+// For example, let the CacheLineSize is 0x10 Bytes (4 int), then
 // if p = 0x76543214 then LINE_FLOOR(p) = 0x76543210 and LINE_CEIL(p) = 0x76543220
 
 #define LINE_FLOOR(p)   (block_info_t *)FLOOR((size_t)(p),CacheLineSize)
