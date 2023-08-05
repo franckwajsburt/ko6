@@ -23,7 +23,7 @@ int chardev_fifo_push (struct chardev_fifo_s *fifo, char c)
     if (pt_write_next != fifo->pt_read) {
         fifo->data [fifo->pt_write] = c;
         fifo->pt_write = pt_write_next;
-        return SUCCESS;   
+        return SUCCESS;
     }
     return FAILURE;
 }
