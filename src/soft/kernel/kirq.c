@@ -1,4 +1,16 @@
-#include <hal/cpu/irq.h>
+/*------------------------------------------------------------------------------------------------*\
+   _     ___    __
+  | |__ /'v'\  / /      \date       2023-08-07
+  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+
+  \file     kernel/kirq.c
+  \author   Franck Wajsburt, Nolan Bled
+  \brief    IRQs functions
+
+\*------------------------------------------------------------------------------------------------*/
+
+#include <kernel/kirq.h>
 
 struct ite_s InterruptTable[MAX_N_IRQS];
 

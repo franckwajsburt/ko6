@@ -88,3 +88,53 @@ depend :
 	rm Makefile.bak
 
 # ------------------------------------------------------------------------------------------------
+# DEPENDENCIES
+
+../../../../build/obj/fdt.o: libfdt_env.h ../../common/cstd.h
+../../../../build/obj/fdt.o: ../../lib/libfdt/fdt.h ../../lib/libfdt/libfdt.h
+../../../../build/obj/fdt.o: ../../lib/libfdt/libfdt_env.h libfdt_internal.h
+../../../../build/obj/fdt_ro.o: libfdt_env.h ../../common/cstd.h
+../../../../build/obj/fdt_ro.o: ../../lib/libfdt/fdt.h
+../../../../build/obj/fdt_ro.o: ../../lib/libfdt/libfdt.h
+../../../../build/obj/fdt_ro.o: ../../lib/libfdt/libfdt_env.h
+../../../../build/obj/fdt_ro.o: libfdt_internal.h
+../../../../build/obj/fdt_wip.o: libfdt_env.h ../../common/cstd.h
+../../../../build/obj/fdt_wip.o: ../../lib/libfdt/fdt.h
+../../../../build/obj/fdt_wip.o: ../../lib/libfdt/libfdt.h
+../../../../build/obj/fdt_wip.o: ../../lib/libfdt/libfdt_env.h
+../../../../build/obj/fdt_wip.o: libfdt_internal.h
+../../../../build/obj/fdt_sw.o: libfdt_env.h ../../common/cstd.h
+../../../../build/obj/fdt_sw.o: ../../lib/libfdt/fdt.h
+../../../../build/obj/fdt_sw.o: ../../lib/libfdt/libfdt.h
+../../../../build/obj/fdt_sw.o: ../../lib/libfdt/libfdt_env.h
+../../../../build/obj/fdt_sw.o: libfdt_internal.h
+../../../../build/obj/fdt_rw.o: libfdt_env.h ../../common/cstd.h
+../../../../build/obj/fdt_rw.o: ../../lib/libfdt/fdt.h
+../../../../build/obj/fdt_rw.o: ../../lib/libfdt/libfdt.h
+../../../../build/obj/fdt_rw.o: ../../lib/libfdt/libfdt_env.h
+../../../../build/obj/fdt_rw.o: libfdt_internal.h
+../../../../build/obj/fdt_strerror.o: libfdt_env.h ../../common/cstd.h
+../../../../build/obj/fdt_strerror.o: ../../lib/libfdt/fdt.h
+../../../../build/obj/fdt_strerror.o: ../../lib/libfdt/libfdt.h
+../../../../build/obj/fdt_strerror.o: ../../lib/libfdt/libfdt_env.h
+../../../../build/obj/fdt_strerror.o: libfdt_internal.h
+../../../../build/obj/fdt_empty_tree.o: libfdt_env.h ../../common/cstd.h
+../../../../build/obj/fdt_empty_tree.o: ../../lib/libfdt/fdt.h
+../../../../build/obj/fdt_empty_tree.o: ../../lib/libfdt/libfdt.h
+../../../../build/obj/fdt_empty_tree.o: ../../lib/libfdt/libfdt_env.h
+../../../../build/obj/fdt_empty_tree.o: libfdt_internal.h
+../../../../build/obj/fdt_addresses.o: libfdt_env.h ../../common/cstd.h
+../../../../build/obj/fdt_addresses.o: ../../lib/libfdt/fdt.h
+../../../../build/obj/fdt_addresses.o: ../../lib/libfdt/libfdt.h
+../../../../build/obj/fdt_addresses.o: ../../lib/libfdt/libfdt_env.h
+../../../../build/obj/fdt_addresses.o: libfdt_internal.h
+../../../../build/obj/fdt_overlay.o: libfdt_env.h ../../common/cstd.h
+../../../../build/obj/fdt_overlay.o: ../../lib/libfdt/fdt.h
+../../../../build/obj/fdt_overlay.o: ../../lib/libfdt/libfdt.h
+../../../../build/obj/fdt_overlay.o: ../../lib/libfdt/libfdt_env.h
+../../../../build/obj/fdt_overlay.o: libfdt_internal.h
+../../../../build/obj/fdt_check.o: libfdt_env.h ../../common/cstd.h
+../../../../build/obj/fdt_check.o: ../../lib/libfdt/fdt.h
+../../../../build/obj/fdt_check.o: ../../lib/libfdt/libfdt.h
+../../../../build/obj/fdt_check.o: ../../lib/libfdt/libfdt_env.h
+../../../../build/obj/fdt_check.o: libfdt_internal.h

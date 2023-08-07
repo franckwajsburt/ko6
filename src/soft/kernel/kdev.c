@@ -4,13 +4,13 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/arch/dev.h
+  \file     kernel/kdev.h
   \author   Nolan Bled
   \brief    Generic device management functions
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <hal/arch/dev.h>
+#include <kernel/kdev.h>
 
 list_t DevList = {      // Do the same thing the function list_init does
     .next = &DevList,

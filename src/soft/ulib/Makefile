@@ -125,3 +125,34 @@ depend :
 	mv Makefile.bak Makefile
 
 # --------------------------------------------------------------------------------------------------
+# DEPENDENCIES
+
+../../../build/obj/debug_off.o: ../common/debug_on.h
+../../../build/obj/errno.o: ../common/errno.h
+../../../build/obj/cstd.o: ../common/cstd.h
+../../../build/obj/crt0.o: ./libc.h ../common/debug_off.h
+../../../build/obj/crt0.o: ../common/debug_on.h ../common/cstd.h
+../../../build/obj/crt0.o: ../common/list.h ../common/syscalls.h ./memory.h
+../../../build/obj/crt0.o: ../common/usermem.h ../common/errno.h
+../../../build/obj/crt0.o: ../common/esc_code.h ./pthread.h
+../../../build/obj/libc.o: ../common/debug_off.h ../common/debug_on.h
+../../../build/obj/libc.o: ../common/cstd.h ../common/list.h
+../../../build/obj/libc.o: ../common/syscalls.h ./memory.h
+../../../build/obj/libc.o: ../common/usermem.h ../common/errno.h
+../../../build/obj/libc.o: ../common/esc_code.h
+../../../build/obj/libc.o: ./libc.h ../common/debug_off.h
+../../../build/obj/libc.o: ../common/debug_on.h ../common/cstd.h
+../../../build/obj/libc.o: ../common/list.h ../common/syscalls.h ./memory.h
+../../../build/obj/libc.o: ../common/usermem.h ../common/errno.h
+../../../build/obj/libc.o: ../common/esc_code.h
+../../../build/obj/pthread.o: ./libc.h ../common/debug_off.h
+../../../build/obj/pthread.o: ../common/debug_on.h ../common/cstd.h
+../../../build/obj/pthread.o: ../common/list.h ../common/syscalls.h
+../../../build/obj/pthread.o: ./memory.h ../common/usermem.h
+../../../build/obj/pthread.o: ../common/errno.h ../common/esc_code.h
+../../../build/obj/pthread.o: ./pthread.h
+../../../build/obj/memory.o: ./libc.h ../common/debug_off.h
+../../../build/obj/memory.o: ../common/debug_on.h ../common/cstd.h
+../../../build/obj/memory.o: ../common/list.h ../common/syscalls.h ./memory.h
+../../../build/obj/memory.o: ../common/usermem.h ../common/errno.h
+../../../build/obj/memory.o: ../common/esc_code.h

@@ -17,6 +17,7 @@
 #include <hal/arch/chardev.h>
 #include <hal/cpu/irq.h>
 #include <kernel/kthread.h>
+#include <kernel/klibc.h>
 
 /* IER Register values*/
 #define NS16550_INT_DATA_READY      1

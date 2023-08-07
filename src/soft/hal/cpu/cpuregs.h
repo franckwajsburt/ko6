@@ -4,14 +4,14 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/cpu/cpu.h
+  \file     hal/cpu/cpuregs.h
   \author   Franck Wajsburt
-  \brief    Generic CPU functions prototypes
+  \brief    Access to CPU-specific registers
 
 \*------------------------------------------------------------------------------------------------*/
 
-#ifndef _HAL_CPU_H_
-#define _HAL_CPU_H_
+#ifndef _HAL_CPUREGS_H_
+#define _HAL_CPUREGS_H_
 
 //--------------------------------------------------------------------------------------------------
 // Special registers
@@ -27,10 +27,5 @@ extern unsigned clock (void);
  *  \return the current cpu identifier from 0 to NCPUS-1
  */
 extern unsigned cpuid (void);
-
-/**
- * \brief  prints all registers' value on TTY0 (must be in kernel mode) then stops program
- */
-extern void kpanic (void);
 
 #endif

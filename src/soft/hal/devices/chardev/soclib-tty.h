@@ -16,6 +16,7 @@
 #include <hal/arch/chardev.h>
 #include <hal/cpu/irq.h>
 #include <kernel/kthread.h>
+#include <kernel/klibc.h>
 
 struct soclib_tty_regs_s {
     int write;

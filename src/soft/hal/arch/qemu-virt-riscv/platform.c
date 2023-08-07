@@ -16,6 +16,7 @@
 
 #include <kernel/kthread.h>
 #include <kernel/klibc.h>
+#include <kernel/kirq.h>
 
 #include <hal/cpu/irq.h>
 

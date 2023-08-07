@@ -46,7 +46,7 @@
 #include <hal/cpu/irq.h>
 #include <hal/cpu/cpu.h>        // CPU registers manipulation function prototypes
 #include <hal/arch/chardev.h>
-#include <hal/arch/dev.h> 
+#include <kernel/kdev.h> 
 
 #include <kernel/kmemory.h>            // all kernel allocators
 #include <kernel/kthread.h>            // thread functions
@@ -57,6 +57,7 @@
 #define PRINTF_MAX 256  /* largest printed message */
 #define CEIL(a,b)       ((int)(b)*(((int)(a)+(int)(b)-1)/(int)(b))) /* round up a aligned on b */
 #define FLOOR(a,b)      ((int)(b)*((int)(a)/(int)(b)))              /* round down a aligned on b */
+#define FIFO_DEPTH 20   /* maximum fifo depth */
 
 //--------------------------------------------------------------------------------------------------
 
@@ -143,5 +144,39 @@ extern int tty_puts (int tty, char *buf);
  * \return    the number of read chars
  */
 extern int tty_gets (int tty, char *buf, int count);
+
+/**
+ * \brief Simple fifo (1 writer - 1 reader)
+ *          - data      buffer of data
+ *          - pt_write  write pointer for L fifos (0 at the beginning)
+ *          - pt_read   read pointer for L fifos (0 at the beginning)
+ *
+ *        data[] is used as a circular array. At the beginning (pt_read == pt_write) means an empty fifo
+ *        then when we push a data, we write it at pt_write, the we increment pt_write % fifo_size.
+ *        The fifo is full when it remains only one free cell, then when (pt_write + 1)%size == pt_read
+ */
+struct fifo_s {
+    char data [FIFO_DEPTH];         ///< Circular array
+    unsigned pt_read;               ///< Read pointer
+    unsigned pt_write;              ///< Write pointer
+};
+
+/* Helper functions for CHARDEV's FIFOs */
+
+/**
+ * \brief   push a character into the chardev's FIFO
+ * \param   fifo    structure of fifo to store data
+ * \param   c       char to write
+ * \return  SUCCESS or FAILURE
+ */
+extern int fifo_push (struct fifo_s *fifo, char c);
+
+/**
+ * \brief   pop a character from the chardev's FIFO
+ * \param   fifo    structure of fifo to store data
+ * \param   c       pointer on char to put the read char 
+ * \return  SUCCESS or FAILURE
+ */
+extern int fifo_pull (struct fifo_s *fifo, int *c);
 
 #endif//_KLIBC_H_

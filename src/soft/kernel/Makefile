@@ -38,7 +38,7 @@ SRC    += $(COMDIR)/cstd.c $(COMDIR)/cstd.h
 SRC    += kmemory.c kmemory.h
 SRC    += klibc.c klibc.h
 SRC    += kthread.c kthread.h
-SRC    += kinit.c
+SRC    += kinit.c kdev.c kirq.c
 SRC    += ksynchro.c ksynchro.h
 LDSCRIPT= $(SOCDIR)/kernel.ld#		ldscript is hal dependent
 
@@ -129,3 +129,79 @@ depend :
 	mv Makefile.bak Makefile
 
 # --------------------------------------------------------------------------------------------------
+# DEPENDENCIES
+
+../../../build/obj/ksyscalls.o: ../hal/arch/dma.h ../kernel/klibc.h
+../../../build/obj/ksyscalls.o: ../common/debug_off.h ../common/debug_on.h
+../../../build/obj/ksyscalls.o: ../common/cstd.h ../common/list.h
+../../../build/obj/ksyscalls.o: ../common/esc_code.h ../common/errno.h
+../../../build/obj/ksyscalls.o: ../common/syscalls.h ../common/usermem.h
+../../../build/obj/ksyscalls.o: ../hal/cpu/atomic.h ../hal/cpu/cache.h
+../../../build/obj/ksyscalls.o: ../hal/arch/platform.h ../hal/cpu/thread.h
+../../../build/obj/ksyscalls.o: ../hal/cpu/irq.h ../hal/cpu/cpu.h
+../../../build/obj/ksyscalls.o: ../hal/arch/chardev.h ../kernel/kdev.h
+../../../build/obj/ksyscalls.o: ../kernel/kmemory.h ../kernel/kthread.h
+../../../build/obj/ksyscalls.o: ../kernel/ksynchro.h
+../../../build/obj/errno.o: ../common/errno.h
+../../../build/obj/cstd.o: ../common/cstd.h
+../../../build/obj/kmemory.o: ../kernel/klibc.h ../common/debug_off.h
+../../../build/obj/kmemory.o: ../common/debug_on.h ../common/cstd.h
+../../../build/obj/kmemory.o: ../common/list.h ../common/esc_code.h
+../../../build/obj/kmemory.o: ../common/errno.h ../common/syscalls.h
+../../../build/obj/kmemory.o: ../common/usermem.h ../hal/cpu/atomic.h
+../../../build/obj/kmemory.o: ../hal/cpu/cache.h ../hal/arch/platform.h
+../../../build/obj/kmemory.o: ../hal/cpu/thread.h ../hal/cpu/irq.h
+../../../build/obj/kmemory.o: ../hal/cpu/cpu.h ../hal/arch/chardev.h
+../../../build/obj/kmemory.o: ../kernel/kdev.h ../kernel/kmemory.h
+../../../build/obj/kmemory.o: ../kernel/kthread.h ../kernel/ksynchro.h
+../../../build/obj/klibc.o: ../kernel/klibc.h ../common/debug_off.h
+../../../build/obj/klibc.o: ../common/debug_on.h ../common/cstd.h
+../../../build/obj/klibc.o: ../common/list.h ../common/esc_code.h
+../../../build/obj/klibc.o: ../common/errno.h ../common/syscalls.h
+../../../build/obj/klibc.o: ../common/usermem.h ../hal/cpu/atomic.h
+../../../build/obj/klibc.o: ../hal/cpu/cache.h ../hal/arch/platform.h
+../../../build/obj/klibc.o: ../hal/cpu/thread.h ../hal/cpu/irq.h
+../../../build/obj/klibc.o: ../hal/cpu/cpu.h ../hal/arch/chardev.h
+../../../build/obj/klibc.o: ../kernel/kdev.h ../kernel/kmemory.h
+../../../build/obj/klibc.o: ../kernel/kthread.h ../kernel/ksynchro.h
+../../../build/obj/kthread.o: ../kernel/klibc.h ../common/debug_off.h
+../../../build/obj/kthread.o: ../common/debug_on.h ../common/cstd.h
+../../../build/obj/kthread.o: ../common/list.h ../common/esc_code.h
+../../../build/obj/kthread.o: ../common/errno.h ../common/syscalls.h
+../../../build/obj/kthread.o: ../common/usermem.h ../hal/cpu/atomic.h
+../../../build/obj/kthread.o: ../hal/cpu/cache.h ../hal/arch/platform.h
+../../../build/obj/kthread.o: ../hal/cpu/thread.h ../hal/cpu/irq.h
+../../../build/obj/kthread.o: ../hal/cpu/cpu.h ../hal/arch/chardev.h
+../../../build/obj/kthread.o: ../kernel/kdev.h ../kernel/kmemory.h
+../../../build/obj/kthread.o: ../kernel/kthread.h ../kernel/ksynchro.h
+../../../build/obj/kinit.o: ../kernel/klibc.h ../common/debug_off.h
+../../../build/obj/kinit.o: ../common/debug_on.h ../common/cstd.h
+../../../build/obj/kinit.o: ../common/list.h ../common/esc_code.h
+../../../build/obj/kinit.o: ../common/errno.h ../common/syscalls.h
+../../../build/obj/kinit.o: ../common/usermem.h ../hal/cpu/atomic.h
+../../../build/obj/kinit.o: ../hal/cpu/cache.h ../hal/arch/platform.h
+../../../build/obj/kinit.o: ../hal/cpu/thread.h ../hal/cpu/irq.h
+../../../build/obj/kinit.o: ../hal/cpu/cpu.h ../hal/arch/chardev.h
+../../../build/obj/kinit.o: ../kernel/kdev.h ../kernel/kmemory.h
+../../../build/obj/kinit.o: ../kernel/kthread.h ../kernel/ksynchro.h
+../../../build/obj/kdev.o: ../kernel/kdev.h ../common/list.h
+../../../build/obj/kdev.o: ../kernel/klibc.h ../common/debug_off.h
+../../../build/obj/kdev.o: ../common/debug_on.h ../common/cstd.h
+../../../build/obj/kdev.o: ../common/esc_code.h ../common/errno.h
+../../../build/obj/kdev.o: ../common/syscalls.h ../common/usermem.h
+../../../build/obj/kdev.o: ../hal/cpu/atomic.h ../hal/cpu/cache.h
+../../../build/obj/kdev.o: ../hal/arch/platform.h ../hal/cpu/thread.h
+../../../build/obj/kdev.o: ../hal/cpu/irq.h ../hal/cpu/cpu.h
+../../../build/obj/kdev.o: ../hal/arch/chardev.h ../kernel/kmemory.h
+../../../build/obj/kdev.o: ../kernel/kthread.h ../kernel/ksynchro.h
+../../../build/obj/kirq.o: ../kernel/kirq.h
+../../../build/obj/ksynchro.o: ../kernel/klibc.h ../common/debug_off.h
+../../../build/obj/ksynchro.o: ../common/debug_on.h ../common/cstd.h
+../../../build/obj/ksynchro.o: ../common/list.h ../common/esc_code.h
+../../../build/obj/ksynchro.o: ../common/errno.h ../common/syscalls.h
+../../../build/obj/ksynchro.o: ../common/usermem.h ../hal/cpu/atomic.h
+../../../build/obj/ksynchro.o: ../hal/cpu/cache.h ../hal/arch/platform.h
+../../../build/obj/ksynchro.o: ../hal/cpu/thread.h ../hal/cpu/irq.h
+../../../build/obj/ksynchro.o: ../hal/cpu/cpu.h ../hal/arch/chardev.h
+../../../build/obj/ksynchro.o: ../kernel/kdev.h ../kernel/kmemory.h
+../../../build/obj/ksynchro.o: ../kernel/kthread.h ../kernel/ksynchro.h

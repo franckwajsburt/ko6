@@ -130,3 +130,24 @@ int tty_gets (int tty, char *buf, int count)
 
     return res;                                 // returns the number of char read
 }
+
+int fifo_push (struct fifo_s *fifo, char c)
+{
+    unsigned pt_write_next = (fifo->pt_write + 1) % sizeof(fifo->data);
+    if (pt_write_next != fifo->pt_read) {
+        fifo->data [fifo->pt_write] = c;
+        fifo->pt_write = pt_write_next;
+        return SUCCESS;
+    }
+    return FAILURE;
+}
+
+int fifo_pull (struct fifo_s *fifo, int *c)
+{
+    if (fifo->pt_read != fifo->pt_write) {
+        *c = fifo->data [fifo->pt_read];
+        fifo->pt_read = (fifo->pt_read + 1)% sizeof(fifo->data);
+        return SUCCESS;
+    }
+    return FAILURE;
+}

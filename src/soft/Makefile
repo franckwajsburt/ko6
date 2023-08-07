@@ -15,8 +15,6 @@
 
 MAKOPT ?= -s#			comment the -s to get command details
 SOC    ?= almo1-mips#	defaut SOC name
-NTTYS  ?= 2#			default number of ttys
-NCPUS  ?= 1#			default number of CPUS
 VERBOSE?= 0#			verbose mode to print INFO(), BIP(), ASSERT, VAR()
 
 # Rules (here they are used such as simple shell scripts)
@@ -36,14 +34,13 @@ help:
 	@echo ""
 
 compil: tags
-	make -C lib/libfdt	$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
+	make -C lib/libfdt	$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
 	make -C kfs     	$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
-	make -C hal     	$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	make -C drivers 	$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	make -C kernel 		$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	make -C platforms/$(SOC) $(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	make -C ulib   		$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
-	make -C uapp   		$(MAKOPT) compil SOC=$(SOC) NTTYS=$(NTTYS) NCPUS=$(NCPUS) VERBOSE=$(VERBOSE)
+	make -C drivers 	$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
+	make -C kernel 		$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
+	make -C platforms/$(SOC) $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
+	make -C ulib   		$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
+	make -C uapp   		$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
 
 tags:
 	@echo "- Create tags for vim"
@@ -54,7 +51,6 @@ tags:
 pdf:
 	-make -C lib/libfdt $(MAKOPT) pdf
 	-make -C kfs    	$(MAKOPT) pdf
-	-make -C hal    	$(MAKOPT) pdf
 	-make -C drivers 	$(MAKOPT) pdf
 	-make -C kernel 	$(MAKOPT) pdf
 	-make -C platforms/$(SOC) 	$(MAKOPT) pdf SOC=$(SOC)
@@ -64,7 +60,6 @@ pdf:
 clean:
 	-make -C lib/libfdt $(MAKOPT) clean
 	-make -C kfs    	$(MAKOPT) clean
-	-make -C hal    	$(MAKOPT) clean
 	-make -C drivers 	$(MAKOPT) clean
 	-make -C kernel 	$(MAKOPT) clean
 	-make -C platforms/$(SOC) $(MAKOPT) clean

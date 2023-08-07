@@ -18,7 +18,6 @@ NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
 SRCDIR  = ../..#					root source dir, allow us to make include via absolute path
 BLDDIR	= ../../../../build#		build directory
-BINDIR 	= ../../../../bin#			tools directory
 LIBDIR	= .#						library directory (where is ldscript)
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 SOCDIR	= $(CURDIR)#				current soc hardware abstraction layer (hal) files directory
@@ -28,7 +27,9 @@ PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 # Sources
 # --------------------------------------------------------------------------------------------------
 
-SRC = cpua.S cpuc.c platform.c
+SRC = platform.c cpuc.c \
+	  cpu/atomic.S cpu/irqs.S cpu/thread.S \
+	  cpu/cpu.S cpu/cache.S cpu/entry.S
 LDSCRIPT= kernel.ld#				ldscript is hal dependent
 
 # Targets
@@ -40,11 +41,11 @@ OBJS    = $(subst .S,.o,$(foreach src,$(SRCS),$(notdir $(src))))
 OBJC    = $(subst .c,.o,$(foreach src,$(SRCC),$(notdir $(src))))
 OBJ     = $(addprefix $(OBJDIR)/,$(OBJS) $(OBJC))
 OBJ 	+= $(OBJDIR)/cstd.o $(OBJDIR)/errno.o
-OBJ 	+= $(OBJDIR)/soclib-dma.o $(OBJDIR)/soclib-icu.o
-OBJ 	+= $(OBJDIR)/soclib-timer.o $(OBJDIR)/soclib-tty.o
+OBJ 	+= $(OBJDIR)/plic.o
+OBJ 	+= $(OBJDIR)/clint-timer.o $(OBJDIR)/ns16550.o
 OBJ 	+= $(OBJDIR)/kinit.o $(OBJDIR)/klibc.o $(OBJDIR)/kmemory.o
 OBJ 	+= $(OBJDIR)/ksynchro.o $(OBJDIR)/ksyscalls.o $(OBJDIR)/kthread.o
-OBJ 	+= $(OBJDIR)/chardev.o $(OBJDIR)/irq.o $(OBJDIR)/dev.o
+OBJ 	+= $(OBJDIR)/kdev.o $(OBJDIR)/kirq.o
 OBJ 	+= $(OBJDIR)/libfdt.a
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
@@ -52,9 +53,8 @@ BIN     = $(BLDDIR)/kernel-$(SOC).x
 
 # Tools
 # --------------------------------------------------------------------------------------------------
-SX      = $(SOC).x#                 prototype simulator
 
-include $(SRCDIR)/platforms/almo1-mips/almo1-mips.mk
+include $(SRCDIR)/platforms/qemu-virt-riscv/qemu-virt-riscv.mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
@@ -80,22 +80,27 @@ help:
 	@echo "        pdf     : generate $(PDF) with all source files"
 	@echo ""
 
-compil: depend mkdir mkdtb $(BIN)
+compil: depend mkdir $(BIN)
+
+exec: compil
+	xterm -l -lf xterm.log -e qemu-system-riscv32 -M virt \
+						-nographic \
+						-bios none \
+						-kernel $(BLDDIR)/kernel-$(SOC).x \
+						-device loader,file=$(BLDDIR)/$(APP).x \
+						-d guest_errors
+debug: compil
+	xterm -e qemu-system-riscv32 -M virt \
+						-nographic \
+						-bios none \
+						-kernel $(BLDDIR)/kernel-$(SOC).x \
+						-device loader,file=$(BLDDIR)/$(APP).x \
+						-s \
+						-S
 
 mkdir:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
 	test -d $(OBJDIR) || (echo "- mkdir   $(OBJDIR)" ; mkdir $(OBJDIR))
-
-mkdtb:
-	dtc -I dts -O dtb -o almo1.dtb almo1.dts
-
-exec: compil
-	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)
-
-debug: compil
-	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)\
-          -DEBUG $(FROM) -NCYCLES $(LAST) > $(DLOG)
-	tracelog $(SWDIR)/tags $(BLDDIR)/*.x.s $(DLOG)
 
 pdf:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
@@ -107,7 +112,7 @@ pdf:
 
 clean:
 	@echo "- clean $(notdir $(BIN)) and related build files"
-	-rm *~ *.dtb $(OBJ) $(OBJDS) $(BIN) $(PDF) $(PDF).log 2> /dev/null || true
+	-rm *~ $(OBJ) $(OBJDS) $(BIN) $(PDF) $(PDF).log 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 
@@ -124,7 +129,7 @@ $(OBJDIR)/%.o : %.c
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s
 
-$(OBJDIR)/%.o : %.S
+$(OBJDIR)/%.o : cpu/%.S
 	@echo "- compil  --> "$(notdir $@)
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s
@@ -134,6 +139,46 @@ $(OBJDIR)/%.o : %.S
 depend :
 	@echo "- makedepend for $(CURDIR)"
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRCC) $(SRCS)
-	rm Makefile.bak
+	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/obj/cpu/:/obj/:' Makefile > Makefile.bak
+	mv Makefile.bak Makefile
 
 # --------------------------------------------------------------------------------------------------
+# DEPENDENCIES
+
+../../../../build/obj/platform.o: ../../drivers/timer/clint-timer.h
+../../../../build/obj/platform.o: ../../hal/arch/timer.h
+../../../../build/obj/platform.o: ../../drivers/chardev/ns16550.h
+../../../../build/obj/platform.o: ../../hal/arch/chardev.h
+../../../../build/obj/platform.o: ../../common/errno.h ../../common/list.h
+../../../../build/obj/platform.o: ../../kernel/kdev.h ../../kernel/klibc.h
+../../../../build/obj/platform.o: ../../common/debug_off.h
+../../../../build/obj/platform.o: ../../common/debug_on.h ../../common/cstd.h
+../../../../build/obj/platform.o: ../../common/esc_code.h
+../../../../build/obj/platform.o: ../../common/syscalls.h
+../../../../build/obj/platform.o: ../../common/usermem.h
+../../../../build/obj/platform.o: ../../hal/cpu/atomic.h
+../../../../build/obj/platform.o: ../../hal/cpu/cache.h
+../../../../build/obj/platform.o: ../../hal/arch/platform.h
+../../../../build/obj/platform.o: ../../hal/cpu/thread.h ../../hal/cpu/irq.h
+../../../../build/obj/platform.o: ../../hal/cpu/cpu.h ../../kernel/kmemory.h
+../../../../build/obj/platform.o: ../../kernel/kthread.h
+../../../../build/obj/platform.o: ../../kernel/ksynchro.h
+../../../../build/obj/platform.o: ../../drivers/icu/plic.h
+../../../../build/obj/platform.o: ../../hal/arch/icu.h ../../kernel/kirq.h
+../../../../build/obj/platform.o: ../../lib/libfdt/libfdt.h
+../../../../build/obj/platform.o: ../../lib/libfdt/libfdt_env.h
+../../../../build/obj/platform.o: ../../lib/libfdt/fdt.h
+../../../../build/obj/cpuc.o: ../../platforms/qemu-virt-riscv/cpu.h
+../../../../build/obj/cpuc.o: ../../kernel/klibc.h ../../common/debug_off.h
+../../../../build/obj/cpuc.o: ../../common/debug_on.h ../../common/cstd.h
+../../../../build/obj/cpuc.o: ../../common/list.h ../../common/esc_code.h
+../../../../build/obj/cpuc.o: ../../common/errno.h ../../common/syscalls.h
+../../../../build/obj/cpuc.o: ../../common/usermem.h ../../hal/cpu/atomic.h
+../../../../build/obj/cpuc.o: ../../hal/cpu/cache.h ../../hal/arch/platform.h
+../../../../build/obj/cpuc.o: ../../hal/cpu/thread.h ../../hal/cpu/irq.h
+../../../../build/obj/cpuc.o: ../../hal/cpu/cpu.h ../../hal/arch/chardev.h
+../../../../build/obj/cpuc.o: ../../kernel/kdev.h ../../kernel/kmemory.h
+../../../../build/obj/cpuc.o: ../../kernel/kthread.h ../../kernel/ksynchro.h
+../../../../build/obj/thread.o: ../../platforms/qemu-virt-riscv/cpu.h
+../../../../build/obj/cpu.o: ../../platforms/qemu-virt-riscv/cpu.h
+../../../../build/obj/entry.o: ../../common/syscalls.h

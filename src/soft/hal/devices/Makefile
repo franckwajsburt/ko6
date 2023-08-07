@@ -135,3 +135,83 @@ depend :
 	mv Makefile.bak Makefile
 
 # --------------------------------------------------------------------------------------------------
+# DEPENDENCIES
+
+../../../build/obj/soclib-dma.o: ../drivers/dma/soclib-dma.h
+../../../build/obj/soclib-dma.o: ../kernel/klibc.h ../common/debug_off.h
+../../../build/obj/soclib-dma.o: ../common/debug_on.h ../common/cstd.h
+../../../build/obj/soclib-dma.o: ../common/list.h ../common/esc_code.h
+../../../build/obj/soclib-dma.o: ../common/errno.h ../common/syscalls.h
+../../../build/obj/soclib-dma.o: ../common/usermem.h ../hal/cpu/atomic.h
+../../../build/obj/soclib-dma.o: ../hal/cpu/cache.h
+../../../build/obj/soclib-dma.o: ../hal/arch/platform.h
+../../../build/obj/soclib-dma.o: ../hal/cpu/thread.h ../hal/cpu/irq.h
+../../../build/obj/soclib-dma.o: ../hal/cpu/cpu.h ../hal/arch/chardev.h
+../../../build/obj/soclib-dma.o: ../kernel/kdev.h ../kernel/kmemory.h
+../../../build/obj/soclib-dma.o: ../kernel/kthread.h ../kernel/ksynchro.h
+../../../build/obj/soclib-dma.o: ../hal/arch/dma.h
+../../../build/obj/soclib-icu.o: ../drivers/icu/soclib-icu.h
+../../../build/obj/soclib-icu.o: ../hal/arch/icu.h
+../../../build/obj/plic.o: ../drivers/icu/plic.h ../kernel/klibc.h
+../../../build/obj/plic.o: ../common/debug_off.h ../common/debug_on.h
+../../../build/obj/plic.o: ../common/cstd.h ../common/list.h
+../../../build/obj/plic.o: ../common/esc_code.h ../common/errno.h
+../../../build/obj/plic.o: ../common/syscalls.h ../common/usermem.h
+../../../build/obj/plic.o: ../hal/cpu/atomic.h ../hal/cpu/cache.h
+../../../build/obj/plic.o: ../hal/arch/platform.h ../hal/cpu/thread.h
+../../../build/obj/plic.o: ../hal/cpu/irq.h ../hal/cpu/cpu.h
+../../../build/obj/plic.o: ../hal/arch/chardev.h ../kernel/kdev.h
+../../../build/obj/plic.o: ../kernel/kmemory.h ../kernel/kthread.h
+../../../build/obj/plic.o: ../kernel/ksynchro.h ../hal/arch/icu.h
+../../../build/obj/soclib-timer.o: ../drivers/timer/soclib-timer.h
+../../../build/obj/soclib-timer.o: ../hal/arch/timer.h
+../../../build/obj/soclib-timer.o: ../kernel/klibc.h
+../../../build/obj/soclib-timer.o: ../common/debug_off.h
+../../../build/obj/soclib-timer.o: ../common/debug_on.h
+../../../build/obj/soclib-timer.o: ../common/cstd.h ../common/list.h
+../../../build/obj/soclib-timer.o: ../common/esc_code.h
+../../../build/obj/soclib-timer.o: ../common/errno.h
+../../../build/obj/soclib-timer.o: ../common/syscalls.h
+../../../build/obj/soclib-timer.o: ../common/usermem.h
+../../../build/obj/soclib-timer.o: ../hal/cpu/atomic.h
+../../../build/obj/soclib-timer.o: ../hal/cpu/cache.h
+../../../build/obj/soclib-timer.o: ../hal/arch/platform.h
+../../../build/obj/soclib-timer.o: ../hal/cpu/thread.h ../hal/cpu/irq.h
+../../../build/obj/soclib-timer.o: ../hal/cpu/cpu.h
+../../../build/obj/soclib-timer.o: ../hal/arch/chardev.h
+../../../build/obj/soclib-timer.o: ../kernel/kdev.h ../kernel/kmemory.h
+../../../build/obj/soclib-timer.o: ../kernel/kthread.h
+../../../build/obj/soclib-timer.o: ../kernel/ksynchro.h
+../../../build/obj/clint-timer.o: ../drivers/timer/clint-timer.h
+../../../build/obj/clint-timer.o: ../hal/arch/timer.h
+../../../build/obj/soclib-tty.o: ../drivers/chardev/soclib-tty.h
+../../../build/obj/soclib-tty.o: ../hal/arch/chardev.h
+../../../build/obj/soclib-tty.o: ../common/errno.h ../common/list.h
+../../../build/obj/soclib-tty.o: ../kernel/kdev.h ../kernel/klibc.h
+../../../build/obj/soclib-tty.o: ../common/debug_off.h
+../../../build/obj/soclib-tty.o: ../common/debug_on.h
+../../../build/obj/soclib-tty.o: ../common/cstd.h
+../../../build/obj/soclib-tty.o: ../common/esc_code.h
+../../../build/obj/soclib-tty.o: ../common/syscalls.h
+../../../build/obj/soclib-tty.o: ../common/usermem.h
+../../../build/obj/soclib-tty.o: ../hal/cpu/atomic.h
+../../../build/obj/soclib-tty.o: ../hal/cpu/cache.h
+../../../build/obj/soclib-tty.o: ../hal/arch/platform.h
+../../../build/obj/soclib-tty.o: ../hal/cpu/thread.h ../hal/cpu/irq.h
+../../../build/obj/soclib-tty.o: ../hal/cpu/cpu.h ../kernel/kmemory.h
+../../../build/obj/soclib-tty.o: ../kernel/kthread.h
+../../../build/obj/soclib-tty.o: ../kernel/ksynchro.h
+../../../build/obj/ns16550.o: ../drivers/chardev/ns16550.h
+../../../build/obj/ns16550.o: ../hal/arch/chardev.h ../common/errno.h
+../../../build/obj/ns16550.o: ../common/list.h ../kernel/kdev.h
+../../../build/obj/ns16550.o: ../kernel/klibc.h ../common/debug_off.h
+../../../build/obj/ns16550.o: ../common/debug_on.h ../common/cstd.h
+../../../build/obj/ns16550.o: ../common/esc_code.h
+../../../build/obj/ns16550.o: ../common/syscalls.h
+../../../build/obj/ns16550.o: ../common/usermem.h ../hal/cpu/atomic.h
+../../../build/obj/ns16550.o: ../hal/cpu/cache.h
+../../../build/obj/ns16550.o: ../hal/arch/platform.h
+../../../build/obj/ns16550.o: ../hal/cpu/thread.h ../hal/cpu/irq.h
+../../../build/obj/ns16550.o: ../hal/cpu/cpu.h ../kernel/kmemory.h
+../../../build/obj/ns16550.o: ../kernel/kthread.h
+../../../build/obj/ns16550.o: ../kernel/ksynchro.h

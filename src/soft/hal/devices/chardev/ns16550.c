@@ -28,6 +28,9 @@ static void ns16550_init(struct chardev_s *cdev, unsigned address, unsigned baud
     cdev->ops        = &NS16550Ops;
     cdev->address    = address;
     cdev->baudrate   = baudrate;
+    
+    struct fifo_s *fifo = kmalloc(sizeof(struct fifo_s));
+    cdev->driver_data = (void*) fifo;
 
     volatile struct ns16550_general_regs_s *gregs =
         (struct ns16550_general_regs_s *) address;
@@ -70,8 +73,9 @@ static int ns16550_read(struct chardev_s *cdev, char *buf, unsigned count)
     int res = 0;
     int c;
 
+    struct fifo_s *fifo = (struct fifo_s *) cdev->driver_data;
     while (count--) {
-        while (chardev_fifo_pull(&cdev->fifo, &c) == FAILURE) { // wait for a char from the keyboard
+        while (fifo_pull(fifo, &c) == FAILURE) {                // wait for a char from the keyboard
             thread_yield();                                     // nothing then we yield the processor
             irq_enable();                                       // get few characters if thread is alone
             irq_disable();                                      // close enter
@@ -113,6 +117,8 @@ void ns16550_isr(unsigned irq, struct chardev_s *cdev)
 {
     volatile struct ns16550_general_regs_s *regs = 
         (struct ns16550_general_regs_s *) cdev->address;
+    
+    struct fifo_s *fifo = (struct fifo_s *) cdev->driver_data;
     char c = regs->hr;
-    chardev_fifo_push(&cdev->fifo, c);
+    fifo_push(fifo, c);
 }

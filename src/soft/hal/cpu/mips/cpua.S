@@ -261,6 +261,7 @@ kpanic:
 .globl clock // -------------------------- int clock (void) is an external function
 clock:                                  // clock is a terminal function then don't use the stack
     mfc0    $2,     $9                  // 32 bits counter in the coprocessor system (c0_$9)
+    li      $3,     0                   // 32 bits MSB = 0
     jr      $31                         // get it in $2 and return
 
 .globl cpuid // -------------------------- int cpuid (void)

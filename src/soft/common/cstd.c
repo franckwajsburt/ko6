@@ -174,6 +174,10 @@ int vsnprintf (char * buffer, unsigned size, char *fmt, va_list ap)
     char *buf = buffer;                         // pointer to the current filling position in buffer
     int res;                                    // function result (number of printed char)
     int val;                                    // argument value
+    /*long val64_lsb;
+    lo ng val64_msb;
+    long long val64;
+    */
     int i;                                      // temporary variable
     int count = size - 1;                       // max nb of char in buffer (-1 because of last 0)
 
@@ -191,6 +195,31 @@ int vsnprintf (char * buffer, unsigned size, char *fmt, va_list ap)
                 if (--count == 0)               // go to the next char if there is space yet
                     goto abort;
                 goto next;
+            /* case 'l':                           // TODO: handle u,d formats
+                fmt++;
+                switch (*fmt) {
+                case 'x':               
+                    //val64 = va_arg (ap, long long);     // val <- value to convert in ascii
+                    val64_lsb = va_arg (ap, long);
+                    val64_msb = va_arg (ap, long);
+                    val64 = ((long long) val64_msb << 32LL) | val64_lsb;
+
+                    tmp = arg + sizeof (arg);           // goto at the end of tmp buffer
+                    *--tmp = '\0';                      // put the ending char 0
+                    i = 0;                              // i is used to count the digits
+                    do {
+                        *--tmp = xdigit[val64 & 0xF];   // compute the unit digit
+                        val64 = (unsigned long long) val64 >> 4;  // go to the next digit
+                        i++;                            // digits counter
+                    } while (val64);                    // until val becomes 0
+                    goto copy_tmp;                      // go to copy tmp in buffer
+                default:
+                    *buf++ = '%';                       // invalid format 
+                    if (--count == 0)
+                        goto abort;
+                    goto next;
+                }
+                goto next;*/
             case 'c':                           // case %c (char)
                 *buf++ = (char)va_arg (ap, int);// get the argument and copy it in output buffer
                 if (--count == 0)               // go to the next char if there is space yet

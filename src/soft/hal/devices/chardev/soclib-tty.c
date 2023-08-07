@@ -24,6 +24,9 @@ static void soclib_tty_init(struct chardev_s *cdev, unsigned address, unsigned b
     cdev->ops        = &SoclibTTYOps;
     cdev->address    = address;
     cdev->baudrate   = baudrate;
+
+    struct fifo_s *fifo = kmalloc(sizeof(struct fifo_s));
+    cdev->driver_data = (void*) fifo;
 }
 
 /**
@@ -38,8 +41,9 @@ static int soclib_tty_read(struct chardev_s *cdev, char *buf, unsigned count)
     int res = 0;                                        // nb of read char
     int c;                                              // char read
 
+    struct fifo_s *fifo = (struct fifo_s *) cdev->driver_data;
     while (count--) {
-        while (chardev_fifo_pull(&cdev->fifo, &c) == FAILURE) {  // wait for a char from the keyboard
+        while (fifo_pull(fifo, &c) == FAILURE) {  // wait for a char from the keyboard
             thread_yield();                                 // nothing then we yield the processor
             irq_enable();                                   // get few characters if thread is alone
             irq_disable();                                  // close enter
@@ -82,6 +86,8 @@ void soclib_tty_isr(unsigned irq, struct chardev_s *cdev)
 {
     struct soclib_tty_regs_s *regs = 
         (struct soclib_tty_regs_s *) cdev->address;
+    
+    struct fifo_s *fifo = (struct fifo_s *) cdev->driver_data;
     char c = regs->read;
-    chardev_fifo_push(&cdev->fifo, c);
+    fifo_push(fifo, c);
 }

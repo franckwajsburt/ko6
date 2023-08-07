@@ -57,9 +57,10 @@
   #define tty_alloc() (struct tty_s*) (dev_alloc(TTY_DEV, sizeof(struct tty_s))->data)
   #define tty_get(no) (struct tty_s*) (dev_get(TTY_DEV, no)->data)
 
+
 \*------------------------------------------------------------------------------------------------*/
-#ifndef _HAL_DEV_H_
-#define _HAL_DEV_H_
+#ifndef _KERNEL_DEV_H_
+#define _KERNEL_DEV_H_
 
 #include <common/list.h>
 #include <kernel/klibc.h>

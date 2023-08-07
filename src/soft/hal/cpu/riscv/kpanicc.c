@@ -1,36 +1,3 @@
-/*------------------------------------------------------------------------------------------------*\
-   _     ___    __
-  | |__ /'v'\  / /      \date       2023-07-24
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
-
-  \file     platform/virt/cpuc.c
-  \author   Nolan Bled
-  \brief    CPU specific c code which implement a part of hcpu.h API
-
-\*------------------------------------------------------------------------------------------------*/
-
-#include <platforms/qemu-virt-riscv/cpu.h>
-#include <kernel/klibc.h>
-
-//--------------------------------------------------------------------------------------------------
-// Thread management
-//--------------------------------------------------------------------------------------------------
-
-void thread_context_init (int context[], void * bootstrap, void * stack_pointer)
-{
-    /**
-     * mstatus of a user-thread should have:
-     *  mstatus.MPIE = 0 (we don't want interrupts when we go back in M-mode) 
-     *  mstatus.MPP = M-mode (we want to go back in m-mode)
-     *  mstatus.MIE = 1 (interrupts are enabled)
-     */
-    context[TH_CONTEXT_MSTATUS] = (3 << 11) | (1 << 3);
-    context[TH_CONTEXT_RA] = (int)bootstrap;        // goto thread_bootstrap
-    context[TH_CONTEXT_SP] = (int)stack_pointer;    // stack beginning 
-}
-
-
 //--------------------------------------------------------------------------------------------------
 // end of kpanic() to dump all register value and threads list
 //--------------------------------------------------------------------------------------------------
@@ -88,7 +55,7 @@ void kdump (unsigned cause, unsigned reg_tab[])
     char * message = (KDumpMessage) ? KDumpMessage : KPanicCauseName[cause];
 
     kprintf ("\n[%d] <%p> KERNEL PANIC: %s\n\n",
-            KPanicRegsVal[KPANIC_MCYCLE],               // TSC Time Stamp Counter
+            0,                                          // FIXME: TSC Time Stamp Counter
             KPanicRegsVal[KPANIC_MEPC],                 // faulty instruction address
             message);                                   // Comprehensive cause name
     for (int i = 0; i < KPANIC_REGS_NR; i++) {
