@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/arch/dma.h
+  \file     hal/devices/dma.h
   \author   Franck Wajsburt, Nolan Bled
   \brief    DMA API
 

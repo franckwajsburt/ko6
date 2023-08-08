@@ -1,3 +1,15 @@
+/*------------------------------------------------------------------------------------------------*\
+   _     ___    __
+  | |__ /'v'\  / /      \date       2022-07-03
+  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+
+  \file     hal/cpu/mips/kpanicc.c
+  \author   Franck Wajsburt
+  \brief    CPU implementation of kdump()
+
+\*------------------------------------------------------------------------------------------------*/
+
 #include <hal/cpu/mips/context.h>
 #include <kernel/klibc.h>
 

@@ -4,9 +4,10 @@
 # | / /(     )/ _ \   	\copyright 2021-2022 Sorbonne University
 # |_\_\ x___x \___/                https://opensource.org/licenses/MIT
 #
-# \file     platforms/almo1/Makefile
+# \file     hal/arch/almo1-mips/Makefile
 # \author   Franck Wajsburt, Nolan Bled
-# \brief    Makefile to produce the kernel executable: kernel.x
+# \brief    Makefile to build arch-specific files, and link every files in 
+#			the kernel
 #
 #--------------------------------------------------------------------------------------------------
 

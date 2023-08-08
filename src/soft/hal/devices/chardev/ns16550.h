@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/devices/tty/ns16550.h
+  \file     hal/devices/chardev/ns16550.h
   \author   Nolan Bled
   \brief    NS16550 UART driver
             For a complete description, see http://caro.su/msx/ocm_de1/16550.pdf

@@ -6,7 +6,7 @@
 
   \file     hal/cpu/mips/threadc.c
   \author   Franck Wajsburt
-  \brief    CPU specific c code which implement a part of hcpu.h API
+  \brief    CPU specific c code which implement threading functions
 
 \*------------------------------------------------------------------------------------------------*/
 

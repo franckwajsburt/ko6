@@ -6,7 +6,10 @@
 
   \file     hal/cpu/mips/entry.S
   \author   Franck Wajsburt
-  \brief    cpu specific assembly code which implement a part of hcpu.h API
+  \brief    cpu specific assembly code which implement kernel entry vectors
+                * reset
+                * interrupt
+                * exception
 
 \*------------------------------------------------------------------------------------------------*/
 

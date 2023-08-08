@@ -4,14 +4,14 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/arch/platform.h
+  \file     hal/arch/arch.h
   \author   Franck Wajsburt
   \brief    Generic platform-specific initalization prototypes
 
 \*------------------------------------------------------------------------------------------------*/
 
-#ifndef _HAL_PLATFORM_H_
-#define _HAL_PLATFORM_H_
+#ifndef _HAL_ARCH_H_
+#define _HAL_ARCH_H_
 
 /**
  * \brief     Request the initialization of all the architecture

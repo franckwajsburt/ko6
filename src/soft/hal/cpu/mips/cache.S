@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     platforms/virt/cpu/cache.S
+  \file     hal/cpu/mips/cache.S
   \author   Franck Wajsburt
   \brief    cpu specific assembly code which implement a part of cpu HAL
 

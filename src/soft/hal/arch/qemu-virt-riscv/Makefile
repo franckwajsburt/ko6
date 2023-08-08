@@ -4,7 +4,7 @@
 # | / /(     )/ _ \   	\copyright 2021-2022 Sorbonne University
 # |_\_\ x___x \___/                https://opensource.org/licenses/MIT
 #
-# \file     platforms/almo1/Makefile
+# \file     hal/arch/qemu-virt-riscv/Makefile
 # \author   Franck Wajsburt, Nolan Bled
 # \brief    Makefile to produce the kernel executable: kernel.x
 #
@@ -145,35 +145,3 @@ depend :
 	mv Makefile.bak Makefile
 
 # --------------------------------------------------------------------------------------------------
-# DEPENDENCIES
-
-../../../../../build/obj/arch.o: ../../../hal/devices/timer/clint-timer.h
-../../../../../build/obj/arch.o: ../../../hal/devices/timer.h
-../../../../../build/obj/arch.o: ../../../hal/devices/chardev/ns16550.h
-../../../../../build/obj/arch.o: ../../../hal/devices/chardev.h
-../../../../../build/obj/arch.o: ../../../common/errno.h
-../../../../../build/obj/arch.o: ../../../common/list.h
-../../../../../build/obj/arch.o: ../../../kernel/kdev.h
-../../../../../build/obj/arch.o: ../../../kernel/klibc.h
-../../../../../build/obj/arch.o: ../../../common/debug_off.h
-../../../../../build/obj/arch.o: ../../../common/debug_on.h
-../../../../../build/obj/arch.o: ../../../common/cstd.h
-../../../../../build/obj/arch.o: ../../../common/esc_code.h
-../../../../../build/obj/arch.o: ../../../common/syscalls.h
-../../../../../build/obj/arch.o: ../../../common/usermem.h
-../../../../../build/obj/arch.o: ../../../hal/cpu/atomic.h
-../../../../../build/obj/arch.o: ../../../hal/cpu/cache.h
-../../../../../build/obj/arch.o: ../../../hal/cpu/thread.h
-../../../../../build/obj/arch.o: ../../../hal/cpu/irq.h
-../../../../../build/obj/arch.o: ../../../hal/cpu/cpuregs.h
-../../../../../build/obj/arch.o: ../../../hal/cpu/kpanic.h
-../../../../../build/obj/arch.o: ../../../hal/arch/arch.h
-../../../../../build/obj/arch.o: ../../../kernel/kmemory.h
-../../../../../build/obj/arch.o: ../../../kernel/kthread.h
-../../../../../build/obj/arch.o: ../../../kernel/ksynchro.h
-../../../../../build/obj/arch.o: ../../../hal/devices/icu/plic.h
-../../../../../build/obj/arch.o: ../../../hal/devices/icu.h
-../../../../../build/obj/arch.o: ../../../kernel/kirq.h
-../../../../../build/obj/arch.o: ../../../lib/libfdt/libfdt.h
-../../../../../build/obj/arch.o: ../../../lib/libfdt/libfdt_env.h
-../../../../../build/obj/arch.o: ../../../lib/libfdt/fdt.h

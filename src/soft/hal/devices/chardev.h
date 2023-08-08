@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/arch/chardev.h
+  \file     hal/devices/chardev.h
   \author   Franck Wajsburt, Nolan Bled
   \brief    Generic CHARDEV functions prototypes
 

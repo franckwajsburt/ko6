@@ -6,7 +6,7 @@
 
   \file     hal/cpu/riscv/irq.S
   \author   Nolan Bled
-  \brief    cpu specific assembly code which implement a part of cpu HAL
+  \brief    cpu specific assembly code which implement implement IRQs functions
 
 \*------------------------------------------------------------------------------------------------*/
 

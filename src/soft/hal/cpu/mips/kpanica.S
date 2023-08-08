@@ -6,7 +6,7 @@
 
   \file     hal/cpu/mips/kpanica.S
   \author   Franck Wajsburt
-  \brief    cpu specific assembly code which implement a part of hcpu.h API
+  \brief    cpu specific assembly code which implement kpanic()
 
 \*------------------------------------------------------------------------------------------------*/
 

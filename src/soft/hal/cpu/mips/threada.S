@@ -6,7 +6,7 @@
 
   \file     hal/cpu/mips/threada.S
   \author   Franck Wasjburt
-  \brief    cpu specific assembly code which implement a part of cpu HAL
+  \brief    cpu specific assembly code which implement threading functions
 \*------------------------------------------------------------------------------------------------*/
 
 #include <hal/cpu/mips/context.h>

@@ -4,9 +4,10 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     platforms/almo1-mips/platform.c
+  \file     hal/arch/almo1-mips/arch.c
   \author   Franck Wajsburt, Nolan Bled
   \brief    Platform initialization functions
+            Initialize every platform device based on the device tree
 
 \*------------------------------------------------------------------------------------------------*/
 

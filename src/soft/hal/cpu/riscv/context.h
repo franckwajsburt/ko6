@@ -4,14 +4,14 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     platform/virt/cpu.h
+  \file     hal/cpu/riscv/context.h
   \author   Nolan Bled
-  \brief    CPU specific defines
+  \brief    CPU specific context (registers) defines
 
 \*------------------------------------------------------------------------------------------------*/
 
-#ifndef _CPU_H_
-#define _CPU_H_
+#ifndef _HAL_CPU_CONTEXT_H_
+#define _HAL_CPU_CONTEXT_H_
 
 
 //--------------------------------------------------------------------------------------------------
@@ -84,4 +84,4 @@
 #define KPANIC_MEPC      34
 #define KPANIC_REGS_NR   35
 
-#endif//_CPU_H_
+#endif//_HAL_CPU_CONTEXT_H_

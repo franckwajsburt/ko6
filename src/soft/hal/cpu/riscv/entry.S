@@ -4,9 +4,12 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     platforms/virt/cpu/entry.S
+  \file     hal/cpu/riscv/entry.S
   \author   Nolan Bled
-  \brief    cpu specific assembly code which implement a part of cpu HAL
+  \brief    cpu specific assembly code which implement kernel entry vectors
+                * reset
+                * interrupt
+                * exception
 
 \*------------------------------------------------------------------------------------------------*/
 

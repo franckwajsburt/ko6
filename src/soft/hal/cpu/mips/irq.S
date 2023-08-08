@@ -6,7 +6,7 @@
 
   \file     hal/cpu/mips/irq.S
   \author   Franck Wajsburt
-  \brief    cpu specific assembly code which implement a part of cpu HAL
+  \brief    cpu specific assembly code which implement IRQs functions
 
 \*------------------------------------------------------------------------------------------------*/
 

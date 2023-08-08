@@ -1,3 +1,15 @@
+/*------------------------------------------------------------------------------------------------*\
+   _     ___    __
+  | |__ /'v'\  / /      \date       2022-07-02
+  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+
+  \file     hal/cpu/mips/kpanicc.S
+  \author   Nolan Bled
+  \brief    cpu specific assembly code which implement kpanic()
+
+\*------------------------------------------------------------------------------------------------*/
+
 #include <hal/cpu/riscv/context.h>
 #include <kernel/klibc.h>
 #include <kernel/kthread.h>

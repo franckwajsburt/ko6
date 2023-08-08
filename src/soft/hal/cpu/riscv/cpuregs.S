@@ -6,7 +6,7 @@
 
   \file     hal/cpu/riscv/cpuregs.S
   \author   Nolan Bled
-  \brief    cpu specific assembly code which implement a part of cpu HAL
+  \brief    cpu specific assembly code which implement access to cpu-specific registers
 
 \*------------------------------------------------------------------------------------------------*/
 

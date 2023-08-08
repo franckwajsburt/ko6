@@ -10,8 +10,8 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#ifndef _HCPU_SOC_H_
-#define _HCPU_SOC_H_
+#ifndef _HAL_CPU_CONTEXT_H_
+#define _HAL_CPU_CONTEXT_H_
 
 
 //--------------------------------------------------------------------------------------------------
@@ -82,4 +82,4 @@
 #define KPANIC_EPC       35
 #define KPANIC_REGS_NR   36
 
-#endif//_HCPU_SOC_H_
+#endif//_HAL_CPU_CONTEXT_H_

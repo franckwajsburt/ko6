@@ -6,7 +6,7 @@
 
   \file     hal/cpu/mips/cpu_regs.S
   \author   Franck Wajsburt
-  \brief    cpu specific assembly code which implement a part of hcpu.h API
+  \brief    cpu specific assembly that implement access to cpu-specific registers
 
 \*------------------------------------------------------------------------------------------------*/
 

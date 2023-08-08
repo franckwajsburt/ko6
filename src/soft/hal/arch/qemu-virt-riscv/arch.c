@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     platforms/qemu-virt-riscv/platform.c
+  \file     hal/arch/qemu-virt-riscv/arch.c
   \author   Nolan Bled
   \brief    Platform initialization functions
 
