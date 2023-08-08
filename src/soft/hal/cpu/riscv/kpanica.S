@@ -1,4 +1,6 @@
 
+#include <hal/cpu/riscv/context.h>
+
 //--------------------------------------------------------------------------------------------------
 // Not managed cause, thus call kpanic () that displays the registers' value and stops the program
 //--------------------------------------------------------------------------------------------------

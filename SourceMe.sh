@@ -11,8 +11,6 @@
 export kO6=$HOME/ko6
 export SOCLIB=/users/outil/soc/soclib
 export SOC=almo1-mips
-export SOC=qemu-virt-riscv
-
 echo $kO6
 
 # Do not change the line after, unless you know what you are doing
@@ -27,5 +25,5 @@ shopt -s globstar   # allow the ** symbol which replace any pathname
 chmod u+x $kO6/bin/gcc.$GCC/mipsel-unknown-elf/bin/*
 chmod u+x $kO6/bin/gcc.$GCC/bin/*
 chmod u+x $kO6/bin/gcc.$GCC/libexec/gcc/mipsel-unknown-elf/$GCC/*
-chmod u+x $kO6/bin/$SOC.x
+chmod u+x $kO6/bin/almo1-mips.x
 chmod u+x $kO6/bin/tracelog

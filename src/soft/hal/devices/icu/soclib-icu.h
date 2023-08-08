@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     drivers/icu/soclib-icu.h
+  \file     hal/devices/icu/soclib-icu.h
   \author   Franck Wajsburt, Nolan Bled
   \brief    Soclib ICU driver
 
@@ -13,7 +13,7 @@
 #ifndef _SOCLIB_ICU_H_
 #define _SOCLIB_ICU_H_
 
-#include <hal/arch/icu.h>
+#include <hal/devices/icu.h>
 
 struct soclib_icu_regs_s {
     int state;          // state of all IRQ signals

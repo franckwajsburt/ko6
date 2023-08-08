@@ -10,14 +10,17 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <drivers/chardev/soclib-tty.h>
-#include <drivers/timer/soclib-timer.h>
-#include <drivers/icu/soclib-icu.h>
-#include <drivers/dma/soclib-dma.h>
+#include <hal/devices/chardev/soclib-tty.h>
+#include <hal/devices/timer/soclib-timer.h>
+#include <hal/devices/icu/soclib-icu.h>
+#include <hal/devices/dma/soclib-dma.h>
+
+#include <hal/cpu/irq.h>
+
 #include <kernel/kthread.h>
 #include <kernel/klibc.h>
 #include <kernel/kirq.h>
-#include <hal/cpu/irq.h>
+
 #include <lib/libfdt/libfdt.h>
 
 /**

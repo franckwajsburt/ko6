@@ -4,12 +4,12 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     platforms/virt/cpu/thread.S
+  \file     hal/cpu/riscv/threada.S
   \author   Nolan Bled
   \brief    cpu specific assembly code which implement a part of cpu HAL
 \*------------------------------------------------------------------------------------------------*/
 
-#include <platforms/qemu-virt-riscv/cpu.h>
+#include <hal/cpu/riscv/context.h>
 
 //--------------------------------------------------------------------------------------------------
 // Thread management

@@ -4,13 +4,13 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     drivers/chardev/ns16550.c
+  \file     hal/devices/chardev/ns16550.c
   \author   Franck Wajsburt, Nolan Bled
   \brief    NS16550 UART driver
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <drivers/chardev/ns16550.h>
+#include <hal/devices/chardev/ns16550.h>
 
 /**
  * \brief   NS16550 UART initialization

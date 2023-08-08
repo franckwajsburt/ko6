@@ -45,7 +45,7 @@ PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-include $(SRCDIR)/platforms/$(SOC)/$(SOC).mk
+include $(SRCDIR)/hal/arch/$(SOC)/$(SOC).mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
@@ -122,7 +122,3 @@ depend :
 	rm Makefile.bak
 
 # --------------------------------------------------------------------------------------------------
-# DEPENDENCIES
-
-../../../build/obj/kfs.o: ./kfs.h
-../../../build/obj/ktools.o: ./kfs.h

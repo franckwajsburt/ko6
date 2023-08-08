@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     platform/virt/cpu_user.S
+  \file     hal/cpu/riscv/cpu_user.S
   \author   Nolan Bled
   \brief    CPU specific user functions
             - This file contains cpu-dependant functions used by user applications.

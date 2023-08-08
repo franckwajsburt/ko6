@@ -4,8 +4,8 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     platforms/virt/cpu/irq.S
-  \author   Nolan Bled
+  \file     hal/cpu/mips/irq.S
+  \author   Franck Wajsburt
   \brief    cpu specific assembly code which implement a part of cpu HAL
 
 \*------------------------------------------------------------------------------------------------*/
@@ -18,19 +18,12 @@
 
 .globl irq_enable// --------------------- void irq_enable(void)
 irq_enable:
-    csrs mstatus, 1 << 3    // set the mstatus.MIE bit
-                            // this will enable the interrupts specified in the
-                            // mie csr, which is setup at boot time to enable
-                            // timer interrupts (MTIE), software interrupts (MSIE)
-                            // external interrupts (MEIE)
-                            // note: software interrupts actually relate to IPC
-                            //  and have nothing to do with syscalls/exceptions
-    ret
+    li      $2,     0x401               // SR <-- 0x401 : IM=0x04 UM=0 EXL=0 IE=1
+    mtc0    $2,     $12
+    jr      $31
 
 .globl irq_disable// -------------------- unsigned irq_disable(void)
 irq_disable:
-    csrr a0, mstatus        // return the original mstatus (won't be useful
-                            // on the riscv implem so i won't implement the 
-                            // irq_restore function)
-    csrc mstatus, 1 << 3    // clear the mstatus.MIE bit
-    ret
+    mfc0    $2,     $12                 // get SR
+    mtc0    $0,     $12                 // SR <-- 0 : IM=0x00 UM=0 EXL=0 IE=0
+    jr      $31

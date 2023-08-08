@@ -16,8 +16,8 @@
 NTTYS  ?= 1#						default number of ttys
 NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-SRCDIR  = ../..#					root source dir, allow us to make include via absolute path
-BLDDIR	= ../../../../build#		build directory
+SRCDIR  = ../../..#					root source dir, allow us to make include via absolute path
+BLDDIR	= ../../../../../build#		build directory
 LIBDIR	= .#						library directory (where is ldscript)
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 SOCDIR	= $(CURDIR)#				current soc hardware abstraction layer (hal) files directory
@@ -27,9 +27,7 @@ PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 # Sources
 # --------------------------------------------------------------------------------------------------
 
-SRC = platform.c cpuc.c \
-	  cpu/atomic.S cpu/irqs.S cpu/thread.S \
-	  cpu/cpu.S cpu/cache.S cpu/entry.S
+SRC = arch.c
 LDSCRIPT= kernel.ld#				ldscript is hal dependent
 
 # Targets
@@ -43,6 +41,10 @@ OBJ     = $(addprefix $(OBJDIR)/,$(OBJS) $(OBJC))
 OBJ 	+= $(OBJDIR)/cstd.o $(OBJDIR)/errno.o
 OBJ 	+= $(OBJDIR)/plic.o
 OBJ 	+= $(OBJDIR)/clint-timer.o $(OBJDIR)/ns16550.o
+OBJ 	+= $(OBJDIR)/atomic.o $(OBJDIR)/cache.o $(OBJDIR)/cpuregs.o
+OBJ 	+= $(OBJDIR)/entry.o $(OBJDIR)/irq.o $(OBJDIR)/kpanica.o
+OBJ 	+= $(OBJDIR)/kpanica.o $(OBJDIR)/kpanicc.o $(OBJDIR)/threada.o
+OBJ 	+= $(OBJDIR)/threadc.o
 OBJ 	+= $(OBJDIR)/kinit.o $(OBJDIR)/klibc.o $(OBJDIR)/kmemory.o
 OBJ 	+= $(OBJDIR)/ksynchro.o $(OBJDIR)/ksyscalls.o $(OBJDIR)/kthread.o
 OBJ 	+= $(OBJDIR)/kdev.o $(OBJDIR)/kirq.o
@@ -54,7 +56,7 @@ BIN     = $(BLDDIR)/kernel-$(SOC).x
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-include $(SRCDIR)/platforms/qemu-virt-riscv/qemu-virt-riscv.mk
+include $(SRCDIR)/hal/arch/qemu-virt-riscv/qemu-virt-riscv.mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
@@ -145,40 +147,33 @@ depend :
 # --------------------------------------------------------------------------------------------------
 # DEPENDENCIES
 
-../../../../build/obj/platform.o: ../../drivers/timer/clint-timer.h
-../../../../build/obj/platform.o: ../../hal/arch/timer.h
-../../../../build/obj/platform.o: ../../drivers/chardev/ns16550.h
-../../../../build/obj/platform.o: ../../hal/arch/chardev.h
-../../../../build/obj/platform.o: ../../common/errno.h ../../common/list.h
-../../../../build/obj/platform.o: ../../kernel/kdev.h ../../kernel/klibc.h
-../../../../build/obj/platform.o: ../../common/debug_off.h
-../../../../build/obj/platform.o: ../../common/debug_on.h ../../common/cstd.h
-../../../../build/obj/platform.o: ../../common/esc_code.h
-../../../../build/obj/platform.o: ../../common/syscalls.h
-../../../../build/obj/platform.o: ../../common/usermem.h
-../../../../build/obj/platform.o: ../../hal/cpu/atomic.h
-../../../../build/obj/platform.o: ../../hal/cpu/cache.h
-../../../../build/obj/platform.o: ../../hal/arch/platform.h
-../../../../build/obj/platform.o: ../../hal/cpu/thread.h ../../hal/cpu/irq.h
-../../../../build/obj/platform.o: ../../hal/cpu/cpu.h ../../kernel/kmemory.h
-../../../../build/obj/platform.o: ../../kernel/kthread.h
-../../../../build/obj/platform.o: ../../kernel/ksynchro.h
-../../../../build/obj/platform.o: ../../drivers/icu/plic.h
-../../../../build/obj/platform.o: ../../hal/arch/icu.h ../../kernel/kirq.h
-../../../../build/obj/platform.o: ../../lib/libfdt/libfdt.h
-../../../../build/obj/platform.o: ../../lib/libfdt/libfdt_env.h
-../../../../build/obj/platform.o: ../../lib/libfdt/fdt.h
-../../../../build/obj/cpuc.o: ../../platforms/qemu-virt-riscv/cpu.h
-../../../../build/obj/cpuc.o: ../../kernel/klibc.h ../../common/debug_off.h
-../../../../build/obj/cpuc.o: ../../common/debug_on.h ../../common/cstd.h
-../../../../build/obj/cpuc.o: ../../common/list.h ../../common/esc_code.h
-../../../../build/obj/cpuc.o: ../../common/errno.h ../../common/syscalls.h
-../../../../build/obj/cpuc.o: ../../common/usermem.h ../../hal/cpu/atomic.h
-../../../../build/obj/cpuc.o: ../../hal/cpu/cache.h ../../hal/arch/platform.h
-../../../../build/obj/cpuc.o: ../../hal/cpu/thread.h ../../hal/cpu/irq.h
-../../../../build/obj/cpuc.o: ../../hal/cpu/cpu.h ../../hal/arch/chardev.h
-../../../../build/obj/cpuc.o: ../../kernel/kdev.h ../../kernel/kmemory.h
-../../../../build/obj/cpuc.o: ../../kernel/kthread.h ../../kernel/ksynchro.h
-../../../../build/obj/thread.o: ../../platforms/qemu-virt-riscv/cpu.h
-../../../../build/obj/cpu.o: ../../platforms/qemu-virt-riscv/cpu.h
-../../../../build/obj/entry.o: ../../common/syscalls.h
+../../../../../build/obj/arch.o: ../../../hal/devices/timer/clint-timer.h
+../../../../../build/obj/arch.o: ../../../hal/devices/timer.h
+../../../../../build/obj/arch.o: ../../../hal/devices/chardev/ns16550.h
+../../../../../build/obj/arch.o: ../../../hal/devices/chardev.h
+../../../../../build/obj/arch.o: ../../../common/errno.h
+../../../../../build/obj/arch.o: ../../../common/list.h
+../../../../../build/obj/arch.o: ../../../kernel/kdev.h
+../../../../../build/obj/arch.o: ../../../kernel/klibc.h
+../../../../../build/obj/arch.o: ../../../common/debug_off.h
+../../../../../build/obj/arch.o: ../../../common/debug_on.h
+../../../../../build/obj/arch.o: ../../../common/cstd.h
+../../../../../build/obj/arch.o: ../../../common/esc_code.h
+../../../../../build/obj/arch.o: ../../../common/syscalls.h
+../../../../../build/obj/arch.o: ../../../common/usermem.h
+../../../../../build/obj/arch.o: ../../../hal/cpu/atomic.h
+../../../../../build/obj/arch.o: ../../../hal/cpu/cache.h
+../../../../../build/obj/arch.o: ../../../hal/cpu/thread.h
+../../../../../build/obj/arch.o: ../../../hal/cpu/irq.h
+../../../../../build/obj/arch.o: ../../../hal/cpu/cpuregs.h
+../../../../../build/obj/arch.o: ../../../hal/cpu/kpanic.h
+../../../../../build/obj/arch.o: ../../../hal/arch/arch.h
+../../../../../build/obj/arch.o: ../../../kernel/kmemory.h
+../../../../../build/obj/arch.o: ../../../kernel/kthread.h
+../../../../../build/obj/arch.o: ../../../kernel/ksynchro.h
+../../../../../build/obj/arch.o: ../../../hal/devices/icu/plic.h
+../../../../../build/obj/arch.o: ../../../hal/devices/icu.h
+../../../../../build/obj/arch.o: ../../../kernel/kirq.h
+../../../../../build/obj/arch.o: ../../../lib/libfdt/libfdt.h
+../../../../../build/obj/arch.o: ../../../lib/libfdt/libfdt_env.h
+../../../../../build/obj/arch.o: ../../../lib/libfdt/fdt.h

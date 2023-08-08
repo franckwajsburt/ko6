@@ -4,13 +4,13 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     drivers/timer/soclib-timer.c
+  \file     hal/devices/timer/soclib-timer.c
   \author   Franck Wajsburt, Nolan Bled
   \brief    Soclib timer driver
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <drivers/timer/soclib-timer.h>
+#include <hal/devices/timer/soclib-timer.h>
 #include <kernel/klibc.h>
 
 /**

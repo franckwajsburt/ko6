@@ -11,7 +11,7 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <hal/arch/dma.h>
+#include <hal/devices/dma.h>
 #include <kernel/klibc.h>
 
 static int unknown_syscall (int a0, int a1, int a2, int a3, int syscall_code)

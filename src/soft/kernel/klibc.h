@@ -39,19 +39,21 @@
 #include <common/syscalls.h>           // syscall's codes
 #include <common/usermem.h>            // user data region usage
 
+#include <hal/devices/chardev.h>
+
 #include <hal/cpu/atomic.h>     // Locks
 #include <hal/cpu/cache.h>      // L1 cache function prototypes
-#include <hal/arch/platform.h>
 #include <hal/cpu/thread.h>
 #include <hal/cpu/irq.h>
-#include <hal/cpu/cpu.h>        // CPU registers manipulation function prototypes
-#include <hal/arch/chardev.h>
-#include <kernel/kdev.h> 
+#include <hal/cpu/cpuregs.h>    // CPU registers manipulation function prototypes
+#include <hal/cpu/kpanic.h>
+
+#include <hal/arch/arch.h>
 
 #include <kernel/kmemory.h>            // all kernel allocators
 #include <kernel/kthread.h>            // thread functions
 #include <kernel/ksynchro.h>           // mutex, barrier and similar functions
-
+#include <kernel/kdev.h>               // dynamic devices allocation
 
 #define RAND_MAX 32767  /* maximum random value by default, must be < 0x7FFFFFFE */
 #define PRINTF_MAX 256  /* largest printed message */

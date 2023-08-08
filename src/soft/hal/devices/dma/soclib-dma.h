@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     drivers/dma/soclib-dma.h
+  \file     hal/devices/dma/soclib-dma.h
   \author   Franck Wajsburt, Nolan Bled
   \brief    Soclib dma driver
 
@@ -14,7 +14,7 @@
 #define _SOCLIB_DMA_H_
 
 #include <kernel/klibc.h>
-#include <hal/arch/dma.h>
+#include <hal/devices/dma.h>
 
 struct soclib_dma_regs_s {
     void * src;         // dma's destination buffer address

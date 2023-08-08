@@ -10,9 +10,9 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <drivers/timer/clint-timer.h>
-#include <drivers/chardev/ns16550.h>
-#include <drivers/icu/plic.h>
+#include <hal/devices/timer/clint-timer.h>
+#include <hal/devices/chardev/ns16550.h>
+#include <hal/devices/icu/plic.h>
 
 #include <kernel/kthread.h>
 #include <kernel/klibc.h>

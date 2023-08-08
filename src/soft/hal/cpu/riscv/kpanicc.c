@@ -1,3 +1,7 @@
+#include <hal/cpu/riscv/context.h>
+#include <kernel/klibc.h>
+#include <kernel/kthread.h>
+
 //--------------------------------------------------------------------------------------------------
 // end of kpanic() to dump all register value and threads list
 //--------------------------------------------------------------------------------------------------

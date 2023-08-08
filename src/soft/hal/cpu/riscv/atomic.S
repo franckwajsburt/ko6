@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     platforms/virt/atomic.S
+  \file     hal/cpu/riscv/atomic.S
   \author   Nolan Bled
   \brief    cpu specific assembly code which implement a part of hcpu.h API
             - There are several independant parts :

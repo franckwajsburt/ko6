@@ -21,7 +21,7 @@ BLDDIR	= ../../../build#			build directory
 SRCDIR 	= ..#						directory of all sources
 COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
 HALDIR	= $(SRCDIR)/hal#			hardware abstraction layer (hal) files directory
-SOCDIR	= $(SRCDIR)/platforms/$(SOC)#current soc hardware abstraction layer (hal) files directory
+SOCDIR	= $(HALDIR)/arch/$(SOC)#	current soc hardware abstraction layer (hal) files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJDIR	= $(BLDDIR)/obj#			object files directory
 PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
@@ -49,7 +49,7 @@ PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-include $(SRCDIR)/platforms/$(SOC)/$(SOC).mk
+include $(SRCDIR)/hal/arch/$(SOC)/$(SOC).mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
@@ -60,8 +60,6 @@ CFLAGS += -fomit-frame-pointer#		only use of stack pointer ($29)
 CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += -I. -I.. -I$(COMDIR)#		directories where include files like <file.h> are located
 CFLAGS += -I$(HALDIR) -I$(SOCDIR)#	directory where hal include files are located
-CFLAGS += -DNTTYS=$(NTTYS)#		#define NTTYS with the number of ttys in the prototype
-CFLAGS += -DNCPUS=$(NCPUS)#		#define NCPUS with the number of cpus in the prototype
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
 
 # Rules (here they are used such as simple shell scripts)
@@ -125,34 +123,3 @@ depend :
 	mv Makefile.bak Makefile
 
 # --------------------------------------------------------------------------------------------------
-# DEPENDENCIES
-
-../../../build/obj/debug_off.o: ../common/debug_on.h
-../../../build/obj/errno.o: ../common/errno.h
-../../../build/obj/cstd.o: ../common/cstd.h
-../../../build/obj/crt0.o: ./libc.h ../common/debug_off.h
-../../../build/obj/crt0.o: ../common/debug_on.h ../common/cstd.h
-../../../build/obj/crt0.o: ../common/list.h ../common/syscalls.h ./memory.h
-../../../build/obj/crt0.o: ../common/usermem.h ../common/errno.h
-../../../build/obj/crt0.o: ../common/esc_code.h ./pthread.h
-../../../build/obj/libc.o: ../common/debug_off.h ../common/debug_on.h
-../../../build/obj/libc.o: ../common/cstd.h ../common/list.h
-../../../build/obj/libc.o: ../common/syscalls.h ./memory.h
-../../../build/obj/libc.o: ../common/usermem.h ../common/errno.h
-../../../build/obj/libc.o: ../common/esc_code.h
-../../../build/obj/libc.o: ./libc.h ../common/debug_off.h
-../../../build/obj/libc.o: ../common/debug_on.h ../common/cstd.h
-../../../build/obj/libc.o: ../common/list.h ../common/syscalls.h ./memory.h
-../../../build/obj/libc.o: ../common/usermem.h ../common/errno.h
-../../../build/obj/libc.o: ../common/esc_code.h
-../../../build/obj/pthread.o: ./libc.h ../common/debug_off.h
-../../../build/obj/pthread.o: ../common/debug_on.h ../common/cstd.h
-../../../build/obj/pthread.o: ../common/list.h ../common/syscalls.h
-../../../build/obj/pthread.o: ./memory.h ../common/usermem.h
-../../../build/obj/pthread.o: ../common/errno.h ../common/esc_code.h
-../../../build/obj/pthread.o: ./pthread.h
-../../../build/obj/memory.o: ./libc.h ../common/debug_off.h
-../../../build/obj/memory.o: ../common/debug_on.h ../common/cstd.h
-../../../build/obj/memory.o: ../common/list.h ../common/syscalls.h ./memory.h
-../../../build/obj/memory.o: ../common/usermem.h ../common/errno.h
-../../../build/obj/memory.o: ../common/esc_code.h

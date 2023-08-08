@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     drivers/icu/plic.h
+  \file     hal/devices/icu/plic.h
   \author   Nolan Bled
   \brief    PLIC driver 
 
@@ -14,7 +14,7 @@
 #define _PLIC_H_
 
 #include <kernel/klibc.h>
-#include <hal/arch/icu.h>
+#include <hal/devices/icu.h>
 
 /**
  * \brief Return the M-context no based on the cpu no

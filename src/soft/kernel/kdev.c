@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     kernel/kdev.h
+  \file     kernel/kdev.c
   \author   Nolan Bled
   \brief    Generic device management functions
 

@@ -4,13 +4,13 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     drivers/dma/soclib-dma.h
+  \file     hal/devices/dma/soclib-dma.h
   \author   Franck Wajsburt, Nolan Bled
   \brief    Soclib dma driver
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <drivers/dma/soclib-dma.h>
+#include <hal/devices/dma/soclib-dma.h>
 
 /**
  * \brief   Initialize the Soclib DMA device

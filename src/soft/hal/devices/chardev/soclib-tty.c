@@ -4,13 +4,13 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     drivers/chardev/soclib-tty.c
+  \file     hal/devices/chardev/soclib-tty.c
   \author   Franck Wajsburt, Nolan Bled
   \brief    Soclib TTY driver
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <drivers/chardev/soclib-tty.h>
+#include <hal/devices/chardev/soclib-tty.h>
 
 /**
  * \brief   Init the soclib tty device

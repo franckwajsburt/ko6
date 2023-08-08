@@ -4,13 +4,13 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     drivers/timer/clint-timer.c
+  \file     hal/devices/timer/clint-timer.c
   \author   Nolan Bled
   \brief    CLINT timer driver
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <drivers/timer/clint-timer.h>
+#include <hal/devices/timer/clint-timer.h>
 
 /**
  * \brief   Set the number of ticks between two CLINT timer interrupts 

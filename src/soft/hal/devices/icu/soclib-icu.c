@@ -4,13 +4,13 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     drivers/icu/soclib-icu.h
+  \file     hal/devices/icu/soclib-icu.h
   \author   Franck Wajsburt, Nolan Bled
   \brief    Soclib ICU driver
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <drivers/icu/soclib-icu.h>
+#include <hal/devices/icu/soclib-icu.h>
 
 /**
  * \brief   Initialize the soclib icu device

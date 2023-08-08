@@ -1,35 +1,41 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date      2023-07-11
+# | |__ /'v'\  / /   	\date      2022-07-03
 # | / /(     )/ _ \   	\copyright 2021-2022 Sorbonne University
 # |_\_\ x___x \___/                https://opensource.org/licenses/MIT
 #
-# \file     platforms/almo1/Makefile
-# \author   Franck Wajsburt, Nolan Bled
-# \brief    Makefile to produce the kernel executable: kernel.x
+# \file     hal/Makefile
+# \author   Nolan Bled
+# \brief    Makefile to produce the hal
 #
 #--------------------------------------------------------------------------------------------------
 
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
+SOC    ?= almo1-mips#				defaut SOC name
+CPU    ?= mips
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-SRCDIR  = ../../..#					root source dir, allow us to make include via absolute path
-BLDDIR	= ../../../../../build#		build directory
-BINDIR 	= ../../../../../bin#		tools directory
-LIBDIR	= .#						library directory (where is ldscript)
+BLDDIR	= ../../../build#			build directory
+SRCDIR 	= ..#						directory of all sources
+HALDIR  = $(SRCDIR)/hal#			HAL directory (current)
+COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
+
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
-SOCDIR	= $(CURDIR)#				current soc hardware abstraction layer (hal) files directory
 OBJDIR	= $(BLDDIR)/obj#			object files directory
 PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
-BIN 	= $(BLDDIR)/kernel-$(SOC).x
-SX 		= $(SOC).x
+LIBDIR  = ../../lib#				external libraries directory
 
 # Sources
 # --------------------------------------------------------------------------------------------------
 
-SRC = arch.c dtb.S
-LDSCRIPT = kernel.ld
+SRC     = $(wildcard devices/chardev/*.c) \
+		  $(wildcard devices/dma/*.c) \
+		  $(wildcard devices/tty/*.c) \
+		  $(wildcard devices/icu/*.c) \
+		  $(wildcard devices/timer/*.c) \
+		  $(wildcard cpu/$(CPU)/*.S) \
+		  $(wildcard cpu/$(CPU)/*.c) \
 
 # Targets
 # --------------------------------------------------------------------------------------------------
@@ -39,24 +45,15 @@ SRCC    = $(filter %.c,$(SRC))
 OBJS    = $(subst .S,.o,$(foreach src,$(SRCS),$(notdir $(src))))
 OBJC    = $(subst .c,.o,$(foreach src,$(SRCC),$(notdir $(src))))
 OBJ     = $(addprefix $(OBJDIR)/,$(OBJS) $(OBJC))
-OBJ 	+= $(OBJDIR)/cstd.o $(OBJDIR)/errno.o
-OBJ 	+= $(OBJDIR)/soclib-icu.o $(OBJDIR)/soclib-dma.o
-OBJ 	+= $(OBJDIR)/soclib-timer.o $(OBJDIR)/soclib-tty.o
-OBJ 	+= $(OBJDIR)/atomic.o $(OBJDIR)/cache.o $(OBJDIR)/cpuregs.o
-OBJ 	+= $(OBJDIR)/entry.o $(OBJDIR)/irq.o $(OBJDIR)/kpanica.o
-OBJ 	+= $(OBJDIR)/kpanica.o $(OBJDIR)/kpanicc.o $(OBJDIR)/threada.o
-OBJ 	+= $(OBJDIR)/threadc.o
-OBJ 	+= $(OBJDIR)/kinit.o $(OBJDIR)/klibc.o $(OBJDIR)/kmemory.o
-OBJ 	+= $(OBJDIR)/ksynchro.o $(OBJDIR)/ksyscalls.o $(OBJDIR)/kthread.o
-OBJ 	+= $(OBJDIR)/kdev.o $(OBJDIR)/kirq.o
 OBJ 	+= $(OBJDIR)/libfdt.a
+
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-include $(SRCDIR)/hal/arch/almo1-mips/almo1-mips.mk
+include $(SRCDIR)/hal/arch/$(SOC)/$(SOC).mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
@@ -65,13 +62,14 @@ CFLAGS += -fno-common#				do not use common sections for non-static vars (only b
 CFLAGS += -fno-builtin#				do not use builtin functions of gcc (such as strlen)
 CFLAGS += -fomit-frame-pointer#		only use of stack pointer ($29)
 CFLAGS += -O3#						full optimisation mode of compiler
-CFLAGS += -I. -I$(SRCDIR)#			directories where include files like <file.h> are located
+CFLAGS += -I..#						directories where include files like <file.h> are located
+CFLAGS += -I$(LIBDIR)/libfdt#		include external libraries (specifically libfdt.h)
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
 
 # Rules (here they are used such as simple shell scripts)
 # --------------------------------------------------------------------------------------------------
 
-.PHONY: help compil exec debug mkdir pdf clean depend
+.PHONY: help compil mkdir pdf clean depend
 
 help:
 	@echo ""
@@ -82,22 +80,12 @@ help:
 	@echo "        pdf     : generate $(PDF) with all source files"
 	@echo ""
 
-compil: depend mkdir mkdtb $(OBJ) $(BIN) 
+compil: depend mkdir $(OBJ)
+	make -C arch/$(SOC) compil
 
 mkdir:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
 	test -d $(OBJDIR) || (echo "- mkdir   $(OBJDIR)" ; mkdir $(OBJDIR))
-
-mkdtb:
-	dtc -I dts -O dtb -o almo1.dtb almo1.dts
-
-exec: compil
-	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)
-
-debug: compil
-	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)\
-          -DEBUG $(FROM) -NCYCLES $(LAST) > $(DLOG)
-	tracelog $(SWDIR)/tags $(BLDDIR)/*.x.s $(DLOG)
 
 pdf:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
@@ -108,25 +96,46 @@ pdf:
 	sed 's/^/  - /;s/\].*/\]/' $(PDF).log
 
 clean:
-	@echo "- clean $(SOC) and related build files"
-	-rm *~ *.dtb $(BIN) $(OBJ) $(OBJDS) $(PDF) $(PDF).log 2> /dev/null || true
+	make -C arch/$(SOC) clean
+	@echo "- clean $(CURDIR) and related build files"
+	-rm *~ *.dtb $(OBJ) $(OBJDS) $(PDF) $(PDF).log 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 
 # Rules with automatic variables to produce the executable
 # --------------------------------------------------------------------------------------------------
 
-$(BIN) : $(LDSCRIPT) $(OBJ)
-	@echo "- link    --> "$(notdir $@)
-	$(LD) $(LDFLAGS) -o $@ -T $^
-	$(OD) -D $@ > $@.s
-
-$(OBJDIR)/%.o : %.c
+$(OBJDIR)/%.o : $(HALDIR)/devices/chardev/%.c
 	@echo "- compil  --> "$(notdir $@)
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s
 
-$(OBJDIR)/%.o : %.S
+$(OBJDIR)/%.o : $(HALDIR)/devices/dma/%.c
+	@echo "- compil  --> "$(notdir $@)
+	$(CC) -o $@ $(CFLAGS) $<
+	$(OD) -D $@ > $@.s
+
+$(OBJDIR)/%.o : $(HALDIR)/devices/icu/%.c
+	@echo "- compil  --> "$(notdir $@)
+	$(CC) -o $@ $(CFLAGS) $<
+	$(OD) -D $@ > $@.s
+
+$(OBJDIR)/%.o : $(HALDIR)/devices/timer/%.c
+	@echo "- compil  --> "$(notdir $@)
+	$(CC) -o $@ $(CFLAGS) $<
+	$(OD) -D $@ > $@.s
+
+$(OBJDIR)/%.o : $(HALDIR)/cpu/$(CPU)/%.c
+	@echo "- compil  --> "$(notdir $@)
+	$(CC) -o $@ $(CFLAGS) $<
+	$(OD) -D $@ > $@.s
+
+$(OBJDIR)%.o : $(HALDIR)/cpu/$(CPU)/%.S
+	@echo "- compil  --> "$(notdir $@)
+	$(CC) -o $@ $(CFLAGS) $<
+	$(OD) -D $@ > $@.s
+
+$(OBJDIR)/%.o : $(HALDIR)/arch/$(SOC)/%.c
 	@echo "- compil  --> "$(notdir $@)
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s
@@ -136,6 +145,7 @@ $(OBJDIR)/%.o : %.S
 depend :
 	@echo "- makedepend for $(CURDIR)"
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRCC) $(SRCS)
-	rm Makefile.bak
+	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/../common/:/:' Makefile > Makefile.bak
+	mv Makefile.bak Makefile
 
 # --------------------------------------------------------------------------------------------------

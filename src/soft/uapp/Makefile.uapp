@@ -15,8 +15,6 @@
 # --------------------------------------------------------------------------------------------------
 
 SOC    ?= almo1-mips#				defaut SOC name
-NTTYS  ?= 1#						default number of ttys
-NCPUS  ?= 1#						default number of CPUS
 V      ?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
 BLDDIR	= ../../../../build#		build directory
 COMDIR	= ../../common#				user & kernel common files directory
@@ -35,7 +33,7 @@ BIN     = $(BLDDIR)/$(CURDIR).x#	the binary file has the name of directory
 # --------------------------------------------------------------------------------------------------
 
 SRC	   ?= "source files"#							must be defined in all app Makefiles
-LDSCRIPT= $(SRCDIR)/platforms/$(SOC)/user.ld#		ldscript is hal dependent
+LDSCRIPT= $(SRCDIR)/hal/arch/$(SOC)/user.ld#		ldscript is hal dependent
 
 # Targets
 # --------------------------------------------------------------------------------------------------
@@ -52,7 +50,7 @@ OBJLIB	= $(addprefix $(OBJRDIR)/,$(LIB))
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-include $(SRCDIR)/platforms/$(SOC)/$(SOC).mk
+include $(SRCDIR)/hal/arch/$(SOC)/$(SOC).mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
@@ -64,8 +62,6 @@ CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += -I. -I../.. -I$(COMDIR)#	directories where include files like <file.h> are located
 CFLAGS += -I$(LIBDIR)#				directories where include files like <file.h> are located
 CFLAGS += -I$(HALDIR) -I$(SOCDIR)#	directories where include files like <file.h> are located
-CFLAGS += -DNTTYS=$(NTTYS)#			#define NTTYS with the number of ttys in the prototype
-CFLAGS += -DNCPUS=$(NCPUS)#			#define NCPUS with the number of cpus in the prototype
 CFLAGS += -DVERBOSE=$(V)#			verbose if 1, can be toggled with #include <debug_{on,off}.h> 
 
 LDFLAGS += -T $(LDSCRIPT) $(OBJLIB)

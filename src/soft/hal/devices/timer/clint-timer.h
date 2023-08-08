@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     drivers/timer/clint-timer.h
+  \file     hal/devices/timer/clint-timer.h
   \author   Nolan Bled
   \brief    CLINT timer driver
             The CLINT used by qemu is based on the one made by SiFive
@@ -15,7 +15,7 @@
 #ifndef _CLINT_TIMER_H_
 #define _CLINT_TIMER_H_
 
-#include <hal/arch/timer.h>
+#include <hal/devices/timer.h>
 
 #define CLINT_MTIMECMP_OFFSET 0x4000
 #define CLINT_MTIME_OFFSET    0xbff8

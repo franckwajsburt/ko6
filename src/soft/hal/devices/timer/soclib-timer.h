@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     drivers/timer/soclib-timer.h
+  \file     hal/devices/timer/soclib-timer.h
   \author   Franck Wajsburt, Nolan Bled
   \brief    Soclib timer driver
 
@@ -13,7 +13,7 @@
 #ifndef _SOCLIB_TIMER_H_
 #define _SOCLIB_TIMER_H_
 
-#include <hal/arch/timer.h>
+#include <hal/devices/timer.h>
 
 struct soclib_timer_regs_s {
     int value;          // timer's counter : +1 each cycle, can be written

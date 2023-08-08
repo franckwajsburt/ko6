@@ -4,13 +4,13 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     drivers/icu/plic.c
+  \file     hal/devices/icu/plic.c
   \author   Nolan Bled
   \brief    PLIC driver 
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <drivers/icu/plic.h>
+#include <hal/devices/icu/plic.h>
 
 /**
  * \brief   Initialize PLIC device
