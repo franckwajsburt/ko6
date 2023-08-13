@@ -4,9 +4,9 @@
 # | / /(     )/ _ \   	\copyright 2021-2022 Sorbonne University
 # |_\_\ x___x \___/                https://opensource.org/licenses/MIT
 #
-# \file     hal/arch/almo1-mips/Makefile
+# \file     hal/soc/almo1-mips/Makefile
 # \author   Franck Wajsburt, Nolan Bled
-# \brief    Makefile to build arch-specific files, and link every files in 
+# \brief    Makefile to build soc-specific files, and link every files in 
 #			the kernel
 #
 #--------------------------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ SX 		= $(SOC).x
 # Sources
 # --------------------------------------------------------------------------------------------------
 
-SRC = arch.c dtb.S
+SRC = soc.c dtb.S
 LDSCRIPT = kernel.ld
 
 # Targets
@@ -57,7 +57,7 @@ PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-include $(SRCDIR)/hal/arch/almo1-mips/almo1-mips.mk
+include $(SRCDIR)/hal/soc/almo1-mips/almo1-mips.mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors

@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/arch/almo1-mips/arch.c
+  \file     hal/soc/almo1-mips/soc.c
   \author   Franck Wajsburt, Nolan Bled
   \brief    Platform initialization functions
             Initialize every platform device based on the device tree
@@ -52,11 +52,11 @@ static unsigned get_irq(void *fdt, int offset)
 
 /**
  * \brief   Initialize ICUs described by the device tree
- *          See the arch_tty_init function for a detailed explanation
+ *          See the soc_tty_init function for a detailed explanation
  * \param   fdt fdt address
  * \return  nothing
  */
-static void arch_icu_init(void *fdt)
+static void soc_icu_init(void *fdt)
 {
     int icu_off = fdt_node_offset_by_compatible(fdt, -1, "soclib,icu");
     while (icu_off != -FDT_ERR_NOTFOUND) {
@@ -82,7 +82,7 @@ static void arch_icu_init(void *fdt)
  * \param   fdt fdt address
  * \return  -1 if the initialization failed, 0 if it succeeded
  */
-static int arch_tty_init(void *fdt)
+static int soc_tty_init(void *fdt)
 {
     // Fetch the ICU device
     struct icu_s *icu = icu_get(0);
@@ -117,12 +117,12 @@ static int arch_tty_init(void *fdt)
 
 /**
  * \brief   Initialize timers described by the device tree
- *          See the arch_tty_init function for a detailed explanation
+ *          See the soc_tty_init function for a detailed explanation
  * \param   fdt fdt address
  * \param   tick number of ticks between two timer interrupts
  * \return  -1 if the initialization failed, 0 if it succeeded
  */
-static int arch_timer_init(void *fdt, unsigned tick)
+static int soc_timer_init(void *fdt, unsigned tick)
 {
     // Fetch the ICU device
     struct icu_s *icu = icu_get(0);
@@ -151,11 +151,11 @@ static int arch_timer_init(void *fdt, unsigned tick)
 
 /**
  * \brief   Initialize dmas described by the device tree
- *          See the arch_tty_init function for a detailed explanation
+ *          See the soc_tty_init function for a detailed explanation
  * \param   fdt fdt address
  * \return  nothing
  */
-static void arch_dma_init(void *fdt)
+static void soc_dma_init(void *fdt)
 {
     // TODO: handle DMA interrupts
     int dma_off = fdt_node_offset_by_compatible(fdt, -1, "soclib,dma");
@@ -189,24 +189,24 @@ static void arch_dma_init(void *fdt)
  * \param   tick    number of ticks between two timer interrupts
  * \return  -1 if the initialization failed, 0 if it succeeded
  */
-int arch_init(void *fdt, int tick)
+int soc_init(void *fdt, int tick)
 {
     if (fdt_magic(fdt) != 0xd00dfeed)
         return -1;
 
     // We MUST initialize the ICU first since every other device
     // initialization will rely on it for its interrupts
-    arch_icu_init(fdt);
+    soc_icu_init(fdt);
 
     // Initialize TTY early so we can debug as soon as possible
-    if (arch_tty_init(fdt) < 0)
+    if (soc_tty_init(fdt) < 0)
         return -1;
 
-    arch_dma_init(fdt);
+    soc_dma_init(fdt);
 
     // Finish by the timer (we don't want to schedule anything until everything
     // is initialized)
-    if (arch_timer_init(fdt, tick) < 0)
+    if (soc_timer_init(fdt, tick) < 0)
         return -1;
 
     return 0;

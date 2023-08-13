@@ -4,7 +4,7 @@
 # | / /(     )/ _ \   	\copyright 2021-2022 Sorbonne University
 # |_\_\ x___x \___/                https://opensource.org/licenses/MIT
 #
-# \file     hal/arch/qemu-virt-riscv/Makefile
+# \file     hal/soc/qemu-virt-riscv/Makefile
 # \author   Franck Wajsburt, Nolan Bled
 # \brief    Makefile to produce the kernel executable: kernel.x
 #
@@ -27,7 +27,7 @@ PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 # Sources
 # --------------------------------------------------------------------------------------------------
 
-SRC = arch.c
+SRC = soc.c
 LDSCRIPT= kernel.ld#				ldscript is hal dependent
 
 # Targets
@@ -56,7 +56,7 @@ BIN     = $(BLDDIR)/kernel-$(SOC).x
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-include $(SRCDIR)/hal/arch/qemu-virt-riscv/qemu-virt-riscv.mk
+include $(SRCDIR)/hal/soc/qemu-virt-riscv/qemu-virt-riscv.mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
@@ -85,7 +85,8 @@ help:
 compil: depend mkdir $(BIN)
 
 exec: compil
-	xterm -l -lf xterm.log -e qemu-system-riscv32 -M virt \
+	xterm -bg black -fg white -n ko6 -geometry 80x50 -l -lf xterm.log \
+		  -e qemu-system-riscv32 -M virt \
 						-nographic \
 						-bios none \
 						-kernel $(BLDDIR)/kernel-$(SOC).x \
