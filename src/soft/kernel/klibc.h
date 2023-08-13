@@ -16,15 +16,15 @@
 #ifndef _KLIBC_H_
 #define _KLIBC_H_
 
-#define _KERNEL_        // to tell, it is kernel code, usefull for debug PRINT
+#define _KERNEL_                    // to tell, it is kernel code, usefull for debug PRINT
 
-#ifndef VERBOSE         // if verbose mode not already defined
-#define VERBOSE 0       // set the default value
+#ifndef VERBOSE                     // if verbose mode not already defined
+#define VERBOSE 0                   // set the default value
 #endif
 #if VERBOSE==1
-#  include <common/debug_on.h> // macro BIP, VAR, INFO and ASSERT will print something
+#  include <common/debug_on.h>      // macro BIP, VAR, INFO and ASSERT will print something
 #else
-#  include <common/debug_off.h>// macro BIP, VAR, INFO and ASSERT are ignored
+#  include <common/debug_off.h>     // macro BIP, VAR, INFO and ASSERT are ignored
 #endif
 
 #ifndef __DEPEND__      // this condition allows to not include stdarg.h when makedepend is used
@@ -32,28 +32,28 @@
 #include <stddef.h>     // gcc's builtin include with NULL, size_t, (https://bit.ly/3lBw3p6)
 #endif//__DEPEND__
 
-#include <common/cstd.h>               // generic C functions
-#include <common/list.h>               // generic list management
-#include <common/esc_code.h>           // ANSI escape code
-#include <common/errno.h>              // standard error code number
-#include <common/syscalls.h>           // syscall's codes
-#include <common/usermem.h>            // user data region usage
+#include <common/cstd.h>            // generic C functions
+#include <common/list.h>            // generic list management
+#include <common/esc_code.h>        // ANSI escape code
+#include <common/errno.h>           // standard error code number
+#include <common/syscalls.h>        // syscall's codes
+#include <common/usermem.h>         // user data region usage
 
 #include <hal/devices/chardev.h>
 
-#include <hal/cpu/atomic.h>     // Locks
-#include <hal/cpu/cache.h>      // L1 cache function prototypes
+#include <hal/cpu/atomic.h>         // Locks
+#include <hal/cpu/cache.h>          // L1 cache function prototypes
 #include <hal/cpu/thread.h>
 #include <hal/cpu/irq.h>
-#include <hal/cpu/cpuregs.h>    // CPU registers manipulation function prototypes
+#include <hal/cpu/cpuregs.h>        // CPU registers manipulation function prototypes
 #include <hal/cpu/kpanic.h>
 
-#include <hal/arch/arch.h>
+#include <hal/soc/soc.h>
 
-#include <kernel/kmemory.h>            // all kernel allocators
-#include <kernel/kthread.h>            // thread functions
-#include <kernel/ksynchro.h>           // mutex, barrier and similar functions
-#include <kernel/kdev.h>               // dynamic devices allocation
+#include <kernel/kmemory.h>         // all kernel allocators
+#include <kernel/kthread.h>         // thread functions
+#include <kernel/ksynchro.h>        // mutex, barrier and similar functions
+#include <kernel/kdev.h>            // dynamic devices allocation
 
 #define RAND_MAX 32767  /* maximum random value by default, must be < 0x7FFFFFFE */
 #define PRINTF_MAX 256  /* largest printed message */

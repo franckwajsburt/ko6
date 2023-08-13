@@ -6,4 +6,4 @@ tags
 *.bak
 trace0.s
 label0.s
-
+.DS_Store

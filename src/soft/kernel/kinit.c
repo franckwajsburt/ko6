@@ -11,7 +11,7 @@
             - Its role is:
               - to display the kO6 banner
               - to initialise the memory allocators
-              - to initialise the SoC (thanks to the soc-specific function arch_init())
+              - to initialise the SoC (thanks to the soc-specific function soc_init())
               - to initialise the thread scheduler
               - to create and launch the first user process
 
@@ -38,7 +38,7 @@ void kinit (void *fdt)
     for (int *a = &__bss_origin; a != &__bss_end; *a++ = 0);
 
     memory_init();                  // memory initialisation 
-    if (arch_init(fdt, 200000) < 0) // architecture initialisation takes the tick as argument
+    if (soc_init(fdt, 200000) < 0)  // soc initialisation takes the tick as argument
         goto sleep;                 // initialization failed, just sleep
 
     kprintf (Banner);

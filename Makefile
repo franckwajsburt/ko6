@@ -10,28 +10,45 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
-APP    ?= hello#					app name
-MAKOPT ?= -s#						comment the -s to get command details
+# ------- chose SOC & default APP
 SOC    ?= almo1-mips#				defaut SOC name
+SOC    ?= qemu-virt-riscv#			defaut SOC name
+APP    ?= hello#					app name
+
+# ------- Options
+MAKOPT ?= -s#						comment the -s to get command details
 NTTYS  ?= 2#						default number of ttys
 NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-BLDDIR  = build#           			build directory
-SWDIR   = src/soft#        			software directory
-SOCDIR	= $(SWDIR)/hal/arch/$(SOC)#	SOC specific sources directory
 FROM   ?= 000000#					first cycle to trace
 LAST   ?= 500000#					last cycle to execute
+
+# ------- Directories
+SWDIR   = src/soft#        			software directory
+SOCDIR	= $(SWDIR)/hal/soc/$(SOC)#	SOC specific sources directory
 DLOG    = ~/kO6-debug.log#			debug file
+
+# ------- find apps and CPU
 APPS	= $(shell ls -l src/soft/uapp | grep "^d" | awk '{print $$NF}')
+CPU		= CPU-unknown
+ifeq ($(SOC),almo1-mips)
+CPU		= mips
+endif
+ifeq ($(SOC),qemu-virt-riscv)
+CPU		= riscv
+endif
 
 # Rules (here they are used such as simple shell scripts)
 # --------------------------------------------------------------------------------------------------
 
-.PHONY: help compil clean exec debug
+.PHONY: help compil clean exec debug pdf doxygen
 
 help:
 	@echo ""
 	@echo "Usage: make <Target> [APP=app] [Parameter=n]"
+	@echo ""
+	@echo "    SOC = $(SOC)    (edit Makefile to change it)"
+	@echo "    CPU = $(CPU)"
 	@echo ""
 	@echo "    Target "
 	@echo "        app    : execute app which is one of the application name of uapp"
@@ -76,7 +93,7 @@ clean:
 	@-killall xterm soclib-fb 2> /dev/null || true
 	@-rm -f /tmp/fbf.* $(DLOG) xterm* label*.s trace*.s 2> /dev/null || true
 	@-rm -rf $(BLDDIR) doxygen 2> /dev/null || true
-	@find . -name *~ | xargs rm -f
+	@find . -name "*~" | xargs rm -f
 
 # Generate as many rules as app in uapp directory
 # if there an application named "test" then "make test" execute "make exec APP=test"

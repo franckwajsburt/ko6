@@ -53,7 +53,7 @@ PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-include $(SRCDIR)/hal/arch/$(SOC)/$(SOC).mk
+include $(SRCDIR)/hal/soc/$(SOC)/$(SOC).mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
@@ -81,7 +81,7 @@ help:
 	@echo ""
 
 compil: depend mkdir $(OBJ)
-	make -C arch/$(SOC) compil
+	make -C soc/$(SOC) compil
 
 mkdir:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
@@ -96,7 +96,7 @@ pdf:
 	sed 's/^/  - /;s/\].*/\]/' $(PDF).log
 
 clean:
-	make -C arch/$(SOC) clean
+	make -C soc/$(SOC) clean
 	@echo "- clean $(CURDIR) and related build files"
 	-rm *~ *.dtb $(OBJ) $(OBJDS) $(PDF) $(PDF).log 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
@@ -135,7 +135,7 @@ $(OBJDIR)%.o : $(HALDIR)/cpu/$(CPU)/%.S
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s
 
-$(OBJDIR)/%.o : $(HALDIR)/arch/$(SOC)/%.c
+$(OBJDIR)/%.o : $(HALDIR)/soc/$(SOC)/%.c
 	@echo "- compil  --> "$(notdir $@)
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s

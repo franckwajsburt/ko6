@@ -32,8 +32,8 @@ BIN     = $(BLDDIR)/$(CURDIR).x#	the binary file has the name of directory
 # Sources
 # --------------------------------------------------------------------------------------------------
 
-SRC	   ?= "source files"#							must be defined in all app Makefiles
-LDSCRIPT= $(SRCDIR)/hal/arch/$(SOC)/user.ld#		ldscript is hal dependent
+SRC	   ?= "source files"#						must be defined in all app Makefiles
+LDSCRIPT= $(SRCDIR)/hal/soc/$(SOC)/user.ld#		ldscript is hal dependent
 
 # Targets
 # --------------------------------------------------------------------------------------------------
@@ -50,7 +50,7 @@ OBJLIB	= $(addprefix $(OBJRDIR)/,$(LIB))
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-include $(SRCDIR)/hal/arch/$(SOC)/$(SOC).mk
+include $(SRCDIR)/hal/soc/$(SOC)/$(SOC).mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors

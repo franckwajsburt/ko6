@@ -37,7 +37,7 @@ PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 # Objects from Makefile.libfdt
 LIBFDT_OBJS:=$(addprefix $(OBJDIR)/,$(LIBFDT_OBJS))
 
-include $(SRCDIR)/hal/arch/$(SOC)/$(SOC).mk
+include $(SRCDIR)/hal/soc/$(SOC)/$(SOC).mk
 
 CFLAGS += -c#							stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#				gives almost all C warnings and considers them to be errors

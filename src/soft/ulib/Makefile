@@ -21,7 +21,8 @@ BLDDIR	= ../../../build#			build directory
 SRCDIR 	= ..#						directory of all sources
 COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
 HALDIR	= $(SRCDIR)/hal#			hardware abstraction layer (hal) files directory
-SOCDIR	= $(HALDIR)/arch/$(SOC)#	current soc hardware abstraction layer (hal) files directory
+SOCDIR	= $(HALDIR)/soc#			current soc hardware abstraction layer (hal) files directory
+CPUDIR	= $(HALDIR)/cpu#			current cpu hardware abstraction layer (hal) files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJDIR	= $(BLDDIR)/obj#			object files directory
 PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
@@ -49,7 +50,7 @@ PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 # Tools
 # --------------------------------------------------------------------------------------------------
 
-include $(SRCDIR)/hal/arch/$(SOC)/$(SOC).mk
+include $(SRCDIR)/hal/soc/$(SOC)/$(SOC).mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
@@ -59,7 +60,7 @@ CFLAGS += -fno-builtin#				do not use builtin functions of gcc (such as strlen)
 CFLAGS += -fomit-frame-pointer#		only use of stack pointer ($29)
 CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += -I. -I.. -I$(COMDIR)#		directories where include files like <file.h> are located
-CFLAGS += -I$(HALDIR) -I$(SOCDIR)#	directory where hal include files are located
+CFLAGS += -I$(CPUDIR) -I$(SOCDIR)#	directory where hal include files are located
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
 
 # Rules (here they are used such as simple shell scripts)
@@ -109,7 +110,7 @@ $(OBJDIR)/%.o : $(COMDIR)/%.c
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s
 
-$(OBJDIR)/%.o: $(SOCDIR)/cpu_user.S
+$(OBJDIR)/%.o: $(CPUDIR)/$(CPU)/cpu_user.S
 	@echo "- compil  --> "$(notdir $@)
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s
