@@ -10,17 +10,19 @@
 # --------------------------------------------
 export ko6=$HOME/ko6
 export SOCLIB=/users/outil/soc/soclib
+export ko6VER=`git show -s --format=%ci`
 
+# uncomment the good CPU and SOC
+# ------------------------------
 export CPU=riscv
-export SOC=qemu-virt-$CPU
-
 export CPU=mips
+export SOC=qemu-virt-$CPU
 export SOC=almo1-$CPU
 
 echo "  _     ___    __   "
-echo " | |__ /'v'\  / /   SOC = $SOC"
-echo " | / /(     )/ _ \  CPU = $CPU"
-echo " |_\_\ \___/ \___/  edit $ko6/SourceMe.sh to change default SOC"
+echo " | |__ /'v'\  / /   CPU: $CPU / SOC: $SOC"
+echo " | / /(     )/ _ \  edit $ko6/SourceMe.sh to change default CPU & SOC"
+echo " |_\_\ \___/ \___/  GIT: $ko6VER"
 echo ""
 
 # Do not change the line after, unless you know what you are doing
