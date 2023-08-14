@@ -9,7 +9,7 @@
   \brief    kernel initilisation function
             - This function is called at the end of boot code.
             - Its role is:
-              - to display the kO6 banner
+              - to display the ko6 banner
               - to initialise the memory allocators
               - to initialise the SoC (thanks to the soc-specific function soc_init())
               - to initialise the thread scheduler

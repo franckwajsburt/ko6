@@ -85,7 +85,7 @@ help:
 compil: depend mkdir $(BIN)
 
 exec: compil
-	xterm -bg black -fg white -n ko6 -geometry 80x50 -l -lf xterm.log \
+	xterm -bg black -fg green -n ko6 -geometry 80x50 -l -lf xterm.log \
 		  -e qemu-system-riscv32 -M virt \
 						-nographic \
 						-bios none \

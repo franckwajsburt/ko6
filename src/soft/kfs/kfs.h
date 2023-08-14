@@ -6,7 +6,7 @@
 
   \file     kfs.h
   \author   Franck Wajsburt
-  \brief    kfs-lite kO6 file system lite
+  \brief    kfs-lite ko6 file system lite
 
   FIXME  mknod, rename, rmdir, unlinkat, mkfifo, symlink
 
@@ -218,7 +218,7 @@ int kfs_add_vbr(char* pathname);
  *          On HOST     It means from the host disk in file whose name is given in parameter.
  *                      After load, the whole content of the disk is present in memory
  *                      in tables KfsMbr, KfsVbr, KfsSblock, KfsDentry, KfsInode, KfsFmap & KfsDisk.
- *          On kO6      It means from the virtual disk connected to the Block Device controller.
+ *          On ko6      It means from the virtual disk connected to the Block Device controller.
  *                      After load, only METADATA content of the disk is present in memory
  *                      in tables KfsSblock, KfsDentry, KfsInode, KfsFmap
  * \param   filename parameter only used by the HOST
@@ -231,7 +231,7 @@ int kfs_disk_load(char *pathname);
  *          On HOST     It means to the host disk in a file whose name is given in parameter.
  *                      After save, the whole content of the disk is written in file on host.
  *                      That is KfsMbr, KfsVbr, KfsSblock, KfsDentry, KfsInode, KfsFmap & KfsDisk.
- *          On kO6      It means to file connected to the Block Device controller.
+ *          On ko6      It means to file connected to the Block Device controller.
  *                      After save only METADATA content of the disk is written to the virtual disk.
  *                      That is KfsSblock, KfsDentry, KfsInode, KfsFmap.
  * \param   filename parameter only used by the HOST

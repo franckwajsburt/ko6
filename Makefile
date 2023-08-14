@@ -16,7 +16,7 @@ SOC    ?= qemu-virt-riscv#			defaut SOC name
 APP    ?= hello#					app name
 
 # ------- Options
-MAKOPT ?= -s#						comment the -s to get command details
+MAKOPT ?= -s --no-print-directory#	comment this line to get command details
 NTTYS  ?= 2#						default number of ttys
 NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
@@ -26,7 +26,7 @@ LAST   ?= 500000#					last cycle to execute
 # ------- Directories
 SWDIR   = src/soft#        			software directory
 SOCDIR	= $(SWDIR)/hal/soc/$(SOC)#	SOC specific sources directory
-DLOG    = ~/kO6-debug.log#			debug file
+DLOG    = ~/ko6-debug.log#			debug file
 
 # ------- find apps and CPU
 APPS	= $(shell ls -l src/soft/uapp | grep "^d" | awk '{print $$NF}')

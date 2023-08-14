@@ -7,10 +7,10 @@
   \file     hal/almo1/kfs.c
   \author   Franck Wajsburt
   \author   Angie Bikou
-  \brief    kfs-lite kO6 file system lite
+  \brief    kfs-lite ko6 file system lite
 
   FIXME     use type to forbid read/write/unlink
-  TODO      clarify kfs usage in kfs_split/kfs_build and kO6
+  TODO      clarify kfs usage in kfs_split/kfs_build and ko6
 
 \*------------------------------------------------------------------------------------------------*/
 
@@ -439,9 +439,9 @@ static u16_t * kfs_ppage (u16_t inode, u16_t pg_offset)
 
 /**
  * \brief   Reads from the disk to the memory buffer.
- *          There are two cases : 1) if kfs runs on Linux 2) if kfs runs on kO6
+ *          There are two cases : 1) if kfs runs on Linux 2) if kfs runs on ko6
  *          1) Linux: the kfs disk has been loaded in an array, so that's where we have to read it
- *          2) kO6:   the kfs disk is behind the disk device, so we need to ask the disk driver
+ *          2) ko6:   the kfs disk is behind the disk device, so we need to ask the disk driver
  * \param   buf is a buffer address in memory
  * \param   page is a page number on disk, if page == 0 then the page is considered as full of 0
  * \return  0 if buf is filled with 0, 1 if the page read is not empty or -1 in case of failure

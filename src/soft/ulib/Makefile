@@ -34,7 +34,7 @@ SRC     = $(COMDIR)/syscalls.h $(COMDIR)/list.h $(COMDIR)/usermem.h
 SRC    += $(COMDIR)/debug_on.h $(COMDIR)/debug_off.h
 SRC    += $(COMDIR)/errno.h $(COMDIR)/errno.c
 SRC    += $(COMDIR)/cstd.h $(COMDIR)/cstd.c
-SRC    += $(SOCDIR)/cpu_user.S
+SRC    += $(CPUDIR)/$(CPU)/cpu_user.S
 SRC    += crt0.c libc.h libc.c pthread.h pthread.c memory.h memory.c
 
 # Targets
