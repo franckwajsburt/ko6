@@ -286,15 +286,11 @@ int thread_create (thread_t * thread_p, int fun, int arg, int start)
     thread->start    = start;                                   // start() will call fun(arg)
     thread->fun      = fun;                                     // function of the thread
     thread->arg      = arg;                                     // argument of the thread
-    BIP('0');
     thread->ptls     = (_tls_t *)(thread->ustack_b - sizeof(_tls_t)); // pointer to the current tls
-    BIP('1');
     thread_context_init(thread->context,                        // table to store context
                         thread_bootstrap,                       // thread_bootstrap() to begin
                         thread->ptls);                          // stack pointer addr (below tls)
-    BIP('2');
     thread->krandseed  = 1;                                     // default kernel random seed
-    BIP('3');
 
     *(int*)thread->kstack_b = MAGIC_STACK;                      // should not be erased
     thread->kstack[0] = MAGIC_STACK;                            // (is kstack_e) should not erased

@@ -78,10 +78,10 @@
 #define KPANIC_T4        28
 #define KPANIC_T5        29
 #define KPANIC_T6        30
-#define KPANIC_MCYCLE    31
+#define KPANIC_MEPC      31
 #define KPANIC_MTVAL     32
 #define KPANIC_MSTATUS   33
-#define KPANIC_MEPC      34
+#define KPANIC_MCYCLE    34
 #define KPANIC_REGS_NR   35
 
 #endif//_HAL_CPU_CONTEXT_H_

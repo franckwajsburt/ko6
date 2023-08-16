@@ -25,6 +25,7 @@ LAST   ?= 500000#					last cycle to execute
 
 # ------- Directories
 SWDIR   = src/soft#        			software directory
+BLDDIR	= $(SWDIR)/build#			build directory where all executables are created
 SOCDIR	= $(SWDIR)/hal/soc/$(SOC)#	SOC specific sources directory
 DLOG    = ~/ko6-debug.log#			debug file
 
