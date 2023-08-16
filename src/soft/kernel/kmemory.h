@@ -21,9 +21,9 @@
 void memory_init (void);
 
 /**
- * \brief   allocate an object in the kernel address space 
+ * \brief   allocate an object in the kernel address space
  * \param   size in bytes (must be at most a PAGE SIZE)
- * \return  a pointer to an object with at least "size" byte size 
+ * \return  a pointer to an object with at least "size" byte size
  *          It is rounded up to a whole number of cache lines.
  */
 void * kmalloc (size_t size);
@@ -50,9 +50,9 @@ void kmalloc_print (void);
 void kmalloc_test (size_t turn, size_t size);
 
 /**
- * \brief   allocate a new user stack 
+ * \brief   allocate a new user stack
  * \return  a pointer to an empty stack (of STACK_SIZE bytes)
- *          The pointer is just above the new stack  
+ *          The pointer is just above the new stack
  */
 int * malloc_ustack (void);
 
@@ -71,7 +71,7 @@ void test_ustack (size_t turn);
 /**
  * \brief   change the boundary of the heap
  * \param   increment integer added to the current heap boundary
- * \return  SUCCESS or FAILURE 
+ * \return  SUCCESS or FAILURE
  */
 void * sbrk (int increment);
 

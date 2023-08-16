@@ -33,12 +33,10 @@ MEMORY {
 
 SECTIONS {
     .text   : {
-        *(.start);          /* with _start() which calls main() expected at beginning of .text */
         *(.text)            /* all others codes */
     } > text_region
     .data : {
-        *(.usermem)          
-        *(.main_thread)     /* the main thread structure expected at beginning of .data */
+        *(.usermem)         /* few addresses in user memory for the user process
         *(.*data*)          /* initialized global variables */
         . = ALIGN(4);       /* move the filling pointer to a word aligned address */
     } > data_region

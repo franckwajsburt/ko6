@@ -37,13 +37,14 @@ struct thread_s {
     list_t wait;                  ///< list element to chain threads waiting for the same resource
     spinlock_t lock;              ///< lock to protected structure during modification
     int state;                    ///< thread state from the scheduler point of view
-    int *errno_a;                 ///< errno address for this thread
+    _tls_t *ptls;                 ///< ptr to current thread local storage (see common/usermem.h)
     void *retval;                 ///< return value
     thread_t join;                ///< expected thread in case of thread_join()
     int start;                    ///< pointer to the function which calls fun(arg)
     int fun;                      ///< pointer to the thread function (cast to int)
     int arg;                      ///< thread argument (cast to int)
     int tid;                      ///< thread identifer MUST BE PLACED JUST BEFORE CONTEXT (trace)
+    unsigned long long krandseed; ///< each thread has its own kernel random seed, it is thread safe
     int context[TH_CONTEXT_SIZE]; ///< table to store registers when thread lose the cpu
     int kstack[1];                ///< lowest address of kernel stack of thread (with MAGIC_STACK)
 };
@@ -62,9 +63,20 @@ thread_t thread_item (list_t * item)
     return list_item (item, struct thread_s, wait);
 }
 
-int * __errno_location (void)
+
+//--------------------------------------------------------------------------------------------------
+// Thread local storage variable access
+//--------------------------------------------------------------------------------------------------
+
+
+unsigned long long * thread_krandseed (thread_t thread)
 {
-    return ThreadCurrent->errno_a;
+    return &(thread->krandseed);
+}
+
+int * thread_errno (thread_t thread)
+{
+    return &(thread->ptls->tls_errno);
 }
 
 
@@ -141,6 +153,7 @@ static void sched_switch (void)
         if (thread_context_save (ThreadCurrent->context)) { // Save current context, and return 1
             ThreadCurrentIdx = th_next;                     // update ThreadCurrentIdx
             ThreadCurrent = ThreadTab[th_next];             // update ThreadCurrent
+            _usermem.ptls = ThreadCurrent->ptls;
             thread_context_load (ThreadCurrent->context);   // load contxt, exit thread_context_save
         }                                                   // but with 0 as return value
     }
@@ -169,20 +182,21 @@ void sched_dump (void)
     };
 
     kprintf (Y"-------------------------- DUMP ALL THREADS ---------------------------\n");
-    kprintf (W"\007thread current ("P") : "D"\n", ThreadCurrent, ThreadCurrentIdx);
+    kprintf (W"thread current ("P") : "D"\n", ThreadCurrent, ThreadCurrentIdx);
     for (int th = 0; th < THREAD_MAX; th++) {
         thread_t thread = ThreadTab[th];
         if (thread) {
            kprintf (Y"----------------------------------------------------------------------- ");
            kprintf (D"\n", thread->tid);
            kprintf ("["D"] thread: "P,  clock (), thread);
-           kprintf ("   errmsg: "S"\n", errno_mess[*thread->errno_a+1]);
+           kprintf ("   errmsg: "S"\n", errno_mess[/*errno+*/1]);
            kprintf (" - state:     "S"\t", state_name[thread->state]);
            kprintf ("   wait.next: "P"\t", thread->wait.next);
            kprintf ("   wait.prev: "P"\n", thread->wait.prev);
            kprintf (" - retval:    "P"\t", thread->retval);
            kprintf ("   join:      "P"\t", thread->join);
-           kprintf ("   errno:     "P"\n", *thread->errno_a);
+           //kprintf ("   errno:     "P"\n", errno);
+           kprintf ("   errno:     "P"\n", thread->ptls->tls_errno);
            kprintf (" - start:     "P"\t", thread->start);
            kprintf ("   function:  "P"\t", thread->fun);
            kprintf ("   arg:       "P"\n", thread->arg);
@@ -257,7 +271,7 @@ static void thread_bootstrap (void)
     thread->state = TH_STATE_RUNNING;                           // the thread is now RUNNING
     thread_launch (thread->fun, thread->arg, thread->start);    // calls : start(fun,arg)
 }
-
+#include <common/debug_on.h>
 int thread_create (thread_t * thread_p, int fun, int arg, int start)
 {
     thread_t thread = kmalloc (PAGE_SIZE);                      // thread is thus always aligned
@@ -272,26 +286,28 @@ int thread_create (thread_t * thread_p, int fun, int arg, int start)
     thread->start    = start;                                   // start() will call fun(arg)
     thread->fun      = fun;                                     // function of the thread
     thread->arg      = arg;                                     // argument of the thread
-    thread->errno_a  = (int*)(thread->ustack_b - 4);            // errno is the first int of ustack
+    BIP('0');
+    thread->ptls     = (_tls_t *)(thread->ustack_b - sizeof(_tls_t)); // pointer to the current tls
+    BIP('1');
     thread_context_init(thread->context,                        // table to store context
                         thread_bootstrap,                       // thread_bootstrap() to begin
-                        thread->errno_a);                       // stack pointer addr (here errno)
-/*
-    thread->context[TH_CONTEXT_SR] = 0x413;                     // UM=1 EXL=1 IE=1
-    thread->context[TH_CONTEXT_RA] = (int)thread_bootstrap;     // goto thread_bootstrap
-    thread->context[TH_CONTEXT_SP] = (int)thread->errno_a;      // stack beginning at errno address
-*/
+                        thread->ptls);                          // stack pointer addr (below tls)
+    BIP('2');
+    thread->krandseed  = 1;                                     // default kernel random seed
+    BIP('3');
+
     *(int*)thread->kstack_b = MAGIC_STACK;                      // should not be erased
-    thread->kstack[0] = MAGIC_STACK;                            // should not be erased
+    thread->kstack[0] = MAGIC_STACK;                            // (is kstack_e) should not erased
 
     sched_insert (thread);                                      // insert new thread in scheduler
     *thread_p = thread;
-    errno = SUCCESS;
+    thread->ptls->tls_errno = SUCCESS;
     return SUCCESS;
 }
 
 void thread_main_load (thread_t thread)
 {
+    _usermem.ptls = thread->ptls;
     thread_context_load (thread->context);
 }
 

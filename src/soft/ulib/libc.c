@@ -12,15 +12,6 @@
 
 #include <libc.h>       // external function declarations
 
-/**
- * the return address is in user space but we need to implement a better thread local storage
- * so for now, that is the kernel that know where errno is placed
- */
-int * __errno_location (void)
-{
-    return (int *)syscall_fct( 0, 0, 0, 0, SYSCALL_ERRNO);
-}
-
 void perror (char *s)
 {
     if (s && *s)

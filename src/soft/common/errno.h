@@ -20,8 +20,8 @@
  *          __errno_location() gives an address different for each thread
  *          *__errno_location() dereferences the pointeur,  i.e. follows the pointer
  *          and it designates what is pointed to.
- */
 #define errno       *__errno_location()
+ */
 
 /**
  * errno_mess contains the error messages for each error code

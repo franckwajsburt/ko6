@@ -17,28 +17,24 @@ extern int __bss_origin;        // first int of uninitialized global data
 extern int __bss_end;           // first int of above the uninitialized global data
 extern int __data_end;          // last address of the free user data region
 extern int main (void);         // tell the compiler that main() exists
+static void _start (void);      // very start function of the process
 
 __attribute__((section (".usermem")))
-usermem_t _user_mem = {
+_usermem_t _usermem = {
     .ustack_end   = &__data_end,// at the begining there is no stack.
     .ustack_beg   = &__data_end,// last address of the free user data region
-    .uheap_beg    = &__bss_end ,// first address of the free user data region 
-    .uheap_end    = &__bss_end  // at the begining there is no heap.
-};   
+    .uheap_beg    = &__bss_end ,// first address of the free user data region
+    .uheap_end    = &__bss_end ,// at the begining there is no heap.
+    .main_thread  = NULL       ,// initialized by thread_create() in kernel/kinit.c
+    .main_start   = _start      // _start function of the process
+};
 
-// in kinit.c, the main thread is created, then loaded :
-// - thread_create_kernel (&_main_thread, 0, 0, (int)&_start);
-// - thread_load (((kthread_t*)_main_thread)->context);
-
-__attribute__((section (".main_thread")))
-pthread_t _main_thread;
-
-__attribute__((section (".start")))
 void _start (void)
 {
     int res;
+//    urandseed = 1;
     for (int *a = &__bss_origin; a != &__bss_end; *a++ = 0);
-    malloc_init (_user_mem.uheap_beg);
+    malloc_init (_usermem.uheap_beg);
     res = main ();
     exit (res);
 }

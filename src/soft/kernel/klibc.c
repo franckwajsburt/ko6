@@ -12,17 +12,17 @@
 
 #include <kernel/klibc.h>      // external function declarations
 
-static unsigned long long RandNext = 1;
+#define randseed   *(thread_krandseed(ThreadCurrent))
 
 int rand (void)                                 // www.wikiwand.com/en/Linear_congruential_generator
 {
-    RandNext = RandNext * 1664525 + 1013904223; // Numerical Recipes
-    return (RandNext>>1); 
+    randseed = randseed * 1664525 + 1013904223; // Numerical Recipes
+    return (randseed>>1);
 }
 
 void srand (unsigned seed)
 {
-    RandNext = seed;
+    randseed = seed;
 }
 
 void delay (unsigned nbcycles)

@@ -29,9 +29,7 @@ __data_origin    = 0x7F500000 ;     /* first byte address of user data region */
 __data_length    = 0x00B00000 ;
 __data_end       = __data_origin  + __data_length  ; /* first addr after user data region */
 
-_start           = __text_origin;   /* address where _start() function is expected */
-_user_mem        = __data_origin;   /* address where free data segment is described */
-_main_thread     = _user_mem + 16;  /* must be _user_mem + sizeof (_user_mem) */
+_usermem         = __data_origin;   /* address where free data segment is described */
 
 MEMORY {
     boot_region  : ORIGIN = __boot_origin,  LENGTH = __boot_length

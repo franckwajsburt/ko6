@@ -27,6 +27,7 @@
  */
 static void thread_start (void *(*fun) (void *), void *arg)
 {
+//    urandseed = 1;             // initialise the user random seed (present in the tls) 
     void * retval = fun (arg); // call the function with its arg (maybe, it will call thread_exit())
     pthread_exit(retval);      // otherwise, if fun ends, ask the kernel to exit the thread
 }

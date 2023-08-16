@@ -6,7 +6,7 @@
 
   \file     kernel/kmemory.c
   \author   Franck Wajsburt
-  \brief    kernel allocators and user memory management  
+  \brief    kernel allocators and user memory management
 
   This file contains 2 allocators :
   * Slab allocator dedicated to the use of the kernel for all its objects
@@ -59,7 +59,7 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <kernel/klibc.h>                      
+#include <kernel/klibc.h>
 
 extern char __bss_end;                  // first char above bss section see kernel.ld (page aligned)
 extern char __kdata_end;                // first char above the kernel data region (page aligned)
@@ -222,9 +222,9 @@ void kmalloc_test (size_t turn, size_t size)
 void * sbrk (int increment)
 {
     errno = SUCCESS;
-    int * a = _user_mem.uheap_end + increment/sizeof(int);  // sizeof() because uheap_end is int*
+    int * a = _usermem.uheap_end + increment/sizeof(int);   // sizeof() because uheap_end is int*
     a = (int *) FLOOR (a, CacheLineSize);                   // addr 'a' could be the new uheap_end
-    if ((a<_user_mem.uheap_beg)||(a>_user_mem.ustack_end)){ // if it is outside the heap zone
+    if ((a<_usermem.uheap_beg)||(a>_usermem.ustack_end)){  // if it is outside the heap zone
         errno = ENOMEM;
         return (void *)-1;                                  // -1 on failure
     }
@@ -238,11 +238,11 @@ int * malloc_ustack (void)
     int * top;                                              // top will be the new stack pointer
     int * end = (int *)list_getlast (&FreeUserStack);       // get last free stack (biggest addr)
     if (end == NULL) {                                      // if there is no more free stack
-        top = _user_mem.ustack_end;                         // try to get one
+        top = _usermem.ustack_end;                          // try to get one
         end = top - USTACK_SIZE/sizeof(int);                // and compute the end of the stack
-        PANIC_IF (end < _user_mem.uheap_end,                // if the stack end is in the heap
+        PANIC_IF (end < _usermem.uheap_end,                 // if the stack end is in the heap
             "no more space for user stack!\n");             // it is impossible to solve that
-        _user_mem.ustack_end = end;                         // expand the stacks' region
+        _usermem.ustack_end = end;                          // expand the stacks' region
     } else {
         top = end + USTACK_SIZE/sizeof(int);                // compute stack's top from stack's end
     }
@@ -256,7 +256,7 @@ int * malloc_ustack (void)
  * \param   curr    is the current item in the list
  * \param   new     is the new item to insert
  * \return  a positive if current > new
- */ 
+ */
 static int cmp_addr (list_t * curr, list_t * new) {
     return (int)(curr - new);
 }
@@ -267,14 +267,14 @@ void free_ustack (int * top)
     PANIC_IF (*top != MAGIC_STACK, "Corrupted top Stack");  // if no magic number then panic
     PANIC_IF (*end != MAGIC_STACK, "Corrupted end Stack");  // if no magic number then panic
 
-    if (end ==_user_mem.ustack_end) {                       // if it is the lowest stack
-        _user_mem.ustack_end += USTACK_SIZE/sizeof(int);    // shrink the stacks' region
+    if (end ==_usermem.ustack_end) {                        // if it is the lowest stack
+        _usermem.ustack_end += USTACK_SIZE/sizeof(int);     // shrink the stacks' region
         list_foreach (&FreeUserStack, stack) {              // foreach free stack
-            if ((int *)stack != _user_mem.ustack_end)       // if it isn't the end of stack region 
+            if ((int *)stack != _usermem.ustack_end)        // if it isn't the end of stack region
                 break;                                      // then stop trying to shrink
             end = (int *)list_getfirst (&FreeUserStack);    // extract the stack
             end += USTACK_SIZE/sizeof(int);                 // new end of stacks'region
-            _user_mem.ustack_end = end;                     // save this new end
+            _usermem.ustack_end = end;                      // save this new end
         }
     } else                                                  // else the freed stack isn't at the end
         list_addsort (&FreeUserStack,(list_t*)end,cmp_addr);// add it in free list in order
@@ -282,13 +282,13 @@ void free_ustack (int * top)
 
 void print_ustack (void)
 {
-    kprintf ("---------------\nNumber of stacks : %d\n", 
-            ((char *)(_user_mem.ustack_beg) - 
-             (char *)(_user_mem.ustack_end) )/USTACK_SIZE);
-    kprintf ("_user_mem.ustack_beg : %p\n", _user_mem.ustack_beg);
-    kprintf ("_user_mem.ustack_end : %p\n", _user_mem.ustack_end);
-    kprintf ("_user_mem.uheap_beg  : %p\n", _user_mem.uheap_beg );
-    kprintf ("_user_mem.uheap_end  : %p\n", _user_mem.uheap_end );
+    kprintf ("---------------\nNumber of stacks : %d\n",
+            ((char *)(_usermem.ustack_beg) -
+             (char *)(_usermem.ustack_end) )/USTACK_SIZE);
+    kprintf ("_usermem.ustack_beg : %p\n", _usermem.ustack_beg);
+    kprintf ("_usermem.ustack_end : %p\n", _usermem.ustack_end);
+    kprintf ("_usermem.uheap_beg  : %p\n", _usermem.uheap_beg );
+    kprintf ("_usermem.uheap_end  : %p\n", _usermem.uheap_end );
     kprintf ("----\nFree stacks : \n");
     list_foreach (&FreeUserStack, item) {
         kprintf ("Address %p\n", item);
@@ -301,12 +301,12 @@ void test_ustack (size_t turn)
     int * stack [NBSTACK] = {NULL};
     while (turn--) {
         int place = (unsigned)rand() % NBSTACK;
-        if (stack[place]) 
-            free_ustack (stack[place]);    
+        if (stack[place])
+            free_ustack (stack[place]);
         stack[place] = malloc_ustack();
     }
-    for (int place = 0; place < NBSTACK; place++)  
-        if (stack[place]) 
-            free_ustack (stack[place]);    
+    for (int place = 0; place < NBSTACK; place++)
+        if (stack[place])
+            free_ustack (stack[place]);
     print_ustack();
 }

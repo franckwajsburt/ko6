@@ -36,6 +36,24 @@
 
 
 //--------------------------------------------------------------------------------------------------
+// Thread specific variables acessor
+//--------------------------------------------------------------------------------------------------
+
+
+/**
+ * \brief  set the seed for the current running thread
+ * \param  seed the new seed
+ * \return the new seed
+ */
+extern long long thread_randseed_set (long long seed);
+
+/**
+ * \brief  get the seed for the current running thread
+ * \return the current seed
+ */
+extern long long thread_randseed_get (void);
+
+//--------------------------------------------------------------------------------------------------
 // Thread & scheduler API
 //--------------------------------------------------------------------------------------------------
 
@@ -131,10 +149,19 @@ extern void thread_wait (void);
 extern void thread_notify (thread_t thread);
 
 /**
- * \brief   return address of errno for the current thread
+ * \brief   return address of errno for the thread given
  *          this function is defined here, because it needs to access at the hidden thread struct
+ * \param   thread where errno is searched
  * \return  an address in user space where the last syscall error is put
  */
-extern int * __errno_location (void);
+extern int * thread_errno (thread_t thread);
+
+/**
+ * \brief   return address of krandseed for the thread given
+ *          this function is defined here, because it needs to access at the hidden thread struct
+ * \param   thread where krandseed is searched
+ * \return  an address in user space where the last syscall error is put
+ */
+extern unsigned long long * thread_krandseed (thread_t thread);
 
 #endif//_KTHREAD_H_

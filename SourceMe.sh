@@ -8,16 +8,16 @@
 
 # Main directory and SOC, you can change them
 # --------------------------------------------
-export ko6=$HOME/ko6
+export ko6=$HOME/Documents/ko6
 export SOCLIB=/users/outil/soc/soclib
 export ko6VER=`git show -s --format=%ci`
 
 # uncomment the good CPU and SOC
 # ------------------------------
-export CPU=riscv
 export CPU=mips
-export SOC=qemu-virt-$CPU
+export CPU=riscv
 export SOC=almo1-$CPU
+export SOC=qemu-virt-$CPU
 
 echo "  _     ___    __   "
 echo " | |__ /'v'\  / /   CPU: $CPU / SOC: $SOC"

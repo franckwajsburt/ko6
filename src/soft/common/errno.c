@@ -38,4 +38,4 @@ char * errno_mess[] = {
    [EPERM   +1] = "Operation not permitted",
    [ERANGE  +1] = "Math result not representable",
    [ESRCH   +1] = "Thread or Processus non-existent"
-};    
+};
