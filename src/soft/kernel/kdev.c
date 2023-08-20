@@ -12,7 +12,7 @@
 
 #include <kernel/kdev.h>
 
-list_t DevList = {      // Do the same thing the function list_init does
+static list_t DevList = {      // Do the same thing the function list_init does
     .next = &DevList,
     .prev = &DevList
 };

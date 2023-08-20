@@ -73,15 +73,15 @@ enum dev_tag_e {
     TIMER_DEV
 };
 
-/** \brief Device Driver informations */
+/** \brief Device Driver informations 
+ *  FIXME struct dev_s should be hidden (defined in kdev.c) but we miss data field accessor 
+ */
 struct dev_s {
     enum dev_tag_e tag; ///< Identify the type of the device (tty, icu, ...)
     unsigned no;        ///< Minor device number (tty0, tty1, ...)
     list_t list;        ///< List entry in the global device list
     char data[];        ///< Device specific data, to be filled in with (struct tty_s, icu_s, ...)
 };
-
-extern list_t DevList;
 
 /**
  * \brief   Find the last element added with corresponding tag

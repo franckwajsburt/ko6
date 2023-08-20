@@ -12,7 +12,7 @@
 
 #include <kernel/klibc.h>      // external function declarations
 
-#define randseed   *(thread_krandseed(ThreadCurrent))
+#define randseed   *(thread_krandseed(ThreadCurrent))   /* Thread Local Storage for the kernel */
 
 int rand (void)                                 // www.wikiwand.com/en/Linear_congruential_generator
 {

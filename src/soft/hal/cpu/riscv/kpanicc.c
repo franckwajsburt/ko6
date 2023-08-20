@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     hal/cpu/mips/kpanicc.S
+  \file     hal/cpu/mips/kpanicc.c
   \author   Nolan Bled
   \brief    cpu specific assembly code which implement kpanic()
 
@@ -12,21 +12,15 @@
 
 #include <hal/cpu/riscv/context.h>
 #include <kernel/klibc.h>
-#include <kernel/kthread.h>
+// #include <kernel/kthread.h>
 
 //--------------------------------------------------------------------------------------------------
 // end of kpanic() to dump all register value and threads list
 //--------------------------------------------------------------------------------------------------
 
-
-/** 
- * \brief   this table cannot be static because it is used by hcpua.S file
- */
-char * KDumpMessage;
-
 /** 
  * \brief   Table filled by kpanic() and read by kdump
- *          this table cannot be static because it is used by hcpua.S file
+ *          this table cannot be static because it is used by kpanica.S file
  */
 unsigned KPanicRegsVal[KPANIC_REGS_NR];
 
@@ -68,12 +62,12 @@ static char *KPanicCauseName[16] = {
 void kdump (unsigned cause, unsigned reg_tab[])
 {
     int nl = 0;
-    char * message = (KDumpMessage) ? KDumpMessage : KPanicCauseName[cause];
 
     kprintf ("\n[%d] <%p> KERNEL PANIC: %s\n\n",
             0,                                          // FIXME: TSC Time Stamp Counter
             KPanicRegsVal[KPANIC_MEPC],                 // faulty instruction address
-            message);                                   // Comprehensive cause name
+            KPanicCauseName[cause]);                    // Comprehensive cause name
+
     for (int i = 0; i < KPANIC_REGS_NR; i++) {
         kprintf ("%s: %p  ", KPanicRegsName[i], KPanicRegsVal[i]);
         if (++nl == 4) {

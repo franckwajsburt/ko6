@@ -69,15 +69,15 @@ static list_t FreeUserStack;            // free stack
 static size_t CacheLineSize;            // max between 16 and the true cache line size
 static size_t MaxLinePage;              // Max number of lines in a page = PAGE_SIZE/CacheLineSize
 static list_t Slab[256];                // free lists, Slab[i]-> i*CacheLineSize, Slab[0]-> pages
-static size_t Objects[256];             // Objects[i]= number of allocated objets of i*CacheLineSize
+static size_t ObjectsThisSize[256];     // ObjectsThisSize[i]= allocated objets of i*CacheLineSize
 typedef struct page_s {                 // page usage description
     char slab;                          // Which slab does the page belong to? (0 is for page)
     char alloc;                         // number of allocated objects is slab
     char is_dirty:1;                    // 1 bit in 1 byte
 } page_t;
-page_t DummyPage;                       // this variable is to never have Page undefined
-page_t *Page = &DummyPage;              // page descriptor table Page[O] is for page kmb, and so on
-size_t NbPages;                         // maximum number of pages
+static page_t DummyPage;                       // this variable is to never have Page undefined
+static page_t *Page = &DummyPage;              // page descriptor table Page[O] is for page kmb, and so on
+static size_t NbPages;                         // maximum number of pages
 
 #define NBLINE(n) (((n)+CacheLineSize-1)/CacheLineSize)     // minimal number of lines for n bytes
 
@@ -121,7 +121,7 @@ void * kmalloc (size_t size)
     }
     void * res = list_getfirst (&Slab[nbline%MaxLinePage]); // res is the first object in list
     size_t npage = (size_t)(res - (void *)kmb)>>12;         // relative page number from kmb
-    Objects[nbline%MaxLinePage]++;                          // increment the number of objects
+    ObjectsThisSize[nbline%MaxLinePage]++;                  // increment the number of objects
     Page[npage].slab = nbline%MaxLinePage;                  // this page is used of slab of nbline
     Page[npage].alloc++;                                    // one more times
 
@@ -138,7 +138,7 @@ void kfree (void * obj, size_t size)
         "\ncan't free object not allocated by kmalloc()");  // write a message then panic
 
     list_addfirst (&Slab[nbline], (list_t *)obj);           // add it to the right free list
-    Objects[nbline]--;                                      // decr the number of obj of size nbline
+    ObjectsThisSize[nbline]--;                              // decr the number of obj of size nbline
     if (size == PAGE_SIZE) return;
     if (--Page[npage].alloc==0) {                           // splitted page and no more object left
         list_t *page = (list_t *)((size_t)obj & ~0xFFF);    // address of the page containing obj
@@ -150,7 +150,7 @@ void kfree (void * obj, size_t size)
         }
         Page[npage].slab = 0;                               // since the page is empty, thus slab 0
         list_addfirst (&Slab[0], (list_t *)page);           // add the free page in slab[O]
-        Objects[0]--;                                       // decr the number of pages used
+        ObjectsThisSize[0]--;                               // decr the number of pages used
     }
 }
 
@@ -163,7 +163,7 @@ void kmalloc_print (void)
     for (size_t nbline=0 ; nbline<MaxLinePage ; nbline++) { // for all slabs
         size_t sz = (nbline)?nbline*CacheLineSize:4096;     // size really allocated
         size_t nf = list_nbobj (&Slab[nbline]);             // number of free obj of size nline
-        size_t na = Objects[nbline];                        // number of allocated obj of size nline
+        size_t na = ObjectsThisSize[nbline];                // number of allocated obj of size nline
         if (nf+na) {                                        // if there is something to print
             kprintf ("|s %d\t f %d\t a %d", sz, nf, na);    // print data
             kprintf ((++cr%3)?"\t":"\t|\n");                // adds a \n all three print

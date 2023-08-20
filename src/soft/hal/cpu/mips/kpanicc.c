@@ -17,15 +17,9 @@
 // end of kpanic() to dump all register value and threads list
 //--------------------------------------------------------------------------------------------------
 
-
-/** 
- * \brief   this table cannot be static because it is used by hcpua.S file
- */
-char * KDumpMessage;
-
 /** 
  * \brief   Table filled by kpanic() and read by kdump
- *          this table cannot be static because it is used by hcpua.S file
+ *          this table cannot be static because it is used by kpanica.S file
  */
 unsigned KPanicRegsVal[KPANIC_REGS_NR];
 
@@ -63,12 +57,12 @@ void kdump (unsigned reg_tab[])
 {
     int nl = 0;
     int cause = (KPanicRegsVal[0] >> 2) & 0xF;
-    char * message = (KDumpMessage) ? KDumpMessage : KPanicCauseName[cause];
 
     kprintf ("\n[%d] <%p> KERNEL PANIC: %s\n\n",
             KPanicRegsVal[KPANIC_COUNT],                // TSC Time Stamp Counter
             KPanicRegsVal[KPANIC_EPC],                  // faulty instruction address
-            message);                                   // Comprehensive cause name
+            KPanicCauseName[cause]);                    // Comprehensive cause name
+
     for (int i = 0; i < KPANIC_REGS_NR; i++) {
         kprintf ("%s : %p     ", KPanicRegsName[i], KPanicRegsVal[i]);
         if (++nl == 4) {

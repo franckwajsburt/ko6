@@ -60,7 +60,7 @@ struct ite_s {
     void *arg;      //< parameter passed to the function
 };
 
-extern struct ite_s InterruptTable[MAX_N_IRQS];
+// extern struct ite_s InterruptVector[MAX_N_IRQS];
 
 /**
  * \brief Assign an ISR (Interrupt-Service Routine) to an IRQ
