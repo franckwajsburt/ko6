@@ -1,13 +1,16 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2023-07-03
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  | |__ /'v'\  / /      \date       2025-02-11
+  | / /(     )/ _ \     \copyright  2021-2025 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
   \file     commmon/cstd.h
   \author   Franck Wajsburt, Nolan Bled
   \brief    Standard C functions
-
+            That functions are the same for the user apps and for the kernel code, 
+            that is why there are place here, in order to be added to the user libc and the
+            kernel libc. So the code is not duplicated.
+    
 \*------------------------------------------------------------------------------------------------*/
 
 #ifndef _CSTD_H_

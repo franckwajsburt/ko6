@@ -1,6 +1,19 @@
+KO6 Licensing Information
+
+This project is primarily licensed under the MIT License, as described below.
+
+However, some third-party code included in this repository is licensed under different terms:
+
+- The `external/libfdt/` directory contains code that is licensed under the BSD-2-Clause License.
+- The full BSD-2-Clause license can be found in the `LICENSE.BSD` file inside `external/libfdt/`.
+
+By using this software, you agree to comply with the terms of all applicable licenses.
+
+---
+
 MIT License
 
-Copyright (c) 2022-2023 Sorbonne University
+Copyright (c) 2022-2025 Sorbonne University
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

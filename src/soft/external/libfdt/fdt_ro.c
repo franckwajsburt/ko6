@@ -5,8 +5,8 @@
  */
 #include "libfdt_env.h"
 
-#include <lib/libfdt/fdt.h>
-#include <lib/libfdt/libfdt.h>
+#include <external/libfdt/fdt.h>
+#include <external/libfdt/libfdt.h>
 
 #include "libfdt_internal.h"
 

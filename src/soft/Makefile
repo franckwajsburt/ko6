@@ -17,7 +17,7 @@ MAKOPT ?= -s#			comment the -s to get command details
 SOC    ?= almo1-mips#	defaut SOC name
 CPU    ?= mips
 VERBOSE?= 0#			verbose mode to print INFO(), BIP(), ASSERT, VAR()
-OBJDIR	= ../../build/obj
+OBJDIR	= ../build/obj
 
 # Files
 # --------------------------------------------------------------------------------------------------
@@ -42,32 +42,30 @@ help:
 	@echo ""
 
 compil: tags
-	make -C lib/libfdt	$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
-	make -C kfs     	$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
-	make -C kernel 		$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
-	make -C hal 		$(MAKOPT) compil SOC=$(SOC) CPU=$(CPU) VERBOSE=$(VERBOSE)
-	make -C ulib   		$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
-	make -C uapp   		$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
+	-make -C external/libfdt $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
+	-make -C fs/kfs     	 $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
+	-make -C kernel 		 $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
+	-make -C hal 			 $(MAKOPT) compil SOC=$(SOC) CPU=$(CPU) VERBOSE=$(VERBOSE)
+	-make -C ulib   		 $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
+	-make -C uapp   		 $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
 
 tags:
 	@echo "- Create tags for vim"
-	@find . -name *.[chS] | xargs ctags 2> tags.log
-	@awk '/in files/{print "    "$$5,"and",$$7,$$(NF-2)}' tags.log
-	@awk '/in file /{print "    Replication",$$5,$$NF}' tags.log|sed 's/,/:/'
+	@find . -name *.[chS] | xargs ctags 
 
 pdf:
-	-make -C lib/libfdt $(MAKOPT) pdf
-	-make -C kfs    	$(MAKOPT) pdf
-	-make -C kernel 	$(MAKOPT) pdf
-	-make -C hal 		$(MAKOPT) pdf
-	-make -C ulib   	$(MAKOPT) pdf
-	-make -C uapp   	$(MAKOPT) pdf
+	-make -C external/libfdt $(MAKOPT) pdf
+	-make -C fs/kfs  	  	 $(MAKOPT) pdf
+	-make -C kernel 		 $(MAKOPT) pdf
+	-make -C hal 			 $(MAKOPT) pdf
+	-make -C ulib   		 $(MAKOPT) pdf
+	-make -C uapp   		 $(MAKOPT) pdf
 
 clean:
-	-make -C lib/libfdt $(MAKOPT) clean
-	-make -C kfs    	$(MAKOPT) clean
-	-make -C kernel 	$(MAKOPT) clean
-	-make -C hal 		$(MAKOPT) clean
-	-make -C ulib   	$(MAKOPT) clean
-	-make -C uapp   	$(MAKOPT) clean
-	-rm tags tags.log 2> /dev/null
+	-make -C external/libfdt $(MAKOPT) clean
+	-make -C fs/kfs    		 $(MAKOPT) clean
+	-make -C kernel 		 $(MAKOPT) clean
+	-make -C hal 			 $(MAKOPT) clean
+	-make -C ulib   		 $(MAKOPT) clean
+	-make -C uapp   		 $(MAKOPT) clean
+	-rm tags 2> /dev/null

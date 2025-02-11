@@ -15,9 +15,9 @@
 
 SOC    ?= almo1-mips#				defaut SOC name
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-BLDDIR	= ../../../build#			build directory
-BINDIR	= ../../../bin#				build directory
-SRCDIR 	= ..#						directory of all sources
+BLDDIR	= ../../../../build#		build directory
+BINDIR	= ../../../../bin#			build directory
+SRCDIR 	= ../..#					directory of all sources
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJDIR	= $(BLDDIR)/obj#			object files directory
 KFSTDIR = $(BLDDIR)/ktools#			object files directory for ktools
@@ -94,7 +94,7 @@ pdf:
 
 clean:
 	@echo "- clean $(CURDIR) and related build files"
-	-rm *~ $(OBJ) $(OBJDS) $(PDF) $(PDF).log 2> /dev/null || true
+	-rm *~ $(KFST) $(KFSTDIR)/*.o $(OBJ) $(OBJDS) $(PDF) $(PDF).log 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 

@@ -4,7 +4,7 @@
 # | / /(     )/ _ \   	\copyright  2022-2023 Sorbonne University
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
-# \file     lib/libfdt/Makefile
+# \file     external/libfdt/Makefile
 # \author   Nolan Bled
 # \brief    Makefile to generate the libfdt static library
 #

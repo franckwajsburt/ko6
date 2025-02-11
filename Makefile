@@ -25,7 +25,7 @@ LAST   ?= 500000#					last cycle to execute
 
 # ------- Directories
 SWDIR   = src/soft#        			software directory
-BLDDIR	= $(SWDIR)/build#			build directory where all executables are created
+BLDDIR	= build#					build directory where all executables are created
 SOCDIR	= $(SWDIR)/hal/soc/$(SOC)#	SOC specific sources directory
 DLOG    = ~/ko6-debug.log#			debug file
 
@@ -86,14 +86,14 @@ debug: compil
 		VERBOSE=$(VERBOSE) FROM=$(FROM) LAST=$(LAST)
 
 doxygen:
-	doxygen doxygen.cfg
+	cd docs; doxygen doxygen.cfg
 
 clean:
 	make -C $(SWDIR) $(MAKOPT) MAKOPT=$(MAKOPT) clean
 	@echo "- clean logs execution files"
 	@-killall xterm soclib-fb 2> /dev/null || true
 	@-rm -f /tmp/fbf.* $(DLOG) xterm* label*.s trace*.s 2> /dev/null || true
-	@-rm -rf $(BLDDIR) doxygen 2> /dev/null || true
+	@-rm -rf $(BLDDIR) docs/doxygen 2> /dev/null || true
 	@find . -name "*~" | xargs rm -f
 
 # Generate as many rules as app in uapp directory

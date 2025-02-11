@@ -64,7 +64,7 @@
 //--------------------------------------------------------------------------------------------------
 
 /**
- * \brief     random int generator
+ * \brief     random int generator FIXME must be replaced by /dev/urandom
  *            https://en.wikipedia.org/wiki/Linear_congruential_generator (glibc generator)
  * \return    a random int between 0 and RAND_MAX
  */

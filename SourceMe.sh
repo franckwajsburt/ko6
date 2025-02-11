@@ -8,7 +8,7 @@
 
 # Main directory and SOC, you can change them
 # --------------------------------------------
-export ko6=$HOME/Documents/ko6
+export ko6=$HOME/ko6
 export SOCLIB=/users/outil/soc/soclib
 export ko6VER=`git show -s --format=%ci`
 
@@ -29,6 +29,6 @@ echo ""
 # ----------------------------------------------------------------
 export GCC=7.1.0
 export CCTOOLS=$ko6/bin/gcc.$GCC
-export PATH=$PATH:$ko6/bin:$CCTOOLS/bin:$SOCLIB/utils/bin
-export LD_LIBRARY_PATH=$CCTOOLS/lib64:$LD_LIBRARY_PATH
+export PATH=$ko6/bin:$CCTOOLS/bin:$SOCLIB/utils/bin:$PATH
+export LD_LIBRARY_PATH=/usr/lib64:$CCTOOLS/lib64:$LD_LIBRARY_PATH
 # shopt -s globstar   # allow the ** symbol which replace any pathname

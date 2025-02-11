@@ -22,7 +22,7 @@
 #include <kernel/klibc.h>
 #include <kernel/kirq.h>
 
-#include <lib/libfdt/libfdt.h>
+#include <external/libfdt/libfdt.h>
 
 /**
  * \brief   Get the base address of a FDT device node (reg property)

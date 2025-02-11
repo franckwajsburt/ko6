@@ -40,10 +40,10 @@ int main (void)
 
     pthread_barrier_init (&barrier, NULL, 3);
 
-    a0.delay = 10000000;
+    a0.delay = 100000;
     a0.message = "bonjour";
 
-    a1.delay = 50000000;
+    a1.delay = 500000;
     a1.message = "salut";
 
     pthread_create (&t0, NULL, t0_fun, &a0);
