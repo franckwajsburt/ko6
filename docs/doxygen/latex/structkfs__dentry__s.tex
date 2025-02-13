@@ -1,0 +1,79 @@
+\hypertarget{structkfs__dentry__s}{\section{kfs\-\_\-dentry\-\_\-s Struct Reference}
+\label{structkfs__dentry__s}\index{kfs\-\_\-dentry\-\_\-s@{kfs\-\_\-dentry\-\_\-s}}
+}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}{u8\-\_\-t} \hyperlink{structkfs__dentry__s_aed21f3f5ab2de70ab3416afe6dd9e4d4}{root}
+\begin{DoxyCompactList}\small\item\em $<$ 32 bytes long \end{DoxyCompactList}\item 
+\hyperlink{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}{u8\-\_\-t} \hyperlink{structkfs__dentry__s_a17c6495def8c6564de45ab64cbc49066}{next}
+\begin{DoxyCompactList}\small\item\em index of one of the dentries at the same level \end{DoxyCompactList}\item 
+\hyperlink{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}{u8\-\_\-t} \hyperlink{structkfs__dentry__s_a79fd3c8764d633fdb895b77856f61d61}{leaf}
+\begin{DoxyCompactList}\small\item\em index of one of the leaf dentries (0 if no leaf) \end{DoxyCompactList}\item 
+\hyperlink{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}{u8\-\_\-t} \hyperlink{structkfs__dentry__s_a4e87e5375dfccc972eae6a05bfa2a086}{inode}
+\begin{DoxyCompactList}\small\item\em index of the associated inode \end{DoxyCompactList}\item 
+char \hyperlink{structkfs__dentry__s_a9e5a536f0b9b95dc094c58c66c61ddcc}{name} \mbox{[}\hyperlink{kfs_8c_ae0b389bdf68187ccb1610271d36edb33}{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-N\-A\-M\-E}\mbox{]}
+\begin{DoxyCompactList}\small\item\em max size of a file or folder name \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{structkfs__dentry__s_a4e87e5375dfccc972eae6a05bfa2a086}{\index{kfs\-\_\-dentry\-\_\-s@{kfs\-\_\-dentry\-\_\-s}!inode@{inode}}
+\index{inode@{inode}!kfs_dentry_s@{kfs\-\_\-dentry\-\_\-s}}
+\subsubsection[{inode}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u8\-\_\-t} kfs\-\_\-dentry\-\_\-s\-::inode}}\label{structkfs__dentry__s_a4e87e5375dfccc972eae6a05bfa2a086}
+
+
+index of the associated inode 
+
+
+
+Referenced by kfs\-\_\-inode(), kfs\-\_\-isdir(), kfs\-\_\-link(), kfs\-\_\-open(), kfs\-\_\-openat(), and kfs\-\_\-unlink().
+
+\hypertarget{structkfs__dentry__s_a79fd3c8764d633fdb895b77856f61d61}{\index{kfs\-\_\-dentry\-\_\-s@{kfs\-\_\-dentry\-\_\-s}!leaf@{leaf}}
+\index{leaf@{leaf}!kfs_dentry_s@{kfs\-\_\-dentry\-\_\-s}}
+\subsubsection[{leaf}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u8\-\_\-t} kfs\-\_\-dentry\-\_\-s\-::leaf}}\label{structkfs__dentry__s_a79fd3c8764d633fdb895b77856f61d61}
+
+
+index of one of the leaf dentries (0 if no leaf) 
+
+
+
+Referenced by kfs\-\_\-free\-\_\-dentry(), kfs\-\_\-leaf(), kfs\-\_\-openat(), and kfs\-\_\-readdir().
+
+\hypertarget{structkfs__dentry__s_a9e5a536f0b9b95dc094c58c66c61ddcc}{\index{kfs\-\_\-dentry\-\_\-s@{kfs\-\_\-dentry\-\_\-s}!name@{name}}
+\index{name@{name}!kfs_dentry_s@{kfs\-\_\-dentry\-\_\-s}}
+\subsubsection[{name}]{\setlength{\rightskip}{0pt plus 5cm}char kfs\-\_\-dentry\-\_\-s\-::name\mbox{[}{\bf K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-N\-A\-M\-E}\mbox{]}}}\label{structkfs__dentry__s_a9e5a536f0b9b95dc094c58c66c61ddcc}
+
+
+max size of a file or folder name 
+
+
+
+Referenced by kfs\-\_\-name().
+
+\hypertarget{structkfs__dentry__s_a17c6495def8c6564de45ab64cbc49066}{\index{kfs\-\_\-dentry\-\_\-s@{kfs\-\_\-dentry\-\_\-s}!next@{next}}
+\index{next@{next}!kfs_dentry_s@{kfs\-\_\-dentry\-\_\-s}}
+\subsubsection[{next}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u8\-\_\-t} kfs\-\_\-dentry\-\_\-s\-::next}}\label{structkfs__dentry__s_a17c6495def8c6564de45ab64cbc49066}
+
+
+index of one of the dentries at the same level 
+
+
+
+Referenced by kfs\-\_\-free\-\_\-dentry(), kfs\-\_\-next(), kfs\-\_\-openat(), and kfs\-\_\-readdir().
+
+\hypertarget{structkfs__dentry__s_aed21f3f5ab2de70ab3416afe6dd9e4d4}{\index{kfs\-\_\-dentry\-\_\-s@{kfs\-\_\-dentry\-\_\-s}!root@{root}}
+\index{root@{root}!kfs_dentry_s@{kfs\-\_\-dentry\-\_\-s}}
+\subsubsection[{root}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u8\-\_\-t} kfs\-\_\-dentry\-\_\-s\-::root}}\label{structkfs__dentry__s_aed21f3f5ab2de70ab3416afe6dd9e4d4}
+
+
+$<$ 32 bytes long 
+
+index of the root dentry, 0 if it is / 
+
+Referenced by kfs\-\_\-free\-\_\-dentry(), kfs\-\_\-openat(), and kfs\-\_\-root().
+
+
+
+The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/users/enseig/franck/ko6/src/soft/fs/kfs/\hyperlink{kfs_8c}{kfs.\-c}\end{DoxyCompactItemize}

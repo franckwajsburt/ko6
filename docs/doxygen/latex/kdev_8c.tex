@@ -1,0 +1,183 @@
+\hypertarget{kdev_8c}{\section{/users/enseig/franck/ko6/src/soft/kernel/kdev.c File Reference}
+\label{kdev_8c}\index{/users/enseig/franck/ko6/src/soft/kernel/kdev.\-c@{/users/enseig/franck/ko6/src/soft/kernel/kdev.\-c}}
+}
+{\ttfamily \#include $<$kernel/kdev.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+unsigned \hyperlink{kdev_8c_a31c87cb296fe4cc9ac9e1f854b62f98a}{dev\-\_\-next\-\_\-no} (enum \hyperlink{kdev_8h_a13c83819eabea78dd368dd60d38f5c8d}{dev\-\_\-tag\-\_\-e} tag)
+\begin{DoxyCompactList}\small\item\em Find the last element added with corresponding tag To do so, we loop through the device list in a reverse order Once we found the last device, we add one to his number. \end{DoxyCompactList}\item 
+struct \hyperlink{structdev__s}{dev\-\_\-s} $\ast$ \hyperlink{kdev_8c_aebc03eb0791b35f8c76bacae806c694d}{dev\-\_\-alloc} (enum \hyperlink{kdev_8h_a13c83819eabea78dd368dd60d38f5c8d}{dev\-\_\-tag\-\_\-e} tag, unsigned dsize)
+\begin{DoxyCompactList}\small\item\em Allocate enough size in kernel heap to store device meta data (tag, no, list) and device data (struct tty\-\_\-s, struct \hyperlink{structicu__s}{icu\-\_\-s}, ...) and add it into the global device list. \end{DoxyCompactList}\item 
+struct \hyperlink{structdev__s}{dev\-\_\-s} $\ast$ \hyperlink{kdev_8c_a2ef6e307b42bc3dfed255511099e42af}{dev\-\_\-get} (enum \hyperlink{kdev_8h_a13c83819eabea78dd368dd60d38f5c8d}{dev\-\_\-tag\-\_\-e} tag, unsigned no)
+\begin{DoxyCompactList}\small\item\em Get a device based on its type and on its minor number. \end{DoxyCompactList}\item 
+void \hyperlink{kdev_8c_a4503a518622297c8360c8eeb7e30a895}{dev\-\_\-free} (struct \hyperlink{structdev__s}{dev\-\_\-s} $\ast$dev, unsigned dsize)
+\begin{DoxyCompactList}\small\item\em Release a created device (kfree + list\-\_\-unlink) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} \hyperlink{kdev_8c_afb7a1e0ee5dd468f7dfae5ec857e3d86}{Dev\-List}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{kdev_8c_aebc03eb0791b35f8c76bacae806c694d}{\index{kdev.\-c@{kdev.\-c}!dev\-\_\-alloc@{dev\-\_\-alloc}}
+\index{dev\-\_\-alloc@{dev\-\_\-alloc}!kdev.c@{kdev.\-c}}
+\subsubsection[{dev\-\_\-alloc}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf dev\-\_\-s}$\ast$ dev\-\_\-alloc (
+\begin{DoxyParamCaption}
+\item[{enum {\bf dev\-\_\-tag\-\_\-e}}]{tag, }
+\item[{unsigned}]{dsize}
+\end{DoxyParamCaption}
+)}}\label{kdev_8c_aebc03eb0791b35f8c76bacae806c694d}
+
+
+Allocate enough size in kernel heap to store device meta data (tag, no, list) and device data (struct tty\-\_\-s, struct \hyperlink{structicu__s}{icu\-\_\-s}, ...) and add it into the global device list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tag} & type of the device (tty, icu, ...) \\
+\hline
+{\em dsize} & size of the device-\/specific structure (ex\-: sizeof(struct\-\_\-s)) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the allocated device 
+\end{DoxyReturn}
+
+
+References dev\-\_\-next\-\_\-no(), kmalloc(), dev\-\_\-s\-::list, list\-\_\-addlast(), dev\-\_\-s\-::no, and dev\-\_\-s\-::tag.
+
+
+\begin{DoxyCode}
+31 \{
+32     \textcolor{keyword}{struct }\hyperlink{structdev__s}{dev\_s} *dev = \hyperlink{kmemory_8c_a5f52d7c56b7d67dc2f96b2e93dfdc7be}{kmalloc}(\textcolor{keyword}{sizeof}(\textcolor{keyword}{struct} \hyperlink{structdev__s}{dev\_s}) + dsize);  \textcolor{comment}{// Allocate enough space
+       for }
+33                                                                 \textcolor{comment}{// device metadata (tag, no, list)}
+34                                                                 \textcolor{comment}{// and device-specific data }
+35                                                                 \textcolor{comment}{// (ops,...)}
+36     dev->\hyperlink{structdev__s_addb9b18666e781df02b2a7f2c8889b2b}{tag} = \hyperlink{structdev__s_addb9b18666e781df02b2a7f2c8889b2b}{tag};
+37     dev->\hyperlink{structdev__s_aa9bb06b8905eac21cced3a03f91d4f15}{no} = \hyperlink{kdev_8c_a31c87cb296fe4cc9ac9e1f854b62f98a}{dev\_next\_no}(\hyperlink{structdev__s_addb9b18666e781df02b2a7f2c8889b2b}{tag});
+38     \hyperlink{list_8h_a116cfa18214dd2f855cff842bb14ca8f}{list\_addlast}(&\hyperlink{kdev_8c_afb7a1e0ee5dd468f7dfae5ec857e3d86}{DevList}, &dev->\hyperlink{structdev__s_a4fdb485fdfb2cfdf956289636560a9ff}{list});
+39     \textcolor{keywordflow}{return} dev;
+40 \}
+\end{DoxyCode}
+\hypertarget{kdev_8c_a4503a518622297c8360c8eeb7e30a895}{\index{kdev.\-c@{kdev.\-c}!dev\-\_\-free@{dev\-\_\-free}}
+\index{dev\-\_\-free@{dev\-\_\-free}!kdev.c@{kdev.\-c}}
+\subsubsection[{dev\-\_\-free}]{\setlength{\rightskip}{0pt plus 5cm}void dev\-\_\-free (
+\begin{DoxyParamCaption}
+\item[{struct {\bf dev\-\_\-s} $\ast$}]{dev, }
+\item[{unsigned}]{dsize}
+\end{DoxyParamCaption}
+)}}\label{kdev_8c_a4503a518622297c8360c8eeb7e30a895}
+
+
+Release a created device (kfree + list\-\_\-unlink) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dev} & the device to release \\
+\hline
+{\em dsize} & size of device-\/specific structure \\
+\hline
+\end{DoxyParams}
+T\-O\-D\-O\-: should we decrement every other device no in the last, ex\-: should tty 2 become tty 1 if tty 0 is removed ? i don't think so but it could be interesting to think about it
+
+References kfree(), dev\-\_\-s\-::list, and list\-\_\-unlink().
+
+
+\begin{DoxyCode}
+58 \{
+63     \hyperlink{list_8h_ac68d25438cd5f3cc2e5b04dbf174bf27}{list\_unlink}(&dev->\hyperlink{structdev__s_a4fdb485fdfb2cfdf956289636560a9ff}{list});
+64     \hyperlink{kmemory_8c_a64c1f767a18f26f8c8cabd0f82f3e04d}{kfree}(dev, \textcolor{keyword}{sizeof}(\textcolor{keyword}{struct} \hyperlink{structdev__s}{dev\_s}) + dsize);
+65 \}
+\end{DoxyCode}
+\hypertarget{kdev_8c_a2ef6e307b42bc3dfed255511099e42af}{\index{kdev.\-c@{kdev.\-c}!dev\-\_\-get@{dev\-\_\-get}}
+\index{dev\-\_\-get@{dev\-\_\-get}!kdev.c@{kdev.\-c}}
+\subsubsection[{dev\-\_\-get}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf dev\-\_\-s}$\ast$ dev\-\_\-get (
+\begin{DoxyParamCaption}
+\item[{enum {\bf dev\-\_\-tag\-\_\-e}}]{tag, }
+\item[{unsigned}]{no}
+\end{DoxyParamCaption}
+)}}\label{kdev_8c_a2ef6e307b42bc3dfed255511099e42af}
+
+
+Get a device based on its type and on its minor number. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tag} & type of the device \\
+\hline
+{\em no} & minor number of the device \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the corresponding device if found, N\-U\-L\-L if not 
+\end{DoxyReturn}
+Loop through the list until we find the corresponding entry We could gain some performance by having device-\/specific linked list but I can't think of a way to do it easily \& in a simple manner
+
+References dev\-\_\-s\-::list, list\-\_\-foreach, list\-\_\-item, dev\-\_\-s\-::no, N\-U\-L\-L, and dev\-\_\-s\-::tag.
+
+
+\begin{DoxyCode}
+43 \{
+49     \hyperlink{list_8h_ad759a32561623ec6b31549db8276e8b6}{list\_foreach}(&\hyperlink{kdev_8c_afb7a1e0ee5dd468f7dfae5ec857e3d86}{DevList}, item) \{
+50         \textcolor{keyword}{struct }\hyperlink{structdev__s}{dev\_s} *dev = \hyperlink{list_8h_a99f8755f2301e99adad3c8490df79052}{list\_item}(item, \textcolor{keyword}{struct} \hyperlink{structdev__s}{dev\_s}, 
+      \hyperlink{structdev__s_a4fdb485fdfb2cfdf956289636560a9ff}{list});
+51         \textcolor{keywordflow}{if} (dev->\hyperlink{structdev__s_addb9b18666e781df02b2a7f2c8889b2b}{tag} == \hyperlink{structdev__s_addb9b18666e781df02b2a7f2c8889b2b}{tag} && dev->\hyperlink{structdev__s_aa9bb06b8905eac21cced3a03f91d4f15}{no} == \hyperlink{structdev__s_aa9bb06b8905eac21cced3a03f91d4f15}{no})
+52             \textcolor{keywordflow}{return} dev;
+53     \}
+54     \textcolor{keywordflow}{return} \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL};
+55 \}
+\end{DoxyCode}
+\hypertarget{kdev_8c_a31c87cb296fe4cc9ac9e1f854b62f98a}{\index{kdev.\-c@{kdev.\-c}!dev\-\_\-next\-\_\-no@{dev\-\_\-next\-\_\-no}}
+\index{dev\-\_\-next\-\_\-no@{dev\-\_\-next\-\_\-no}!kdev.c@{kdev.\-c}}
+\subsubsection[{dev\-\_\-next\-\_\-no}]{\setlength{\rightskip}{0pt plus 5cm}unsigned dev\-\_\-next\-\_\-no (
+\begin{DoxyParamCaption}
+\item[{enum {\bf dev\-\_\-tag\-\_\-e}}]{tag}
+\end{DoxyParamCaption}
+)}}\label{kdev_8c_a31c87cb296fe4cc9ac9e1f854b62f98a}
+
+
+Find the last element added with corresponding tag To do so, we loop through the device list in a reverse order Once we found the last device, we add one to his number. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tag} & type of the device (tty, icu, ...) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the next no (last device of this type no + 1) 
+\end{DoxyReturn}
+
+
+References dev\-\_\-s\-::list, list\-\_\-foreach\-\_\-rev, list\-\_\-item, dev\-\_\-s\-::no, and dev\-\_\-s\-::tag.
+
+
+
+Referenced by dev\-\_\-alloc().
+
+
+\begin{DoxyCode}
+21 \{
+22     \hyperlink{list_8h_a619b7048bfa93b967009833c61dd84cf}{list\_foreach\_rev}(&\hyperlink{kdev_8c_afb7a1e0ee5dd468f7dfae5ec857e3d86}{DevList}, item) \{
+23         \textcolor{keyword}{struct }\hyperlink{structdev__s}{dev\_s} *dev = \hyperlink{list_8h_a99f8755f2301e99adad3c8490df79052}{list\_item}(item, \textcolor{keyword}{struct} \hyperlink{structdev__s}{dev\_s}, 
+      \hyperlink{structdev__s_a4fdb485fdfb2cfdf956289636560a9ff}{list});
+24         \textcolor{keywordflow}{if} (dev->\hyperlink{structdev__s_addb9b18666e781df02b2a7f2c8889b2b}{tag} == \hyperlink{structdev__s_addb9b18666e781df02b2a7f2c8889b2b}{tag})
+25             \textcolor{keywordflow}{return} dev->\hyperlink{structdev__s_aa9bb06b8905eac21cced3a03f91d4f15}{no} + 1;
+26     \}
+27     \textcolor{keywordflow}{return} 0;
+28 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\hypertarget{kdev_8c_afb7a1e0ee5dd468f7dfae5ec857e3d86}{\index{kdev.\-c@{kdev.\-c}!Dev\-List@{Dev\-List}}
+\index{Dev\-List@{Dev\-List}!kdev.c@{kdev.\-c}}
+\subsubsection[{Dev\-List}]{\setlength{\rightskip}{0pt plus 5cm}{\bf list\-\_\-t} Dev\-List\hspace{0.3cm}{\ttfamily [static]}}}\label{kdev_8c_afb7a1e0ee5dd468f7dfae5ec857e3d86}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+= \{      
+    .next = &\hyperlink{kdev_8c_afb7a1e0ee5dd468f7dfae5ec857e3d86}{DevList},
+    .\hyperlink{structlist__s_af220645f4ec4f64798bc6d8ea9765185}{prev} = &\hyperlink{kdev_8c_afb7a1e0ee5dd468f7dfae5ec857e3d86}{DevList}
+\}
+\end{DoxyCode}

@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['icu_5facknowledge',['icu_acknowledge',['../structicu__ops__s.html#aec94869f891ee17f4743f46da01dcced',1,'icu_ops_s']]],
+  ['icu_5fget_5fhighest',['icu_get_highest',['../structicu__ops__s.html#a7aa5d37f9a8ef9f3e59211ff5ab213c0',1,'icu_ops_s']]],
+  ['icu_5finit',['icu_init',['../structicu__ops__s.html#acfb85f348f0664db040ecc73ebbd5cc7',1,'icu_ops_s']]],
+  ['icu_5fmask',['icu_mask',['../structicu__ops__s.html#af63b387a2985011e4e430d568d3f0b04',1,'icu_ops_s']]],
+  ['icu_5fset_5fpriority',['icu_set_priority',['../structicu__ops__s.html#a1f08d353530f63d1877f160fd70fcdfd',1,'icu_ops_s']]],
+  ['icu_5funmask',['icu_unmask',['../structicu__ops__s.html#a4aee28cc809733a67481e782c1efd1fa',1,'icu_ops_s']]],
+  ['ier',['ier',['../structns16550__general__regs__s.html#af3ab39032c2a64d4758bfdd2a6012e4a',1,'ns16550_general_regs_s::ier()'],['../ns16550_8h.html#a6053ddeddfda5293c71e12864d2d868c',1,'ier():&#160;ns16550.h']]],
+  ['inode',['inode',['../structkfs__dentry__s.html#a4e87e5375dfccc972eae6a05bfa2a086',1,'kfs_dentry_s']]],
+  ['interruptvector',['InterruptVector',['../kirq_8c.html#a3d32ff97b6058692226afceace7262a6',1,'kirq.c']]],
+  ['irq_5facknowledge',['irq_acknowledge',['../structirq__ops__s.html#a2dffdb09714e3498b8962381d71718c5',1,'irq_ops_s']]],
+  ['irq_5fdisable',['irq_disable',['../mips_2irq_8S.html#ab061b784fed23b72808250b4cd9276a3',1,'irq.S']]],
+  ['irq_5fenable',['irq_enable',['../structsoclib__dma__regs__s.html#a59ab85953a7860ed2e63ce90052ffdb3',1,'soclib_dma_regs_s::irq_enable()'],['../mips_2irq_8S.html#aaef40102bb274fecd542c306bb6a8e20',1,'irq_enable():&#160;irq.S'],['../riscv_2irq_8S.html#aaef40102bb274fecd542c306bb6a8e20',1,'irq_enable():&#160;irq.S']]],
+  ['irq_5fget_5fhighest',['irq_get_highest',['../structirq__ops__s.html#a1ef2b203959777a212125e1ea0d4d79c',1,'irq_ops_s']]],
+  ['irq_5fhandler',['irq_handler',['../mips_2entry_8S.html#a9d2aa3bc4e44a8ffda50e5b21ab6fb59',1,'entry.S']]],
+  ['irq_5finit',['irq_init',['../structirq__ops__s.html#af7516d83c7d067bc9c7e3c410faab92b',1,'irq_ops_s']]],
+  ['irq_5fkernel',['irq_kernel',['../mips_2entry_8S.html#aa28b32f4e79871f57f2456daed530508',1,'entry.S']]],
+  ['irq_5fmask',['irq_mask',['../structirq__ops__s.html#a4c58f73360cca86bafa18725c9c7d88d',1,'irq_ops_s']]],
+  ['irq_5fset_5fpriority',['irq_set_priority',['../structirq__ops__s.html#a006ff212c6c42156888344a2c69216c5',1,'irq_ops_s']]],
+  ['irq_5funmask',['irq_unmask',['../structirq__ops__s.html#ab4aee47b81dc80dcbf2b52c0a3ea0365',1,'irq_ops_s']]],
+  ['irq_5fuser',['irq_user',['../mips_2entry_8S.html#a50e17158d795021fb36a813c89b7a645',1,'entry.S']]],
+  ['is_5fdirty',['is_dirty',['../structpage__s.html#ae281f75fa7844e705c1fa5dfcff0d6ae',1,'page_s']]],
+  ['isr',['isr',['../structns16550__general__regs__s.html#afc8dd5bfaf88f0333a5c869b75b523a1',1,'ns16550_general_regs_s::isr()'],['../ns16550_8h.html#ac64837627485de9bede4a664e1f15bb8',1,'isr():&#160;ns16550.h']]]
+];

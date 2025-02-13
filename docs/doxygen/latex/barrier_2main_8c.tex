@@ -1,0 +1,129 @@
+\hypertarget{barrier_2main_8c}{\section{/users/enseig/franck/ko6/src/soft/uapp/barrier/main.c File Reference}
+\label{barrier_2main_8c}\index{/users/enseig/franck/ko6/src/soft/uapp/barrier/main.\-c@{/users/enseig/franck/ko6/src/soft/uapp/barrier/main.\-c}}
+}
+{\ttfamily \#include $<$libc.\-h$>$}\\*
+{\ttfamily \#include $<$pthread.\-h$>$}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structarg__s}{arg\-\_\-s}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{barrier_2main_8c_a356fe8020a7cded607b0e7879cff1962}{D\-E\-L\-A\-Y}(n)~for(int i=n;i-\/-\/;) \-\_\-\-\_\-asm\-\_\-\-\_\-(\char`\"{}nop\char`\"{});
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$ \hyperlink{barrier_2main_8c_af9e2b5102bc8ba0b1a4f2619c2de1342}{t0\-\_\-fun} (void $\ast$arg)
+\item 
+int \hyperlink{barrier_2main_8c_a840291bc02cba5474a4cb46a9b9566fe}{main} (void)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{pthread_8h_af76921f9c4d382336c266fc967017636}{pthread\-\_\-t} \hyperlink{barrier_2main_8c_a60459f5e6b5b4401ca99f3930c7f0c45}{t0}
+\item 
+\hyperlink{pthread_8h_af76921f9c4d382336c266fc967017636}{pthread\-\_\-t} \hyperlink{barrier_2main_8c_a4691718dcb34a3c3134daf1391da0636}{t1}
+\item 
+struct \hyperlink{structarg__s}{arg\-\_\-s} \hyperlink{riscv_2threada_8S_aaef62817c8f68f920ec8214f18b86a4c}{a0} \hyperlink{barrier_2main_8c_a877bbde9c70c0c406dc4750657939af6}{a1}
+\item 
+\hyperlink{pthread_8h_ac97967a2700653f458a949449411c7cb}{pthread\-\_\-barrier\-\_\-t} \hyperlink{barrier_2main_8c_a779bfbbb688cf46720cfb65109ea4858}{barrier}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{barrier_2main_8c_a356fe8020a7cded607b0e7879cff1962}{\index{barrier/main.\-c@{barrier/main.\-c}!D\-E\-L\-A\-Y@{D\-E\-L\-A\-Y}}
+\index{D\-E\-L\-A\-Y@{D\-E\-L\-A\-Y}!barrier/main.c@{barrier/main.\-c}}
+\subsubsection[{D\-E\-L\-A\-Y}]{\setlength{\rightskip}{0pt plus 5cm}\#define D\-E\-L\-A\-Y(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~for(int i=n;i-\/-\/;) \-\_\-\-\_\-asm\-\_\-\-\_\-(\char`\"{}nop\char`\"{});}}\label{barrier_2main_8c_a356fe8020a7cded607b0e7879cff1962}
+
+
+Referenced by main(), and t0\-\_\-fun().
+
+
+
+\subsection{Function Documentation}
+\hypertarget{barrier_2main_8c_a840291bc02cba5474a4cb46a9b9566fe}{\index{barrier/main.\-c@{barrier/main.\-c}!main@{main}}
+\index{main@{main}!barrier/main.c@{barrier/main.\-c}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{barrier_2main_8c_a840291bc02cba5474a4cb46a9b9566fe}
+
+\begin{DoxyCode}
+39 \{
+40 
+41     \hyperlink{pthread_8c_ad99d3bb02ea2b98fbf98fdb24d32adb3}{pthread\_barrier\_init} (&\hyperlink{barrier_2main_8c_a779bfbbb688cf46720cfb65109ea4858}{barrier}, \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL}, 3);
+42 
+43     \hyperlink{riscv_2atomic_8S_a3d9d4d3857e499e04ab8a29c34ab004d}{a0}.delay = 100000;
+44     \hyperlink{riscv_2atomic_8S_a3d9d4d3857e499e04ab8a29c34ab004d}{a0}.message = \textcolor{stringliteral}{"bonjour"};
+45 
+46     \hyperlink{riscv_2atomic_8S_a722b1add1d9781e2115fb2fcc9d5541a}{a1}.delay = 500000;
+47     \hyperlink{riscv_2atomic_8S_a722b1add1d9781e2115fb2fcc9d5541a}{a1}.message = \textcolor{stringliteral}{"salut"};
+48 
+49     \hyperlink{pthread_8c_a57aa485fb15bd7f307777cef1a074d28}{pthread\_create} (&\hyperlink{riscv_2atomic_8S_ae9747d0e53eec3077df6659993460c34}{t0}, \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL}, \hyperlink{barrier_2main_8c_af9e2b5102bc8ba0b1a4f2619c2de1342}{t0\_fun}, &\hyperlink{riscv_2atomic_8S_a3d9d4d3857e499e04ab8a29c34ab004d}{a0});
+50     \hyperlink{pthread_8c_a57aa485fb15bd7f307777cef1a074d28}{pthread\_create} (&\hyperlink{riscv_2atomic_8S_ae9747d0e53eec3077df6659993460c34}{t0}, \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL}, \hyperlink{barrier_2main_8c_af9e2b5102bc8ba0b1a4f2619c2de1342}{t0\_fun}, &\hyperlink{riscv_2atomic_8S_a722b1add1d9781e2115fb2fcc9d5541a}{a1});
+51 
+52     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i=0;1;i++) \{
+53         \hyperlink{libc_8c_a4e7edf0e8df09b47566d572e19dad429}{fprintf} (0, \textcolor{stringliteral}{"[%d] app is alive\(\backslash\)n"}, i);
+54         \hyperlink{barrier_2main_8c_a356fe8020a7cded607b0e7879cff1962}{DELAY}(100000);
+55         \textcolor{comment}{//thread\_barrier\_wait( &barrier);}
+56     \}
+57 
+58     \textcolor{keywordtype}{void} * trash;
+59     \hyperlink{pthread_8c_a471c1323d7564c8a6244f105c0e3e8f1}{pthread\_join} (\hyperlink{riscv_2atomic_8S_ae7a3f7baeb6769a5ca90b5626bf66259}{t1}, &trash);
+60     \hyperlink{pthread_8c_a471c1323d7564c8a6244f105c0e3e8f1}{pthread\_join} (\hyperlink{riscv_2atomic_8S_ae9747d0e53eec3077df6659993460c34}{t0}, &trash);
+61     \textcolor{keywordflow}{return} 0;
+62 \}
+\end{DoxyCode}
+\hypertarget{barrier_2main_8c_af9e2b5102bc8ba0b1a4f2619c2de1342}{\index{barrier/main.\-c@{barrier/main.\-c}!t0\-\_\-fun@{t0\-\_\-fun}}
+\index{t0\-\_\-fun@{t0\-\_\-fun}!barrier/main.c@{barrier/main.\-c}}
+\subsubsection[{t0\-\_\-fun}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ t0\-\_\-fun (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)}}\label{barrier_2main_8c_af9e2b5102bc8ba0b1a4f2619c2de1342}
+
+
+References D\-E\-L\-A\-Y, arg\-\_\-s\-::delay, fprintf(), arg\-\_\-s\-::message, and rand().
+
+
+
+Referenced by main().
+
+
+\begin{DoxyCode}
+29 \{
+30     \textcolor{keyword}{struct }\hyperlink{structarg__s}{arg\_s} * a = arg;
+31     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i=0;1;i++) \{
+32         \hyperlink{libc_8c_a4e7edf0e8df09b47566d572e19dad429}{fprintf} (1, \textcolor{stringliteral}{"[%d] %s\(\backslash\)n"}, i, a->\hyperlink{structarg__s_ae742dba31a6d8711b649c3c5a9d41fd0}{message});
+33         \hyperlink{barrier_2main_8c_a356fe8020a7cded607b0e7879cff1962}{DELAY} ((a->\hyperlink{structarg__s_a21f43fb97621a901d1c91a8f342977af}{delay}) * (1 + \hyperlink{klibc_8c_ae23144bcbb8e3742b00eb687c36654d1}{rand}()%2));
+34         \textcolor{comment}{//thread\_barrier\_wait (&barrier);}
+35     \};
+36 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\hypertarget{barrier_2main_8c_a877bbde9c70c0c406dc4750657939af6}{\index{barrier/main.\-c@{barrier/main.\-c}!a1@{a1}}
+\index{a1@{a1}!barrier/main.c@{barrier/main.\-c}}
+\subsubsection[{a1}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf arg\-\_\-s} {\bf a0} a1}}\label{barrier_2main_8c_a877bbde9c70c0c406dc4750657939af6}
+\hypertarget{barrier_2main_8c_a779bfbbb688cf46720cfb65109ea4858}{\index{barrier/main.\-c@{barrier/main.\-c}!barrier@{barrier}}
+\index{barrier@{barrier}!barrier/main.c@{barrier/main.\-c}}
+\subsubsection[{barrier}]{\setlength{\rightskip}{0pt plus 5cm}{\bf pthread\-\_\-barrier\-\_\-t} barrier}}\label{barrier_2main_8c_a779bfbbb688cf46720cfb65109ea4858}
+
+
+Referenced by main(), thread\-\_\-barrier\-\_\-destroy(), thread\-\_\-barrier\-\_\-init(), and thread\-\_\-barrier\-\_\-wait().
+
+\hypertarget{barrier_2main_8c_a60459f5e6b5b4401ca99f3930c7f0c45}{\index{barrier/main.\-c@{barrier/main.\-c}!t0@{t0}}
+\index{t0@{t0}!barrier/main.c@{barrier/main.\-c}}
+\subsubsection[{t0}]{\setlength{\rightskip}{0pt plus 5cm}{\bf pthread\-\_\-t} t0}}\label{barrier_2main_8c_a60459f5e6b5b4401ca99f3930c7f0c45}
+\hypertarget{barrier_2main_8c_a4691718dcb34a3c3134daf1391da0636}{\index{barrier/main.\-c@{barrier/main.\-c}!t1@{t1}}
+\index{t1@{t1}!barrier/main.c@{barrier/main.\-c}}
+\subsubsection[{t1}]{\setlength{\rightskip}{0pt plus 5cm}{\bf pthread\-\_\-t} t1}}\label{barrier_2main_8c_a4691718dcb34a3c3134daf1391da0636}

@@ -1,0 +1,239 @@
+\hypertarget{ns16550_8c}{\section{/users/enseig/franck/ko6/src/soft/hal/devices/chardev/ns16550.c File Reference}
+\label{ns16550_8c}\index{/users/enseig/franck/ko6/src/soft/hal/devices/chardev/ns16550.\-c@{/users/enseig/franck/ko6/src/soft/hal/devices/chardev/ns16550.\-c}}
+}
+{\ttfamily \#include $<$hal/devices/chardev/ns16550.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{ns16550_8c_a1101518cb0dd45f0ab1e9fe8937b587f}{ns16550\-\_\-init} (struct \hyperlink{structchardev__s}{chardev\-\_\-s} $\ast$cdev, unsigned address, unsigned baudrate)
+\begin{DoxyCompactList}\small\item\em N\-S16550 U\-A\-R\-T initialization The procedure is the following\-: \end{DoxyCompactList}\item 
+static int \hyperlink{ns16550_8c_aa0c873ae215d7bac2765f28eab606ba2}{ns16550\-\_\-read} (struct \hyperlink{structchardev__s}{chardev\-\_\-s} $\ast$cdev, char $\ast$buf, unsigned count)
+\begin{DoxyCompactList}\small\item\em Read a buffer from the N\-S16550 U\-A\-R\-T. \end{DoxyCompactList}\item 
+static int \hyperlink{ns16550_8c_a64ddf690b6672cef78a85e081db0c015}{ns16550\-\_\-write} (struct \hyperlink{structchardev__s}{chardev\-\_\-s} $\ast$cdev, char $\ast$buf, unsigned count)
+\begin{DoxyCompactList}\small\item\em Write in the U\-A\-R\-T. \end{DoxyCompactList}\item 
+void \hyperlink{ns16550_8c_ae454489b1aed9bb4342ee26403d4ee93}{ns16550\-\_\-isr} (unsigned irq, struct \hyperlink{structchardev__s}{chardev\-\_\-s} $\ast$cdev)
+\begin{DoxyCompactList}\small\item\em Interrupt Service Routine for N\-S16550 U\-A\-R\-T The I\-S\-R push received character into the software fifo (cdev-\/$>$fifo) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structchardev__ops__s}{chardev\-\_\-ops\-\_\-s} \hyperlink{ns16550_8c_a0ee065bfc31437abc862a858a0c0e641}{N\-S16550\-Ops}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{ns16550_8c_a1101518cb0dd45f0ab1e9fe8937b587f}{\index{ns16550.\-c@{ns16550.\-c}!ns16550\-\_\-init@{ns16550\-\_\-init}}
+\index{ns16550\-\_\-init@{ns16550\-\_\-init}!ns16550.c@{ns16550.\-c}}
+\subsubsection[{ns16550\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}static void ns16550\-\_\-init (
+\begin{DoxyParamCaption}
+\item[{struct {\bf chardev\-\_\-s} $\ast$}]{cdev, }
+\item[{unsigned}]{address, }
+\item[{unsigned}]{baudrate}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{ns16550_8c_a1101518cb0dd45f0ab1e9fe8937b587f}
+
+
+N\-S16550 U\-A\-R\-T initialization The procedure is the following\-: 
+
+\begin{DoxyVerb}         * Init the baudrate through de DLAB registers 
+         * Configure register: 8bits word, no parity check, 1 stop bit
+         * Enable interrupts
+         * Disable FIFO
+\end{DoxyVerb}
+ 
+\begin{DoxyParams}{Parameters}
+{\em cdev} & the char device \\
+\hline
+{\em address} & the base N\-S16550 M\-M\-I\-O address \\
+\hline
+{\em baudrate} & the baudrate of the U\-A\-R\-T \\
+\hline
+\end{DoxyParams}
+Can't find it elsewhere but xv6 assume a 1843200hz frequency for the uart T\-O\-D\-O\-: handle the P\-S\-D register
+
+Enable only the interrupt that tells us we receive a character T\-O\-D\-O\-: in the future, we could also manage de T\-H\-R Empty interrupt
+
+References chardev\-\_\-s\-::address, chardev\-\_\-s\-::baudrate, ns16550\-\_\-dlab\-\_\-regs\-\_\-s\-::dll, ns16550\-\_\-dlab\-\_\-regs\-\_\-s\-::dlm, chardev\-\_\-s\-::driver\-\_\-data, ns16550\-\_\-general\-\_\-regs\-\_\-s\-::fcr, ns16550\-\_\-general\-\_\-regs\-\_\-s\-::ier, kmalloc(), ns16550\-\_\-general\-\_\-regs\-\_\-s\-::lcr, N\-S16550\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-D\-L\-A\-B, N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-A\-T\-A\-\_\-\-R\-E\-A\-D\-Y, N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-8, N\-S16550\-Ops, and chardev\-\_\-s\-::ops.
+
+
+\begin{DoxyCode}
+27 \{
+28     cdev->\hyperlink{structchardev__s_a0b18bf4649bf11afe6ac3f50239144b8}{ops}        = &\hyperlink{ns16550_8c_a0ee065bfc31437abc862a858a0c0e641}{NS16550Ops};
+29     cdev->\hyperlink{structchardev__s_add1481ed869132ee70ac2f97038eeb4f}{address}    = \hyperlink{structfdt__reserve__entry_a1453319ff97e2d7c2ec0762cee56e98e}{address};
+30     cdev->\hyperlink{structchardev__s_ae6c6d2be5ba0dcf1639a4953e745d95e}{baudrate}   = baudrate;
+31     
+32     \textcolor{keyword}{struct }\hyperlink{structfifo__s}{fifo\_s} *fifo = \hyperlink{kmemory_8c_a5f52d7c56b7d67dc2f96b2e93dfdc7be}{kmalloc}(\textcolor{keyword}{sizeof}(\textcolor{keyword}{struct} \hyperlink{structfifo__s}{fifo\_s}));
+33     cdev->\hyperlink{structchardev__s_a2265cc57d5d141a86e93b0247db7022d}{driver\_data} = (\textcolor{keywordtype}{void}*) fifo;
+34 
+35     \textcolor{keyword}{volatile} \textcolor{keyword}{struct }\hyperlink{structns16550__general__regs__s}{ns16550\_general\_regs\_s} *gregs =
+36         (\textcolor{keyword}{struct }\hyperlink{structns16550__general__regs__s}{ns16550\_general\_regs\_s} *) address;
+37     \textcolor{keyword}{volatile} \textcolor{keyword}{struct }\hyperlink{structns16550__dlab__regs__s}{ns16550\_dlab\_regs\_s} *dregs =
+38         (\textcolor{keyword}{struct }\hyperlink{structns16550__dlab__regs__s}{ns16550\_dlab\_regs\_s} *) address;
+39 
+40     \textcolor{comment}{/* Set baudrate */}
+41     gregs->\hyperlink{structns16550__general__regs__s_a4681aada45f52eedb19c8d27bcba4681}{lcr} |= \hyperlink{ns16550_8h_a0eb8be372261d8637fe7c9e77fd320cf}{NS16550\_ENABLE\_DLAB};
+42 
+47     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{short} dl = 1843200 / (16 * baudrate);
+48     dregs->\hyperlink{structns16550__dlab__regs__s_a643629364b1584ebfb558b01974ac799}{dll} = dl & 0xff;
+49     dregs->\hyperlink{structns16550__dlab__regs__s_a5fdab6bd62f37d5bf79cc816acd32690}{dlm} = (dl & 0xff00) >> 8;
+50 
+51     \textcolor{comment}{/* 8 bits word length, no parity */}
+52     gregs->\hyperlink{structns16550__general__regs__s_a4681aada45f52eedb19c8d27bcba4681}{lcr} = \hyperlink{ns16550_8h_ae1e743308a2e2853ee1b3d04d791d18c}{NS16550\_WORD\_LENGTH\_8};
+53 
+58     gregs->\hyperlink{structns16550__general__regs__s_af3ab39032c2a64d4758bfdd2a6012e4a}{ier} = \hyperlink{ns16550_8h_ab4e3ccd1f0f57d4389b7966c734aaefd}{NS16550\_INT\_DATA\_READY}; 
+59     
+60     \textcolor{comment}{/* Disable hardware FIFO */}
+61     gregs->\hyperlink{structns16550__general__regs__s_aeca87c04598fd8e717b5514d61a58048}{fcr} = 0;
+62 \}
+\end{DoxyCode}
+\hypertarget{ns16550_8c_ae454489b1aed9bb4342ee26403d4ee93}{\index{ns16550.\-c@{ns16550.\-c}!ns16550\-\_\-isr@{ns16550\-\_\-isr}}
+\index{ns16550\-\_\-isr@{ns16550\-\_\-isr}!ns16550.c@{ns16550.\-c}}
+\subsubsection[{ns16550\-\_\-isr}]{\setlength{\rightskip}{0pt plus 5cm}void ns16550\-\_\-isr (
+\begin{DoxyParamCaption}
+\item[{unsigned}]{irq, }
+\item[{struct {\bf chardev\-\_\-s} $\ast$}]{cdev}
+\end{DoxyParamCaption}
+)}}\label{ns16550_8c_ae454489b1aed9bb4342ee26403d4ee93}
+
+
+Interrupt Service Routine for N\-S16550 U\-A\-R\-T The I\-S\-R push received character into the software fifo (cdev-\/$>$fifo) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em irq} & the irq linked to this I\-S\-R \\
+\hline
+{\em cdev} & the device linked to this I\-S\-R \\
+\hline
+\end{DoxyParams}
+
+
+References chardev\-\_\-s\-::address, chardev\-\_\-s\-::driver\-\_\-data, fifo\-\_\-push(), and ns16550\-\_\-general\-\_\-regs\-\_\-s\-::hr.
+
+
+
+Referenced by soc\-\_\-tty\-\_\-init().
+
+
+\begin{DoxyCode}
+117 \{
+118     \textcolor{keyword}{volatile} \textcolor{keyword}{struct }\hyperlink{structns16550__general__regs__s}{ns16550\_general\_regs\_s} *regs = 
+119         (\textcolor{keyword}{struct }\hyperlink{structns16550__general__regs__s}{ns16550\_general\_regs\_s} *) cdev->\hyperlink{structchardev__s_add1481ed869132ee70ac2f97038eeb4f}{address};
+120     
+121     \textcolor{keyword}{struct} \hyperlink{structfifo__s}{fifo\_s} *fifo = (\textcolor{keyword}{struct} \hyperlink{structfifo__s}{fifo\_s} *) cdev->\hyperlink{structchardev__s_a2265cc57d5d141a86e93b0247db7022d}{driver\_data};
+122     \textcolor{keywordtype}{char} c = regs->\hyperlink{structns16550__general__regs__s_a0648ee0f30ad5388707d65e8ff11df40}{hr};
+123     \hyperlink{klibc_8c_a9d82a64f65502ac9554fc0c28b8f1f44}{fifo\_push}(fifo, c);
+124 \}
+\end{DoxyCode}
+\hypertarget{ns16550_8c_aa0c873ae215d7bac2765f28eab606ba2}{\index{ns16550.\-c@{ns16550.\-c}!ns16550\-\_\-read@{ns16550\-\_\-read}}
+\index{ns16550\-\_\-read@{ns16550\-\_\-read}!ns16550.c@{ns16550.\-c}}
+\subsubsection[{ns16550\-\_\-read}]{\setlength{\rightskip}{0pt plus 5cm}static int ns16550\-\_\-read (
+\begin{DoxyParamCaption}
+\item[{struct {\bf chardev\-\_\-s} $\ast$}]{cdev, }
+\item[{char $\ast$}]{buf, }
+\item[{unsigned}]{count}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{ns16550_8c_aa0c873ae215d7bac2765f28eab606ba2}
+
+
+Read a buffer from the N\-S16550 U\-A\-R\-T. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cdev} & the chardev device corresponding to the N\-S16550 \\
+\hline
+{\em buf} & the buf to fill \\
+\hline
+{\em count} & number of bytes to read from the U\-A\-R\-T \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of bytes read 
+\end{DoxyReturn}
+
+
+References chardev\-\_\-s\-::driver\-\_\-data, F\-A\-I\-L\-U\-R\-E, fifo\-\_\-pull(), irq\-\_\-disable, irq\-\_\-enable, and thread\-\_\-yield().
+
+
+\begin{DoxyCode}
+72 \{
+73     \textcolor{keywordtype}{int} res = 0;
+74     \textcolor{keywordtype}{int} c;
+75 
+76     \textcolor{keyword}{struct }\hyperlink{structfifo__s}{fifo\_s} *fifo = (\textcolor{keyword}{struct }\hyperlink{structfifo__s}{fifo\_s} *) cdev->\hyperlink{structchardev__s_a2265cc57d5d141a86e93b0247db7022d}{driver\_data};
+77     while (count--) \{
+78         \textcolor{keywordflow}{while} (\hyperlink{klibc_8c_a95fd51dea7c9c02c2e2e1e9ad2333684}{fifo\_pull}(fifo, &c) == \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3aa5571864412c8275a2e18a931fddcaa6}{FAILURE}) \{                \textcolor{comment}{// wait for a char from the
+       keyboard}
+79             \hyperlink{kthread_8c_affe2eebf6749bc36765d45ff48c926b1}{thread\_yield}();                                     \textcolor{comment}{// nothing then we yield the
+       processor}
+80             \hyperlink{mips_2irq_8S_aaef40102bb274fecd542c306bb6a8e20}{irq\_enable}();                                       \textcolor{comment}{// get few characters if thread
+       is alone}
+81             \hyperlink{mips_2irq_8S_ab061b784fed23b72808250b4cd9276a3}{irq\_disable}();                                      \textcolor{comment}{// close enter}
+82         \}
+83         *buf++ = c;
+84         res++;
+85     \}
+86     \textcolor{keywordflow}{return} res;                                                 \textcolor{comment}{// return the number of char read}
+87 \}
+\end{DoxyCode}
+\hypertarget{ns16550_8c_a64ddf690b6672cef78a85e081db0c015}{\index{ns16550.\-c@{ns16550.\-c}!ns16550\-\_\-write@{ns16550\-\_\-write}}
+\index{ns16550\-\_\-write@{ns16550\-\_\-write}!ns16550.c@{ns16550.\-c}}
+\subsubsection[{ns16550\-\_\-write}]{\setlength{\rightskip}{0pt plus 5cm}static int ns16550\-\_\-write (
+\begin{DoxyParamCaption}
+\item[{struct {\bf chardev\-\_\-s} $\ast$}]{cdev, }
+\item[{char $\ast$}]{buf, }
+\item[{unsigned}]{count}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{ns16550_8c_a64ddf690b6672cef78a85e081db0c015}
+
+
+Write in the U\-A\-R\-T. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cdev} & the device struct corresponding to the U\-A\-R\-T \\
+\hline
+{\em buf} & the buffer to write \\
+\hline
+{\em count} & number of bytes to write \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of bytes written 
+\end{DoxyReturn}
+
+
+References chardev\-\_\-s\-::address, and ns16550\-\_\-general\-\_\-regs\-\_\-s\-::hr.
+
+
+\begin{DoxyCode}
+97 \{
+98     \textcolor{keywordtype}{int} res = 0;                                        \textcolor{comment}{// nb of written char}
+99     \textcolor{keyword}{volatile} \textcolor{keyword}{struct }\hyperlink{structns16550__general__regs__s}{ns16550\_general\_regs\_s} *regs = 
+100         (\textcolor{keyword}{struct }\hyperlink{structns16550__general__regs__s}{ns16550\_general\_regs\_s} *) cdev->\hyperlink{structchardev__s_add1481ed869132ee70ac2f97038eeb4f}{address};\textcolor{comment}{// access the
+       registers}
+101     
+102     while (count--) \{                                   \textcolor{comment}{// while there are chars}
+103         regs->\hyperlink{structns16550__general__regs__s_a0648ee0f30ad5388707d65e8ff11df40}{hr} = *buf;                                \textcolor{comment}{// send the char to TTY}
+104         res++;                                          \textcolor{comment}{// nb of written char}
+105         buf++;                                          \textcolor{comment}{// but is the next address in buffer}
+106     \}
+107     \textcolor{keywordflow}{return} res;
+108 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\hypertarget{ns16550_8c_a0ee065bfc31437abc862a858a0c0e641}{\index{ns16550.\-c@{ns16550.\-c}!N\-S16550\-Ops@{N\-S16550\-Ops}}
+\index{N\-S16550\-Ops@{N\-S16550\-Ops}!ns16550.c@{ns16550.\-c}}
+\subsubsection[{N\-S16550\-Ops}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf chardev\-\_\-ops\-\_\-s} N\-S16550\-Ops}}\label{ns16550_8c_a0ee065bfc31437abc862a858a0c0e641}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+= \{
+    .chardev\_init = \hyperlink{ns16550_8c_a1101518cb0dd45f0ab1e9fe8937b587f}{ns16550\_init},
+    .chardev\_read = \hyperlink{ns16550_8c_aa0c873ae215d7bac2765f28eab606ba2}{ns16550\_read},
+    .chardev\_write = \hyperlink{ns16550_8c_a64ddf690b6672cef78a85e081db0c015}{ns16550\_write}
+\}
+\end{DoxyCode}
+
+
+Referenced by ns16550\-\_\-init(), and soc\-\_\-tty\-\_\-init().
+

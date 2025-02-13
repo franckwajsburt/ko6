@@ -1,0 +1,115 @@
+\hypertarget{soclib-dma_8c}{\section{/users/enseig/franck/ko6/src/soft/hal/devices/dma/soclib-\/dma.c File Reference}
+\label{soclib-dma_8c}\index{/users/enseig/franck/ko6/src/soft/hal/devices/dma/soclib-\/dma.\-c@{/users/enseig/franck/ko6/src/soft/hal/devices/dma/soclib-\/dma.\-c}}
+}
+{\ttfamily \#include $<$hal/devices/dma/soclib-\/dma.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{soclib-dma_8c_a09eaa847325bb3b2a4962aba32aafe5f}{soclib\-\_\-dma\-\_\-init} (struct \hyperlink{structdma__s}{dma\-\_\-s} $\ast$dma, unsigned address)
+\begin{DoxyCompactList}\small\item\em Initialize the Soclib D\-M\-A device. \end{DoxyCompactList}\item 
+static void $\ast$ \hyperlink{soclib-dma_8c_ab9abafb825a0f65decf1fef1cc920d40}{soclib\-\_\-dma\-\_\-memcpy} (struct \hyperlink{structdma__s}{dma\-\_\-s} $\ast$dma, int $\ast$dst, int $\ast$src, unsigned n)
+\begin{DoxyCompactList}\small\item\em Use the D\-M\-A device to transfer a buffer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structdma__ops__s}{dma\-\_\-ops\-\_\-s} \hyperlink{soclib-dma_8c_a80351df0b0525153b84f567f1d5c77d1}{Soclib\-D\-M\-A\-Ops}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{soclib-dma_8c_a09eaa847325bb3b2a4962aba32aafe5f}{\index{soclib-\/dma.\-c@{soclib-\/dma.\-c}!soclib\-\_\-dma\-\_\-init@{soclib\-\_\-dma\-\_\-init}}
+\index{soclib\-\_\-dma\-\_\-init@{soclib\-\_\-dma\-\_\-init}!soclib-dma.c@{soclib-\/dma.\-c}}
+\subsubsection[{soclib\-\_\-dma\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}static void soclib\-\_\-dma\-\_\-init (
+\begin{DoxyParamCaption}
+\item[{struct {\bf dma\-\_\-s} $\ast$}]{dma, }
+\item[{unsigned}]{address}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{soclib-dma_8c_a09eaa847325bb3b2a4962aba32aafe5f}
+
+
+Initialize the Soclib D\-M\-A device. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dma} & the dma device \\
+\hline
+{\em address} & address of the device \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+nothing 
+\end{DoxyReturn}
+
+
+References dma\-\_\-s\-::address, dma\-\_\-s\-::ops, and Soclib\-D\-M\-A\-Ops.
+
+
+\begin{DoxyCode}
+22 \{
+23     dma->\hyperlink{structdma__s_a2917d363120e289973599db57ca11973}{address}    = address;
+24     dma->\hyperlink{structdma__s_ac213f02a6ace026dfcd3de21f16347ba}{ops}        = &\hyperlink{soclib-dma_8c_a80351df0b0525153b84f567f1d5c77d1}{SoclibDMAOps};
+25 \}
+\end{DoxyCode}
+\hypertarget{soclib-dma_8c_ab9abafb825a0f65decf1fef1cc920d40}{\index{soclib-\/dma.\-c@{soclib-\/dma.\-c}!soclib\-\_\-dma\-\_\-memcpy@{soclib\-\_\-dma\-\_\-memcpy}}
+\index{soclib\-\_\-dma\-\_\-memcpy@{soclib\-\_\-dma\-\_\-memcpy}!soclib-dma.c@{soclib-\/dma.\-c}}
+\subsubsection[{soclib\-\_\-dma\-\_\-memcpy}]{\setlength{\rightskip}{0pt plus 5cm}static void$\ast$ soclib\-\_\-dma\-\_\-memcpy (
+\begin{DoxyParamCaption}
+\item[{struct {\bf dma\-\_\-s} $\ast$}]{dma, }
+\item[{int $\ast$}]{dst, }
+\item[{int $\ast$}]{src, }
+\item[{unsigned}]{n}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{soclib-dma_8c_ab9abafb825a0f65decf1fef1cc920d40}
+
+
+Use the D\-M\-A device to transfer a buffer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dma} & the dma device \\
+\hline
+{\em dst} & destination buffer \\
+\hline
+{\em src} & source buffer \\
+\hline
+{\em n} & number of bytes to copy \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the pointer to the destination buffer 
+\end{DoxyReturn}
+
+
+References dma\-\_\-s\-::address, dcache\-\_\-buf\-\_\-invalidate, delay(), soclib\-\_\-dma\-\_\-regs\-\_\-s\-::dest, soclib\-\_\-dma\-\_\-regs\-\_\-s\-::len, and soclib\-\_\-dma\-\_\-regs\-\_\-s\-::src.
+
+
+\begin{DoxyCode}
+36 \{
+37     \hyperlink{riscv_2cache_8S_a55e097eac5768a878728c55450b75595}{dcache\_buf\_invalidate}(dst, n);                  \textcolor{comment}{// if there are lines of this
+       buffer in the cache, forget them}
+38     \textcolor{keyword}{volatile} \textcolor{keyword}{struct }\hyperlink{structsoclib__dma__regs__s}{soclib\_dma\_regs\_s} *regs = 
+39         (\textcolor{keyword}{struct }\hyperlink{structsoclib__dma__regs__s}{soclib\_dma\_regs\_s} *) dma->\hyperlink{structdma__s_a2917d363120e289973599db57ca11973}{address};
+40     regs->\hyperlink{structsoclib__dma__regs__s_aeaf5851499b0b6f4cc4352b30b25f288}{dest} = dst;                               \textcolor{comment}{// destination address}
+41     regs->\hyperlink{structsoclib__dma__regs__s_a5e158dc8ad7e09c37a6520c04c3ce797}{src} = \hyperlink{structsoclib__dma__regs__s_a5e158dc8ad7e09c37a6520c04c3ce797}{src};                                \textcolor{comment}{// source address}
+42     regs->\hyperlink{structsoclib__dma__regs__s_a878b0eea0f115a1978a9adb5f3baa24b}{len} = n;                                  \textcolor{comment}{// at last number of byte}
+43     while (regs->\hyperlink{structsoclib__dma__regs__s_a878b0eea0f115a1978a9adb5f3baa24b}{len}) \hyperlink{klibc_8c_a3643d04c418455ae56f321c6d12f8da8}{delay}(100);
+44     \textcolor{keywordflow}{return} dst;
+45 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\hypertarget{soclib-dma_8c_a80351df0b0525153b84f567f1d5c77d1}{\index{soclib-\/dma.\-c@{soclib-\/dma.\-c}!Soclib\-D\-M\-A\-Ops@{Soclib\-D\-M\-A\-Ops}}
+\index{Soclib\-D\-M\-A\-Ops@{Soclib\-D\-M\-A\-Ops}!soclib-dma.c@{soclib-\/dma.\-c}}
+\subsubsection[{Soclib\-D\-M\-A\-Ops}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf dma\-\_\-ops\-\_\-s} Soclib\-D\-M\-A\-Ops}}\label{soclib-dma_8c_a80351df0b0525153b84f567f1d5c77d1}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+= \{
+    .dma\_init = \hyperlink{soclib-dma_8c_a09eaa847325bb3b2a4962aba32aafe5f}{soclib\_dma\_init},
+    .dma\_memcpy = \hyperlink{soclib-dma_8c_ab9abafb825a0f65decf1fef1cc920d40}{soclib\_dma\_memcpy}
+\}
+\end{DoxyCode}
+
+
+Referenced by soc\-\_\-dma\-\_\-init(), and soclib\-\_\-dma\-\_\-init().
+

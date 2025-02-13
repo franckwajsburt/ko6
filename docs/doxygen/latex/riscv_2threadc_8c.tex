@@ -1,0 +1,48 @@
+\hypertarget{riscv_2threadc_8c}{\section{/users/enseig/franck/ko6/src/soft/hal/cpu/riscv/threadc.c File Reference}
+\label{riscv_2threadc_8c}\index{/users/enseig/franck/ko6/src/soft/hal/cpu/riscv/threadc.\-c@{/users/enseig/franck/ko6/src/soft/hal/cpu/riscv/threadc.\-c}}
+}
+{\ttfamily \#include $<$hal/cpu/riscv/context.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{riscv_2threadc_8c_af63f55ab4a65c97f8effe4ff21de0b1e}{thread\-\_\-context\-\_\-init} (int context\mbox{[}$\,$\mbox{]}, void $\ast$bootstrap, void $\ast$stack\-\_\-pointer)
+\begin{DoxyCompactList}\small\item\em Initialize the thread context at the very beginning. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{riscv_2threadc_8c_af63f55ab4a65c97f8effe4ff21de0b1e}{\index{riscv/threadc.\-c@{riscv/threadc.\-c}!thread\-\_\-context\-\_\-init@{thread\-\_\-context\-\_\-init}}
+\index{thread\-\_\-context\-\_\-init@{thread\-\_\-context\-\_\-init}!riscv/threadc.c@{riscv/threadc.\-c}}
+\subsubsection[{thread\-\_\-context\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void thread\-\_\-context\-\_\-init (
+\begin{DoxyParamCaption}
+\item[{int}]{context\mbox{[}$\,$\mbox{]}, }
+\item[{void $\ast$}]{bootstrap, }
+\item[{void $\ast$}]{stack\-\_\-pointer}
+\end{DoxyParamCaption}
+)}}\label{riscv_2threadc_8c_af63f55ab4a65c97f8effe4ff21de0b1e}
+
+
+Initialize the thread context at the very beginning. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em context} & thread\-\_\-context table \\
+\hline
+{\em bootstrap} & function without any argument, used just after the 1st thread\-\_\-context\-\_\-load \\
+\hline
+{\em stack\-\_\-pointer} & top stack pointer at the very beginning \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+side effect on the given thread context table 
+\end{DoxyReturn}
+mstatus of a user-\/thread should have\-: mstatus.\-M\-P\-I\-E = 0 (we don't want interrupts when we go back in M-\/mode) mstatus.\-M\-P\-P = M-\/mode (we want to go back in m-\/mode) mstatus.\-M\-I\-E = 1 (interrupts are enabled)
+
+References T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-M\-S\-T\-A\-T\-U\-S, T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-R\-A, T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S\-P, and T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S\-R.
+
+
+\begin{DoxyCode}
+20 \{
+27     context[\hyperlink{riscv_2context_8h_a06c1946b74acc4d62029b18086e78252}{TH\_CONTEXT\_MSTATUS}] = (3 << 11) | (1 << 3);
+28     context[\hyperlink{mips_2context_8h_a68ca4f685574d5124a207ed155304e72}{TH\_CONTEXT\_RA}] = (int)bootstrap;        \textcolor{comment}{// goto thread\_bootstrap}
+29     context[\hyperlink{mips_2context_8h_a144a505c445f1e70afbf4ff0196bf330}{TH\_CONTEXT\_SP}] = (int)stack\_pointer;    \textcolor{comment}{// stack beginning }
+30 \}\end{DoxyCode}

@@ -1,0 +1,534 @@
+\hypertarget{klibc_8c}{\section{/users/enseig/franck/ko6/src/soft/kernel/klibc.c File Reference}
+\label{klibc_8c}\index{/users/enseig/franck/ko6/src/soft/kernel/klibc.\-c@{/users/enseig/franck/ko6/src/soft/kernel/klibc.\-c}}
+}
+{\ttfamily \#include $<$kernel/klibc.\-h$>$}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{klibc_8c_a61a6808df75b050d8f8966eb68c10f2a}{randseed}~$\ast$(\hyperlink{kthread_8h_ac8ecc48f4f6134c6118c90a593b187bc}{thread\-\_\-krandseed}(\hyperlink{kthread_8h_a1da5431310f6068f6d1113c402eff5f8}{Thread\-Current}))   /$\ast$ Thread Local Storage for the kernel $\ast$/
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{klibc_8c_ae23144bcbb8e3742b00eb687c36654d1}{rand} (void)
+\begin{DoxyCompactList}\small\item\em random int generator F\-I\-X\-M\-E must be replaced by /dev/urandom \href{https://en.wikipedia.org/wiki/Linear_congruential_generator}{\tt https\-://en.\-wikipedia.\-org/wiki/\-Linear\-\_\-congruential\-\_\-generator} (glibc generator) \end{DoxyCompactList}\item 
+void \hyperlink{klibc_8c_a210f1bb7dc29a87394a25027e4231004}{srand} (unsigned seed)
+\begin{DoxyCompactList}\small\item\em allow to define a specific random suite \end{DoxyCompactList}\item 
+void \hyperlink{klibc_8c_a3643d04c418455ae56f321c6d12f8da8}{delay} (unsigned nbcycles)
+\begin{DoxyCompactList}\small\item\em stop until a delay mesured in cycles \end{DoxyCompactList}\item 
+int \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (char $\ast$fmt,...)
+\begin{DoxyCompactList}\small\item\em print a formated string to the T\-T\-Y0 this a simplified version which handles only\-: c, s, \$d, x and p \end{DoxyCompactList}\item 
+void \hyperlink{klibc_8c_a55e99c539cf7723ec15e856b7e0a8cee}{exit} (int status)
+\begin{DoxyCompactList}\small\item\em exit the application, thus never returns \end{DoxyCompactList}\item 
+int \hyperlink{klibc_8c_a4e745df503033a3297f150e02f27fabb}{tty\-\_\-read} (int tty, char $\ast$buf, unsigned count)
+\begin{DoxyCompactList}\small\item\em Wrapper function that selects the correct T\-T\-Y based on his number and call the read function. \end{DoxyCompactList}\item 
+int \hyperlink{klibc_8c_a528bdbe20981259789b7663d15278ba4}{tty\-\_\-write} (int tty, char $\ast$buf, unsigned count)
+\begin{DoxyCompactList}\small\item\em Wrapper function that selects the correct T\-T\-Y based on his number and call the write function. \end{DoxyCompactList}\item 
+int \hyperlink{klibc_8c_acbec5f4fe563ba73dd03635c2194b92a}{tty\-\_\-putc} (int tty, int c)
+\begin{DoxyCompactList}\small\item\em write a single char to the tty \end{DoxyCompactList}\item 
+int \hyperlink{klibc_8c_a67e98fd7f3b38a6b00f505ea7fc76bc1}{tty\-\_\-getc} (int tty)
+\begin{DoxyCompactList}\small\item\em read a single char from the tty \end{DoxyCompactList}\item 
+int \hyperlink{klibc_8c_a93cda08fc734f6ecd64519a4cf673f40}{tty\-\_\-puts} (int tty, char $\ast$buf)
+\begin{DoxyCompactList}\small\item\em send all char of a buffer to the tty until a 0 is found \end{DoxyCompactList}\item 
+int \hyperlink{klibc_8c_aebeb4a7ee9e0b0506d4ae55f66cb5422}{tty\-\_\-gets} (int tty, char $\ast$buf, int count)
+\begin{DoxyCompactList}\small\item\em read any char from the tty until \par
+ is found or count-\/1 is reached, add 0 at the end \end{DoxyCompactList}\item 
+int \hyperlink{klibc_8c_a9d82a64f65502ac9554fc0c28b8f1f44}{fifo\-\_\-push} (struct \hyperlink{structfifo__s}{fifo\-\_\-s} $\ast$fifo, char c)
+\begin{DoxyCompactList}\small\item\em push a character into the chardev's F\-I\-F\-O \end{DoxyCompactList}\item 
+int \hyperlink{klibc_8c_a95fd51dea7c9c02c2e2e1e9ad2333684}{fifo\-\_\-pull} (struct \hyperlink{structfifo__s}{fifo\-\_\-s} $\ast$fifo, int $\ast$c)
+\begin{DoxyCompactList}\small\item\em pop a character from the chardev's F\-I\-F\-O \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{klibc_8c_a61a6808df75b050d8f8966eb68c10f2a}{\index{klibc.\-c@{klibc.\-c}!randseed@{randseed}}
+\index{randseed@{randseed}!klibc.c@{klibc.\-c}}
+\subsubsection[{randseed}]{\setlength{\rightskip}{0pt plus 5cm}\#define randseed~$\ast$({\bf thread\-\_\-krandseed}({\bf Thread\-Current}))   /$\ast$ Thread Local Storage for the kernel $\ast$/}}\label{klibc_8c_a61a6808df75b050d8f8966eb68c10f2a}
+
+
+Referenced by rand(), and srand().
+
+
+
+\subsection{Function Documentation}
+\hypertarget{klibc_8c_a3643d04c418455ae56f321c6d12f8da8}{\index{klibc.\-c@{klibc.\-c}!delay@{delay}}
+\index{delay@{delay}!klibc.c@{klibc.\-c}}
+\subsubsection[{delay}]{\setlength{\rightskip}{0pt plus 5cm}void delay (
+\begin{DoxyParamCaption}
+\item[{unsigned}]{nbcycles}
+\end{DoxyParamCaption}
+)}}\label{klibc_8c_a3643d04c418455ae56f321c6d12f8da8}
+
+
+stop until a delay mesured in cycles 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nbcycles} & number of cycle to wait \\
+\hline
+\end{DoxyParams}
+
+
+Referenced by soclib\-\_\-dma\-\_\-memcpy(), and soclib\-\_\-tty\-\_\-write().
+
+
+\begin{DoxyCode}
+29 \{
+30     \textcolor{keywordtype}{unsigned} old\_time, expected\_time;
+31 
+32     old\_time = \hyperlink{mips_2cpuregs_8S_af7e0f9f0eada9d28b46b4d1f7ae5b702}{clock} ();                        \textcolor{comment}{// get the number od cycles at first}
+33     expected\_time = old\_time + nbcycles;        \textcolor{comment}{// compute the number of cycles to reach}
+34     \textcolor{keywordflow}{while} (\hyperlink{mips_2cpuregs_8S_af7e0f9f0eada9d28b46b4d1f7ae5b702}{clock} () < expected\_time);           \textcolor{comment}{// wait for expected time}
+35 \}
+\end{DoxyCode}
+\hypertarget{klibc_8c_a55e99c539cf7723ec15e856b7e0a8cee}{\index{klibc.\-c@{klibc.\-c}!exit@{exit}}
+\index{exit@{exit}!klibc.c@{klibc.\-c}}
+\subsubsection[{exit}]{\setlength{\rightskip}{0pt plus 5cm}void exit (
+\begin{DoxyParamCaption}
+\item[{int}]{status}
+\end{DoxyParamCaption}
+)}}\label{klibc_8c_a55e99c539cf7723ec15e856b7e0a8cee}
+
+
+exit the application, thus never returns 
+
+
+\begin{DoxyParams}{Parameters}
+{\em status} & return value of the application \\
+\hline
+\end{DoxyParams}
+
+
+Referenced by \-\_\-start(), free(), main(), malloc\-\_\-init(), sched\-\_\-insert(), and usage().
+
+
+\begin{DoxyCode}
+49 \{
+50     \hyperlink{debug__on_8h_a9dea4233af3c516959b7255fbea5c79b}{PANIC\_IF}(\textcolor{keyword}{true},\textcolor{stringliteral}{"\(\backslash\)n\(\backslash\)nEXIT status = %d\(\backslash\)n"}, status); 
+51 \}
+\end{DoxyCode}
+\hypertarget{klibc_8c_a95fd51dea7c9c02c2e2e1e9ad2333684}{\index{klibc.\-c@{klibc.\-c}!fifo\-\_\-pull@{fifo\-\_\-pull}}
+\index{fifo\-\_\-pull@{fifo\-\_\-pull}!klibc.c@{klibc.\-c}}
+\subsubsection[{fifo\-\_\-pull}]{\setlength{\rightskip}{0pt plus 5cm}int fifo\-\_\-pull (
+\begin{DoxyParamCaption}
+\item[{struct {\bf fifo\-\_\-s} $\ast$}]{fifo, }
+\item[{int $\ast$}]{c}
+\end{DoxyParamCaption}
+)}}\label{klibc_8c_a95fd51dea7c9c02c2e2e1e9ad2333684}
+
+
+pop a character from the chardev's F\-I\-F\-O 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fifo} & structure of fifo to store data \\
+\hline
+{\em c} & pointer on char to put the read char \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+S\-U\-C\-C\-E\-S\-S or F\-A\-I\-L\-U\-R\-E 
+\end{DoxyReturn}
+
+
+References fifo\-\_\-s\-::data, F\-A\-I\-L\-U\-R\-E, fifo\-\_\-s\-::pt\-\_\-read, fifo\-\_\-s\-::pt\-\_\-write, and S\-U\-C\-C\-E\-S\-S.
+
+
+
+Referenced by ns16550\-\_\-read(), and soclib\-\_\-tty\-\_\-read().
+
+
+\begin{DoxyCode}
+146 \{
+147     \textcolor{keywordflow}{if} (fifo->\hyperlink{structfifo__s_a19b8017ce5eae056136497331734326c}{pt\_read} != fifo->\hyperlink{structfifo__s_a32bc3dae5f99ee248fae7d2fde0f2a46}{pt\_write}) \{
+148         *c = fifo->\hyperlink{structfifo__s_a404947915e9c75b5cbbd89187eb80af5}{data} [fifo->\hyperlink{structfifo__s_a19b8017ce5eae056136497331734326c}{pt\_read}];
+149         fifo->\hyperlink{structfifo__s_a19b8017ce5eae056136497331734326c}{pt\_read} = (fifo->\hyperlink{structfifo__s_a19b8017ce5eae056136497331734326c}{pt\_read} + 1)% \textcolor{keyword}{sizeof}(fifo->\hyperlink{structfifo__s_a404947915e9c75b5cbbd89187eb80af5}{data});
+150         \textcolor{keywordflow}{return} \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3ac7f69f7c9e5aea9b8f54cf02870e2bf8}{SUCCESS};
+151     \}
+152     \textcolor{keywordflow}{return} \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3aa5571864412c8275a2e18a931fddcaa6}{FAILURE};
+153 \}
+\end{DoxyCode}
+\hypertarget{klibc_8c_a9d82a64f65502ac9554fc0c28b8f1f44}{\index{klibc.\-c@{klibc.\-c}!fifo\-\_\-push@{fifo\-\_\-push}}
+\index{fifo\-\_\-push@{fifo\-\_\-push}!klibc.c@{klibc.\-c}}
+\subsubsection[{fifo\-\_\-push}]{\setlength{\rightskip}{0pt plus 5cm}int fifo\-\_\-push (
+\begin{DoxyParamCaption}
+\item[{struct {\bf fifo\-\_\-s} $\ast$}]{fifo, }
+\item[{char}]{c}
+\end{DoxyParamCaption}
+)}}\label{klibc_8c_a9d82a64f65502ac9554fc0c28b8f1f44}
+
+
+push a character into the chardev's F\-I\-F\-O 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fifo} & structure of fifo to store data \\
+\hline
+{\em c} & char to write \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+S\-U\-C\-C\-E\-S\-S or F\-A\-I\-L\-U\-R\-E 
+\end{DoxyReturn}
+
+
+References fifo\-\_\-s\-::data, F\-A\-I\-L\-U\-R\-E, fifo\-\_\-s\-::pt\-\_\-read, fifo\-\_\-s\-::pt\-\_\-write, and S\-U\-C\-C\-E\-S\-S.
+
+
+
+Referenced by ns16550\-\_\-isr(), and soclib\-\_\-tty\-\_\-isr().
+
+
+\begin{DoxyCode}
+135 \{
+136     \textcolor{keywordtype}{unsigned} pt\_write\_next = (fifo->\hyperlink{structfifo__s_a32bc3dae5f99ee248fae7d2fde0f2a46}{pt\_write} + 1) % \textcolor{keyword}{sizeof}(fifo->\hyperlink{structfifo__s_a404947915e9c75b5cbbd89187eb80af5}{data});
+137     \textcolor{keywordflow}{if} (pt\_write\_next != fifo->\hyperlink{structfifo__s_a19b8017ce5eae056136497331734326c}{pt\_read}) \{
+138         fifo->\hyperlink{structfifo__s_a404947915e9c75b5cbbd89187eb80af5}{data} [fifo->\hyperlink{structfifo__s_a32bc3dae5f99ee248fae7d2fde0f2a46}{pt\_write}] = c;
+139         fifo->\hyperlink{structfifo__s_a32bc3dae5f99ee248fae7d2fde0f2a46}{pt\_write} = pt\_write\_next;
+140         \textcolor{keywordflow}{return} \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3ac7f69f7c9e5aea9b8f54cf02870e2bf8}{SUCCESS};
+141     \}
+142     \textcolor{keywordflow}{return} \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3aa5571864412c8275a2e18a931fddcaa6}{FAILURE};
+143 \}
+\end{DoxyCode}
+\hypertarget{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{\index{klibc.\-c@{klibc.\-c}!kprintf@{kprintf}}
+\index{kprintf@{kprintf}!klibc.c@{klibc.\-c}}
+\subsubsection[{kprintf}]{\setlength{\rightskip}{0pt plus 5cm}int kprintf (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{fmt, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}}\label{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}
+
+
+print a formated string to the T\-T\-Y0 this a simplified version which handles only\-: c, s, \$d, x and p 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fmt} & formated string \\
+\hline
+{\em ...} & variadic arguments, i.\-e. variable number of arguments \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of printed char 
+\end{DoxyReturn}
+
+
+References buffer, P\-R\-I\-N\-T\-F\-\_\-\-M\-A\-X, tty\-\_\-write(), and vsnprintf().
+
+
+
+Referenced by kdump(), kinit(), kmalloc\-\_\-print(), kmalloc\-\_\-test(), print\-\_\-ustack(), sched\-\_\-dump(), sched\-\_\-insert(), and unknown\-\_\-syscall().
+
+
+\begin{DoxyCode}
+38 \{
+39     \textcolor{keywordtype}{char} \hyperlink{ktools_8c_a527b76b33fb8beec7f2df7e0c032aef6}{buffer}[\hyperlink{klibc_8h_a75e4f21c7f6c3c00a8595ef83fdc1569}{PRINTF\_MAX}];
+40     va\_list ap;
+41     va\_start (ap, fmt);
+42     \textcolor{keywordtype}{int} res = \hyperlink{cstd_8c_ab56fe2f857808faedb93ce52c7010181}{vsnprintf}(buffer, \textcolor{keyword}{sizeof}(buffer), fmt, ap);
+43     \hyperlink{klibc_8c_a528bdbe20981259789b7663d15278ba4}{tty\_write}(0, buffer, res);
+44     va\_end(ap);
+45     \textcolor{keywordflow}{return} res;
+46 \}
+\end{DoxyCode}
+\hypertarget{klibc_8c_ae23144bcbb8e3742b00eb687c36654d1}{\index{klibc.\-c@{klibc.\-c}!rand@{rand}}
+\index{rand@{rand}!klibc.c@{klibc.\-c}}
+\subsubsection[{rand}]{\setlength{\rightskip}{0pt plus 5cm}int rand (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{klibc_8c_ae23144bcbb8e3742b00eb687c36654d1}
+
+
+random int generator F\-I\-X\-M\-E must be replaced by /dev/urandom \href{https://en.wikipedia.org/wiki/Linear_congruential_generator}{\tt https\-://en.\-wikipedia.\-org/wiki/\-Linear\-\_\-congruential\-\_\-generator} (glibc generator) 
+
+random int generator
+
+\begin{DoxyReturn}{Returns}
+a random int between 0 and R\-A\-N\-D\-\_\-\-M\-A\-X 
+\end{DoxyReturn}
+
+
+Referenced by kmalloc\-\_\-test(), t0\-\_\-fun(), and test\-\_\-ustack().
+
+
+\begin{DoxyCode}
+18 \{
+19     \hyperlink{klibc_8c_a61a6808df75b050d8f8966eb68c10f2a}{randseed} = \hyperlink{klibc_8c_a61a6808df75b050d8f8966eb68c10f2a}{randseed} * 1664525 + 1013904223; \textcolor{comment}{// Numerical Recipes}
+20     \textcolor{keywordflow}{return} (\hyperlink{klibc_8c_a61a6808df75b050d8f8966eb68c10f2a}{randseed}>>1);
+21 \}
+\end{DoxyCode}
+\hypertarget{klibc_8c_a210f1bb7dc29a87394a25027e4231004}{\index{klibc.\-c@{klibc.\-c}!srand@{srand}}
+\index{srand@{srand}!klibc.c@{klibc.\-c}}
+\subsubsection[{srand}]{\setlength{\rightskip}{0pt plus 5cm}void srand (
+\begin{DoxyParamCaption}
+\item[{unsigned}]{seed}
+\end{DoxyParamCaption}
+)}}\label{klibc_8c_a210f1bb7dc29a87394a25027e4231004}
+
+
+allow to define a specific random suite 
+
+
+\begin{DoxyParams}{Parameters}
+{\em seed} & any integer \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+24 \{
+25     \hyperlink{klibc_8c_a61a6808df75b050d8f8966eb68c10f2a}{randseed} = seed;
+26 \}
+\end{DoxyCode}
+\hypertarget{klibc_8c_a67e98fd7f3b38a6b00f505ea7fc76bc1}{\index{klibc.\-c@{klibc.\-c}!tty\-\_\-getc@{tty\-\_\-getc}}
+\index{tty\-\_\-getc@{tty\-\_\-getc}!klibc.c@{klibc.\-c}}
+\subsubsection[{tty\-\_\-getc}]{\setlength{\rightskip}{0pt plus 5cm}int tty\-\_\-getc (
+\begin{DoxyParamCaption}
+\item[{int}]{tty}
+\end{DoxyParamCaption}
+)}}\label{klibc_8c_a67e98fd7f3b38a6b00f505ea7fc76bc1}
+
+
+read a single char from the tty 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tty} & tty number (between 0 and N\-T\-T\-Y\-S-\/1) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the read char 
+\end{DoxyReturn}
+
+
+References tty\-\_\-read(), and tty\-\_\-write().
+
+
+\begin{DoxyCode}
+85 \{
+86     \textcolor{keywordtype}{char} c;
+87     \hyperlink{klibc_8c_a4e745df503033a3297f150e02f27fabb}{tty\_read} (tty, &c, 1);                      \textcolor{comment}{// read only 1 char}
+88     \hyperlink{klibc_8c_a528bdbe20981259789b7663d15278ba4}{tty\_write} (tty, &c, 1);                     \textcolor{comment}{// loop back to the tty}
+89     \textcolor{keywordflow}{return} c;                                   \textcolor{comment}{// return the read char}
+90 \}
+\end{DoxyCode}
+\hypertarget{klibc_8c_aebeb4a7ee9e0b0506d4ae55f66cb5422}{\index{klibc.\-c@{klibc.\-c}!tty\-\_\-gets@{tty\-\_\-gets}}
+\index{tty\-\_\-gets@{tty\-\_\-gets}!klibc.c@{klibc.\-c}}
+\subsubsection[{tty\-\_\-gets}]{\setlength{\rightskip}{0pt plus 5cm}int tty\-\_\-gets (
+\begin{DoxyParamCaption}
+\item[{int}]{tty, }
+\item[{char $\ast$}]{buf, }
+\item[{int}]{count}
+\end{DoxyParamCaption}
+)}}\label{klibc_8c_aebeb4a7ee9e0b0506d4ae55f66cb5422}
+
+
+read any char from the tty until \par
+ is found or count-\/1 is reached, add 0 at the end 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tty} & tty number (between 0 and N\-T\-T\-Y\-S-\/1) \\
+\hline
+{\em buf} & buffer where the read char are put \\
+\hline
+{\em count} & buffer size \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the number of read chars 
+\end{DoxyReturn}
+
+
+References tty\-\_\-read(), and tty\-\_\-write().
+
+
+\begin{DoxyCode}
+100 \{
+101     \textcolor{comment}{// to make the backspace, we use ANSI codes : https://www.wikiwand.com/en/ANSI\_escape\_code}
+102     \textcolor{keywordtype}{char} *DEL = \textcolor{stringliteral}{"\(\backslash\)033[D \(\backslash\)033[D"};                \textcolor{comment}{// move left, then write ' ' and move left}
+103     \textcolor{keywordtype}{int} res = 0;
+104     count--;                                    \textcolor{comment}{// we need to add a NUL (0) char at the end}
+105     \textcolor{keywordtype}{char} c=0;
+106 
+107     \textcolor{keywordflow}{while} ((count != 0) && (c != \textcolor{charliteral}{'\(\backslash\)n'})) \{       \textcolor{comment}{// as long as we can or need to get a char}
+108 
+109         \hyperlink{klibc_8c_a4e745df503033a3297f150e02f27fabb}{tty\_read} (tty, &c, 1);                  \textcolor{comment}{// read only 1 char}
+110         \textcolor{keywordflow}{if} (c == \textcolor{charliteral}{'\(\backslash\)r'})                          \textcolor{comment}{// if c is the carriage return (13)}
+111             \hyperlink{klibc_8c_a4e745df503033a3297f150e02f27fabb}{tty\_read} (tty, &c, 1);              \textcolor{comment}{// get the next that is line feed (10)}
+112 
+113         \textcolor{keywordflow}{if} ((c == 8)||(c == 127)) \{             \textcolor{comment}{// 8 = backspace, 127 = delete}
+114             \textcolor{keywordflow}{if} (res) \{                          \textcolor{comment}{// go back in the buffer if possible}
+115                 \hyperlink{klibc_8c_a528bdbe20981259789b7663d15278ba4}{tty\_write} (tty, DEL, 7);        \textcolor{comment}{// replace the current char by a ' ' (space)}
+116                 count++;                        \textcolor{comment}{// count is the remaining place}
+117                 buf--;                          \textcolor{comment}{// but is the next address in buffer}
+118                 res--;
+119             \}
+120             \textcolor{keywordflow}{continue};                           \textcolor{comment}{// ask for another key}
+121         \} \textcolor{keywordflow}{else}
+122             \hyperlink{klibc_8c_a528bdbe20981259789b7663d15278ba4}{tty\_write} (tty, &c, 1);             \textcolor{comment}{// loop back to the tty}
+123 
+124         *buf = c;                               \textcolor{comment}{// write the char into the buffer}
+125         buf++;                                  \textcolor{comment}{// increments the writing pointer}
+126         count--;                                \textcolor{comment}{// decrements the remaining space}
+127         res++;                                  \textcolor{comment}{// increments the read char}
+128     \}
+129     *buf = 0;                                   \textcolor{comment}{// add a last 0 to end the string}
+130 
+131     \textcolor{keywordflow}{return} res;                                 \textcolor{comment}{// returns the number of char read}
+132 \}
+\end{DoxyCode}
+\hypertarget{klibc_8c_acbec5f4fe563ba73dd03635c2194b92a}{\index{klibc.\-c@{klibc.\-c}!tty\-\_\-putc@{tty\-\_\-putc}}
+\index{tty\-\_\-putc@{tty\-\_\-putc}!klibc.c@{klibc.\-c}}
+\subsubsection[{tty\-\_\-putc}]{\setlength{\rightskip}{0pt plus 5cm}int tty\-\_\-putc (
+\begin{DoxyParamCaption}
+\item[{int}]{tty, }
+\item[{int}]{c}
+\end{DoxyParamCaption}
+)}}\label{klibc_8c_acbec5f4fe563ba73dd03635c2194b92a}
+
+
+write a single char to the tty 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tty} & tty number (between 0 and N\-T\-T\-Y\-S-\/1) \\
+\hline
+{\em c} & the char to write \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the written character 
+\end{DoxyReturn}
+
+
+References tty\-\_\-write().
+
+
+\begin{DoxyCode}
+79 \{
+80     \hyperlink{klibc_8c_a528bdbe20981259789b7663d15278ba4}{tty\_write} (tty, (\textcolor{keywordtype}{char} *)&c, 1);             \textcolor{comment}{// only write one char}
+81     \textcolor{keywordflow}{return} c;
+82 \}
+\end{DoxyCode}
+\hypertarget{klibc_8c_a93cda08fc734f6ecd64519a4cf673f40}{\index{klibc.\-c@{klibc.\-c}!tty\-\_\-puts@{tty\-\_\-puts}}
+\index{tty\-\_\-puts@{tty\-\_\-puts}!klibc.c@{klibc.\-c}}
+\subsubsection[{tty\-\_\-puts}]{\setlength{\rightskip}{0pt plus 5cm}int tty\-\_\-puts (
+\begin{DoxyParamCaption}
+\item[{int}]{tty, }
+\item[{char $\ast$}]{buf}
+\end{DoxyParamCaption}
+)}}\label{klibc_8c_a93cda08fc734f6ecd64519a4cf673f40}
+
+
+send all char of a buffer to the tty until a 0 is found 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tty} & tty number (between 0 and N\-T\-T\-Y\-S-\/1) \\
+\hline
+{\em buf} & buffer pointer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the number of written char 
+\end{DoxyReturn}
+
+
+References tty\-\_\-write().
+
+
+\begin{DoxyCode}
+93 \{
+94     \textcolor{keywordtype}{int} count = 0;                              \textcolor{comment}{// nb of written char}
+95     \textcolor{keywordflow}{while} (buf[count++]);                       \textcolor{comment}{// count the number of char}
+96     \textcolor{keywordflow}{return} \hyperlink{klibc_8c_a528bdbe20981259789b7663d15278ba4}{tty\_write} (tty, buf, count);         \textcolor{comment}{// send buf to the tty}
+97 \}
+\end{DoxyCode}
+\hypertarget{klibc_8c_a4e745df503033a3297f150e02f27fabb}{\index{klibc.\-c@{klibc.\-c}!tty\-\_\-read@{tty\-\_\-read}}
+\index{tty\-\_\-read@{tty\-\_\-read}!klibc.c@{klibc.\-c}}
+\subsubsection[{tty\-\_\-read}]{\setlength{\rightskip}{0pt plus 5cm}int tty\-\_\-read (
+\begin{DoxyParamCaption}
+\item[{int}]{tty, }
+\item[{char $\ast$}]{buf, }
+\item[{unsigned}]{count}
+\end{DoxyParamCaption}
+)}}\label{klibc_8c_a4e745df503033a3297f150e02f27fabb}
+
+
+Wrapper function that selects the correct T\-T\-Y based on his number and call the read function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tty} & the T\-T\-Y's number \\
+\hline
+{\em buf} & target buffer where the user's entry will be typed \\
+\hline
+{\em count} & number of bytes to write into buffer \\
+\hline
+\end{DoxyParams}
+
+
+References chardev\-\_\-count, chardev\-\_\-get, chardev\-\_\-ops\-\_\-s\-::chardev\-\_\-read, and chardev\-\_\-s\-::ops.
+
+
+
+Referenced by tty\-\_\-getc(), and tty\-\_\-gets().
+
+
+\begin{DoxyCode}
+54 \{
+55     \textcolor{comment}{/* If the tty is not available, default to 0 */}
+56     \textcolor{keywordflow}{if} (tty > \hyperlink{chardev_8h_affc080ca145977cb20f21a4133f3ef31}{chardev\_count}())
+57         tty = 0;
+58 
+59     \textcolor{keyword}{struct }\hyperlink{structchardev__s}{chardev\_s} *cdev = \hyperlink{chardev_8h_aec3bcb4e9317e90ffa993acdb89a90cd}{chardev\_get}(tty);
+60     \textcolor{keywordflow}{if} (cdev)
+61         \textcolor{keywordflow}{return} cdev->\hyperlink{structchardev__s_a0b18bf4649bf11afe6ac3f50239144b8}{ops}->\hyperlink{structchardev__ops__s_a5313da07e348354aa0f29c0a4f7f7511}{chardev\_read}(cdev, buf, count);
+62     \textcolor{comment}{// TODO: do a more specific error if the TTY is unavailable}
+63     \textcolor{keywordflow}{return} -1;
+64 \}
+\end{DoxyCode}
+\hypertarget{klibc_8c_a528bdbe20981259789b7663d15278ba4}{\index{klibc.\-c@{klibc.\-c}!tty\-\_\-write@{tty\-\_\-write}}
+\index{tty\-\_\-write@{tty\-\_\-write}!klibc.c@{klibc.\-c}}
+\subsubsection[{tty\-\_\-write}]{\setlength{\rightskip}{0pt plus 5cm}int tty\-\_\-write (
+\begin{DoxyParamCaption}
+\item[{int}]{tty, }
+\item[{char $\ast$}]{buf, }
+\item[{unsigned}]{count}
+\end{DoxyParamCaption}
+)}}\label{klibc_8c_a528bdbe20981259789b7663d15278ba4}
+
+
+Wrapper function that selects the correct T\-T\-Y based on his number and call the write function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tty} & the T\-T\-Y's number \\
+\hline
+{\em buf} & target buffer sent to the tty \\
+\hline
+{\em count} & number of bytes to read into buffer \\
+\hline
+\end{DoxyParams}
+
+
+References chardev\-\_\-count, chardev\-\_\-get, chardev\-\_\-ops\-\_\-s\-::chardev\-\_\-write, and chardev\-\_\-s\-::ops.
+
+
+
+Referenced by kprintf(), tty\-\_\-getc(), tty\-\_\-gets(), tty\-\_\-putc(), and tty\-\_\-puts().
+
+
+\begin{DoxyCode}
+67 \{
+68     \textcolor{comment}{/* If the tty is not available, default to 0 */}
+69     \textcolor{keywordflow}{if} (tty > \hyperlink{chardev_8h_affc080ca145977cb20f21a4133f3ef31}{chardev\_count}())
+70         tty = 0;
+71         
+72     \textcolor{keyword}{struct }\hyperlink{structchardev__s}{chardev\_s} *cdev = \hyperlink{chardev_8h_aec3bcb4e9317e90ffa993acdb89a90cd}{chardev\_get}(tty);
+73     \textcolor{keywordflow}{if} (cdev)
+74         \textcolor{keywordflow}{return} cdev->\hyperlink{structchardev__s_a0b18bf4649bf11afe6ac3f50239144b8}{ops}->\hyperlink{structchardev__ops__s_a2e4cf779f0295cc24fb52cfd53b3cd29}{chardev\_write}(cdev, buf, count);
+75     \textcolor{keywordflow}{return} -1;
+76 \}
+\end{DoxyCode}

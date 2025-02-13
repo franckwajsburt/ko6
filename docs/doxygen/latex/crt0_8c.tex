@@ -1,0 +1,132 @@
+\hypertarget{crt0_8c}{\section{/users/enseig/franck/ko6/src/soft/ulib/crt0.c File Reference}
+\label{crt0_8c}\index{/users/enseig/franck/ko6/src/soft/ulib/crt0.\-c@{/users/enseig/franck/ko6/src/soft/ulib/crt0.\-c}}
+}
+{\ttfamily \#include $<$libc.\-h$>$}\\*
+{\ttfamily \#include $<$pthread.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{crt0_8c_a840291bc02cba5474a4cb46a9b9566fe}{main} (void)
+\item 
+static void \hyperlink{crt0_8c_a8b67a6ff3f33fae9b3f1b142005c0bc2}{\-\_\-start} (void)
+\item 
+\hyperlink{crt0_8c_aafc0986b658358bb5dd781735136ecdd}{\-\_\-\-\_\-attribute\-\_\-\-\_\-} ((section(\char`\"{}.usermem\char`\"{})))
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{crt0_8c_a175fab0b9223d71c173fa84efe29d155}{\-\_\-\-\_\-bss\-\_\-origin}
+\item 
+int \hyperlink{crt0_8c_ac56d62881d5ef8cb3152d3e4a697e46a}{\-\_\-\-\_\-bss\-\_\-end}
+\item 
+int \hyperlink{crt0_8c_a0cd117d6424fe5147ae65e210daaf7e2}{\-\_\-\-\_\-data\-\_\-end}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{crt0_8c_aafc0986b658358bb5dd781735136ecdd}{\index{crt0.\-c@{crt0.\-c}!\-\_\-\-\_\-attribute\-\_\-\-\_\-@{\-\_\-\-\_\-attribute\-\_\-\-\_\-}}
+\index{\-\_\-\-\_\-attribute\-\_\-\-\_\-@{\-\_\-\-\_\-attribute\-\_\-\-\_\-}!crt0.c@{crt0.\-c}}
+\subsubsection[{\-\_\-\-\_\-attribute\-\_\-\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}\-\_\-\-\_\-attribute\-\_\-\-\_\- (
+\begin{DoxyParamCaption}
+\item[{(section(\char`\"{}.usermem\char`\"{}))}]{}
+\end{DoxyParamCaption}
+)}}\label{crt0_8c_aafc0986b658358bb5dd781735136ecdd}
+
+
+References \-\_\-\-\_\-bss\-\_\-end, \-\_\-\-\_\-data\-\_\-end, \-\_\-start(), N\-U\-L\-L, and \-\_\-usermem\-\_\-s\-::ustack\-\_\-end.
+
+
+\begin{DoxyCode}
+23                       \{
+24     .ustack\_end   = &\hyperlink{crt0_8c_a0cd117d6424fe5147ae65e210daaf7e2}{\_\_data\_end},\textcolor{comment}{// at the begining there is no stack.}
+25     .ustack\_beg   = &\hyperlink{crt0_8c_a0cd117d6424fe5147ae65e210daaf7e2}{\_\_data\_end},\textcolor{comment}{// last address of the free user data region}
+26     .uheap\_beg    = &\hyperlink{kmemory_8c_adbad17f740c2d7f2bc4833681c93c932}{\_\_bss\_end} ,\textcolor{comment}{// first address of the free user data region}
+27     .uheap\_end    = &\hyperlink{kmemory_8c_adbad17f740c2d7f2bc4833681c93c932}{\_\_bss\_end} ,\textcolor{comment}{// at the begining there is no heap.}
+28     .main\_thread  = \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL}       ,\textcolor{comment}{// initialized by thread\_create() in kernel/kinit.c}
+29     .main\_start   = \hyperlink{crt0_8c_a8b67a6ff3f33fae9b3f1b142005c0bc2}{\_start}      \textcolor{comment}{// \_start function of the process}
+30 \};
+\end{DoxyCode}
+\hypertarget{crt0_8c_a8b67a6ff3f33fae9b3f1b142005c0bc2}{\index{crt0.\-c@{crt0.\-c}!\-\_\-start@{\-\_\-start}}
+\index{\-\_\-start@{\-\_\-start}!crt0.c@{crt0.\-c}}
+\subsubsection[{\-\_\-start}]{\setlength{\rightskip}{0pt plus 5cm}void \-\_\-start (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{crt0_8c_a8b67a6ff3f33fae9b3f1b142005c0bc2}
+
+
+References \-\_\-\-\_\-bss\-\_\-end, \-\_\-\-\_\-bss\-\_\-origin, \-\_\-usermem, exit(), main(), malloc\-\_\-init(), and \-\_\-usermem\-\_\-s\-::uheap\-\_\-beg.
+
+
+
+Referenced by \-\_\-\-\_\-attribute\-\_\-\-\_\-().
+
+
+\begin{DoxyCode}
+33 \{
+34     \textcolor{keywordtype}{int} res;
+35 \textcolor{comment}{//    urandseed = 1;}
+36     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} *a = &\hyperlink{crt0_8c_a175fab0b9223d71c173fa84efe29d155}{\_\_bss\_origin}; a != &\hyperlink{kmemory_8c_adbad17f740c2d7f2bc4833681c93c932}{\_\_bss\_end}; *a++ = 0);
+37     \hyperlink{memory_8c_a79ae899c68cf906a377211d58937ee65}{malloc\_init} (\hyperlink{usermem_8h_af044184d28c9a8b78f17bd1d8e1059b4}{\_usermem}.\hyperlink{struct__usermem__s_a0ada31d8a3c5cd0a5d82fe3b0ea7bbe7}{uheap\_beg});
+38     res = \hyperlink{ktools_8c_a0ddf1224851353fc92bfbff6f499fa97}{main} ();
+39     \hyperlink{klibc_8c_a55e99c539cf7723ec15e856b7e0a8cee}{exit} (res);
+40 \}
+\end{DoxyCode}
+\hypertarget{crt0_8c_a840291bc02cba5474a4cb46a9b9566fe}{\index{crt0.\-c@{crt0.\-c}!main@{main}}
+\index{main@{main}!crt0.c@{crt0.\-c}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{crt0_8c_a840291bc02cba5474a4cb46a9b9566fe}
+
+
+References a0, a1, barrier, D\-E\-L\-A\-Y, fgets(), fprintf(), N\-U\-L\-L, pthread\-\_\-barrier\-\_\-init(), pthread\-\_\-create(), pthread\-\_\-join(), strlen(), t0, t0\-\_\-fun(), and t1.
+
+
+\begin{DoxyCode}
+39 \{
+40 
+41     \hyperlink{pthread_8c_ad99d3bb02ea2b98fbf98fdb24d32adb3}{pthread\_barrier\_init} (&\hyperlink{barrier_2main_8c_a779bfbbb688cf46720cfb65109ea4858}{barrier}, \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL}, 3);
+42 
+43     \hyperlink{riscv_2atomic_8S_a3d9d4d3857e499e04ab8a29c34ab004d}{a0}.delay = 100000;
+44     \hyperlink{riscv_2atomic_8S_a3d9d4d3857e499e04ab8a29c34ab004d}{a0}.message = \textcolor{stringliteral}{"bonjour"};
+45 
+46     \hyperlink{riscv_2atomic_8S_a722b1add1d9781e2115fb2fcc9d5541a}{a1}.delay = 500000;
+47     \hyperlink{riscv_2atomic_8S_a722b1add1d9781e2115fb2fcc9d5541a}{a1}.message = \textcolor{stringliteral}{"salut"};
+48 
+49     \hyperlink{pthread_8c_a57aa485fb15bd7f307777cef1a074d28}{pthread\_create} (&\hyperlink{riscv_2atomic_8S_ae9747d0e53eec3077df6659993460c34}{t0}, \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL}, \hyperlink{barrier_2main_8c_af9e2b5102bc8ba0b1a4f2619c2de1342}{t0\_fun}, &\hyperlink{riscv_2atomic_8S_a3d9d4d3857e499e04ab8a29c34ab004d}{a0});
+50     \hyperlink{pthread_8c_a57aa485fb15bd7f307777cef1a074d28}{pthread\_create} (&\hyperlink{riscv_2atomic_8S_ae9747d0e53eec3077df6659993460c34}{t0}, \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL}, \hyperlink{barrier_2main_8c_af9e2b5102bc8ba0b1a4f2619c2de1342}{t0\_fun}, &\hyperlink{riscv_2atomic_8S_a722b1add1d9781e2115fb2fcc9d5541a}{a1});
+51 
+52     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i=0;1;i++) \{
+53         \hyperlink{libc_8c_a4e7edf0e8df09b47566d572e19dad429}{fprintf} (0, \textcolor{stringliteral}{"[%d] app is alive\(\backslash\)n"}, i);
+54         \hyperlink{barrier_2main_8c_a356fe8020a7cded607b0e7879cff1962}{DELAY}(100000);
+55         \textcolor{comment}{//thread\_barrier\_wait( &barrier);}
+56     \}
+57 
+58     \textcolor{keywordtype}{void} * trash;
+59     \hyperlink{pthread_8c_a471c1323d7564c8a6244f105c0e3e8f1}{pthread\_join} (\hyperlink{riscv_2atomic_8S_ae7a3f7baeb6769a5ca90b5626bf66259}{t1}, &trash);
+60     \hyperlink{pthread_8c_a471c1323d7564c8a6244f105c0e3e8f1}{pthread\_join} (\hyperlink{riscv_2atomic_8S_ae9747d0e53eec3077df6659993460c34}{t0}, &trash);
+61     \textcolor{keywordflow}{return} 0;
+62 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\hypertarget{crt0_8c_ac56d62881d5ef8cb3152d3e4a697e46a}{\index{crt0.\-c@{crt0.\-c}!\-\_\-\-\_\-bss\-\_\-end@{\-\_\-\-\_\-bss\-\_\-end}}
+\index{\-\_\-\-\_\-bss\-\_\-end@{\-\_\-\-\_\-bss\-\_\-end}!crt0.c@{crt0.\-c}}
+\subsubsection[{\-\_\-\-\_\-bss\-\_\-end}]{\setlength{\rightskip}{0pt plus 5cm}int \-\_\-\-\_\-bss\-\_\-end}}\label{crt0_8c_ac56d62881d5ef8cb3152d3e4a697e46a}
+\hypertarget{crt0_8c_a175fab0b9223d71c173fa84efe29d155}{\index{crt0.\-c@{crt0.\-c}!\-\_\-\-\_\-bss\-\_\-origin@{\-\_\-\-\_\-bss\-\_\-origin}}
+\index{\-\_\-\-\_\-bss\-\_\-origin@{\-\_\-\-\_\-bss\-\_\-origin}!crt0.c@{crt0.\-c}}
+\subsubsection[{\-\_\-\-\_\-bss\-\_\-origin}]{\setlength{\rightskip}{0pt plus 5cm}int \-\_\-\-\_\-bss\-\_\-origin}}\label{crt0_8c_a175fab0b9223d71c173fa84efe29d155}
+
+
+Referenced by \-\_\-start(), and kinit().
+
+\hypertarget{crt0_8c_a0cd117d6424fe5147ae65e210daaf7e2}{\index{crt0.\-c@{crt0.\-c}!\-\_\-\-\_\-data\-\_\-end@{\-\_\-\-\_\-data\-\_\-end}}
+\index{\-\_\-\-\_\-data\-\_\-end@{\-\_\-\-\_\-data\-\_\-end}!crt0.c@{crt0.\-c}}
+\subsubsection[{\-\_\-\-\_\-data\-\_\-end}]{\setlength{\rightskip}{0pt plus 5cm}int \-\_\-\-\_\-data\-\_\-end}}\label{crt0_8c_a0cd117d6424fe5147ae65e210daaf7e2}
+
+
+Referenced by \-\_\-\-\_\-attribute\-\_\-\-\_\-().
+

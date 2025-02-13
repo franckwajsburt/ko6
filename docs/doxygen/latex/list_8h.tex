@@ -1,0 +1,666 @@
+\hypertarget{list_8h}{\section{/users/enseig/franck/ko6/src/soft/common/list.h File Reference}
+\label{list_8h}\index{/users/enseig/franck/ko6/src/soft/common/list.\-h@{/users/enseig/franck/ko6/src/soft/common/list.\-h}}
+}
+{\ttfamily \#include $<$stddef.\-h$>$}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structlist__s}{list\-\_\-s}
+\begin{DoxyCompactList}\small\item\em The 2-\/pointers structure to embed in the root of a list and in each of its items. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{list_8h_a0aadbcf4e4badd7e5a31a8aabcec6daf}{list\-\_\-next}(item)~\hyperlink{list_8h_a35730c98c7cb24a19bda48c5e2e0b0d3}{list\-\_\-first}(item)
+\item 
+\#define \hyperlink{list_8h_aa270667e2e26d173273883a1d47fcf82}{list\-\_\-prev}(item)~\hyperlink{list_8h_aaafdd3804ce1e477b679eacb0272d698}{list\-\_\-last}(item)
+\item 
+\#define \hyperlink{list_8h_ad759a32561623ec6b31549db8276e8b6}{list\-\_\-foreach}(R\-O\-O\-T, I\-T\-E\-M)
+\begin{DoxyCompactList}\small\item\em C instruction to iterate through a list of items from first to last. list\-\_\-foreach will iterate as many times as there are items in the R\-O\-O\-T list. At each iteration, I\-T\-E\-M is defined with the current item\-: the first, the second, until the last. If you need several foreach() in the same function, you have to create a block (by adding braces)\-: \{ foreach(root, item)\{ your instructions \} \} in order to handle the implicit local variables needed for \hyperlink{list_8h_ad759a32561623ec6b31549db8276e8b6}{list\-\_\-foreach()}. \end{DoxyCompactList}\item 
+\#define \hyperlink{list_8h_a619b7048bfa93b967009833c61dd84cf}{list\-\_\-foreach\-\_\-rev}(R\-O\-O\-T, I\-T\-E\-M)
+\begin{DoxyCompactList}\small\item\em C instruction to iterate through a list of items from last to first. list\-\_\-foreach will iterate as many times as there are items in the R\-O\-O\-T list. At each iteration, I\-T\-E\-M is defined with the current item\-: the first, the second, until the last. If you need several foreach() in the same function, you have to create a block (by adding braces)\-: \{ foreach(root, item)\{ your instructions \} \} in order to handle the implicit local variables needed for \hyperlink{list_8h_ad759a32561623ec6b31549db8276e8b6}{list\-\_\-foreach()}. \end{DoxyCompactList}\item 
+\#define \hyperlink{list_8h_a99f8755f2301e99adad3c8490df79052}{list\-\_\-item}(I\-T\-E\-M, T\-Y\-P\-E, M\-E\-M\-B\-E\-R)~((T\-Y\-P\-E$\ast$)((void$\ast$)I\-T\-E\-M-\/offsetof(T\-Y\-P\-E,M\-E\-M\-B\-E\-R)))
+\begin{DoxyCompactList}\small\item\em Macro to get the address of the container of a list item. \end{DoxyCompactList}\item 
+\#define \hyperlink{list_8h_a020537771516805913d776d5eafe0389}{list\-\_\-addnext}~\hyperlink{list_8h_ae9cb164fa78a37279635deb1a926a092}{list\-\_\-addfirst}
+\item 
+\#define \hyperlink{list_8h_a3a0435058783266d2fff304ce7d3ef31}{list\-\_\-addprev}~\hyperlink{list_8h_a116cfa18214dd2f855cff842bb14ca8f}{list\-\_\-addlast}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structlist__s}{list\-\_\-s} \hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t}
+\begin{DoxyCompactList}\small\item\em The 2-\/pointers structure to embed in the root of a list and in each of its items. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static unsigned \hyperlink{list_8h_a7c9c3af38594b844dac34c6656bdd7a0}{list\-\_\-isempty} (\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$root)
+\begin{DoxyCompactList}\small\item\em Tests if a list don't have any item. \end{DoxyCompactList}\item 
+static unsigned \hyperlink{list_8h_a0b3447d08e338c51bd5612b85ccc14a7}{list\-\_\-isfirst} (\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$root, \hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$item)
+\begin{DoxyCompactList}\small\item\em Tests if an item is the first item of the list root. \end{DoxyCompactList}\item 
+static unsigned \hyperlink{list_8h_af53e19082f656608b00a62b2c1479ea8}{list\-\_\-islast} (\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$root, \hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$item)
+\begin{DoxyCompactList}\small\item\em Tests if an item is the last item of the list root. \end{DoxyCompactList}\item 
+static \hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$ \hyperlink{list_8h_a35730c98c7cb24a19bda48c5e2e0b0d3}{list\-\_\-first} (\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$root)
+\begin{DoxyCompactList}\small\item\em Give the first item of the list, do not detache it. \end{DoxyCompactList}\item 
+static \hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$ \hyperlink{list_8h_aaafdd3804ce1e477b679eacb0272d698}{list\-\_\-last} (\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$root)
+\begin{DoxyCompactList}\small\item\em Give the last item of the list, do not detache it. \end{DoxyCompactList}\item 
+static void \hyperlink{list_8h_a4988c174e6ecc55436d5f0e3dbbb3980}{list\-\_\-init} (\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$root)
+\begin{DoxyCompactList}\small\item\em Initialize of the list root. \end{DoxyCompactList}\item 
+static void \hyperlink{list_8h_ae9cb164fa78a37279635deb1a926a092}{list\-\_\-addfirst} (\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$root, \hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$added\-\_\-item)
+\begin{DoxyCompactList}\small\item\em Add a new added item after the current item which is root the most often. then the added item is placed at the beginning of the list list\-\_\-addfirst and list\-\_\-addnext are synonymous, you can use either one. depending on the readability of the code. \end{DoxyCompactList}\item 
+static void \hyperlink{list_8h_a116cfa18214dd2f855cff842bb14ca8f}{list\-\_\-addlast} (\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$root, \hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$added\-\_\-item)
+\begin{DoxyCompactList}\small\item\em Add a new added item before the current item which is root the most often. then the added item is placed at the end of the list list\-\_\-addlast and list\-\_\-addprev are synonymous, you can use either one. depending on the readability of the code. \end{DoxyCompactList}\item 
+static \hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$ \hyperlink{list_8h_ac68d25438cd5f3cc2e5b04dbf174bf27}{list\-\_\-unlink} (\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$item)
+\begin{DoxyCompactList}\small\item\em Unlink (i.\-e. detach) an item of list. \end{DoxyCompactList}\item 
+static \hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$ \hyperlink{list_8h_a60162e4580a37bddf823ca73567011d8}{list\-\_\-getfirst} (\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$root)
+\begin{DoxyCompactList}\small\item\em Unlink (i.\-e. detach) the first item of list. \end{DoxyCompactList}\item 
+static \hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$ \hyperlink{list_8h_ab32a1c2580ccc334bb07c024d8e0a9c2}{list\-\_\-getlast} (\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$root)
+\begin{DoxyCompactList}\small\item\em Unlink (i.\-e. detach) the last item of list. \end{DoxyCompactList}\item 
+static void \hyperlink{list_8h_a5f5eff8aef857bc85aa98db11945e0dc}{list\-\_\-replace} (\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$old\-\_\-item, \hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$new\-\_\-item)
+\begin{DoxyCompactList}\small\item\em Replace an old item by a new one, or an old root by a new one. When params are roots, that can be used to move an entire list new\-\_\-item is not a list before to call list\-\_\-replace. \end{DoxyCompactList}\item 
+static unsigned \hyperlink{list_8h_a70e2ae6a0a122175e967b0cd6b2affce}{list\-\_\-nbobj} (\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$root)
+\begin{DoxyCompactList}\small\item\em calculate the number of object of a list \end{DoxyCompactList}\item 
+static void \hyperlink{list_8h_a275c693c553662ccb0736089f2159b7d}{list\-\_\-addsort} (\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$root, \hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$added\-\_\-item, int($\ast$cmp)(\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$A, \hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$B))
+\begin{DoxyCompactList}\small\item\em Add a new added item in a sorted list after root element. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{list_8h_a020537771516805913d776d5eafe0389}{\index{list.\-h@{list.\-h}!list\-\_\-addnext@{list\-\_\-addnext}}
+\index{list\-\_\-addnext@{list\-\_\-addnext}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-addnext}]{\setlength{\rightskip}{0pt plus 5cm}\#define list\-\_\-addnext~{\bf list\-\_\-addfirst}}}\label{list_8h_a020537771516805913d776d5eafe0389}
+\hypertarget{list_8h_a3a0435058783266d2fff304ce7d3ef31}{\index{list.\-h@{list.\-h}!list\-\_\-addprev@{list\-\_\-addprev}}
+\index{list\-\_\-addprev@{list\-\_\-addprev}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-addprev}]{\setlength{\rightskip}{0pt plus 5cm}\#define list\-\_\-addprev~{\bf list\-\_\-addlast}}}\label{list_8h_a3a0435058783266d2fff304ce7d3ef31}
+
+
+Referenced by list\-\_\-addsort().
+
+\hypertarget{list_8h_ad759a32561623ec6b31549db8276e8b6}{\index{list.\-h@{list.\-h}!list\-\_\-foreach@{list\-\_\-foreach}}
+\index{list\-\_\-foreach@{list\-\_\-foreach}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-foreach}]{\setlength{\rightskip}{0pt plus 5cm}\#define list\-\_\-foreach(
+\begin{DoxyParamCaption}
+\item[{}]{R\-O\-O\-T, }
+\item[{}]{I\-T\-E\-M}
+\end{DoxyParamCaption}
+)}}\label{list_8h_ad759a32561623ec6b31549db8276e8b6}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\hyperlink{structlist__s}{list\_t} * \_NEXT, * ITEM;                     \(\backslash\)
+    for(ITEM = (ROOT)->next, \_NEXT=(ITEM)->next;\(\backslash\)
+        (ITEM) != (ROOT);                       \(\backslash\)
+        ITEM = \_NEXT, \_NEXT = \_NEXT->\hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next} )
+\end{DoxyCode}
+
+
+C instruction to iterate through a list of items from first to last. list\-\_\-foreach will iterate as many times as there are items in the R\-O\-O\-T list. At each iteration, I\-T\-E\-M is defined with the current item\-: the first, the second, until the last. If you need several foreach() in the same function, you have to create a block (by adding braces)\-: \{ foreach(root, item)\{ your instructions \} \} in order to handle the implicit local variables needed for \hyperlink{list_8h_ad759a32561623ec6b31549db8276e8b6}{list\-\_\-foreach()}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em R\-O\-O\-T} & root of list \\
+\hline
+{\em I\-T\-E\-M} & \-: create a list\-\_\-t pointer, named \-\_\-\-I\-T\-E\-M \\
+\hline
+\end{DoxyParams}
+
+
+Referenced by dev\-\_\-get(), free\-\_\-ustack(), kfree(), kmalloc\-\_\-test(), list\-\_\-addsort(), list\-\_\-nbobj(), print\-\_\-ustack(), and thread\-\_\-barrier\-\_\-wait().
+
+\hypertarget{list_8h_a619b7048bfa93b967009833c61dd84cf}{\index{list.\-h@{list.\-h}!list\-\_\-foreach\-\_\-rev@{list\-\_\-foreach\-\_\-rev}}
+\index{list\-\_\-foreach\-\_\-rev@{list\-\_\-foreach\-\_\-rev}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-foreach\-\_\-rev}]{\setlength{\rightskip}{0pt plus 5cm}\#define list\-\_\-foreach\-\_\-rev(
+\begin{DoxyParamCaption}
+\item[{}]{R\-O\-O\-T, }
+\item[{}]{I\-T\-E\-M}
+\end{DoxyParamCaption}
+)}}\label{list_8h_a619b7048bfa93b967009833c61dd84cf}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\hyperlink{structlist__s}{list\_t} * \_NEXT, * ITEM;                     \(\backslash\)
+    for(ITEM = (ROOT)->prev, \_NEXT=(ITEM)->prev;\(\backslash\)
+        (ITEM) != (ROOT);                       \(\backslash\)
+        ITEM = \_NEXT, \_NEXT = \_NEXT->\hyperlink{structlist__s_af220645f4ec4f64798bc6d8ea9765185}{prev} )
+\end{DoxyCode}
+
+
+C instruction to iterate through a list of items from last to first. list\-\_\-foreach will iterate as many times as there are items in the R\-O\-O\-T list. At each iteration, I\-T\-E\-M is defined with the current item\-: the first, the second, until the last. If you need several foreach() in the same function, you have to create a block (by adding braces)\-: \{ foreach(root, item)\{ your instructions \} \} in order to handle the implicit local variables needed for \hyperlink{list_8h_ad759a32561623ec6b31549db8276e8b6}{list\-\_\-foreach()}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em R\-O\-O\-T} & root of list \\
+\hline
+{\em I\-T\-E\-M} & \-: create a list\-\_\-t pointer, named \-\_\-\-I\-T\-E\-M \\
+\hline
+\end{DoxyParams}
+
+
+Referenced by dev\-\_\-next\-\_\-no().
+
+\hypertarget{list_8h_a99f8755f2301e99adad3c8490df79052}{\index{list.\-h@{list.\-h}!list\-\_\-item@{list\-\_\-item}}
+\index{list\-\_\-item@{list\-\_\-item}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-item}]{\setlength{\rightskip}{0pt plus 5cm}\#define list\-\_\-item(
+\begin{DoxyParamCaption}
+\item[{}]{I\-T\-E\-M, }
+\item[{}]{T\-Y\-P\-E, }
+\item[{}]{M\-E\-M\-B\-E\-R}
+\end{DoxyParamCaption}
+)~((T\-Y\-P\-E$\ast$)((void$\ast$)I\-T\-E\-M-\/offsetof(T\-Y\-P\-E,M\-E\-M\-B\-E\-R)))}}\label{list_8h_a99f8755f2301e99adad3c8490df79052}
+
+
+Macro to get the address of the container of a list item. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em I\-T\-E\-M} & \-: pointer the list\-\_\-t variable created by foreach() \\
+\hline
+{\em T\-Y\-P\-E} & C tyoe of the container \\
+\hline
+{\em M\-E\-M\-B\-E\-R} & member name of the list item in the container T\-Y\-P\-E \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the container 
+\end{DoxyReturn}
+
+
+Referenced by dev\-\_\-get(), dev\-\_\-next\-\_\-no(), and thread\-\_\-item().
+
+\hypertarget{list_8h_a0aadbcf4e4badd7e5a31a8aabcec6daf}{\index{list.\-h@{list.\-h}!list\-\_\-next@{list\-\_\-next}}
+\index{list\-\_\-next@{list\-\_\-next}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-next}]{\setlength{\rightskip}{0pt plus 5cm}\#define list\-\_\-next(
+\begin{DoxyParamCaption}
+\item[{}]{item}
+\end{DoxyParamCaption}
+)~{\bf list\-\_\-first}(item)}}\label{list_8h_a0aadbcf4e4badd7e5a31a8aabcec6daf}
+\hypertarget{list_8h_aa270667e2e26d173273883a1d47fcf82}{\index{list.\-h@{list.\-h}!list\-\_\-prev@{list\-\_\-prev}}
+\index{list\-\_\-prev@{list\-\_\-prev}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-prev}]{\setlength{\rightskip}{0pt plus 5cm}\#define list\-\_\-prev(
+\begin{DoxyParamCaption}
+\item[{}]{item}
+\end{DoxyParamCaption}
+)~{\bf list\-\_\-last}(item)}}\label{list_8h_aa270667e2e26d173273883a1d47fcf82}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{list_8h_ad3b2684139c847cd572cb7b9679ce227}{\index{list.\-h@{list.\-h}!list\-\_\-t@{list\-\_\-t}}
+\index{list\-\_\-t@{list\-\_\-t}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf list\-\_\-s}  {\bf list\-\_\-t}}}\label{list_8h_ad3b2684139c847cd572cb7b9679ce227}
+
+
+The 2-\/pointers structure to embed in the root of a list and in each of its items. 
+
+
+
+\subsection{Function Documentation}
+\hypertarget{list_8h_ae9cb164fa78a37279635deb1a926a092}{\index{list.\-h@{list.\-h}!list\-\_\-addfirst@{list\-\_\-addfirst}}
+\index{list\-\_\-addfirst@{list\-\_\-addfirst}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-addfirst}]{\setlength{\rightskip}{0pt plus 5cm}static void list\-\_\-addfirst (
+\begin{DoxyParamCaption}
+\item[{{\bf list\-\_\-t} $\ast$}]{root, }
+\item[{{\bf list\-\_\-t} $\ast$}]{added\-\_\-item}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{list_8h_ae9cb164fa78a37279635deb1a926a092}
+
+
+Add a new added item after the current item which is root the most often. then the added item is placed at the beginning of the list list\-\_\-addfirst and list\-\_\-addnext are synonymous, you can use either one. depending on the readability of the code. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & is the current item \\
+\hline
+{\em added\-\_\-item} & is the added item \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+No return but the list has changed. 
+\end{DoxyReturn}
+
+
+References list\-\_\-s\-::next, and list\-\_\-s\-::prev.
+
+
+
+Referenced by kfree(), and list\-\_\-addlast().
+
+
+\begin{DoxyCode}
+204                                                                       \{
+205     added\_item->\hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next} = root->\hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next};
+206     added\_item->\hyperlink{structlist__s_af220645f4ec4f64798bc6d8ea9765185}{prev} = root;
+207     root->\hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next}->\hyperlink{structlist__s_af220645f4ec4f64798bc6d8ea9765185}{prev} = added\_item;
+208     root->\hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next} = added\_item;
+209 \}
+\end{DoxyCode}
+\hypertarget{list_8h_a116cfa18214dd2f855cff842bb14ca8f}{\index{list.\-h@{list.\-h}!list\-\_\-addlast@{list\-\_\-addlast}}
+\index{list\-\_\-addlast@{list\-\_\-addlast}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-addlast}]{\setlength{\rightskip}{0pt plus 5cm}static void list\-\_\-addlast (
+\begin{DoxyParamCaption}
+\item[{{\bf list\-\_\-t} $\ast$}]{root, }
+\item[{{\bf list\-\_\-t} $\ast$}]{added\-\_\-item}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{list_8h_a116cfa18214dd2f855cff842bb14ca8f}
+
+
+Add a new added item before the current item which is root the most often. then the added item is placed at the end of the list list\-\_\-addlast and list\-\_\-addprev are synonymous, you can use either one. depending on the readability of the code. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & the current item \\
+\hline
+{\em added\-\_\-item} & the added item \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+No return but the list has changed. 
+\end{DoxyReturn}
+
+
+References list\-\_\-addfirst(), and list\-\_\-s\-::prev.
+
+
+
+Referenced by dev\-\_\-alloc(), kmalloc(), kmalloc\-\_\-test(), list\-\_\-addsort(), memory\-\_\-init(), and thread\-\_\-addlast().
+
+
+\begin{DoxyCode}
+221                                                                      \{
+222     \hyperlink{list_8h_ae9cb164fa78a37279635deb1a926a092}{list\_addfirst}(root->\hyperlink{structlist__s_af220645f4ec4f64798bc6d8ea9765185}{prev}, added\_item);
+223 \}
+\end{DoxyCode}
+\hypertarget{list_8h_a275c693c553662ccb0736089f2159b7d}{\index{list.\-h@{list.\-h}!list\-\_\-addsort@{list\-\_\-addsort}}
+\index{list\-\_\-addsort@{list\-\_\-addsort}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-addsort}]{\setlength{\rightskip}{0pt plus 5cm}static void list\-\_\-addsort (
+\begin{DoxyParamCaption}
+\item[{{\bf list\-\_\-t} $\ast$}]{root, }
+\item[{{\bf list\-\_\-t} $\ast$}]{added\-\_\-item, }
+\item[{int($\ast$)({\bf list\-\_\-t} $\ast$A, {\bf list\-\_\-t} $\ast$B)}]{cmp}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{list_8h_a275c693c553662ccb0736089f2159b7d}
+
+
+Add a new added item in a sorted list after root element. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & is the beginng of the list \\
+\hline
+{\em added\-\_\-item} & is the added item into the sorted list \\
+\hline
+{\em cmp} & is a pointer to a function that compares items A and B, it returns (A -\/ B) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+No return but the list has changed, all items are sorted by increasing value 
+\end{DoxyReturn}
+
+
+References list\-\_\-addlast(), list\-\_\-addprev, and list\-\_\-foreach.
+
+
+
+Referenced by free\-\_\-ustack().
+
+
+\begin{DoxyCode}
+289                                                                                                    \{
+290     \hyperlink{list_8h_ad759a32561623ec6b31549db8276e8b6}{list\_foreach} (root, curr\_item) \{
+291         \textcolor{keywordflow}{if} (cmp (curr\_item, added\_item)>=0) \{
+292             \hyperlink{list_8h_a3a0435058783266d2fff304ce7d3ef31}{list\_addprev} (curr\_item, added\_item);
+293             \textcolor{keywordflow}{return};
+294         \}
+295     \}
+296     \hyperlink{list_8h_a116cfa18214dd2f855cff842bb14ca8f}{list\_addlast} (root, added\_item);
+297 \}
+\end{DoxyCode}
+\hypertarget{list_8h_a35730c98c7cb24a19bda48c5e2e0b0d3}{\index{list.\-h@{list.\-h}!list\-\_\-first@{list\-\_\-first}}
+\index{list\-\_\-first@{list\-\_\-first}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-first}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf list\-\_\-t}$\ast$ list\-\_\-first (
+\begin{DoxyParamCaption}
+\item[{{\bf list\-\_\-t} $\ast$}]{root}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{list_8h_a35730c98c7cb24a19bda48c5e2e0b0d3}
+
+
+Give the first item of the list, do not detache it. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & root of list \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the first elenent if there is, N\-U\-L\-L if the list is empty 
+\end{DoxyReturn}
+
+
+References list\-\_\-isempty(), list\-\_\-s\-::next, and N\-U\-L\-L.
+
+
+\begin{DoxyCode}
+127                                                   \{
+128     \textcolor{keywordflow}{return} (\hyperlink{list_8h_a7c9c3af38594b844dac34c6656bdd7a0}{list\_isempty}(root)) ? \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL} : root->\hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next};
+129 \}
+\end{DoxyCode}
+\hypertarget{list_8h_a60162e4580a37bddf823ca73567011d8}{\index{list.\-h@{list.\-h}!list\-\_\-getfirst@{list\-\_\-getfirst}}
+\index{list\-\_\-getfirst@{list\-\_\-getfirst}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-getfirst}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf list\-\_\-t}$\ast$ list\-\_\-getfirst (
+\begin{DoxyParamCaption}
+\item[{{\bf list\-\_\-t} $\ast$}]{root}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{list_8h_a60162e4580a37bddf823ca73567011d8}
+
+
+Unlink (i.\-e. detach) the first item of list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & a list root \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The unlinked item. 
+\end{DoxyReturn}
+
+
+References list\-\_\-isempty(), list\-\_\-unlink(), list\-\_\-s\-::next, and N\-U\-L\-L.
+
+
+
+Referenced by free\-\_\-ustack(), kmalloc(), kmalloc\-\_\-test(), and thread\-\_\-mutex\-\_\-unlock().
+
+
+\begin{DoxyCode}
+242                                                      \{
+243     \textcolor{keywordflow}{return} (\hyperlink{list_8h_a7c9c3af38594b844dac34c6656bdd7a0}{list\_isempty}(root)) ? \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL} : \hyperlink{list_8h_ac68d25438cd5f3cc2e5b04dbf174bf27}{list\_unlink} (root->
+      \hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next});
+244 \}
+\end{DoxyCode}
+\hypertarget{list_8h_ab32a1c2580ccc334bb07c024d8e0a9c2}{\index{list.\-h@{list.\-h}!list\-\_\-getlast@{list\-\_\-getlast}}
+\index{list\-\_\-getlast@{list\-\_\-getlast}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-getlast}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf list\-\_\-t}$\ast$ list\-\_\-getlast (
+\begin{DoxyParamCaption}
+\item[{{\bf list\-\_\-t} $\ast$}]{root}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{list_8h_ab32a1c2580ccc334bb07c024d8e0a9c2}
+
+
+Unlink (i.\-e. detach) the last item of list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & a list root \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The unlinked item. 
+\end{DoxyReturn}
+
+
+References list\-\_\-isempty(), list\-\_\-unlink(), N\-U\-L\-L, and list\-\_\-s\-::prev.
+
+
+
+Referenced by malloc\-\_\-ustack().
+
+
+\begin{DoxyCode}
+251                                                     \{
+252     \textcolor{keywordflow}{return} (\hyperlink{list_8h_a7c9c3af38594b844dac34c6656bdd7a0}{list\_isempty}(root)) ? \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL} : \hyperlink{list_8h_ac68d25438cd5f3cc2e5b04dbf174bf27}{list\_unlink} (root->
+      \hyperlink{structlist__s_af220645f4ec4f64798bc6d8ea9765185}{prev});
+253 \}
+\end{DoxyCode}
+\hypertarget{list_8h_a4988c174e6ecc55436d5f0e3dbbb3980}{\index{list.\-h@{list.\-h}!list\-\_\-init@{list\-\_\-init}}
+\index{list\-\_\-init@{list\-\_\-init}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}static void list\-\_\-init (
+\begin{DoxyParamCaption}
+\item[{{\bf list\-\_\-t} $\ast$}]{root}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{list_8h_a4988c174e6ecc55436d5f0e3dbbb3980}
+
+
+Initialize of the list root. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & a list root \\
+\hline
+\end{DoxyParams}
+
+
+References list\-\_\-s\-::next, and list\-\_\-s\-::prev.
+
+
+
+Referenced by kmalloc\-\_\-test(), list\-\_\-replace(), memory\-\_\-init(), thread\-\_\-barrier\-\_\-init(), thread\-\_\-create(), and thread\-\_\-mutex\-\_\-init().
+
+
+\begin{DoxyCode}
+191                                              \{
+192     root->\hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next} = root->\hyperlink{structlist__s_af220645f4ec4f64798bc6d8ea9765185}{prev} = root;
+193 \}
+\end{DoxyCode}
+\hypertarget{list_8h_a7c9c3af38594b844dac34c6656bdd7a0}{\index{list.\-h@{list.\-h}!list\-\_\-isempty@{list\-\_\-isempty}}
+\index{list\-\_\-isempty@{list\-\_\-isempty}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-isempty}]{\setlength{\rightskip}{0pt plus 5cm}static unsigned list\-\_\-isempty (
+\begin{DoxyParamCaption}
+\item[{{\bf list\-\_\-t} $\ast$}]{root}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{list_8h_a7c9c3af38594b844dac34c6656bdd7a0}
+
+
+Tests if a list don't have any item. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & root of list \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there is no item, false otherwise 
+\end{DoxyReturn}
+
+
+References list\-\_\-s\-::next.
+
+
+
+Referenced by kmalloc(), list\-\_\-first(), list\-\_\-getfirst(), list\-\_\-getlast(), and list\-\_\-last().
+
+
+\begin{DoxyCode}
+95                                                     \{
+96     \textcolor{keywordflow}{return} root == root->\hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next};
+97 \}
+\end{DoxyCode}
+\hypertarget{list_8h_a0b3447d08e338c51bd5612b85ccc14a7}{\index{list.\-h@{list.\-h}!list\-\_\-isfirst@{list\-\_\-isfirst}}
+\index{list\-\_\-isfirst@{list\-\_\-isfirst}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-isfirst}]{\setlength{\rightskip}{0pt plus 5cm}static unsigned list\-\_\-isfirst (
+\begin{DoxyParamCaption}
+\item[{{\bf list\-\_\-t} $\ast$}]{root, }
+\item[{{\bf list\-\_\-t} $\ast$}]{item}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{list_8h_a0b3447d08e338c51bd5612b85ccc14a7}
+
+
+Tests if an item is the first item of the list root. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & root of list \\
+\hline
+{\em item} & an item of the list \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if elmenent is the first one, false otherwise 
+\end{DoxyReturn}
+
+
+References list\-\_\-s\-::next.
+
+
+\begin{DoxyCode}
+105                                                                    \{
+106     \textcolor{keywordflow}{return} item == root->\hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next};
+107 \}
+\end{DoxyCode}
+\hypertarget{list_8h_af53e19082f656608b00a62b2c1479ea8}{\index{list.\-h@{list.\-h}!list\-\_\-islast@{list\-\_\-islast}}
+\index{list\-\_\-islast@{list\-\_\-islast}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-islast}]{\setlength{\rightskip}{0pt plus 5cm}static unsigned list\-\_\-islast (
+\begin{DoxyParamCaption}
+\item[{{\bf list\-\_\-t} $\ast$}]{root, }
+\item[{{\bf list\-\_\-t} $\ast$}]{item}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{list_8h_af53e19082f656608b00a62b2c1479ea8}
+
+
+Tests if an item is the last item of the list root. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & root of list \\
+\hline
+{\em item} & an item of the list \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if elmenent is the last one, false otherwise 
+\end{DoxyReturn}
+
+
+References list\-\_\-s\-::prev.
+
+
+\begin{DoxyCode}
+115                                                                    \{
+116     \textcolor{keywordflow}{return} item == root->\hyperlink{structlist__s_af220645f4ec4f64798bc6d8ea9765185}{prev};
+117 \}
+\end{DoxyCode}
+\hypertarget{list_8h_aaafdd3804ce1e477b679eacb0272d698}{\index{list.\-h@{list.\-h}!list\-\_\-last@{list\-\_\-last}}
+\index{list\-\_\-last@{list\-\_\-last}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-last}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf list\-\_\-t}$\ast$ list\-\_\-last (
+\begin{DoxyParamCaption}
+\item[{{\bf list\-\_\-t} $\ast$}]{root}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{list_8h_aaafdd3804ce1e477b679eacb0272d698}
+
+
+Give the last item of the list, do not detache it. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & root of list \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the last elenent if there is, N\-U\-L\-L if the list is empty 
+\end{DoxyReturn}
+
+
+References list\-\_\-isempty(), N\-U\-L\-L, and list\-\_\-s\-::prev.
+
+
+\begin{DoxyCode}
+137                                                  \{
+138     \textcolor{keywordflow}{return} (\hyperlink{list_8h_a7c9c3af38594b844dac34c6656bdd7a0}{list\_isempty}(root)) ? \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL} : root->\hyperlink{structlist__s_af220645f4ec4f64798bc6d8ea9765185}{prev};
+139 \}
+\end{DoxyCode}
+\hypertarget{list_8h_a70e2ae6a0a122175e967b0cd6b2affce}{\index{list.\-h@{list.\-h}!list\-\_\-nbobj@{list\-\_\-nbobj}}
+\index{list\-\_\-nbobj@{list\-\_\-nbobj}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-nbobj}]{\setlength{\rightskip}{0pt plus 5cm}static unsigned list\-\_\-nbobj (
+\begin{DoxyParamCaption}
+\item[{{\bf list\-\_\-t} $\ast$}]{root}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{list_8h_a70e2ae6a0a122175e967b0cd6b2affce}
+
+
+calculate the number of object of a list 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & root of list \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a number or 0 if the list is empty 
+\end{DoxyReturn}
+
+
+References list\-\_\-foreach.
+
+
+
+Referenced by kmalloc\-\_\-print().
+
+
+\begin{DoxyCode}
+276                                                   \{
+277     \textcolor{keywordtype}{size\_t} nbobj = 0;
+278     \hyperlink{list_8h_ad759a32561623ec6b31549db8276e8b6}{list\_foreach} (root, item) nbobj++;
+279     return nbobj;
+280 \}
+\end{DoxyCode}
+\hypertarget{list_8h_a5f5eff8aef857bc85aa98db11945e0dc}{\index{list.\-h@{list.\-h}!list\-\_\-replace@{list\-\_\-replace}}
+\index{list\-\_\-replace@{list\-\_\-replace}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-replace}]{\setlength{\rightskip}{0pt plus 5cm}static void list\-\_\-replace (
+\begin{DoxyParamCaption}
+\item[{{\bf list\-\_\-t} $\ast$}]{old\-\_\-item, }
+\item[{{\bf list\-\_\-t} $\ast$}]{new\-\_\-item}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{list_8h_a5f5eff8aef857bc85aa98db11945e0dc}
+
+
+Replace an old item by a new one, or an old root by a new one. When params are roots, that can be used to move an entire list new\-\_\-item is not a list before to call list\-\_\-replace. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em old\-\_\-item} & a list item to unlink, that can be also a root \\
+\hline
+{\em new\-\_\-item} & a list item to add, that can be also a root \\
+\hline
+\end{DoxyParams}
+
+
+References list\-\_\-init(), list\-\_\-s\-::next, and list\-\_\-s\-::prev.
+
+
+\begin{DoxyCode}
+262                                                                        \{
+263     old\_item->\hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next}->\hyperlink{structlist__s_af220645f4ec4f64798bc6d8ea9765185}{prev} = old\_item->\hyperlink{structlist__s_af220645f4ec4f64798bc6d8ea9765185}{prev}->\hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next} = new\_item ;
+264     new\_item->\hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next} = old\_item->\hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next};
+265     new\_item->\hyperlink{structlist__s_af220645f4ec4f64798bc6d8ea9765185}{prev} = old\_item->\hyperlink{structlist__s_af220645f4ec4f64798bc6d8ea9765185}{prev};
+266     \hyperlink{list_8h_a4988c174e6ecc55436d5f0e3dbbb3980}{list\_init}(old\_item);
+267 \}
+\end{DoxyCode}
+\hypertarget{list_8h_ac68d25438cd5f3cc2e5b04dbf174bf27}{\index{list.\-h@{list.\-h}!list\-\_\-unlink@{list\-\_\-unlink}}
+\index{list\-\_\-unlink@{list\-\_\-unlink}!list.h@{list.\-h}}
+\subsubsection[{list\-\_\-unlink}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf list\-\_\-t}$\ast$ list\-\_\-unlink (
+\begin{DoxyParamCaption}
+\item[{{\bf list\-\_\-t} $\ast$}]{item}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{list_8h_ac68d25438cd5f3cc2e5b04dbf174bf27}
+
+
+Unlink (i.\-e. detach) an item of list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em item} & the item to unlink \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The unlinked item (given in param) 
+\end{DoxyReturn}
+
+
+References list\-\_\-s\-::next, and list\-\_\-s\-::prev.
+
+
+
+Referenced by dev\-\_\-free(), kfree(), kmalloc\-\_\-test(), list\-\_\-getfirst(), list\-\_\-getlast(), and thread\-\_\-barrier\-\_\-wait().
+
+
+\begin{DoxyCode}
+231                                                    \{
+232     item->\hyperlink{structlist__s_af220645f4ec4f64798bc6d8ea9765185}{prev}->\hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next} = item->\hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next};
+233     item->\hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next}->\hyperlink{structlist__s_af220645f4ec4f64798bc6d8ea9765185}{prev} = item->\hyperlink{structlist__s_af220645f4ec4f64798bc6d8ea9765185}{prev};
+234     \textcolor{keywordflow}{return} item;
+235 \}
+\end{DoxyCode}

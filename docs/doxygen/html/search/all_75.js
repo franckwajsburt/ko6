@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['u16_5ft',['u16_t',['../kfs_8c.html#afc6499c1f28697aa3bfc2804d496fd11',1,'kfs.c']]],
+  ['u32_5ft',['u32_t',['../kfs_8c.html#a0c0a490ab7fa397be6c764a935cc5ea4',1,'kfs.c']]],
+  ['u8_5ft',['u8_t',['../kfs_8c.html#ae081489b4906f65a3cb18e9fbe9f8d23',1,'kfs.c']]],
+  ['uheap_5fbeg',['uheap_beg',['../struct__usermem__s.html#a0ada31d8a3c5cd0a5d82fe3b0ea7bbe7',1,'_usermem_s']]],
+  ['uheap_5fend',['uheap_end',['../struct__usermem__s.html#afc2d87db58cb56804172f98d124d3c05',1,'_usermem_s']]],
+  ['uint16_5ft',['uint16_t',['../libfdt__env_8h.html#a273cf69d639a59973b6019625df33e30',1,'libfdt_env.h']]],
+  ['uint32_5fmax',['UINT32_MAX',['../cstd_8h.html#ab5eb23180f7cc12b7d6c04a8ec067fdd',1,'cstd.h']]],
+  ['uint32_5ft',['uint32_t',['../libfdt__env_8h.html#a435d1572bf3f880d55459d9805097f62',1,'libfdt_env.h']]],
+  ['uint64_5ft',['uint64_t',['../libfdt__env_8h.html#aaa5d1cd013383c889537491c3cfd9aad',1,'libfdt_env.h']]],
+  ['uint8_5ft',['uint8_t',['../libfdt__env_8h.html#aba7bc1797add20fe3efdf37ced1182c5',1,'libfdt_env.h']]],
+  ['uint_5fmax',['UINT_MAX',['../cstd_8h.html#ac998ea02fbd821fc123d60445ce76f38',1,'cstd.h']]],
+  ['uintptr_5ft',['uintptr_t',['../libfdt__env_8h.html#a83242de74310b4aec3fc506bc3644211',1,'libfdt_env.h']]],
+  ['ulong_5fmax',['ULONG_MAX',['../cstd_8h.html#a41c51926a1997aab3503f9083935e06c',1,'cstd.h']]],
+  ['uncached_5fload',['uncached_load',['../cache_8h.html#abf3939f90cf715aaf2403a41f2c15623',1,'cache.h']]],
+  ['unknown_5fsyscall',['unknown_syscall',['../ksyscalls_8c.html#acc250850867ae5b7ad679ecbcbd85824',1,'ksyscalls.c']]],
+  ['unregister_5finterrupt',['unregister_interrupt',['../kirq_8c.html#a24b6c39fc1dc2637e3ef54514f60ac9a',1,'unregister_interrupt(unsigned irq):&#160;kirq.c'],['../kirq_8h.html#a24b6c39fc1dc2637e3ef54514f60ac9a',1,'unregister_interrupt(unsigned irq):&#160;kirq.c']]],
+  ['unused',['unused',['../structkfs__inode__s.html#a53daf3151e8bd7995cb4f10a9b2510c0',1,'kfs_inode_s::unused()'],['../structsoclib__tty__regs__s.html#a10fe1a4e54b9ada17beed24b9c659be1',1,'soclib_tty_regs_s::unused()'],['../structsoclib__dma__regs__s.html#a402da684971c594fccc19d816236524a',1,'soclib_dma_regs_s::unused()'],['../structsoclib__icu__regs__s.html#a45909716b5e6626bb1bbb1b94bb366ed',1,'soclib_icu_regs_s::unused()']]],
+  ['urandseed',['urandseed',['../usermem_8h.html#a68fb40ee7e282bc1523d39b68ef57c83',1,'usermem.h']]],
+  ['usage',['usage',['../ktools_8c.html#ae8605e2b78cd4a81b6c6b5c30cb7366a',1,'ktools.c']]],
+  ['usermem_2eh',['usermem.h',['../usermem_8h.html',1,'']]],
+  ['ustack_5fb',['ustack_b',['../structthread__s.html#a8d51270c2f7572479276f7629940c3ea',1,'thread_s']]],
+  ['ustack_5fbeg',['ustack_beg',['../struct__usermem__s.html#a2fd1c0d0e8502f93210c3a30d3746d06',1,'_usermem_s']]],
+  ['ustack_5fe',['ustack_e',['../structthread__s.html#a021e8a50ddb4a5978f18d6babfc4ea6e',1,'thread_s']]],
+  ['ustack_5fend',['ustack_end',['../struct__usermem__s.html#a2ff86fc41cdbe6063962b5be6aef49fc',1,'_usermem_s']]],
+  ['ustack_5fsize',['USTACK_SIZE',['../usermem_8h.html#ad77d03e18a9477ef16ff8c4ae3c8b43d',1,'usermem.h']]]
+];

@@ -1,0 +1,73 @@
+\hypertarget{structdma__ops__s}{\section{dma\-\_\-ops\-\_\-s Struct Reference}
+\label{structdma__ops__s}\index{dma\-\_\-ops\-\_\-s@{dma\-\_\-ops\-\_\-s}}
+}
+
+
+Functions prototypes of the D\-M\-A device, they should be implemented by a device driver. They serve as an interface between the kernel and the driver.  
+
+
+
+
+{\ttfamily \#include $<$dma.\-h$>$}
+
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+void($\ast$ \hyperlink{structdma__ops__s_aa1ac2356cd662860a73d46a0d140154f}{dma\-\_\-init} )(struct \hyperlink{structdma__s}{dma\-\_\-s} $\ast$dma, unsigned address)
+\begin{DoxyCompactList}\small\item\em Generic function that initialize a D\-M\-A device. \end{DoxyCompactList}\item 
+void $\ast$($\ast$ \hyperlink{structdma__ops__s_a4d6f4471ec92c929885e182d8efd1186}{dma\-\_\-memcpy} )(struct \hyperlink{structdma__s}{dma\-\_\-s} $\ast$dma, int $\ast$dst, int $\ast$src, unsigned n)
+\begin{DoxyCompactList}\small\item\em Generic function that copy a buffer from a memory location to another using a D\-M\-A device. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Functions prototypes of the D\-M\-A device, they should be implemented by a device driver. They serve as an interface between the kernel and the driver. 
+
+\subsection{Member Data Documentation}
+\hypertarget{structdma__ops__s_aa1ac2356cd662860a73d46a0d140154f}{\index{dma\-\_\-ops\-\_\-s@{dma\-\_\-ops\-\_\-s}!dma\-\_\-init@{dma\-\_\-init}}
+\index{dma\-\_\-init@{dma\-\_\-init}!dma_ops_s@{dma\-\_\-ops\-\_\-s}}
+\subsubsection[{dma\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void($\ast$ dma\-\_\-ops\-\_\-s\-::dma\-\_\-init)(struct {\bf dma\-\_\-s} $\ast$dma, unsigned address)}}\label{structdma__ops__s_aa1ac2356cd662860a73d46a0d140154f}
+
+
+Generic function that initialize a D\-M\-A device. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dma} & the dma device \\
+\hline
+{\em address} & the base address of the memory-\/mapped registers \\
+\hline
+\end{DoxyParams}
+
+
+Referenced by soc\-\_\-dma\-\_\-init().
+
+\hypertarget{structdma__ops__s_a4d6f4471ec92c929885e182d8efd1186}{\index{dma\-\_\-ops\-\_\-s@{dma\-\_\-ops\-\_\-s}!dma\-\_\-memcpy@{dma\-\_\-memcpy}}
+\index{dma\-\_\-memcpy@{dma\-\_\-memcpy}!dma_ops_s@{dma\-\_\-ops\-\_\-s}}
+\subsubsection[{dma\-\_\-memcpy}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$($\ast$ dma\-\_\-ops\-\_\-s\-::dma\-\_\-memcpy)(struct {\bf dma\-\_\-s} $\ast$dma, int $\ast$dst, int $\ast$src, unsigned n)}}\label{structdma__ops__s_a4d6f4471ec92c929885e182d8efd1186}
+
+
+Generic function that copy a buffer from a memory location to another using a D\-M\-A device. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dma} & the D\-M\-A device \\
+\hline
+{\em dst} & destination buffer \\
+\hline
+{\em src} & source buffer \\
+\hline
+{\em n} & number of bytes to write \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+destination buffer address 
+\end{DoxyReturn}
+
+
+Referenced by dma\-\_\-memcpy\-\_\-user().
+
+
+
+The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/users/enseig/franck/ko6/src/soft/hal/devices/\hyperlink{dma_8h}{dma.\-h}\end{DoxyCompactItemize}

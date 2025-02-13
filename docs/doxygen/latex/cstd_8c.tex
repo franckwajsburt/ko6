@@ -1,0 +1,884 @@
+\hypertarget{cstd_8c}{\section{/users/enseig/franck/ko6/src/soft/common/cstd.c File Reference}
+\label{cstd_8c}\index{/users/enseig/franck/ko6/src/soft/common/cstd.\-c@{/users/enseig/franck/ko6/src/soft/common/cstd.\-c}}
+}
+{\ttfamily \#include $<$common/cstd.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{cstd_8c_a00da14b6dfa98f18494ef149ce63457f}{wzero} (void $\ast$addr, size\-\_\-t n)
+\begin{DoxyCompactList}\small\item\em write 0 in a buffer \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{cstd_8c_a3459ebf29bb6519d0160ff500d7c997f}{memset} (void $\ast$s, int c, unsigned n)
+\begin{DoxyCompactList}\small\item\em set every byte in a buffer to a same value \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{cstd_8c_a40deeb5b928964e60d97b3b8fd8a9b33}{memcpy} (char $\ast$dest, const char $\ast$src, unsigned n)
+\begin{DoxyCompactList}\small\item\em copies buffer src to the buffer dest (the buffers must be disjoints) \end{DoxyCompactList}\item 
+int \hyperlink{cstd_8c_ace6c4869ab3af01c6f27eac47773917a}{memcmp} (const void $\ast$str1, const void $\ast$str2, size\-\_\-t n)
+\begin{DoxyCompactList}\small\item\em compare two buffers byte per byte \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{cstd_8c_a802c986820d3866639922b6bc9484f90}{memmove} (void $\ast$dest, const void $\ast$src, size\-\_\-t n)
+\begin{DoxyCompactList}\small\item\em copies buffer src to the buffer dest (the buffers can overlap) \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{cstd_8c_a7a1a96cef371f847b925fb1478e04080}{memchr} (const void $\ast$src, int c, size\-\_\-t n)
+\begin{DoxyCompactList}\small\item\em search byte in buffer \end{DoxyCompactList}\item 
+int \hyperlink{cstd_8c_a54684bded3e61e2d78d490650f9b706a}{strlen} (const char $\ast$buf)
+\begin{DoxyCompactList}\small\item\em calculates the length of the string s, excluding the terminating null byte \end{DoxyCompactList}\item 
+size\-\_\-t \hyperlink{cstd_8c_a7bd978e4981a80586c5b3a0dac22f0f2}{strnlen} (const char $\ast$s, size\-\_\-t n)
+\begin{DoxyCompactList}\small\item\em calculates the length of the string s, excluding the terminating null byte, up to the value n \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{cstd_8c_a12871ed234858ef0e363d2b8aa572fc1}{strchr} (const char $\ast$s, int c)
+\begin{DoxyCompactList}\small\item\em returns a pointer to the first occurrence of a character in a null-\/terminated string \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{cstd_8c_a0c05a458deff028ef4d4e64059098db4}{strrchr} (const char $\ast$s, int c)
+\begin{DoxyCompactList}\small\item\em returns a pointer to the last occurrence of a character in a null-\/terminated string \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{cstd_8c_a4803fe91b443c6cb7b6d21784aee33b0}{strncpy} (char $\ast$dest, char $\ast$src, unsigned n)
+\begin{DoxyCompactList}\small\item\em copies the string src, included the ending byte '\textbackslash{}0', to the buffer dest \end{DoxyCompactList}\item 
+int \hyperlink{cstd_8c_a11bd144d7d44914099a3aeddf1c8567d}{strcmp} (const char $\ast$\hyperlink{riscv_2threada_8S_afb19fa20b2f6715401f73ba9d4f1d177}{s1}, const char $\ast$\hyperlink{riscv_2threada_8S_a471d090c1a9e7f788067d9f57a793ec5}{s2})
+\begin{DoxyCompactList}\small\item\em compare two null-\/terminated strings \end{DoxyCompactList}\item 
+int \hyperlink{cstd_8c_ad4e7081d9e427a55fedef2ceab5f6244}{atoi} (char $\ast$val)
+\begin{DoxyCompactList}\small\item\em ascii to integer the number can be negative, the space at beginning are ignored \end{DoxyCompactList}\item 
+int \hyperlink{cstd_8c_ab56fe2f857808faedb93ce52c7010181}{vsnprintf} (char $\ast$\hyperlink{ktools_8c_a527b76b33fb8beec7f2df7e0c032aef6}{buffer}, unsigned size, char $\ast$fmt, va\-\_\-list ap)
+\begin{DoxyCompactList}\small\item\em write a formated string to the str buffer this a simplified version which handles only\-: c, s, \$d, x and p \end{DoxyCompactList}\item 
+int \hyperlink{cstd_8c_a0635d29317adeba9007a49500b2c5103}{snprintf} (char $\ast$str, unsigned size, char $\ast$fmt,...)
+\begin{DoxyCompactList}\small\item\em write a formated string to the str buffer this a simplified version which handles only\-: c, s, \$d, x and p \end{DoxyCompactList}\item 
+unsigned long int \hyperlink{cstd_8c_a507a276d9b76c167c63b862c7d52b1a9}{strtoul} (char $\ast$s, char $\ast$$\ast$endptr, int base)
+\begin{DoxyCompactList}\small\item\em convert a string into an unsigned 32bit number \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static char \hyperlink{cstd_8c_a41948c5d6e426e9dcefd5f4c6e83879a}{xdigit} \mbox{[}$\,$\mbox{]} = \char`\"{}0123456789abcdef\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{cstd_8c_ad4e7081d9e427a55fedef2ceab5f6244}{\index{cstd.\-c@{cstd.\-c}!atoi@{atoi}}
+\index{atoi@{atoi}!cstd.c@{cstd.\-c}}
+\subsubsection[{atoi}]{\setlength{\rightskip}{0pt plus 5cm}int atoi (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{val}
+\end{DoxyParamCaption}
+)}}\label{cstd_8c_ad4e7081d9e427a55fedef2ceab5f6244}
+
+
+ascii to integer the number can be negative, the space at beginning are ignored 
+
+
+\begin{DoxyParams}{Parameters}
+{\em val} & string to translate, with a decimal number \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the integer corresponding to val 
+\end{DoxyReturn}
+
+
+Referenced by getoption().
+
+
+\begin{DoxyCode}
+147 \{
+148     \textcolor{keywordtype}{int} res = 0;
+149     \textcolor{keywordtype}{int} neg = 0;
+150 
+151     \textcolor{keywordflow}{while} ((*val == \textcolor{charliteral}{' '}) || (*val == \textcolor{charliteral}{'\(\backslash\)t'}))     \textcolor{comment}{// look for the first non-space character}
+152         val++;
+153 
+154     \textcolor{keywordflow}{if} (*val == \textcolor{charliteral}{'-'}) \{                          \textcolor{comment}{// if negative}
+155         neg = 1;                                \textcolor{comment}{// register it}
+156         val++;                                  \textcolor{comment}{// go to the first real number}
+157     \} \textcolor{keywordflow}{else} \{
+158         neg = 0;                                \textcolor{comment}{// it is positive}
+159     \}
+160 
+161     \textcolor{keywordflow}{while} (*val) \{                              \textcolor{comment}{// while there is a char}
+162         res = (res * 10) + (*val - \textcolor{charliteral}{'0'});        \textcolor{comment}{// add  to the result}
+163         val++;
+164     \}
+165 
+166     \textcolor{keywordflow}{return} (neg) ? -res : res;                  \textcolor{comment}{// return the right result}
+167 \}
+\end{DoxyCode}
+\hypertarget{cstd_8c_a7a1a96cef371f847b925fb1478e04080}{\index{cstd.\-c@{cstd.\-c}!memchr@{memchr}}
+\index{memchr@{memchr}!cstd.c@{cstd.\-c}}
+\subsubsection[{memchr}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ memchr (
+\begin{DoxyParamCaption}
+\item[{const void $\ast$}]{src, }
+\item[{int}]{c, }
+\item[{size\-\_\-t}]{n}
+\end{DoxyParamCaption}
+)}}\label{cstd_8c_a7a1a96cef371f847b925fb1478e04080}
+
+
+search byte in buffer 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & buffer \\
+\hline
+{\em c} & byte to search \\
+\hline
+{\em n} & number of bytes to check in the buffer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+pointer to the byte in buffer if found, N\-U\-L\-L else 
+\end{DoxyReturn}
+
+
+References N\-U\-L\-L.
+
+
+
+Referenced by fdt\-\_\-get\-\_\-string(), fdt\-\_\-nodename\-\_\-eq\-\_\-(), fdt\-\_\-path\-\_\-offset\-\_\-namelen(), fdt\-\_\-stringlist\-\_\-contains(), overlay\-\_\-fixup\-\_\-phandle(), and overlay\-\_\-symbol\-\_\-update().
+
+
+\begin{DoxyCode}
+70 \{
+71     \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} *csrc = (\textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} *)src;
+72   
+73     \textcolor{keywordflow}{while} (n-- > 0) \{
+74         \textcolor{keywordflow}{if} (*csrc == c)
+75             \textcolor{keywordflow}{return} (\textcolor{keywordtype}{void} *)csrc;
+76         csrc++;
+77     \}
+78 
+79     \textcolor{keywordflow}{return} \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL};
+80 \}
+\end{DoxyCode}
+\hypertarget{cstd_8c_ace6c4869ab3af01c6f27eac47773917a}{\index{cstd.\-c@{cstd.\-c}!memcmp@{memcmp}}
+\index{memcmp@{memcmp}!cstd.c@{cstd.\-c}}
+\subsubsection[{memcmp}]{\setlength{\rightskip}{0pt plus 5cm}int memcmp (
+\begin{DoxyParamCaption}
+\item[{const void $\ast$}]{str1, }
+\item[{const void $\ast$}]{str2, }
+\item[{size\-\_\-t}]{n}
+\end{DoxyParamCaption}
+)}}\label{cstd_8c_ace6c4869ab3af01c6f27eac47773917a}
+
+
+compare two buffers byte per byte 
+
+
+\begin{DoxyParams}{Parameters}
+{\em str1} & first buffer \\
+\hline
+{\em str2} & second buffer \\
+\hline
+{\em n} & number of bytes to compare \\
+\hline
+\end{DoxyParams}
+
+
+References s1, and s2.
+
+
+
+Referenced by fdt\-\_\-find\-\_\-string\-\_\-(), fdt\-\_\-node\-\_\-offset\-\_\-by\-\_\-prop\-\_\-value(), fdt\-\_\-nodename\-\_\-eq\-\_\-(), fdt\-\_\-string\-\_\-eq\-\_\-(), fdt\-\_\-stringlist\-\_\-contains(), fdt\-\_\-stringlist\-\_\-search(), and overlay\-\_\-symbol\-\_\-update().
+
+
+\begin{DoxyCode}
+40 \{
+41     \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} *\hyperlink{riscv_2kpanica_8S_ab075f86d8c4bc4706ade8f8b5af13288}{s1} = (\textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char}*)str1;
+42     \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} *\hyperlink{riscv_2kpanica_8S_a08f4a1bf17498bc7df004b0c8b93cff1}{s2} = (\textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char}*)str2;
+43 
+44     \textcolor{keywordflow}{while} (n-- > 0) \{
+45         \textcolor{keywordflow}{if} (*s1++ != *s2++)
+46             \textcolor{keywordflow}{return} s1[-1] < s2[-1] ? -1 : 1;
+47     \}
+48     
+49     \textcolor{keywordflow}{return} 0;
+50 \}
+\end{DoxyCode}
+\hypertarget{cstd_8c_a40deeb5b928964e60d97b3b8fd8a9b33}{\index{cstd.\-c@{cstd.\-c}!memcpy@{memcpy}}
+\index{memcpy@{memcpy}!cstd.c@{cstd.\-c}}
+\subsubsection[{memcpy}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ memcpy (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{dest, }
+\item[{const char $\ast$}]{src, }
+\item[{unsigned}]{n}
+\end{DoxyParamCaption}
+)}}\label{cstd_8c_a40deeb5b928964e60d97b3b8fd8a9b33}
+
+
+copies buffer src to the buffer dest (the buffers must be disjoints) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dest} & destination buffer \\
+\hline
+{\em src} & source buffer \\
+\hline
+{\em n} & number of bytes to copy \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the dest buffer address 
+\end{DoxyReturn}
+
+
+Referenced by dma\-\_\-memcpy\-\_\-user(), fdt\-\_\-add\-\_\-string\-\_\-(), fdt\-\_\-add\-\_\-subnode\-\_\-namelen(), fdt\-\_\-appendprop(), fdt\-\_\-begin\-\_\-node(), fdt\-\_\-find\-\_\-add\-\_\-string\-\_\-(), fdt\-\_\-get\-\_\-path(), fdt\-\_\-property(), fdt\-\_\-set\-\_\-name(), fdt\-\_\-setprop(), fdt\-\_\-setprop\-\_\-inplace\-\_\-namelen\-\_\-partial(), overlay\-\_\-symbol\-\_\-update(), and overlay\-\_\-update\-\_\-local\-\_\-node\-\_\-references().
+
+
+\begin{DoxyCode}
+32 \{
+33     \textcolor{keywordtype}{char} *d = dest;
+34     \textcolor{keywordflow}{while} (n--)
+35         *d++ = *src++;
+36     \textcolor{keywordflow}{return} dest;
+37 \}
+\end{DoxyCode}
+\hypertarget{cstd_8c_a802c986820d3866639922b6bc9484f90}{\index{cstd.\-c@{cstd.\-c}!memmove@{memmove}}
+\index{memmove@{memmove}!cstd.c@{cstd.\-c}}
+\subsubsection[{memmove}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ memmove (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{dest, }
+\item[{const void $\ast$}]{src, }
+\item[{size\-\_\-t}]{n}
+\end{DoxyParamCaption}
+)}}\label{cstd_8c_a802c986820d3866639922b6bc9484f90}
+
+
+copies buffer src to the buffer dest (the buffers can overlap) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dest} & destination buffer \\
+\hline
+{\em src} & source buffer \\
+\hline
+{\em n} & number of bytes to copy \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the dest buffer address 
+\end{DoxyReturn}
+
+
+Referenced by fdt\-\_\-finish(), fdt\-\_\-move(), fdt\-\_\-open\-\_\-into(), fdt\-\_\-packblocks\-\_\-(), fdt\-\_\-resize(), fdt\-\_\-splice\-\_\-(), and kfs\-\_\-absolute\-\_\-pathname().
+
+
+\begin{DoxyCode}
+53 \{
+54     \textcolor{keywordflow}{if} (dest < src) \{
+55         \textcolor{keyword}{const} \textcolor{keywordtype}{char} *firsts = (\textcolor{keyword}{const} \textcolor{keywordtype}{char} *) src;
+56         \textcolor{keywordtype}{char} *firstd = (\textcolor{keywordtype}{char} *) dest;
+57         \textcolor{keywordflow}{while} (n--)
+58             *firstd++ = *firsts++;
+59     \} \textcolor{keywordflow}{else} \{
+60         \textcolor{keyword}{const} \textcolor{keywordtype}{char} *lasts = (\textcolor{keyword}{const} \textcolor{keywordtype}{char} *)src + (n-1);
+61         \textcolor{keywordtype}{char} *lastd = (\textcolor{keywordtype}{char} *)dest + (n-1);
+62         \textcolor{keywordflow}{while} (n--)
+63             *lastd-- = *lasts--;
+64     \}
+65 
+66     \textcolor{keywordflow}{return} dest;
+67 \}
+\end{DoxyCode}
+\hypertarget{cstd_8c_a3459ebf29bb6519d0160ff500d7c997f}{\index{cstd.\-c@{cstd.\-c}!memset@{memset}}
+\index{memset@{memset}!cstd.c@{cstd.\-c}}
+\subsubsection[{memset}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ memset (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{s, }
+\item[{int}]{c, }
+\item[{unsigned}]{n}
+\end{DoxyParamCaption}
+)}}\label{cstd_8c_a3459ebf29bb6519d0160ff500d7c997f}
+
+
+set every byte in a buffer to a same value 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & buffer address \\
+\hline
+{\em c} & value to write \\
+\hline
+{\em n} & number of bytes to write \\
+\hline
+\end{DoxyParams}
+
+
+Referenced by add\-\_\-new\-\_\-file(), fdt\-\_\-add\-\_\-subnode\-\_\-namelen(), fdt\-\_\-create\-\_\-with\-\_\-flags(), kfs\-\_\-absolute\-\_\-pathname(), kfs\-\_\-print\-\_\-files(), mess(), and split().
+
+
+\begin{DoxyCode}
+23 \{
+24     \textcolor{keywordtype}{char} *p = s;
+25 
+26     \textcolor{keywordflow}{while} (n--)
+27         *p++ = c;
+28     \textcolor{keywordflow}{return} s;
+29 \}
+\end{DoxyCode}
+\hypertarget{cstd_8c_a0635d29317adeba9007a49500b2c5103}{\index{cstd.\-c@{cstd.\-c}!snprintf@{snprintf}}
+\index{snprintf@{snprintf}!cstd.c@{cstd.\-c}}
+\subsubsection[{snprintf}]{\setlength{\rightskip}{0pt plus 5cm}int snprintf (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{buffer, }
+\item[{unsigned}]{size, }
+\item[{char $\ast$}]{fmt, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}}\label{cstd_8c_a0635d29317adeba9007a49500b2c5103}
+
+
+write a formated string to the str buffer this a simplified version which handles only\-: c, s, \$d, x and p 
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffer} & buffer of chars where string is formed \\
+\hline
+{\em size} & size of buffer \\
+\hline
+{\em fmt} & formated string \\
+\hline
+{\em ...} & variadic arguments, i.\-e. variable number of arguments \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of printed char 
+\end{DoxyReturn}
+
+
+References vsnprintf().
+
+
+\begin{DoxyCode}
+293 \{
+294     va\_list ap;
+295     va\_start (ap, fmt);
+296     \textcolor{keywordtype}{int} res = \hyperlink{cstd_8c_ab56fe2f857808faedb93ce52c7010181}{vsnprintf}(str, size, fmt, ap);
+297     va\_end(ap);
+298     \textcolor{keywordflow}{return} res;
+299 \}
+\end{DoxyCode}
+\hypertarget{cstd_8c_a12871ed234858ef0e363d2b8aa572fc1}{\index{cstd.\-c@{cstd.\-c}!strchr@{strchr}}
+\index{strchr@{strchr}!cstd.c@{cstd.\-c}}
+\subsubsection[{strchr}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ strchr (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{s, }
+\item[{int}]{c}
+\end{DoxyParamCaption}
+)}}\label{cstd_8c_a12871ed234858ef0e363d2b8aa572fc1}
+
+
+returns a pointer to the first occurrence of a character in a null-\/terminated string 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & string to search \\
+\hline
+{\em c} & searched character \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+pointer to the character in s if found, N\-U\-L\-L else 
+\end{DoxyReturn}
+
+
+Referenced by overlay\-\_\-symbol\-\_\-update().
+
+
+\begin{DoxyCode}
+101 \{
+102     \textcolor{keywordflow}{do} \{
+103         \textcolor{keywordflow}{if} (*s == c) \{
+104             \textcolor{keywordflow}{return} (\textcolor{keywordtype}{char}*)s;
+105         \}
+106     \} \textcolor{keywordflow}{while} (*s++);
+107   
+108     \textcolor{keywordflow}{return} (0);
+109 \}
+\end{DoxyCode}
+\hypertarget{cstd_8c_a11bd144d7d44914099a3aeddf1c8567d}{\index{cstd.\-c@{cstd.\-c}!strcmp@{strcmp}}
+\index{strcmp@{strcmp}!cstd.c@{cstd.\-c}}
+\subsubsection[{strcmp}]{\setlength{\rightskip}{0pt plus 5cm}int strcmp (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{s1, }
+\item[{const char $\ast$}]{s2}
+\end{DoxyParamCaption}
+)}}\label{cstd_8c_a11bd144d7d44914099a3aeddf1c8567d}
+
+
+compare two null-\/terminated strings 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s1} & first string \\
+\hline
+{\em s2} & second string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+return less than, equal to or greater than 0 if s1 is less than, equal to or greater than s2 
+\end{DoxyReturn}
+
+
+Referenced by getoption().
+
+
+\begin{DoxyCode}
+134 \{
+135     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} c1, c2;
+136     \textcolor{keywordflow}{do} \{
+137         c1 = (\textcolor{keywordtype}{unsigned} char) *\hyperlink{riscv_2kpanica_8S_ab075f86d8c4bc4706ade8f8b5af13288}{s1}++;
+138         c2 = (\textcolor{keywordtype}{unsigned} char) *\hyperlink{riscv_2kpanica_8S_a08f4a1bf17498bc7df004b0c8b93cff1}{s2}++;
+139         \textcolor{keywordflow}{if} (c1 == 0)
+140             \textcolor{keywordflow}{return} c1 - c2;
+141     \} \textcolor{keywordflow}{while} (c1 == c2);
+142 
+143     \textcolor{keywordflow}{return} c1 - c2;
+144 \}
+\end{DoxyCode}
+\hypertarget{cstd_8c_a54684bded3e61e2d78d490650f9b706a}{\index{cstd.\-c@{cstd.\-c}!strlen@{strlen}}
+\index{strlen@{strlen}!cstd.c@{cstd.\-c}}
+\subsubsection[{strlen}]{\setlength{\rightskip}{0pt plus 5cm}int strlen (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{buf}
+\end{DoxyParamCaption}
+)}}\label{cstd_8c_a54684bded3e61e2d78d490650f9b706a}
+
+
+calculates the length of the string s, excluding the terminating null byte 
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & input string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the number of characters 
+\end{DoxyReturn}
+
+
+Referenced by build(), fdt\-\_\-add\-\_\-string\-\_\-(), fdt\-\_\-add\-\_\-subnode(), fdt\-\_\-begin\-\_\-node(), fdt\-\_\-del\-\_\-last\-\_\-string\-\_\-(), fdt\-\_\-find\-\_\-add\-\_\-string\-\_\-(), fdt\-\_\-find\-\_\-string\-\_\-(), fdt\-\_\-get\-\_\-alias(), fdt\-\_\-get\-\_\-name(), fdt\-\_\-get\-\_\-property(), fdt\-\_\-get\-\_\-string(), fdt\-\_\-get\-\_\-symbol(), fdt\-\_\-getprop(), fdt\-\_\-path\-\_\-offset(), fdt\-\_\-set\-\_\-name(), fdt\-\_\-setprop\-\_\-inplace(), fdt\-\_\-stringlist\-\_\-contains(), fdt\-\_\-stringlist\-\_\-search(), fdt\-\_\-subnode\-\_\-offset(), kfs\-\_\-absolute\-\_\-pathname(), kfs\-\_\-print\-\_\-dentry(), main(), overlay\-\_\-symbol\-\_\-update(), overlay\-\_\-update\-\_\-local\-\_\-node\-\_\-references(), and split().
+
+
+\begin{DoxyCode}
+83 \{
+84     \textcolor{keywordtype}{int} n = 0;
+85     \textcolor{keywordflow}{if} (buf) \textcolor{keywordflow}{while} (*buf++) n++;
+86     \textcolor{keywordflow}{return} n;
+87 \}
+\end{DoxyCode}
+\hypertarget{cstd_8c_a4803fe91b443c6cb7b6d21784aee33b0}{\index{cstd.\-c@{cstd.\-c}!strncpy@{strncpy}}
+\index{strncpy@{strncpy}!cstd.c@{cstd.\-c}}
+\subsubsection[{strncpy}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ strncpy (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{dest, }
+\item[{char $\ast$}]{src, }
+\item[{unsigned}]{n}
+\end{DoxyParamCaption}
+)}}\label{cstd_8c_a4803fe91b443c6cb7b6d21784aee33b0}
+
+
+copies the string src, included the ending byte '\textbackslash{}0', to the buffer dest 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dest} & buffer where the source string must be copied \\
+\hline
+{\em src} & the source string \\
+\hline
+{\em n} & size of the dest buffer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the dest buffer address 
+\end{DoxyReturn}
+
+
+Referenced by kfs\-\_\-absolute\-\_\-pathname(), and split().
+
+
+\begin{DoxyCode}
+124 \{
+125     \textcolor{keywordtype}{unsigned} i;
+126     \textcolor{keywordflow}{for} (i = 0; i < n && src[i] != \textcolor{charliteral}{'\(\backslash\)0'}; i++)
+127         dest[i] = src[i];
+128     \textcolor{keywordflow}{for} (; i < n; i++)
+129         dest[i] = \textcolor{charliteral}{'\(\backslash\)0'};
+130     \textcolor{keywordflow}{return} dest;
+131 \}
+\end{DoxyCode}
+\hypertarget{cstd_8c_a7bd978e4981a80586c5b3a0dac22f0f2}{\index{cstd.\-c@{cstd.\-c}!strnlen@{strnlen}}
+\index{strnlen@{strnlen}!cstd.c@{cstd.\-c}}
+\subsubsection[{strnlen}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t strnlen (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{s, }
+\item[{size\-\_\-t}]{n}
+\end{DoxyParamCaption}
+)}}\label{cstd_8c_a7bd978e4981a80586c5b3a0dac22f0f2}
+
+
+calculates the length of the string s, excluding the terminating null byte, up to the value n 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & string \\
+\hline
+{\em n} & maximum number of characters \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the number of characters if it is less than n, n else 
+\end{DoxyReturn}
+
+
+Referenced by fdt\-\_\-stringlist\-\_\-count(), fdt\-\_\-stringlist\-\_\-get(), and fdt\-\_\-stringlist\-\_\-search().
+
+
+\begin{DoxyCode}
+90 \{
+91     \textcolor{keywordtype}{size\_t} i;
+92 
+93     \textcolor{keywordflow}{for} (i = 0; i < n; ++i)
+94         \textcolor{keywordflow}{if} (s[i] == \textcolor{charliteral}{'\(\backslash\)0'})
+95             \textcolor{keywordflow}{break};
+96     
+97     \textcolor{keywordflow}{return} i;
+98 \}
+\end{DoxyCode}
+\hypertarget{cstd_8c_a0c05a458deff028ef4d4e64059098db4}{\index{cstd.\-c@{cstd.\-c}!strrchr@{strrchr}}
+\index{strrchr@{strrchr}!cstd.c@{cstd.\-c}}
+\subsubsection[{strrchr}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ strrchr (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{s, }
+\item[{int}]{c}
+\end{DoxyParamCaption}
+)}}\label{cstd_8c_a0c05a458deff028ef4d4e64059098db4}
+
+
+returns a pointer to the last occurrence of a character in a null-\/terminated string 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & string to search \\
+\hline
+{\em c} & searched character \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+pointer to the character in s if found, N\-U\-L\-L else 
+\end{DoxyReturn}
+
+
+Referenced by fdt\-\_\-get\-\_\-name().
+
+
+\begin{DoxyCode}
+112 \{
+113     \textcolor{keywordtype}{char} *rtnval = 0;
+114 
+115     \textcolor{keywordflow}{do} \{
+116         \textcolor{keywordflow}{if} (*s == c)
+117             rtnval = (\textcolor{keywordtype}{char}*) s;
+118     \} \textcolor{keywordflow}{while} (*s++);
+119   
+120     \textcolor{keywordflow}{return} (rtnval);
+121 \}
+\end{DoxyCode}
+\hypertarget{cstd_8c_a507a276d9b76c167c63b862c7d52b1a9}{\index{cstd.\-c@{cstd.\-c}!strtoul@{strtoul}}
+\index{strtoul@{strtoul}!cstd.c@{cstd.\-c}}
+\subsubsection[{strtoul}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long int strtoul (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{s, }
+\item[{char $\ast$$\ast$}]{endptr, }
+\item[{int}]{base}
+\end{DoxyParamCaption}
+)}}\label{cstd_8c_a507a276d9b76c167c63b862c7d52b1a9}
+
+
+convert a string into an unsigned 32bit number 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & buffer containing the number representation \\
+\hline
+{\em endptr} & pointer to the last char read by the function, can be N\-U\-L\-L \\
+\hline
+{\em base} & base of the number contained in the string, if 0 the baase will be guessed from the number representation format \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the number extracted from the string 
+\end{DoxyReturn}
+
+
+References U\-L\-O\-N\-G\-\_\-\-M\-A\-X.
+
+
+
+Referenced by overlay\-\_\-fixup\-\_\-phandle().
+
+
+\begin{DoxyCode}
+303 \{
+304     \textcolor{keywordflow}{while} (*s == \textcolor{charliteral}{' '} 
+305         || *s == \textcolor{charliteral}{'\(\backslash\)t'} 
+306         || *s == \textcolor{charliteral}{'\(\backslash\)n'}
+307         || *s == \textcolor{charliteral}{'\(\backslash\)v'}
+308         || *s == \textcolor{charliteral}{'\(\backslash\)f'}
+309         || *s == \textcolor{charliteral}{'\(\backslash\)r'})                              \textcolor{comment}{// Skip the whitespaces}
+310         s++;
+311 
+312     \textcolor{keywordflow}{if} (*s == \textcolor{charliteral}{'+'})
+313         s++;
+314 
+315     \textcolor{keywordflow}{if} (!base) \{                                    \textcolor{comment}{// If base is zero, }
+316                                                     \textcolor{comment}{// try to guess the base from the format }
+317         \textcolor{keywordflow}{if} (*s == \textcolor{charliteral}{'0'}) \{
+318             s++;
+319             \textcolor{keywordflow}{if} (*s == \textcolor{charliteral}{'x'} || *s == \textcolor{charliteral}{'X'}) \{           \textcolor{comment}{// 0x, 0X prefix means hexadecimal}
+320                 s++;
+321                 base = 16;
+322             \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\textcolor{charliteral}{'0'} <= *s && *s <= \textcolor{charliteral}{'9'}) \{    \textcolor{comment}{// 0d with d a digit means octal}
+323                 base = 8;
+324             \}
+325         \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\textcolor{charliteral}{'0'} <= *s && *s <= \textcolor{charliteral}{'9'}) \{        \textcolor{comment}{// We found a digit, let's guess decimal}
+326             base = 10;
+327         \}
+328     \}
+329 
+330     \textcolor{keywordflow}{if} (!base) \{                                    \textcolor{comment}{// If after the guessing block we still }
+331                                                     \textcolor{comment}{// don't know what the base is, abort}
+332         \textcolor{keywordflow}{if} (endptr) *endptr = s;
+333         \textcolor{keywordflow}{return} 0;
+334     \}
+335 
+336     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} n = 0;
+337     \textcolor{keywordtype}{char} overflow = 0;
+338     \textcolor{keywordtype}{char} c;
+339     \textcolor{keywordflow}{while} (*s) \{
+340         c = *s;
+341         \textcolor{keywordflow}{if} (\textcolor{charliteral}{'0'} <= c && c <= \textcolor{charliteral}{'9'}) \{                 \textcolor{comment}{// Convert a char digit to its value}
+342             c -= \textcolor{charliteral}{'0'};
+343         \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\textcolor{charliteral}{'a'} <= c && c <= \textcolor{charliteral}{'z'}) \{          \textcolor{comment}{// Convert a char to its value }
+344                                                     \textcolor{comment}{// (A = a = 10, Z = z = 36)}
+345             c -= \textcolor{charliteral}{'a'};
+346             c += 10;
+347         \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\textcolor{charliteral}{'A'} <= c && c <= \textcolor{charliteral}{'Z'}) \{
+348             c -= \textcolor{charliteral}{'A'};
+349             c += 10;
+350         \} \textcolor{keywordflow}{else} \{
+351             \textcolor{keywordflow}{break};
+352         \}
+353 
+354         \textcolor{keywordflow}{if} (c >= base)                              \textcolor{comment}{// If the digit is outside the range of }
+355                                                     \textcolor{comment}{// the base (ex: g is outside hexadecimal}
+356                                                     \textcolor{comment}{// range) the number is not decodable}
+357             \textcolor{keywordflow}{break};
+358         
+359         \textcolor{keywordflow}{if} (n < \hyperlink{cstd_8h_a41c51926a1997aab3503f9083935e06c}{ULONG\_MAX} / base &&                 \textcolor{comment}{// Check that we can multiply with base}
+360             n * base < \hyperlink{cstd_8h_a41c51926a1997aab3503f9083935e06c}{ULONG\_MAX} - c) \{             \textcolor{comment}{// and add char without overflow}
+361             n *= base;
+362             n += c;
+363         \} \textcolor{keywordflow}{else} \{
+364             overflow = 1;
+365             \textcolor{keywordflow}{break};
+366         \}
+367 
+368         s++;
+369     \}
+370 
+371     \textcolor{keywordflow}{if} (endptr) *endptr = s;
+372     \textcolor{keywordflow}{if} (overflow)
+373         \textcolor{keywordflow}{return} 0;
+374 
+375     \textcolor{keywordflow}{return} n;
+376 \}
+\end{DoxyCode}
+\hypertarget{cstd_8c_ab56fe2f857808faedb93ce52c7010181}{\index{cstd.\-c@{cstd.\-c}!vsnprintf@{vsnprintf}}
+\index{vsnprintf@{vsnprintf}!cstd.c@{cstd.\-c}}
+\subsubsection[{vsnprintf}]{\setlength{\rightskip}{0pt plus 5cm}int vsnprintf (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{buffer, }
+\item[{unsigned}]{size, }
+\item[{char $\ast$}]{fmt, }
+\item[{va\-\_\-list}]{ap}
+\end{DoxyParamCaption}
+)}}\label{cstd_8c_ab56fe2f857808faedb93ce52c7010181}
+
+
+write a formated string to the str buffer this a simplified version which handles only\-: c, s, \$d, x and p 
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffer} & buffer of chars where string is formed \\
+\hline
+{\em size} & size of buffer \\
+\hline
+{\em fmt} & formated string \\
+\hline
+{\em ap} & variadic arguments, i.\-e. variable number of arguments \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of printed char 
+\end{DoxyReturn}
+
+
+References buffer, and xdigit.
+
+
+
+Referenced by fprintf(), kprintf(), and snprintf().
+
+
+\begin{DoxyCode}
+171 \{
+172     \textcolor{keywordtype}{char} arg[16];                               \textcolor{comment}{// buffer used to build the argument}
+173     \textcolor{keywordtype}{char} *tmp;                                  \textcolor{comment}{// temporary pointer used to build arguments}
+174     \textcolor{keywordtype}{char} *buf = \hyperlink{ktools_8c_a527b76b33fb8beec7f2df7e0c032aef6}{buffer};                         \textcolor{comment}{// pointer to the current filling position in buffer}
+175     \textcolor{keywordtype}{int} res;                                    \textcolor{comment}{// function result (number of printed char)}
+176     \textcolor{keywordtype}{int} val;                                    \textcolor{comment}{// argument value}
+177     \textcolor{comment}{/*long val64\_lsb;}
+178 \textcolor{comment}{    lo ng val64\_msb;}
+179 \textcolor{comment}{    long long val64;}
+180 \textcolor{comment}{    */}
+181     \textcolor{keywordtype}{int} i;                                      \textcolor{comment}{// temporary variable}
+182     \textcolor{keywordtype}{int} count = size - 1;                       \textcolor{comment}{// max nb of char in buffer (-1 because of last 0)}
+183 
+184     \textcolor{keywordflow}{while} (*fmt) \{                              \textcolor{comment}{// for all char in fmt}
+185         \textcolor{keywordflow}{while} ((*fmt) && (*fmt != \textcolor{charliteral}{'%'})) \{       \textcolor{comment}{// while char exists and it is not a %}
+186             *buf++ = *fmt++;                    \textcolor{comment}{// copy it in output buffer}
+187             \textcolor{keywordflow}{if} (--count == 0)                   \textcolor{comment}{// decrement count}
+188                 \textcolor{keywordflow}{goto} abort;                     \textcolor{comment}{// and abort if there is no space anymore}
+189         \}
+190         \textcolor{keywordflow}{if} (*fmt == \textcolor{charliteral}{'%'}) \{                      \textcolor{comment}{// if char is a %}
+191             fmt++;                              \textcolor{comment}{// go to the next char}
+192             \textcolor{keywordflow}{switch} (*fmt) \{                     \textcolor{comment}{// study the different cases}
+193             \textcolor{keywordflow}{case} \textcolor{charliteral}{'%'}:                           \textcolor{comment}{// case %%}
+194                 *buf++ = \textcolor{charliteral}{'%'};                   \textcolor{comment}{// then it is just %}
+195                 \textcolor{keywordflow}{if} (--count == 0)               \textcolor{comment}{// go to the next char if there is space yet}
+196                     \textcolor{keywordflow}{goto} abort;
+197                 \textcolor{keywordflow}{goto} next;
+198             \textcolor{comment}{/* case 'l':                           // TODO: handle u,d formats}
+199 \textcolor{comment}{                fmt++;}
+200 \textcolor{comment}{                switch (*fmt) \{}
+201 \textcolor{comment}{                case 'x':               }
+202 \textcolor{comment}{                    //val64 = va\_arg (ap, long long);     // val <- value to convert in ascii}
+203 \textcolor{comment}{                    val64\_lsb = va\_arg (ap, long);}
+204 \textcolor{comment}{                    val64\_msb = va\_arg (ap, long);}
+205 \textcolor{comment}{                    val64 = ((long long) val64\_msb << 32LL) | val64\_lsb;}
+206 \textcolor{comment}{}
+207 \textcolor{comment}{                    tmp = arg + sizeof (arg);           // goto at the end of tmp buffer}
+208 \textcolor{comment}{                    *--tmp = '\(\backslash\)0';                      // put the ending char 0}
+209 \textcolor{comment}{                    i = 0;                              // i is used to count the digits}
+210 \textcolor{comment}{                    do \{}
+211 \textcolor{comment}{                        *--tmp = xdigit[val64 & 0xF];   // compute the unit digit}
+212 \textcolor{comment}{                        val64 = (unsigned long long) val64 >> 4;  // go to the next digit}
+213 \textcolor{comment}{                        i++;                            // digits counter}
+214 \textcolor{comment}{                    \} while (val64);                    // until val becomes 0}
+215 \textcolor{comment}{                    goto copy\_tmp;                      // go to copy tmp in buffer}
+216 \textcolor{comment}{                default:}
+217 \textcolor{comment}{                    *buf++ = '%';                       // invalid format }
+218 \textcolor{comment}{                    if (--count == 0)}
+219 \textcolor{comment}{                        goto abort;}
+220 \textcolor{comment}{                    goto next;}
+221 \textcolor{comment}{                \}}
+222 \textcolor{comment}{                goto next;*/}
+223             \textcolor{keywordflow}{case} \textcolor{charliteral}{'c'}:                           \textcolor{comment}{// case %c (char)}
+224                 *buf++ = (char)va\_arg (ap, \textcolor{keywordtype}{int});\textcolor{comment}{// get the argument and copy it in output buffer}
+225                 \textcolor{keywordflow}{if} (--count == 0)               \textcolor{comment}{// go to the next char if there is space yet}
+226                     \textcolor{keywordflow}{goto} abort;
+227                 \textcolor{keywordflow}{goto} next;
+228             \textcolor{keywordflow}{case} \textcolor{charliteral}{'s'}:                           \textcolor{comment}{// case %s (string)}
+229                 tmp = va\_arg (ap, \textcolor{keywordtype}{char} *);      \textcolor{comment}{// tmp points to this string argumment}
+230                 tmp = (tmp) ? tmp : \textcolor{stringliteral}{"(null)"};   \textcolor{comment}{// replace "" by "(null)"}
+231                 \textcolor{keywordflow}{goto} copy\_tmp;                  \textcolor{comment}{// go to copy tmp in buffer}
+232             \textcolor{keywordflow}{case} \textcolor{charliteral}{'d'}:                           \textcolor{comment}{// case %d (decimal int)}
+233                 val = va\_arg (ap, \textcolor{keywordtype}{int});         \textcolor{comment}{// val <- value to convert in ascii}
+234                 i = (val == 0x80000000);        \textcolor{comment}{// i <- 1 if val==-(MAXINT+1) MAXINT==0x7FFFFFFF}
+235                 \textcolor{keywordflow}{if} (val < 0) \{                  \textcolor{comment}{// if val is negative}
+236                     val = -val;                 \textcolor{comment}{// val <- abs(val)}
+237                     val = val - i;              \textcolor{comment}{// but if val==-(MAXINT+1) then val <- MAXINT}
+238                     *buf++ = \textcolor{charliteral}{'-'};               \textcolor{comment}{// put '-' to the output buffer}
+239                     \textcolor{keywordflow}{if} (--count == 0)           \textcolor{comment}{// check if there is space yet}
+240                         \textcolor{keywordflow}{goto} abort;
+241                 \}
+242                 tmp = arg + \textcolor{keyword}{sizeof} (arg);       \textcolor{comment}{// goto at the end of tmp buffer}
+243                 *--tmp = \textcolor{charliteral}{'\(\backslash\)0'};                  \textcolor{comment}{// put the ending char 0}
+244                 \textcolor{keywordflow}{do} \{
+245                     *--tmp = (val % 10) + \textcolor{charliteral}{'0'};  \textcolor{comment}{// compute the unit digit}
+246                     *tmp = *tmp + i;            \textcolor{comment}{// but add 1 if we had decremented val just before}
+247                     i = 0;                      \textcolor{comment}{// must be done only once}
+248                     val = val / 10;             \textcolor{comment}{// go to the next digit}
+249                 \}
+250                 \textcolor{keywordflow}{while} (val);                    \textcolor{comment}{// until val becomes 0}
+251                 \textcolor{keywordflow}{goto} copy\_tmp;                  \textcolor{comment}{// go to copy tmp in buffer}
+252             \textcolor{keywordflow}{case} \textcolor{charliteral}{'p'}:                           \textcolor{comment}{// case %p (pointer)}
+253             \textcolor{keywordflow}{case} \textcolor{charliteral}{'x'}:                           \textcolor{comment}{// case %x (simple hexadecimal)}
+254                 val = va\_arg (ap, \textcolor{keywordtype}{int});         \textcolor{comment}{// val <- value to convert in ascii}
+255                 tmp = arg + \textcolor{keyword}{sizeof} (arg);       \textcolor{comment}{// goto at the end of tmp buffer}
+256                 *--tmp = \textcolor{charliteral}{'\(\backslash\)0'};                  \textcolor{comment}{// put the ending char 0}
+257                 i = 0;                          \textcolor{comment}{// i is used to count the digits}
+258                 \textcolor{keywordflow}{do} \{
+259                     *--tmp = \hyperlink{cstd_8c_a41948c5d6e426e9dcefd5f4c6e83879a}{xdigit}[val & 0xF]; \textcolor{comment}{// compute the unit digit}
+260                     val = (unsigned) val >> 4;  \textcolor{comment}{// go to the next digit}
+261                     i++;                        \textcolor{comment}{// digits counter}
+262                 \} \textcolor{keywordflow}{while} (val);                  \textcolor{comment}{// until val becomes 0}
+263                 \textcolor{keywordflow}{if} (*fmt == \textcolor{charliteral}{'p'}) \{              \textcolor{comment}{// if it is a pointer}
+264                     \textcolor{keywordflow}{while} (i < 8) \{             \textcolor{comment}{// then complete with '0'}
+265                         *--tmp = \textcolor{charliteral}{'0'};
+266                         i++;
+267                     \}
+268                 \}
+269                 \textcolor{keywordflow}{goto} copy\_tmp;                  \textcolor{comment}{// go to copy tmp in buffer}
+270             \textcolor{keywordflow}{default}:                            \textcolor{comment}{// if format not recognized}
+271                 *buf++ = *fmt;                  \textcolor{comment}{// then just copy it in output buffer}
+272                 \textcolor{keywordflow}{if} (--count == 0)               \textcolor{comment}{// go to the next char if there is space yet}
+273                     \textcolor{keywordflow}{goto} abort;
+274                 \textcolor{keywordflow}{goto} next;
+275             \}
+276           copy\_tmp:
+277             \textcolor{keywordflow}{while} (*tmp) \{                      \textcolor{comment}{// copy tmp in output buffer}
+278                 *buf++ = *tmp++;
+279                 \textcolor{keywordflow}{if} (--count == 0)               \textcolor{comment}{// check if there is space yet}
+280                     \textcolor{keywordflow}{goto} abort;
+281             \}
+282           next:
+283             fmt++;                              \textcolor{comment}{// go to the next char}
+284         \}
+285     \}
+286   abort:
+287     *buf = \textcolor{charliteral}{'\(\backslash\)0'};                                \textcolor{comment}{// put the ending char 0}
+288     res = (int)((\textcolor{keywordtype}{unsigned})buf-(unsigned)\hyperlink{ktools_8c_a527b76b33fb8beec7f2df7e0c032aef6}{buffer});\textcolor{comment}{// compute the number of char to write}
+289     \textcolor{keywordflow}{return} res;                                 \textcolor{comment}{// and return it}
+290 \}
+\end{DoxyCode}
+\hypertarget{cstd_8c_a00da14b6dfa98f18494ef149ce63457f}{\index{cstd.\-c@{cstd.\-c}!wzero@{wzero}}
+\index{wzero@{wzero}!cstd.c@{cstd.\-c}}
+\subsubsection[{wzero}]{\setlength{\rightskip}{0pt plus 5cm}void wzero (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{addr, }
+\item[{size\-\_\-t}]{n}
+\end{DoxyParamCaption}
+)}}\label{cstd_8c_a00da14b6dfa98f18494ef149ce63457f}
+
+
+write 0 in a buffer 
+
+
+\begin{DoxyParams}{Parameters}
+{\em addr} & address word aligned \\
+\hline
+{\em n} & number of bytes to erase must be a multiple of sizeof word \\
+\hline
+\end{DoxyParams}
+
+
+Referenced by kmalloc().
+
+
+\begin{DoxyCode}
+16 \{
+17     \textcolor{keywordtype}{unsigned} *a = addr;
+18     \textcolor{keywordflow}{if} (a)
+19     \textcolor{keywordflow}{do} \{ *a++ = 0; \} \textcolor{keywordflow}{while} (n -= \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{unsigned}));
+20 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\hypertarget{cstd_8c_a41948c5d6e426e9dcefd5f4c6e83879a}{\index{cstd.\-c@{cstd.\-c}!xdigit@{xdigit}}
+\index{xdigit@{xdigit}!cstd.c@{cstd.\-c}}
+\subsubsection[{xdigit}]{\setlength{\rightskip}{0pt plus 5cm}char xdigit\mbox{[}$\,$\mbox{]} = \char`\"{}0123456789abcdef\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}}\label{cstd_8c_a41948c5d6e426e9dcefd5f4c6e83879a}
+
+
+Referenced by vsnprintf().
+

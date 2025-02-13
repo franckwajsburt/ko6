@@ -1,0 +1,101 @@
+\hypertarget{mips_2atomic_8S}{\section{/users/enseig/franck/ko6/src/soft/hal/cpu/mips/atomic.S File Reference}
+\label{mips_2atomic_8S}\index{/users/enseig/franck/ko6/src/soft/hal/cpu/mips/atomic.\-S@{/users/enseig/franck/ko6/src/soft/hal/cpu/mips/atomic.\-S}}
+}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+section text globl \hyperlink{atomic_8h_a92a25e1136e165cc5472d68e3901e364}{spin\-\_\-lock} \hyperlink{mips_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay}
+\item 
+section text globl \hyperlink{atomic_8h_a92a25e1136e165cc5472d68e3901e364}{spin\-\_\-lock} \hyperlink{mips_2atomic_8S_ac90faece1c7b2fe2dcf10741e4322281}{bnez}
+\item 
+section text globl spin\-\_\-lock \\*
+\hyperlink{riscv_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay} \hyperlink{mips_2atomic_8S_abff7230a2ee820f538a2574ee5b3a593}{spin\-\_\-lock}
+\item 
+section text globl \hyperlink{atomic_8h_a92a25e1136e165cc5472d68e3901e364}{spin\-\_\-lock} \\*
+\hyperlink{riscv_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay} \hyperlink{mips_2atomic_8S_acbf877530fdc34fc0b39616c59070e69}{li}
+\item 
+section text globl \hyperlink{atomic_8h_a92a25e1136e165cc5472d68e3901e364}{spin\-\_\-lock} \\*
+\hyperlink{riscv_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay} \hyperlink{mips_2atomic_8S_a9ec95c7fd8fc070fa2890d194d38af79}{bne}
+\item 
+section text globl \hyperlink{atomic_8h_a92a25e1136e165cc5472d68e3901e364}{spin\-\_\-lock} \\*
+\hyperlink{riscv_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay} \\*
+\hyperlink{riscv_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay} \hyperlink{mips_2atomic_8S_a7a7f51dd8dea9bb1a88d2d7fd5e793f2}{spin\-\_\-lock\-\_\-sc}
+\item 
+section text globl \hyperlink{atomic_8h_a92a25e1136e165cc5472d68e3901e364}{spin\-\_\-lock} \\*
+\hyperlink{riscv_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay} \\*
+\hyperlink{riscv_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay} \hyperlink{mips_2atomic_8S_a994dd5c708bcbaac056b340c7cd42ceb}{sc}
+\item 
+section text globl \hyperlink{atomic_8h_a92a25e1136e165cc5472d68e3901e364}{spin\-\_\-lock} \\*
+\hyperlink{riscv_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay} \\*
+\hyperlink{riscv_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay} \hyperlink{mips_2atomic_8S_ae8f5e5b3e81e22b99c4bd415ca4da91d}{beqz}
+\item 
+section text globl \hyperlink{atomic_8h_a92a25e1136e165cc5472d68e3901e364}{spin\-\_\-lock} \\*
+\hyperlink{riscv_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay} \\*
+\hyperlink{riscv_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay} \hyperlink{atomic_8h_a92a25e1136e165cc5472d68e3901e364}{spin\-\_\-lock} jr \\*
+globl spin\-\_\-unlock \hyperlink{mips_2atomic_8S_a18d39a883be260c78529672999549545}{spin\-\_\-unlock}
+\item 
+section text globl \hyperlink{atomic_8h_a92a25e1136e165cc5472d68e3901e364}{spin\-\_\-lock} \\*
+\hyperlink{riscv_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay} \\*
+\hyperlink{riscv_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay} \hyperlink{atomic_8h_a92a25e1136e165cc5472d68e3901e364}{spin\-\_\-lock} jr \\*
+globl \hyperlink{atomic_8h_a73864b9b10141e82915121078d853a9e}{spin\-\_\-unlock} sync jr \\*
+globl \hyperlink{atomic_8h_aa1f3892cb11568fa77c9c4b6fd2e153e}{atomic\-\_\-add} \hyperlink{mips_2atomic_8S_a9b3c74d39013e68e14a07125b6bf05cf}{atomic\-\_\-inc}
+\item 
+section text globl \hyperlink{atomic_8h_a92a25e1136e165cc5472d68e3901e364}{spin\-\_\-lock} \\*
+\hyperlink{riscv_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay} \\*
+\hyperlink{riscv_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay} \hyperlink{atomic_8h_a92a25e1136e165cc5472d68e3901e364}{spin\-\_\-lock} jr \\*
+globl \hyperlink{atomic_8h_a73864b9b10141e82915121078d853a9e}{spin\-\_\-unlock} sync jr \\*
+globl \hyperlink{atomic_8h_aa1f3892cb11568fa77c9c4b6fd2e153e}{atomic\-\_\-add} \hyperlink{mips_2atomic_8S_a627d01ff62291868f3241ac59b8a7877}{addu}
+\item 
+section text globl \hyperlink{atomic_8h_a92a25e1136e165cc5472d68e3901e364}{spin\-\_\-lock} \\*
+\hyperlink{riscv_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay} \\*
+\hyperlink{riscv_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{spin\-\_\-lock\-\_\-delay} \hyperlink{atomic_8h_a92a25e1136e165cc5472d68e3901e364}{spin\-\_\-lock} jr \\*
+globl \hyperlink{atomic_8h_a73864b9b10141e82915121078d853a9e}{spin\-\_\-unlock} sync jr \\*
+globl \hyperlink{atomic_8h_aa1f3892cb11568fa77c9c4b6fd2e153e}{atomic\-\_\-add} \hyperlink{mips_2atomic_8S_ae7e8faf5918b8236bd4b932dacb0891d}{move}
+\end{DoxyCompactItemize}
+
+
+\subsection{Variable Documentation}
+\hypertarget{mips_2atomic_8S_a627d01ff62291868f3241ac59b8a7877}{\index{mips/atomic.\-S@{mips/atomic.\-S}!addu@{addu}}
+\index{addu@{addu}!mips/atomic.S@{mips/atomic.\-S}}
+\subsubsection[{addu}]{\setlength{\rightskip}{0pt plus 5cm}section text globl {\bf spin\-\_\-lock} {\bf spin\-\_\-lock\-\_\-delay} {\bf spin\-\_\-lock\-\_\-delay} {\bf spin\-\_\-lock} jr globl {\bf spin\-\_\-unlock} sync jr globl {\bf atomic\-\_\-add} addu}}\label{mips_2atomic_8S_a627d01ff62291868f3241ac59b8a7877}
+\hypertarget{mips_2atomic_8S_a9b3c74d39013e68e14a07125b6bf05cf}{\index{mips/atomic.\-S@{mips/atomic.\-S}!atomic\-\_\-inc@{atomic\-\_\-inc}}
+\index{atomic\-\_\-inc@{atomic\-\_\-inc}!mips/atomic.S@{mips/atomic.\-S}}
+\subsubsection[{atomic\-\_\-inc}]{\setlength{\rightskip}{0pt plus 5cm}section text globl {\bf spin\-\_\-lock} {\bf spin\-\_\-lock\-\_\-delay} {\bf spin\-\_\-lock\-\_\-delay} {\bf spin\-\_\-lock} jr globl {\bf spin\-\_\-unlock} sync jr globl {\bf atomic\-\_\-add} atomic\-\_\-inc}}\label{mips_2atomic_8S_a9b3c74d39013e68e14a07125b6bf05cf}
+\hypertarget{mips_2atomic_8S_ae8f5e5b3e81e22b99c4bd415ca4da91d}{\index{mips/atomic.\-S@{mips/atomic.\-S}!beqz@{beqz}}
+\index{beqz@{beqz}!mips/atomic.S@{mips/atomic.\-S}}
+\subsubsection[{beqz}]{\setlength{\rightskip}{0pt plus 5cm}section text globl {\bf cachelinesize} {\bf cachelinesize\-\_\-end} beqz}}\label{mips_2atomic_8S_ae8f5e5b3e81e22b99c4bd415ca4da91d}
+\hypertarget{mips_2atomic_8S_a9ec95c7fd8fc070fa2890d194d38af79}{\index{mips/atomic.\-S@{mips/atomic.\-S}!bne@{bne}}
+\index{bne@{bne}!mips/atomic.S@{mips/atomic.\-S}}
+\subsubsection[{bne}]{\setlength{\rightskip}{0pt plus 5cm}section text globl {\bf spin\-\_\-lock} {\bf spin\-\_\-lock\-\_\-delay} bne}}\label{mips_2atomic_8S_a9ec95c7fd8fc070fa2890d194d38af79}
+\hypertarget{mips_2atomic_8S_ac90faece1c7b2fe2dcf10741e4322281}{\index{mips/atomic.\-S@{mips/atomic.\-S}!bnez@{bnez}}
+\index{bnez@{bnez}!mips/atomic.S@{mips/atomic.\-S}}
+\subsubsection[{bnez}]{\setlength{\rightskip}{0pt plus 5cm}section text globl {\bf spin\-\_\-lock} bnez}}\label{mips_2atomic_8S_ac90faece1c7b2fe2dcf10741e4322281}
+\hypertarget{mips_2atomic_8S_acbf877530fdc34fc0b39616c59070e69}{\index{mips/atomic.\-S@{mips/atomic.\-S}!li@{li}}
+\index{li@{li}!mips/atomic.S@{mips/atomic.\-S}}
+\subsubsection[{li}]{\setlength{\rightskip}{0pt plus 5cm}section text globl {\bf thread\-\_\-context\-\_\-save} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S0} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S1} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S2} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S3} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S4} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S5} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S6} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S7} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S8} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S\-R} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-E\-P\-C} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-R\-A} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S\-P} jr globl {\bf thread\-\_\-context\-\_\-load} {\bf T\-H\-\_\-\-T\-I\-D} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S0} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S1} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S2} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S3} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S4} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S5} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S6} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S7} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S8} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S\-R} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-E\-P\-C} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-R\-A} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S\-P} li}}\label{mips_2atomic_8S_acbf877530fdc34fc0b39616c59070e69}
+\hypertarget{mips_2atomic_8S_ae7e8faf5918b8236bd4b932dacb0891d}{\index{mips/atomic.\-S@{mips/atomic.\-S}!move@{move}}
+\index{move@{move}!mips/atomic.S@{mips/atomic.\-S}}
+\subsubsection[{move}]{\setlength{\rightskip}{0pt plus 5cm}section text globl {\bf spin\-\_\-lock} {\bf spin\-\_\-lock\-\_\-delay} {\bf spin\-\_\-lock\-\_\-delay} {\bf spin\-\_\-lock} jr globl {\bf spin\-\_\-unlock} sync jr globl {\bf atomic\-\_\-add} move}}\label{mips_2atomic_8S_ae7e8faf5918b8236bd4b932dacb0891d}
+\hypertarget{mips_2atomic_8S_a994dd5c708bcbaac056b340c7cd42ceb}{\index{mips/atomic.\-S@{mips/atomic.\-S}!sc@{sc}}
+\index{sc@{sc}!mips/atomic.S@{mips/atomic.\-S}}
+\subsubsection[{sc}]{\setlength{\rightskip}{0pt plus 5cm}section text globl {\bf spin\-\_\-lock} {\bf spin\-\_\-lock\-\_\-delay} {\bf spin\-\_\-lock\-\_\-delay} {\bf spin\-\_\-lock} jr globl {\bf spin\-\_\-unlock} sync jr globl {\bf atomic\-\_\-add} sc}}\label{mips_2atomic_8S_a994dd5c708bcbaac056b340c7cd42ceb}
+\hypertarget{mips_2atomic_8S_abff7230a2ee820f538a2574ee5b3a593}{\index{mips/atomic.\-S@{mips/atomic.\-S}!spin\-\_\-lock@{spin\-\_\-lock}}
+\index{spin\-\_\-lock@{spin\-\_\-lock}!mips/atomic.S@{mips/atomic.\-S}}
+\subsubsection[{spin\-\_\-lock}]{\setlength{\rightskip}{0pt plus 5cm}section text globl spin\-\_\-lock {\bf spin\-\_\-lock\-\_\-delay} spin\-\_\-lock}}\label{mips_2atomic_8S_abff7230a2ee820f538a2574ee5b3a593}
+
+
+Referenced by thread\-\_\-barrier\-\_\-destroy(), thread\-\_\-barrier\-\_\-init(), thread\-\_\-barrier\-\_\-wait(), thread\-\_\-exit(), thread\-\_\-join(), thread\-\_\-mutex\-\_\-lock(), thread\-\_\-mutex\-\_\-unlock(), thread\-\_\-notify(), and thread\-\_\-wait().
+
+\hypertarget{mips_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}{\index{mips/atomic.\-S@{mips/atomic.\-S}!spin\-\_\-lock\-\_\-delay@{spin\-\_\-lock\-\_\-delay}}
+\index{spin\-\_\-lock\-\_\-delay@{spin\-\_\-lock\-\_\-delay}!mips/atomic.S@{mips/atomic.\-S}}
+\subsubsection[{spin\-\_\-lock\-\_\-delay}]{\setlength{\rightskip}{0pt plus 5cm}section text globl {\bf spin\-\_\-lock} spin\-\_\-lock\-\_\-delay}}\label{mips_2atomic_8S_ac58f8c5ceac726ecc3bcc7f0360b5cfa}
+\hypertarget{mips_2atomic_8S_a7a7f51dd8dea9bb1a88d2d7fd5e793f2}{\index{mips/atomic.\-S@{mips/atomic.\-S}!spin\-\_\-lock\-\_\-sc@{spin\-\_\-lock\-\_\-sc}}
+\index{spin\-\_\-lock\-\_\-sc@{spin\-\_\-lock\-\_\-sc}!mips/atomic.S@{mips/atomic.\-S}}
+\subsubsection[{spin\-\_\-lock\-\_\-sc}]{\setlength{\rightskip}{0pt plus 5cm}section text globl {\bf spin\-\_\-lock} {\bf spin\-\_\-lock\-\_\-delay} {\bf spin\-\_\-lock\-\_\-delay} spin\-\_\-lock\-\_\-sc}}\label{mips_2atomic_8S_a7a7f51dd8dea9bb1a88d2d7fd5e793f2}
+\hypertarget{mips_2atomic_8S_a18d39a883be260c78529672999549545}{\index{mips/atomic.\-S@{mips/atomic.\-S}!spin\-\_\-unlock@{spin\-\_\-unlock}}
+\index{spin\-\_\-unlock@{spin\-\_\-unlock}!mips/atomic.S@{mips/atomic.\-S}}
+\subsubsection[{spin\-\_\-unlock}]{\setlength{\rightskip}{0pt plus 5cm}section text globl {\bf spin\-\_\-lock} {\bf spin\-\_\-lock\-\_\-delay} {\bf spin\-\_\-lock\-\_\-delay} {\bf spin\-\_\-lock} jr globl spin\-\_\-unlock spin\-\_\-unlock}}\label{mips_2atomic_8S_a18d39a883be260c78529672999549545}
+
+
+Referenced by thread\-\_\-barrier\-\_\-destroy(), thread\-\_\-barrier\-\_\-wait(), thread\-\_\-exit(), thread\-\_\-join(), thread\-\_\-mutex\-\_\-lock(), thread\-\_\-mutex\-\_\-unlock(), thread\-\_\-notify(), and thread\-\_\-wait().
+

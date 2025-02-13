@@ -1,0 +1,656 @@
+\hypertarget{kthread_8h}{\section{/users/enseig/franck/ko6/src/soft/kernel/kthread.h File Reference}
+\label{kthread_8h}\index{/users/enseig/franck/ko6/src/soft/kernel/kthread.\-h@{/users/enseig/franck/ko6/src/soft/kernel/kthread.\-h}}
+}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{kthread_8h_a425c1da89e5866d87fc20a624da7cbec}{T\-H\-R\-E\-A\-D\-\_\-\-M\-A\-X}~4
+\item 
+\#define \hyperlink{kthread_8h_ab47e8c012560fa0368dfd3f6e45e07b5}{T\-H\-\_\-\-T\-Y\-P\-E\-\_\-\-U\-S\-E\-R}~0       /$\ast$ Most of threads belongs to the user $\ast$/
+\item 
+\#define \hyperlink{kthread_8h_ad90e71a21f2353f675f63fee7aff63a7}{T\-H\-\_\-\-T\-Y\-P\-E\-\_\-\-K\-E\-R\-N\-E\-L}~1       /$\ast$ There are a few kernel's threads, p.\-ex. for kshell  $\ast$/
+\item 
+\#define \hyperlink{kthread_8h_a83c4c9d919043cd3b5bac98b7250d506}{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-U\-N\-N\-I\-N\-G}~0       /$\ast$ there is at most one thread per processor $\ast$/
+\item 
+\#define \hyperlink{kthread_8h_a1887e40b17ecfda05b4a398375d527fb}{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-E\-A\-D\-Y}~1       /$\ast$ threads that need the processor $\ast$/
+\item 
+\#define \hyperlink{kthread_8h_aeae3234bde1a15d5c671a41286949bc5}{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-D\-E\-A\-D}~2       /$\ast$ threads that have exited and whose retval has been \hyperlink{libc_8h_aec19a0626d6167a834fa9f5b25214f7f}{read} $\ast$/
+\item 
+\#define \hyperlink{kthread_8h_a75c1c2f7da0a338d818a2950b582b74a}{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-W\-A\-I\-T}~3       /$\ast$ threads that is waiting for something to run again $\ast$/
+\item 
+\#define \hyperlink{kthread_8h_a55287315008b2fea47936dc065bbabb7}{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-Z\-O\-M\-B\-I\-E}~4       /$\ast$ threads that are exited but their retval is not yet \hyperlink{libc_8h_aec19a0626d6167a834fa9f5b25214f7f}{read} $\ast$/
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structthread__s}{thread\-\_\-s} $\ast$ \hyperlink{kthread_8h_a755fbb4a945decf90cb1c0eb5fd16878}{thread\-\_\-t}
+\begin{DoxyCompactList}\small\item\em Hidden definition of thread\-\_\-t, other C files don't know what is in the struct \hyperlink{structthread__s}{thread\-\_\-s}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+long long \hyperlink{kthread_8h_a915acd568076749f98a0878936790ca4}{thread\-\_\-randseed\-\_\-set} (long long seed)
+\begin{DoxyCompactList}\small\item\em set the seed for the current running thread \end{DoxyCompactList}\item 
+long long \hyperlink{kthread_8h_a4bf00d3ebfff22db494125012393cddf}{thread\-\_\-randseed\-\_\-get} (void)
+\begin{DoxyCompactList}\small\item\em get the seed for the current running thread \end{DoxyCompactList}\item 
+void \hyperlink{kthread_8h_a3ecc03b8319efabea835c1205c8fff4d}{thread\-\_\-addlast} (\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$root, \hyperlink{kthread_8h_a755fbb4a945decf90cb1c0eb5fd16878}{thread\-\_\-t} thread)
+\item 
+\hyperlink{kthread_8h_a755fbb4a945decf90cb1c0eb5fd16878}{thread\-\_\-t} \hyperlink{kthread_8h_a79b0f0a19a09db45e1689ff011f6109b}{thread\-\_\-item} (\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} $\ast$item)
+\item 
+void \hyperlink{kthread_8h_a02cfe68dc8f379c88d448172f997b09e}{sched\-\_\-dump} (void)
+\begin{DoxyCompactList}\small\item\em Displays on the console (tty0) all active threads, it is for debugging. \end{DoxyCompactList}\item 
+int \hyperlink{kthread_8h_a227d30321d9dddb518fe5d116aa7d90b}{thread\-\_\-create} (\hyperlink{kthread_8h_a755fbb4a945decf90cb1c0eb5fd16878}{thread\-\_\-t} $\ast$thread, int fun, int arg, int start)
+\begin{DoxyCompactList}\small\item\em Calls by the kernel in order to implement the user \hyperlink{kthread_8c_a2525e99272c4db4198bcea374d717620}{thread\-\_\-create()} syscall This function has the same arguments as \hyperlink{kthread_8c_a2525e99272c4db4198bcea374d717620}{thread\-\_\-create()}, plus one which is the pointer to the function that will start the thread, there are two of those\-: one for the main thread (nammed \-\_\-start defined in \hyperlink{crt0_8c}{crt0.\-c}) and one for the standard thread (nammed thread\-\_\-start defined in thread.\-c). These two functions do not have the same type but it does not matter because we are converting to int. \end{DoxyCompactList}\item 
+void \hyperlink{kthread_8h_a95c63c8faef6c13da432a94800ad2acb}{thread\-\_\-main\-\_\-load} (\hyperlink{kthread_8h_a755fbb4a945decf90cb1c0eb5fd16878}{thread\-\_\-t} thread)
+\begin{DoxyCompactList}\small\item\em load the context of the \hyperlink{ktools_8c_a0ddf1224851353fc92bfbff6f499fa97}{main()} thread, only used by kinit \end{DoxyCompactList}\item 
+int \hyperlink{kthread_8h_affe2eebf6749bc36765d45ff48c926b1}{thread\-\_\-yield} (void)
+\begin{DoxyCompactList}\small\item\em Causes the current thread to give up the C\-P\-U in order to give it to another. \end{DoxyCompactList}\item 
+void \hyperlink{kthread_8h_a19b16adf05364471bae2840aa564329a}{thread\-\_\-exit} (void $\ast$retval)
+\begin{DoxyCompactList}\small\item\em Terminates the current thread, it never returns (see details in \hyperlink{kthread_8c}{kthread.\-c}) \end{DoxyCompactList}\item 
+int \hyperlink{kthread_8h_a9cff35af30e36a1fc0381f648ab9a976}{thread\-\_\-join} (\hyperlink{kthread_8h_a755fbb4a945decf90cb1c0eb5fd16878}{thread\-\_\-t} thread, void $\ast$$\ast$retval)
+\begin{DoxyCompactList}\small\item\em Wait for a thread termination (see details in \hyperlink{kthread_8c}{kthread.\-c}) \end{DoxyCompactList}\item 
+void \hyperlink{kthread_8h_a0c0fd0ef94a8688f65d53216ae6c33e7}{thread\-\_\-wait} (void)
+\begin{DoxyCompactList}\small\item\em Ask the current R\-U\-N\-N\-I\-N\-G thread to W\-A\-I\-T the current thread must become R\-E\-A\-D\-Y again after the call to \hyperlink{kthread_8c_acc9196e88e8db0daa5b13544cfe62996}{thread\-\_\-notify()}. In some cases, when \hyperlink{kthread_8c_acc9196e88e8db0daa5b13544cfe62996}{thread\-\_\-notify()} is called just before \hyperlink{kthread_8c_a0c0fd0ef94a8688f65d53216ae6c33e7}{thread\-\_\-wait()} has had time to put the current thread in the W\-A\-I\-T state (this is possible, since \hyperlink{kthread_8c_acc9196e88e8db0daa5b13544cfe62996}{thread\-\_\-notify()} is called by another thread running on another processor) then the current thread is already R\-E\-A\-D\-Y but \hyperlink{kthread_8c_a0c0fd0ef94a8688f65d53216ae6c33e7}{thread\-\_\-wait()} yields the processor anyway, so the current thread should lose the processor for a while, until the scheduler chooses it again. \end{DoxyCompactList}\item 
+void \hyperlink{kthread_8h_acc9196e88e8db0daa5b13544cfe62996}{thread\-\_\-notify} (\hyperlink{kthread_8h_a755fbb4a945decf90cb1c0eb5fd16878}{thread\-\_\-t} thread)
+\begin{DoxyCompactList}\small\item\em Ask the current R\-U\-N\-N\-I\-N\-G thread to W\-A\-I\-T the current thread must become R\-E\-A\-D\-Y again after the call to \hyperlink{kthread_8c_acc9196e88e8db0daa5b13544cfe62996}{thread\-\_\-notify()}. In some cases, when \hyperlink{kthread_8c_acc9196e88e8db0daa5b13544cfe62996}{thread\-\_\-notify()} is called just before \hyperlink{kthread_8c_a0c0fd0ef94a8688f65d53216ae6c33e7}{thread\-\_\-wait()} has had time to put the current thread in the W\-A\-I\-T state (this is possible, since \hyperlink{kthread_8c_acc9196e88e8db0daa5b13544cfe62996}{thread\-\_\-notify()} is called by another thread running on another processor) then the current thread is already R\-E\-A\-D\-Y but \hyperlink{kthread_8c_a0c0fd0ef94a8688f65d53216ae6c33e7}{thread\-\_\-wait()} yields the processor anyway, so the current thread should lose the processor for a while, until the scheduler chooses it again. \end{DoxyCompactList}\item 
+int $\ast$ \hyperlink{kthread_8h_ac0393114fc2fb6571188e9c619042c46}{thread\-\_\-errno} (\hyperlink{kthread_8h_a755fbb4a945decf90cb1c0eb5fd16878}{thread\-\_\-t} thread)
+\begin{DoxyCompactList}\small\item\em return address of errno for the thread given this function is defined here, because it needs to access at the hidden thread struct \end{DoxyCompactList}\item 
+unsigned long long $\ast$ \hyperlink{kthread_8h_ac8ecc48f4f6134c6118c90a593b187bc}{thread\-\_\-krandseed} (\hyperlink{kthread_8h_a755fbb4a945decf90cb1c0eb5fd16878}{thread\-\_\-t} thread)
+\begin{DoxyCompactList}\small\item\em return address of krandseed for the thread given this function is defined here, because it needs to access at the hidden thread struct \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{kthread_8h_a755fbb4a945decf90cb1c0eb5fd16878}{thread\-\_\-t} \hyperlink{kthread_8h_a1da5431310f6068f6d1113c402eff5f8}{Thread\-Current}
+\begin{DoxyCompactList}\small\item\em Pointeur to the current R\-U\-N\-N\-I\-N\-G thread (only one per processor) T\-O\-D\-O should be an array if there are several processor T\-O\-D\-O add a variable to count the number of threads and check it when tbread\-\_\-create. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{kthread_8h_aeae3234bde1a15d5c671a41286949bc5}{\index{kthread.\-h@{kthread.\-h}!T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-D\-E\-A\-D@{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-D\-E\-A\-D}}
+\index{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-D\-E\-A\-D@{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-D\-E\-A\-D}!kthread.h@{kthread.\-h}}
+\subsubsection[{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-D\-E\-A\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-D\-E\-A\-D~2       /$\ast$ threads that have exited and whose retval has been {\bf read} $\ast$/}}\label{kthread_8h_aeae3234bde1a15d5c671a41286949bc5}
+
+
+Referenced by sched\-\_\-dump(), and thread\-\_\-join().
+
+\hypertarget{kthread_8h_a1887e40b17ecfda05b4a398375d527fb}{\index{kthread.\-h@{kthread.\-h}!T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-E\-A\-D\-Y@{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-E\-A\-D\-Y}}
+\index{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-E\-A\-D\-Y@{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-E\-A\-D\-Y}!kthread.h@{kthread.\-h}}
+\subsubsection[{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-E\-A\-D\-Y}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-E\-A\-D\-Y~1       /$\ast$ threads that need the processor $\ast$/}}\label{kthread_8h_a1887e40b17ecfda05b4a398375d527fb}
+
+
+Referenced by \-\_\-\-\_\-attribute\-\_\-\-\_\-(), sched\-\_\-dump(), thread\-\_\-create(), thread\-\_\-exit(), thread\-\_\-notify(), and thread\-\_\-yield().
+
+\hypertarget{kthread_8h_a83c4c9d919043cd3b5bac98b7250d506}{\index{kthread.\-h@{kthread.\-h}!T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-U\-N\-N\-I\-N\-G@{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-U\-N\-N\-I\-N\-G}}
+\index{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-U\-N\-N\-I\-N\-G@{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-U\-N\-N\-I\-N\-G}!kthread.h@{kthread.\-h}}
+\subsubsection[{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-U\-N\-N\-I\-N\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-U\-N\-N\-I\-N\-G~0       /$\ast$ there is at most one thread per processor $\ast$/}}\label{kthread_8h_a83c4c9d919043cd3b5bac98b7250d506}
+
+
+Referenced by sched\-\_\-dump(), sched\-\_\-switch(), thread\-\_\-bootstrap(), and thread\-\_\-wait().
+
+\hypertarget{kthread_8h_a75c1c2f7da0a338d818a2950b582b74a}{\index{kthread.\-h@{kthread.\-h}!T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-W\-A\-I\-T@{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-W\-A\-I\-T}}
+\index{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-W\-A\-I\-T@{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-W\-A\-I\-T}!kthread.h@{kthread.\-h}}
+\subsubsection[{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-W\-A\-I\-T}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-W\-A\-I\-T~3       /$\ast$ threads that is waiting for something to run again $\ast$/}}\label{kthread_8h_a75c1c2f7da0a338d818a2950b582b74a}
+
+
+Referenced by sched\-\_\-dump(), thread\-\_\-join(), and thread\-\_\-wait().
+
+\hypertarget{kthread_8h_a55287315008b2fea47936dc065bbabb7}{\index{kthread.\-h@{kthread.\-h}!T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-Z\-O\-M\-B\-I\-E@{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-Z\-O\-M\-B\-I\-E}}
+\index{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-Z\-O\-M\-B\-I\-E@{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-Z\-O\-M\-B\-I\-E}!kthread.h@{kthread.\-h}}
+\subsubsection[{T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-Z\-O\-M\-B\-I\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-Z\-O\-M\-B\-I\-E~4       /$\ast$ threads that are exited but their retval is not yet {\bf read} $\ast$/}}\label{kthread_8h_a55287315008b2fea47936dc065bbabb7}
+
+
+Referenced by sched\-\_\-dump(), thread\-\_\-exit(), and thread\-\_\-join().
+
+\hypertarget{kthread_8h_ad90e71a21f2353f675f63fee7aff63a7}{\index{kthread.\-h@{kthread.\-h}!T\-H\-\_\-\-T\-Y\-P\-E\-\_\-\-K\-E\-R\-N\-E\-L@{T\-H\-\_\-\-T\-Y\-P\-E\-\_\-\-K\-E\-R\-N\-E\-L}}
+\index{T\-H\-\_\-\-T\-Y\-P\-E\-\_\-\-K\-E\-R\-N\-E\-L@{T\-H\-\_\-\-T\-Y\-P\-E\-\_\-\-K\-E\-R\-N\-E\-L}!kthread.h@{kthread.\-h}}
+\subsubsection[{T\-H\-\_\-\-T\-Y\-P\-E\-\_\-\-K\-E\-R\-N\-E\-L}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\-H\-\_\-\-T\-Y\-P\-E\-\_\-\-K\-E\-R\-N\-E\-L~1       /$\ast$ There are a few kernel's threads, p.\-ex. for kshell  $\ast$/}}\label{kthread_8h_ad90e71a21f2353f675f63fee7aff63a7}
+
+
+Referenced by sched\-\_\-dump().
+
+\hypertarget{kthread_8h_ab47e8c012560fa0368dfd3f6e45e07b5}{\index{kthread.\-h@{kthread.\-h}!T\-H\-\_\-\-T\-Y\-P\-E\-\_\-\-U\-S\-E\-R@{T\-H\-\_\-\-T\-Y\-P\-E\-\_\-\-U\-S\-E\-R}}
+\index{T\-H\-\_\-\-T\-Y\-P\-E\-\_\-\-U\-S\-E\-R@{T\-H\-\_\-\-T\-Y\-P\-E\-\_\-\-U\-S\-E\-R}!kthread.h@{kthread.\-h}}
+\subsubsection[{T\-H\-\_\-\-T\-Y\-P\-E\-\_\-\-U\-S\-E\-R}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\-H\-\_\-\-T\-Y\-P\-E\-\_\-\-U\-S\-E\-R~0       /$\ast$ Most of threads belongs to the user $\ast$/}}\label{kthread_8h_ab47e8c012560fa0368dfd3f6e45e07b5}
+
+
+Referenced by sched\-\_\-dump().
+
+\hypertarget{kthread_8h_a425c1da89e5866d87fc20a624da7cbec}{\index{kthread.\-h@{kthread.\-h}!T\-H\-R\-E\-A\-D\-\_\-\-M\-A\-X@{T\-H\-R\-E\-A\-D\-\_\-\-M\-A\-X}}
+\index{T\-H\-R\-E\-A\-D\-\_\-\-M\-A\-X@{T\-H\-R\-E\-A\-D\-\_\-\-M\-A\-X}!kthread.h@{kthread.\-h}}
+\subsubsection[{T\-H\-R\-E\-A\-D\-\_\-\-M\-A\-X}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\-H\-R\-E\-A\-D\-\_\-\-M\-A\-X~4}}\label{kthread_8h_a425c1da89e5866d87fc20a624da7cbec}
+
+
+Referenced by \-\_\-\-\_\-attribute\-\_\-\-\_\-(), sched\-\_\-dump(), and sched\-\_\-insert().
+
+
+
+\subsection{Typedef Documentation}
+\hypertarget{kthread_8h_a755fbb4a945decf90cb1c0eb5fd16878}{\index{kthread.\-h@{kthread.\-h}!thread\-\_\-t@{thread\-\_\-t}}
+\index{thread\-\_\-t@{thread\-\_\-t}!kthread.h@{kthread.\-h}}
+\subsubsection[{thread\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf thread\-\_\-s}$\ast$ {\bf thread\-\_\-t}}}\label{kthread_8h_a755fbb4a945decf90cb1c0eb5fd16878}
+
+
+Hidden definition of thread\-\_\-t, other C files don't know what is in the struct \hyperlink{structthread__s}{thread\-\_\-s}. 
+
+
+
+\subsection{Function Documentation}
+\hypertarget{kthread_8h_a02cfe68dc8f379c88d448172f997b09e}{\index{kthread.\-h@{kthread.\-h}!sched\-\_\-dump@{sched\-\_\-dump}}
+\index{sched\-\_\-dump@{sched\-\_\-dump}!kthread.h@{kthread.\-h}}
+\subsubsection[{sched\-\_\-dump}]{\setlength{\rightskip}{0pt plus 5cm}void sched\-\_\-dump (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{kthread_8h_a02cfe68dc8f379c88d448172f997b09e}
+
+
+Displays on the console (tty0) all active threads, it is for debugging. 
+
+
+\begin{DoxyCode}
+176 \{
+177     \textcolor{keywordtype}{char} *state\_name[16] = \{
+178         [\hyperlink{kthread_8h_a83c4c9d919043cd3b5bac98b7250d506}{TH\_STATE\_RUNNING}] = \textcolor{stringliteral}{"RUNNING"},
+179         [\hyperlink{kthread_8h_a1887e40b17ecfda05b4a398375d527fb}{TH\_STATE\_READY}] = \textcolor{stringliteral}{"READY"},
+180         [\hyperlink{kthread_8h_aeae3234bde1a15d5c671a41286949bc5}{TH\_STATE\_DEAD}] = \textcolor{stringliteral}{"DEAD"},
+181         [\hyperlink{kthread_8h_a75c1c2f7da0a338d818a2950b582b74a}{TH\_STATE\_WAIT}] = \textcolor{stringliteral}{"WAIT"},
+182         [\hyperlink{kthread_8h_a55287315008b2fea47936dc065bbabb7}{TH\_STATE\_ZOMBIE}] = \textcolor{stringliteral}{"ZOMBIE"},
+183     \};
+184     \textcolor{keywordtype}{char} *type\_name[16] = \{
+185         [\hyperlink{kthread_8h_ab47e8c012560fa0368dfd3f6e45e07b5}{TH\_TYPE\_USER}] = \textcolor{stringliteral}{"USER"},
+186         [\hyperlink{kthread_8h_ad90e71a21f2353f675f63fee7aff63a7}{TH\_TYPE\_KERNEL}] = \textcolor{stringliteral}{"KERNEL"},
+187     \};
+188 
+189     \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\hyperlink{kthread_8c_a798e4073d613ca5ba9618e1b3253df14}{Y}\textcolor{stringliteral}{"-------------------------- DUMP ALL THREADS ---------------------------\(\backslash\)n"});
+190     \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\hyperlink{kthread_8c_a649b8f01fd6c0f47ff3cbddaeba63bfb}{W}\textcolor{stringliteral}{"thread current ("}\hyperlink{kthread_8c_a2748566f4c443ee77aa831e63dbb5ebe}{P}\textcolor{stringliteral}{") : "}\hyperlink{kthread_8c_af316c33cc298530f245e8b55330e86b5}{D}\textcolor{stringliteral}{"\(\backslash\)n"}, \hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent}, 
+      \hyperlink{kthread_8c_ae48ff9d5d8665f90c44ae6ad4acb5b6d}{ThreadCurrentIdx});
+191     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} th = 0; th < \hyperlink{kthread_8h_a425c1da89e5866d87fc20a624da7cbec}{THREAD\_MAX}; th++) \{
+192         \hyperlink{structthread__s}{thread\_t} thread = \hyperlink{kthread_8c_aea4c4ea36a124f36c5a513e838d95419}{ThreadTab}[th];
+193         \textcolor{keywordflow}{if} (thread) \{
+194            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\hyperlink{kthread_8c_a798e4073d613ca5ba9618e1b3253df14}{Y}\textcolor{stringliteral}{"----------------------------------------------------------------------- "});
+195            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\hyperlink{kthread_8c_af316c33cc298530f245e8b55330e86b5}{D}\textcolor{stringliteral}{"\(\backslash\)n"}, thread->\hyperlink{structthread__s_ad1ed1d821f595f5a7c1d68f09ba36bf5}{tid});
+196            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\textcolor{stringliteral}{"["}\hyperlink{kthread_8c_af316c33cc298530f245e8b55330e86b5}{D}\textcolor{stringliteral}{"] thread: "}\hyperlink{kthread_8c_a2748566f4c443ee77aa831e63dbb5ebe}{P},  \hyperlink{mips_2cpuregs_8S_af7e0f9f0eada9d28b46b4d1f7ae5b702}{clock} (), thread);
+197            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\textcolor{stringliteral}{"  type:      "}\hyperlink{kthread_8c_af933676109efed7ab34cea71d748a517}{S}\textcolor{stringliteral}{"\(\backslash\)t"}, type\_name[thread->\hyperlink{structthread__s_a2eda0c064f0ed88103b27bf2b5a640e2}{type}]);
+198            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\textcolor{stringliteral}{"   errmsg: "}\hyperlink{kthread_8c_af933676109efed7ab34cea71d748a517}{S}\textcolor{stringliteral}{"\(\backslash\)n"}, \hyperlink{errno_8c_a752b191220a1b00e3d70f9359a660f0f}{errno\_mess}[\textcolor{comment}{/*errno+*/}1]);
+199            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\textcolor{stringliteral}{" - state:     "}\hyperlink{kthread_8c_af933676109efed7ab34cea71d748a517}{S}\textcolor{stringliteral}{"\(\backslash\)t"}, state\_name[thread->\hyperlink{structthread__s_ab3fce89938b5156047553299f71a1370}{state}]);
+200            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\textcolor{stringliteral}{"   wait.next: "}P\textcolor{stringliteral}{"\(\backslash\)t"}, thread->\hyperlink{structthread__s_a291769866cccb5d37937ef14cedc38bf}{wait}.\hyperlink{structlist__s_a3fe402fa883820f9823c1e47246f9880}{next});
+201            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\textcolor{stringliteral}{"   wait.prev: "}P\textcolor{stringliteral}{"\(\backslash\)n"}, thread->\hyperlink{structthread__s_a291769866cccb5d37937ef14cedc38bf}{wait}.\hyperlink{structlist__s_af220645f4ec4f64798bc6d8ea9765185}{prev});
+202            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\textcolor{stringliteral}{" - retval:    "}P\textcolor{stringliteral}{"\(\backslash\)t"}, thread->\hyperlink{structthread__s_aeefa131a48c8c3c45e6c3c0819f21cd0}{retval});
+203            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\textcolor{stringliteral}{"   join:      "}P\textcolor{stringliteral}{"\(\backslash\)t"}, thread->\hyperlink{structthread__s_a84fafe08d8ef25fc4b5a8fb1e833619c}{join});
+204            \textcolor{comment}{//kprintf ("   errno:     "P"\(\backslash\)n", errno);}
+205            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\textcolor{stringliteral}{"   errno:     "}P\textcolor{stringliteral}{"\(\backslash\)n"}, thread->\hyperlink{structthread__s_a7ad218d5b7c4b6bc9c4602e6b1a89815}{ptls}->\hyperlink{struct__tls__s_a2b0505d872f110754ab80cdfe94bf58e}{tls\_errno});
+206            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\textcolor{stringliteral}{" - start:     "}P\textcolor{stringliteral}{"\(\backslash\)t"}, thread->\hyperlink{structthread__s_a63551d8e6d21a7370c5b3652cea282fc}{start});
+207            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\textcolor{stringliteral}{"   function:  "}P\textcolor{stringliteral}{"\(\backslash\)t"}, thread->\hyperlink{structthread__s_a9a97385576dda275389e95ef13168cfc}{fun});
+208            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\textcolor{stringliteral}{"   arg:       "}P\textcolor{stringliteral}{"\(\backslash\)n"}, thread->\hyperlink{structthread__s_a5cdab21069c6c184a86d024a0aa238aa}{arg});
+209            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\textcolor{stringliteral}{" - ustack\_b:  "}P\textcolor{stringliteral}{" ("}P\textcolor{stringliteral}{")\(\backslash\)t"}, thread->\hyperlink{structthread__s_a8d51270c2f7572479276f7629940c3ea}{ustack\_b}, *(\textcolor{keywordtype}{int}*)thread->
+      \hyperlink{structthread__s_a8d51270c2f7572479276f7629940c3ea}{ustack\_b});
+210            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (  \textcolor{stringliteral}{" ustack\_e:  "}P\textcolor{stringliteral}{" ("}P\textcolor{stringliteral}{")\(\backslash\)n"}, thread->\hyperlink{structthread__s_a021e8a50ddb4a5978f18d6babfc4ea6e}{ustack\_e}, *(\textcolor{keywordtype}{int}*)thread->
+      \hyperlink{structthread__s_a021e8a50ddb4a5978f18d6babfc4ea6e}{ustack\_e});
+211            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\textcolor{stringliteral}{" - kstack\_b:  "}P\textcolor{stringliteral}{" ("}P\textcolor{stringliteral}{")\(\backslash\)t"}, thread->\hyperlink{structthread__s_a6885e765fcfe5d2ad0e5a07c2df3ee69}{kstack\_b}, *(\textcolor{keywordtype}{int}*)thread->
+      \hyperlink{structthread__s_a6885e765fcfe5d2ad0e5a07c2df3ee69}{kstack\_b});
+212            \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (  \textcolor{stringliteral}{" kstack\_e:  "}P\textcolor{stringliteral}{" ("}P\textcolor{stringliteral}{")\(\backslash\)n"}, &thread->\hyperlink{structthread__s_a1159b3f03199aed705bf099f2eb33a92}{kstack}, thread->
+      \hyperlink{structthread__s_a1159b3f03199aed705bf099f2eb33a92}{kstack}[0]);
+213 \textcolor{comment}{/*}
+214 \textcolor{comment}{           kprintf (" - context:");}
+215 \textcolor{comment}{           kprintf ("   S0: "P,          thread->context[TH\_CONTEXT\_S0]);}
+216 \textcolor{comment}{           kprintf ("   S1: "P,          thread->context[TH\_CONTEXT\_S1]);}
+217 \textcolor{comment}{           kprintf ("   S2: "P,          thread->context[TH\_CONTEXT\_S2]);}
+218 \textcolor{comment}{           kprintf ("   S3: "P"\(\backslash\)n\(\backslash\)t   ", thread->context[TH\_CONTEXT\_S3]);}
+219 \textcolor{comment}{           kprintf ("   S4: "P,          thread->context[TH\_CONTEXT\_S4]);}
+220 \textcolor{comment}{           kprintf ("   S5: "P,          thread->context[TH\_CONTEXT\_S5]);}
+221 \textcolor{comment}{           kprintf ("   S6: "P,          thread->context[TH\_CONTEXT\_S6]);}
+222 \textcolor{comment}{           kprintf ("   S7: "P"\(\backslash\)n\(\backslash\)t   ", thread->context[TH\_CONTEXT\_S7]);}
+223 \textcolor{comment}{           kprintf ("   S8: "P,          thread->context[TH\_CONTEXT\_S8]);}
+224 \textcolor{comment}{           kprintf ("   SR: "P,          thread->context[TH\_CONTEXT\_SR]);}
+225 \textcolor{comment}{           kprintf ("   RA: "P,          thread->context[TH\_CONTEXT\_RA]);}
+226 \textcolor{comment}{           kprintf ("   SP: "P"\(\backslash\)n",      thread->context[TH\_CONTEXT\_SP]);}
+227 \textcolor{comment}{*/}
+228         \}
+229     \}
+230     \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\hyperlink{kthread_8c_a798e4073d613ca5ba9618e1b3253df14}{Y}\textcolor{stringliteral}{"------------------------ END DUMP ALL THREADS -------------------------\(\backslash\)n"});
+231 \}
+\end{DoxyCode}
+\hypertarget{kthread_8h_a3ecc03b8319efabea835c1205c8fff4d}{\index{kthread.\-h@{kthread.\-h}!thread\-\_\-addlast@{thread\-\_\-addlast}}
+\index{thread\-\_\-addlast@{thread\-\_\-addlast}!kthread.h@{kthread.\-h}}
+\subsubsection[{thread\-\_\-addlast}]{\setlength{\rightskip}{0pt plus 5cm}void thread\-\_\-addlast (
+\begin{DoxyParamCaption}
+\item[{{\bf list\-\_\-t} $\ast$}]{root, }
+\item[{{\bf thread\-\_\-t}}]{thread}
+\end{DoxyParamCaption}
+)}}\label{kthread_8h_a3ecc03b8319efabea835c1205c8fff4d}
+
+
+References list\-\_\-addlast(), and thread\-\_\-s\-::wait.
+
+
+
+Referenced by thread\-\_\-barrier\-\_\-wait(), and thread\-\_\-mutex\-\_\-lock().
+
+
+\begin{DoxyCode}
+58 \{
+59     \hyperlink{list_8h_a116cfa18214dd2f855cff842bb14ca8f}{list\_addlast} (root, &thread->\hyperlink{structthread__s_a291769866cccb5d37937ef14cedc38bf}{wait});
+60 \}
+\end{DoxyCode}
+\hypertarget{kthread_8h_a227d30321d9dddb518fe5d116aa7d90b}{\index{kthread.\-h@{kthread.\-h}!thread\-\_\-create@{thread\-\_\-create}}
+\index{thread\-\_\-create@{thread\-\_\-create}!kthread.h@{kthread.\-h}}
+\subsubsection[{thread\-\_\-create}]{\setlength{\rightskip}{0pt plus 5cm}int thread\-\_\-create (
+\begin{DoxyParamCaption}
+\item[{{\bf thread\-\_\-t} $\ast$}]{thread, }
+\item[{int}]{fun, }
+\item[{int}]{arg, }
+\item[{int}]{start}
+\end{DoxyParamCaption}
+)}}\label{kthread_8h_a227d30321d9dddb518fe5d116aa7d90b}
+
+
+Calls by the kernel in order to implement the user \hyperlink{kthread_8c_a2525e99272c4db4198bcea374d717620}{thread\-\_\-create()} syscall This function has the same arguments as \hyperlink{kthread_8c_a2525e99272c4db4198bcea374d717620}{thread\-\_\-create()}, plus one which is the pointer to the function that will start the thread, there are two of those\-: one for the main thread (nammed \-\_\-start defined in \hyperlink{crt0_8c}{crt0.\-c}) and one for the standard thread (nammed thread\-\_\-start defined in thread.\-c). These two functions do not have the same type but it does not matter because we are converting to int. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em thread} & pointer to the thread structure \\
+\hline
+{\em fun} & pointer to the function of the thread (cast to int) \\
+\hline
+{\em arg} & the argument given to fun() (cast to int) \\
+\hline
+{\em start} & pointer to the function which will start the thread (cast to int) This function is defined in the same address space as the thread. If it is a user thread the start function is in user space \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, an error code on fealure 
+\end{DoxyReturn}
+
+
+References thread\-\_\-s\-::arg, thread\-\_\-s\-::context, E\-A\-G\-A\-I\-N, thread\-\_\-s\-::fun, thread\-\_\-s\-::join, kmalloc(), thread\-\_\-s\-::krandseed, thread\-\_\-s\-::kstack, thread\-\_\-s\-::kstack\-\_\-b, list\-\_\-init(), M\-A\-G\-I\-C\-\_\-\-S\-T\-A\-C\-K, malloc\-\_\-ustack(), N\-U\-L\-L, P\-A\-G\-E\-\_\-\-S\-I\-Z\-E, thread\-\_\-s\-::ptls, thread\-\_\-s\-::retval, sched\-\_\-insert(), thread\-\_\-s\-::start, thread\-\_\-s\-::state, S\-U\-C\-C\-E\-S\-S, T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-E\-A\-D\-Y, thread\-\_\-bootstrap(), thread\-\_\-context\-\_\-init(), \-\_\-tls\-\_\-s\-::tls\-\_\-errno, thread\-\_\-s\-::ustack\-\_\-b, thread\-\_\-s\-::ustack\-\_\-e, U\-S\-T\-A\-C\-K\-\_\-\-S\-I\-Z\-E, and thread\-\_\-s\-::wait.
+
+
+
+Referenced by kinit().
+
+
+\begin{DoxyCode}
+282 \{
+283     \hyperlink{structthread__s}{thread\_t} thread = \hyperlink{kmemory_8c_a5f52d7c56b7d67dc2f96b2e93dfdc7be}{kmalloc} (\hyperlink{usermem_8h_a7d467c1d283fdfa1f2081ba1e0d01b6e}{PAGE\_SIZE});                      \textcolor{comment}{// thread is thus
+       always aligned}
+284     \textcolor{keywordflow}{if} (thread == \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL}) \textcolor{keywordflow}{return} \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a4bde0de54c0b708a605ed5095959c14e}{EAGAIN};                          \textcolor{comment}{// Not enough memory}
+285     thread->\hyperlink{structthread__s_a6885e765fcfe5d2ad0e5a07c2df3ee69}{kstack\_b} = (int)thread + \hyperlink{usermem_8h_a7d467c1d283fdfa1f2081ba1e0d01b6e}{PAGE\_SIZE} - 4;             \textcolor{comment}{// kstack beginning
+       (highest addr)}
+286     thread->\hyperlink{structthread__s_a8d51270c2f7572479276f7629940c3ea}{ustack\_b} = (int)\hyperlink{kmemory_8c_a2ce77af8c704a7d3f2204f94750daedb}{malloc\_ustack}();                    \textcolor{comment}{// stack beginning
+       (highest address)}
+287     thread->\hyperlink{structthread__s_a021e8a50ddb4a5978f18d6babfc4ea6e}{ustack\_e} = thread->\hyperlink{structthread__s_a8d51270c2f7572479276f7629940c3ea}{ustack\_b} - \hyperlink{usermem_8h_ad77d03e18a9477ef16ff8c4ae3c8b43d}{USTACK\_SIZE} + 4;      \textcolor{comment}{// stack end
+       (lowest addr)}
+288     thread->\hyperlink{structthread__s_ab3fce89938b5156047553299f71a1370}{state}    = \hyperlink{kthread_8h_a1887e40b17ecfda05b4a398375d527fb}{TH\_STATE\_READY};                          \textcolor{comment}{// it can be chosen by
+       the scheduler}
+289     \hyperlink{list_8h_a4988c174e6ecc55436d5f0e3dbbb3980}{list\_init} (&thread->\hyperlink{structthread__s_a291769866cccb5d37937ef14cedc38bf}{wait});                                  \textcolor{comment}{// initialize the waiting list}
+290     thread->\hyperlink{structthread__s_aeefa131a48c8c3c45e6c3c0819f21cd0}{retval}   = \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL};                                    \textcolor{comment}{// default return value}
+291     thread->\hyperlink{structthread__s_a84fafe08d8ef25fc4b5a8fb1e833619c}{join}     = \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL};                                    \textcolor{comment}{// no awaited thread}
+292     thread->\hyperlink{structthread__s_a63551d8e6d21a7370c5b3652cea282fc}{start}    = start;                                   \textcolor{comment}{// start() will call fun(arg)}
+293     thread->\hyperlink{structthread__s_a9a97385576dda275389e95ef13168cfc}{fun}      = fun;                                     \textcolor{comment}{// function of the thread}
+294     thread->\hyperlink{structthread__s_a5cdab21069c6c184a86d024a0aa238aa}{arg}      = arg;                                     \textcolor{comment}{// argument of the thread}
+295     thread->\hyperlink{structthread__s_a7ad218d5b7c4b6bc9c4602e6b1a89815}{ptls}     = (\hyperlink{struct__tls__s}{\_tls\_t} *)(thread->\hyperlink{structthread__s_a8d51270c2f7572479276f7629940c3ea}{ustack\_b} - \textcolor{keyword}{sizeof}(
+      \hyperlink{struct__tls__s}{\_tls\_t})); \textcolor{comment}{// pointer to the current tls}
+296     \hyperlink{mips_2threadc_8c_af63f55ab4a65c97f8effe4ff21de0b1e}{thread\_context\_init}(thread->\hyperlink{structthread__s_a668771e7e3444ba13544b50e1ff312a6}{context},                        \textcolor{comment}{// table to store
+       context}
+297                         \hyperlink{kthread_8c_ab6382c52388aa3e432787e2b9b4671bb}{thread\_bootstrap},                       \textcolor{comment}{// thread\_bootstrap() to
+       begin}
+298                         thread->\hyperlink{structthread__s_a7ad218d5b7c4b6bc9c4602e6b1a89815}{ptls});                          \textcolor{comment}{// stack pointer addr (below tls)}
+299     thread->\hyperlink{structthread__s_ae4614b780e1a47305c562869870d6e41}{krandseed}  = 1;                                     \textcolor{comment}{// default kernel random seed}
+300 
+301     *(\textcolor{keywordtype}{int}*)thread->\hyperlink{structthread__s_a6885e765fcfe5d2ad0e5a07c2df3ee69}{kstack\_b} = \hyperlink{usermem_8h_a34ef3ea96595898f1452b49d29a1722a}{MAGIC\_STACK};                      \textcolor{comment}{// should not be erased}
+302     thread->\hyperlink{structthread__s_a1159b3f03199aed705bf099f2eb33a92}{kstack}[0] = \hyperlink{usermem_8h_a34ef3ea96595898f1452b49d29a1722a}{MAGIC\_STACK};                            \textcolor{comment}{// (is kstack\_e) should
+       not erased}
+303 
+304     \hyperlink{kthread_8c_ad094fddcf3208d43f3385ed2aa419c10}{sched\_insert} (thread);                                      \textcolor{comment}{// insert new thread in
+       scheduler}
+305     *thread\_p = thread;
+306     thread->\hyperlink{structthread__s_a7ad218d5b7c4b6bc9c4602e6b1a89815}{ptls}->\hyperlink{struct__tls__s_a2b0505d872f110754ab80cdfe94bf58e}{tls\_errno} = \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3ac7f69f7c9e5aea9b8f54cf02870e2bf8}{SUCCESS};
+307     \textcolor{keywordflow}{return} \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3ac7f69f7c9e5aea9b8f54cf02870e2bf8}{SUCCESS};
+308 \}
+\end{DoxyCode}
+\hypertarget{kthread_8h_ac0393114fc2fb6571188e9c619042c46}{\index{kthread.\-h@{kthread.\-h}!thread\-\_\-errno@{thread\-\_\-errno}}
+\index{thread\-\_\-errno@{thread\-\_\-errno}!kthread.h@{kthread.\-h}}
+\subsubsection[{thread\-\_\-errno}]{\setlength{\rightskip}{0pt plus 5cm}int$\ast$ thread\-\_\-errno (
+\begin{DoxyParamCaption}
+\item[{{\bf thread\-\_\-t}}]{thread}
+\end{DoxyParamCaption}
+)}}\label{kthread_8h_ac0393114fc2fb6571188e9c619042c46}
+
+
+return address of errno for the thread given this function is defined here, because it needs to access at the hidden thread struct 
+
+
+\begin{DoxyParams}{Parameters}
+{\em thread} & where errno is searched \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+an address in user space where the last syscall error is put 
+\end{DoxyReturn}
+
+
+References thread\-\_\-s\-::ptls, and \-\_\-tls\-\_\-s\-::tls\-\_\-errno.
+
+
+\begin{DoxyCode}
+79 \{
+80     \textcolor{keywordflow}{return} &(thread->\hyperlink{structthread__s_a7ad218d5b7c4b6bc9c4602e6b1a89815}{ptls}->\hyperlink{struct__tls__s_a2b0505d872f110754ab80cdfe94bf58e}{tls\_errno});
+81 \}
+\end{DoxyCode}
+\hypertarget{kthread_8h_a19b16adf05364471bae2840aa564329a}{\index{kthread.\-h@{kthread.\-h}!thread\-\_\-exit@{thread\-\_\-exit}}
+\index{thread\-\_\-exit@{thread\-\_\-exit}!kthread.h@{kthread.\-h}}
+\subsubsection[{thread\-\_\-exit}]{\setlength{\rightskip}{0pt plus 5cm}void thread\-\_\-exit (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{retval}
+\end{DoxyParamCaption}
+)}}\label{kthread_8h_a19b16adf05364471bae2840aa564329a}
+
+
+Terminates the current thread, it never returns (see details in \hyperlink{kthread_8c}{kthread.\-c}) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em retval} & the value can be retrieved by calling the thread\-\_\-join function by another thread \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+return the value retval
+\end{DoxyReturn}
+\hyperlink{kthread_8c_a19b16adf05364471bae2840aa564329a}{thread\-\_\-exit()} is to exit the current thread. Read this comment then the thread\-\_\-join's comment. E1) firstly, store the return value and tell the current thread is becoming Z\-O\-M\-B\-I\-E E2) If the task waiting for the end of the current thread is already known E3) -- then since, this task is waiting, change it state to R\-E\-A\-D\-Y Finally, definitively yield the processor (the current thread never come back Critical section\-: In case of real parallelism with thread\-\_\-join, we must avoid the sequence\-: J1 J2 E1 E2 E3 J3 because then, the thread that executes the join gets the state W\-A\-I\-T and won't be never notified Thus, a critical section is created using the thread structure lock of the expected thread 
+
+References I\-N\-F\-O, thread\-\_\-s\-::join, thread\-\_\-s\-::lock, N\-U\-L\-L, thread\-\_\-s\-::retval, sched\-\_\-switch(), spin\-\_\-lock, spin\-\_\-unlock, thread\-\_\-s\-::state, T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-E\-A\-D\-Y, and T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-Z\-O\-M\-B\-I\-E.
+
+
+\begin{DoxyCode}
+342 \{
+343     \hyperlink{debug__off_8h_ade9dd5644bb3e429458471976764c5ab}{INFO} (\textcolor{stringliteral}{"thread %p retval %p\(\backslash\)n"}, \hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent}, retval);
+344 
+345     \hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent}->\hyperlink{structthread__s_aeefa131a48c8c3c45e6c3c0819f21cd0}{retval} = retval;                             \textcolor{comment}{// E1: store the return
+       value}
+346     \hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent}->\hyperlink{structthread__s_ab3fce89938b5156047553299f71a1370}{state} = \hyperlink{kthread_8h_a55287315008b2fea47936dc065bbabb7}{TH\_STATE\_ZOMBIE};                     \textcolor{comment}{//    
+       tell that is the end}
+347 
+348     \hyperlink{mips_2atomic_8S_abff7230a2ee820f538a2574ee5b3a593}{spin\_lock} (&\hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent}->\hyperlink{structthread__s_a483959ed6abed6c12f49643c4495a7b1}{lock});                           \textcolor{comment}{// avoid sequence
+       J1 J2 E1 E2 E3 J3}
+349     \textcolor{keywordflow}{if} (\hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent}->\hyperlink{structthread__s_a84fafe08d8ef25fc4b5a8fb1e833619c}{join} != \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL})                            \textcolor{comment}{// E2: if there is a
+       thread waiting}
+350         \hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent}->\hyperlink{structthread__s_a84fafe08d8ef25fc4b5a8fb1e833619c}{join}->\hyperlink{structthread__s_ab3fce89938b5156047553299f71a1370}{state} = \hyperlink{kthread_8h_a1887e40b17ecfda05b4a398375d527fb}{TH\_STATE\_READY};            \textcolor{comment}{// E3:
+       then change its state}
+351     \hyperlink{mips_2atomic_8S_a18d39a883be260c78529672999549545}{spin\_unlock} (&\hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent}->\hyperlink{structthread__s_a483959ed6abed6c12f49643c4495a7b1}{lock});                         \textcolor{comment}{// end of
+       critical section}
+352     \hyperlink{kthread_8c_a79c9880ce2be11d3a2c217c383d256fb}{sched\_switch} ();                                            \textcolor{comment}{// at last, definitively yield
+       proc}
+353 \}
+\end{DoxyCode}
+\hypertarget{kthread_8h_a79b0f0a19a09db45e1689ff011f6109b}{\index{kthread.\-h@{kthread.\-h}!thread\-\_\-item@{thread\-\_\-item}}
+\index{thread\-\_\-item@{thread\-\_\-item}!kthread.h@{kthread.\-h}}
+\subsubsection[{thread\-\_\-item}]{\setlength{\rightskip}{0pt plus 5cm}{\bf thread\-\_\-t} thread\-\_\-item (
+\begin{DoxyParamCaption}
+\item[{{\bf list\-\_\-t} $\ast$}]{item}
+\end{DoxyParamCaption}
+)}}\label{kthread_8h_a79b0f0a19a09db45e1689ff011f6109b}
+
+
+References list\-\_\-item.
+
+
+
+Referenced by thread\-\_\-barrier\-\_\-wait(), and thread\-\_\-mutex\-\_\-unlock().
+
+
+\begin{DoxyCode}
+63 \{
+64     \textcolor{keywordflow}{return} \hyperlink{list_8h_a99f8755f2301e99adad3c8490df79052}{list\_item} (item, \textcolor{keyword}{struct} \hyperlink{structthread__s}{thread\_s}, wait);
+65 \}
+\end{DoxyCode}
+\hypertarget{kthread_8h_a9cff35af30e36a1fc0381f648ab9a976}{\index{kthread.\-h@{kthread.\-h}!thread\-\_\-join@{thread\-\_\-join}}
+\index{thread\-\_\-join@{thread\-\_\-join}!kthread.h@{kthread.\-h}}
+\subsubsection[{thread\-\_\-join}]{\setlength{\rightskip}{0pt plus 5cm}int thread\-\_\-join (
+\begin{DoxyParamCaption}
+\item[{{\bf thread\-\_\-t}}]{thread\-\_\-expected, }
+\item[{void $\ast$$\ast$}]{retval}
+\end{DoxyParamCaption}
+)}}\label{kthread_8h_a9cff35af30e36a1fc0381f648ab9a976}
+
+
+Wait for a thread termination (see details in \hyperlink{kthread_8c}{kthread.\-c}) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em thread} & pointer to the awaited thread structure \\
+\hline
+{\em retval} & pointer to the return value of the awaited thread \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, an error code on fealure (not yet implemented)
+\end{DoxyReturn}
+Please, read first the \hyperlink{kthread_8c_a19b16adf05364471bae2840aa564329a}{thread\-\_\-exit()} comment. \hyperlink{kthread_8c_a4e54fc344bbd735b027c03629927abb9}{thread\-\_\-join()} is to wait another thread. J1) firstly, tell the excepted thread that the current thread is waiting for it J2) If the expected thread is still alive, J3) -- then wait for it if the expected thread is already a Z\-O\-M\-B\-I\-E, so take its return value and change it to D\-E\-A\-D Critical section\-: see the comment of thread\-\_\-exit T\-O\-D\-O check is thread\-\_\-expected is a real thread (add a M\-A\-G\-I\-C number is struct \hyperlink{structthread__s}{thread\-\_\-s} 
+
+References E\-S\-R\-C\-H, I\-N\-F\-O, thread\-\_\-s\-::join, thread\-\_\-s\-::lock, N\-U\-L\-L, thread\-\_\-s\-::retval, sched\-\_\-switch(), spin\-\_\-lock, spin\-\_\-unlock, thread\-\_\-s\-::state, S\-U\-C\-C\-E\-S\-S, T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-D\-E\-A\-D, T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-W\-A\-I\-T, T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-Z\-O\-M\-B\-I\-E, and Thread\-Current.
+
+
+\begin{DoxyCode}
+365 \{
+366     \hyperlink{debug__off_8h_ade9dd5644bb3e429458471976764c5ab}{INFO} (\textcolor{stringliteral}{"thread %p expects %p\(\backslash\)n"}, \hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent}, thread\_expected);
+367 
+368     \textcolor{keywordflow}{if} (thread\_expected == \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL}) \textcolor{keywordflow}{return} \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a4e376a13d0c1557d399f473218915625}{ESRCH};                  \textcolor{comment}{// Error code}
+369     thread\_expected->\hyperlink{structthread__s_a84fafe08d8ef25fc4b5a8fb1e833619c}{join} = \hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent};                      \textcolor{comment}{// J1: tell ThreadCurrent
+       is waiting}
+370     \hyperlink{mips_2atomic_8S_abff7230a2ee820f538a2574ee5b3a593}{spin\_lock} (&thread\_expected->\hyperlink{structthread__s_a483959ed6abed6c12f49643c4495a7b1}{lock});                         \textcolor{comment}{// avoid J1 J2 E1 E2 E3 J3}
+371     \textcolor{keywordflow}{if} (thread\_expected->\hyperlink{structthread__s_ab3fce89938b5156047553299f71a1370}{state} != \hyperlink{kthread_8h_a55287315008b2fea47936dc065bbabb7}{TH\_STATE\_ZOMBIE}) \{            \textcolor{comment}{// J2: if expected
+       thread not ended}
+372         \hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent}->\hyperlink{structthread__s_ab3fce89938b5156047553299f71a1370}{state} = \hyperlink{kthread_8h_a75c1c2f7da0a338d818a2950b582b74a}{TH\_STATE\_WAIT};                   \textcolor{comment}{// J3: then
+       wait for it}
+373         \hyperlink{mips_2atomic_8S_a18d39a883be260c78529672999549545}{spin\_unlock} (&thread\_expected->\hyperlink{structthread__s_a483959ed6abed6c12f49643c4495a7b1}{lock});                   \textcolor{comment}{// end of critical section}
+374         \hyperlink{kthread_8c_a79c9880ce2be11d3a2c217c383d256fb}{sched\_switch} ();                                        \textcolor{comment}{// yield the proc till READY}
+375     \} \textcolor{keywordflow}{else} \{
+376         \hyperlink{mips_2atomic_8S_a18d39a883be260c78529672999549545}{spin\_unlock} (&thread\_expected->\hyperlink{structthread__s_a483959ed6abed6c12f49643c4495a7b1}{lock});                   \textcolor{comment}{// end of critical section}
+377     \}
+378     *retval = thread\_expected->\hyperlink{structthread__s_aeefa131a48c8c3c45e6c3c0819f21cd0}{retval};                          \textcolor{comment}{// get the return value}
+379     thread\_expected->\hyperlink{structthread__s_ab3fce89938b5156047553299f71a1370}{state} = \hyperlink{kthread_8h_aeae3234bde1a15d5c671a41286949bc5}{TH\_STATE\_DEAD};                     \textcolor{comment}{// finally, the thread is
+       DEAD}
+380 
+381     \textcolor{keywordflow}{return} \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3ac7f69f7c9e5aea9b8f54cf02870e2bf8}{SUCCESS};
+382 \}
+\end{DoxyCode}
+\hypertarget{kthread_8h_ac8ecc48f4f6134c6118c90a593b187bc}{\index{kthread.\-h@{kthread.\-h}!thread\-\_\-krandseed@{thread\-\_\-krandseed}}
+\index{thread\-\_\-krandseed@{thread\-\_\-krandseed}!kthread.h@{kthread.\-h}}
+\subsubsection[{thread\-\_\-krandseed}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long long$\ast$ thread\-\_\-krandseed (
+\begin{DoxyParamCaption}
+\item[{{\bf thread\-\_\-t}}]{thread}
+\end{DoxyParamCaption}
+)}}\label{kthread_8h_ac8ecc48f4f6134c6118c90a593b187bc}
+
+
+return address of krandseed for the thread given this function is defined here, because it needs to access at the hidden thread struct 
+
+
+\begin{DoxyParams}{Parameters}
+{\em thread} & where krandseed is searched \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+an address in user space where the last syscall error is put 
+\end{DoxyReturn}
+
+
+References thread\-\_\-s\-::krandseed.
+
+
+\begin{DoxyCode}
+74 \{
+75     \textcolor{keywordflow}{return} &(thread->\hyperlink{structthread__s_ae4614b780e1a47305c562869870d6e41}{krandseed});
+76 \}
+\end{DoxyCode}
+\hypertarget{kthread_8h_a95c63c8faef6c13da432a94800ad2acb}{\index{kthread.\-h@{kthread.\-h}!thread\-\_\-main\-\_\-load@{thread\-\_\-main\-\_\-load}}
+\index{thread\-\_\-main\-\_\-load@{thread\-\_\-main\-\_\-load}!kthread.h@{kthread.\-h}}
+\subsubsection[{thread\-\_\-main\-\_\-load}]{\setlength{\rightskip}{0pt plus 5cm}void thread\-\_\-main\-\_\-load (
+\begin{DoxyParamCaption}
+\item[{{\bf thread\-\_\-t}}]{thread}
+\end{DoxyParamCaption}
+)}}\label{kthread_8h_a95c63c8faef6c13da432a94800ad2acb}
+
+
+load the context of the \hyperlink{ktools_8c_a0ddf1224851353fc92bfbff6f499fa97}{main()} thread, only used by kinit 
+
+\begin{DoxyReturn}{Returns}
+nothing but the thread is launched and never come back 
+\end{DoxyReturn}
+
+
+References \-\_\-usermem, thread\-\_\-s\-::context, thread\-\_\-s\-::ptls, \-\_\-usermem\-\_\-s\-::ptls, and thread\-\_\-context\-\_\-load.
+
+
+
+Referenced by kinit().
+
+
+\begin{DoxyCode}
+311 \{
+312     \hyperlink{usermem_8h_af044184d28c9a8b78f17bd1d8e1059b4}{\_usermem}.\hyperlink{struct__usermem__s_a092a5f4499ea31a3da83e6716d959626}{ptls} = thread->\hyperlink{structthread__s_a7ad218d5b7c4b6bc9c4602e6b1a89815}{ptls};
+313     \hyperlink{mips_2threada_8S_a398387f3c20a09104dea669ec8dfdab6}{thread\_context\_load} (thread->\hyperlink{structthread__s_a668771e7e3444ba13544b50e1ff312a6}{context});
+314 \}
+\end{DoxyCode}
+\hypertarget{kthread_8h_acc9196e88e8db0daa5b13544cfe62996}{\index{kthread.\-h@{kthread.\-h}!thread\-\_\-notify@{thread\-\_\-notify}}
+\index{thread\-\_\-notify@{thread\-\_\-notify}!kthread.h@{kthread.\-h}}
+\subsubsection[{thread\-\_\-notify}]{\setlength{\rightskip}{0pt plus 5cm}void thread\-\_\-notify (
+\begin{DoxyParamCaption}
+\item[{{\bf thread\-\_\-t}}]{thread}
+\end{DoxyParamCaption}
+)}}\label{kthread_8h_acc9196e88e8db0daa5b13544cfe62996}
+
+
+Ask the current R\-U\-N\-N\-I\-N\-G thread to W\-A\-I\-T the current thread must become R\-E\-A\-D\-Y again after the call to \hyperlink{kthread_8c_acc9196e88e8db0daa5b13544cfe62996}{thread\-\_\-notify()}. In some cases, when \hyperlink{kthread_8c_acc9196e88e8db0daa5b13544cfe62996}{thread\-\_\-notify()} is called just before \hyperlink{kthread_8c_a0c0fd0ef94a8688f65d53216ae6c33e7}{thread\-\_\-wait()} has had time to put the current thread in the W\-A\-I\-T state (this is possible, since \hyperlink{kthread_8c_acc9196e88e8db0daa5b13544cfe62996}{thread\-\_\-notify()} is called by another thread running on another processor) then the current thread is already R\-E\-A\-D\-Y but \hyperlink{kthread_8c_a0c0fd0ef94a8688f65d53216ae6c33e7}{thread\-\_\-wait()} yields the processor anyway, so the current thread should lose the processor for a while, until the scheduler chooses it again. 
+
+Start to read the \hyperlink{kthread_8c_a0c0fd0ef94a8688f65d53216ae6c33e7}{thread\-\_\-wait()} comment to understand what is T0 and T1. T1 calls the tread\-\_\-notify() function when the resource expected by T0 has occurred. When T1 enter the critical section of thread\-\_\-notify, there are two possibilities 1) T0 already passed through the critical section of thread\-\_\-wait and so T0 is in W\-A\-I\-T 2) T0 has not yet crossed the critical section of thread\-\_\-wait and T0 is therefore in R\-U\-N\-N\-I\-N\-G yet. In both cases, we must ask T0 to notify, which is done by setting T0's state to R\-E\-A\-D\-Y 
+
+References thread\-\_\-s\-::lock, spin\-\_\-lock, spin\-\_\-unlock, thread\-\_\-s\-::state, and T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-E\-A\-D\-Y.
+
+
+
+Referenced by thread\-\_\-barrier\-\_\-wait(), and thread\-\_\-mutex\-\_\-unlock().
+
+
+\begin{DoxyCode}
+427 \{
+428     \hyperlink{mips_2atomic_8S_abff7230a2ee820f538a2574ee5b3a593}{spin\_lock} (&\hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent}->\hyperlink{structthread__s_a483959ed6abed6c12f49643c4495a7b1}{lock});                           \textcolor{comment}{// !--! critical
+       section}
+429     thread->\hyperlink{structthread__s_ab3fce89938b5156047553299f71a1370}{state} = \hyperlink{kthread_8h_a1887e40b17ecfda05b4a398375d527fb}{TH\_STATE\_READY};                             \textcolor{comment}{// (RUNNING or WAIT) to
+       READY}
+430     \hyperlink{mips_2atomic_8S_a18d39a883be260c78529672999549545}{spin\_unlock} (&\hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent}->\hyperlink{structthread__s_a483959ed6abed6c12f49643c4495a7b1}{lock});                         \textcolor{comment}{// !--! end of
+       critical section}
+431 \}
+\end{DoxyCode}
+\hypertarget{kthread_8h_a4bf00d3ebfff22db494125012393cddf}{\index{kthread.\-h@{kthread.\-h}!thread\-\_\-randseed\-\_\-get@{thread\-\_\-randseed\-\_\-get}}
+\index{thread\-\_\-randseed\-\_\-get@{thread\-\_\-randseed\-\_\-get}!kthread.h@{kthread.\-h}}
+\subsubsection[{thread\-\_\-randseed\-\_\-get}]{\setlength{\rightskip}{0pt plus 5cm}long long thread\-\_\-randseed\-\_\-get (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{kthread_8h_a4bf00d3ebfff22db494125012393cddf}
+
+
+get the seed for the current running thread 
+
+\begin{DoxyReturn}{Returns}
+the current seed 
+\end{DoxyReturn}
+\hypertarget{kthread_8h_a915acd568076749f98a0878936790ca4}{\index{kthread.\-h@{kthread.\-h}!thread\-\_\-randseed\-\_\-set@{thread\-\_\-randseed\-\_\-set}}
+\index{thread\-\_\-randseed\-\_\-set@{thread\-\_\-randseed\-\_\-set}!kthread.h@{kthread.\-h}}
+\subsubsection[{thread\-\_\-randseed\-\_\-set}]{\setlength{\rightskip}{0pt plus 5cm}long long thread\-\_\-randseed\-\_\-set (
+\begin{DoxyParamCaption}
+\item[{long long}]{seed}
+\end{DoxyParamCaption}
+)}}\label{kthread_8h_a915acd568076749f98a0878936790ca4}
+
+
+set the seed for the current running thread 
+
+
+\begin{DoxyParams}{Parameters}
+{\em seed} & the new seed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the new seed 
+\end{DoxyReturn}
+\hypertarget{kthread_8h_a0c0fd0ef94a8688f65d53216ae6c33e7}{\index{kthread.\-h@{kthread.\-h}!thread\-\_\-wait@{thread\-\_\-wait}}
+\index{thread\-\_\-wait@{thread\-\_\-wait}!kthread.h@{kthread.\-h}}
+\subsubsection[{thread\-\_\-wait}]{\setlength{\rightskip}{0pt plus 5cm}void thread\-\_\-wait (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{kthread_8h_a0c0fd0ef94a8688f65d53216ae6c33e7}
+
+
+Ask the current R\-U\-N\-N\-I\-N\-G thread to W\-A\-I\-T the current thread must become R\-E\-A\-D\-Y again after the call to \hyperlink{kthread_8c_acc9196e88e8db0daa5b13544cfe62996}{thread\-\_\-notify()}. In some cases, when \hyperlink{kthread_8c_acc9196e88e8db0daa5b13544cfe62996}{thread\-\_\-notify()} is called just before \hyperlink{kthread_8c_a0c0fd0ef94a8688f65d53216ae6c33e7}{thread\-\_\-wait()} has had time to put the current thread in the W\-A\-I\-T state (this is possible, since \hyperlink{kthread_8c_acc9196e88e8db0daa5b13544cfe62996}{thread\-\_\-notify()} is called by another thread running on another processor) then the current thread is already R\-E\-A\-D\-Y but \hyperlink{kthread_8c_a0c0fd0ef94a8688f65d53216ae6c33e7}{thread\-\_\-wait()} yields the processor anyway, so the current thread should lose the processor for a while, until the scheduler chooses it again. 
+
+\begin{DoxyReturn}{Returns}
+nothing but there is a state changement
+\end{DoxyReturn}
+\hyperlink{kthread_8c_a0c0fd0ef94a8688f65d53216ae6c33e7}{thread\-\_\-wait()} and \hyperlink{kthread_8c_acc9196e88e8db0daa5b13544cfe62996}{thread\-\_\-notify()} are made to handle the W\-A\-I\-T state, please read both comments. Use this function to put the current thread (say T0) into a W\-A\-I\-T state. We need this when T0 has just tried to acquire a busy resource. We assume that T0 has already been added to the resource's waiting list, so we still need to detach T0 from its processor's availability list. The problem is that the resource may become available during the state change of T0. Suppose another thread (say T1) returns the resource and calls thread\-\_\-notify(\-T0). T1 is necessarily running on another C\-P\-U, so there is a risk that T0 will become R\-E\-A\-D\-Y (because of the call to thread\-\_\-notify(\-T0)) with the resource in its possession and then become W\-A\-I\-T (because of the call to \hyperlink{kthread_8c_a0c0fd0ef94a8688f65d53216ae6c33e7}{thread\-\_\-wait()} just after). In this case, T0 will never notified again. This is the end. there are two possibilities\-: A \mbox{[} wait then notify \mbox{]} or B \mbox{[} notify then wait \mbox{]} A) That is the normal case. T0 is first detached from ready list, then secondly, T0 is notified and become R\-E\-A\-D\-Y B) That is a abnormal case. T0 begins to notify, because T1 gives it the resource and calls \hyperlink{kthread_8c_acc9196e88e8db0daa5b13544cfe62996}{thread\-\_\-notify()} then T0 becomes R\-E\-A\-D\-Y, but just after that T0 calls \hyperlink{kthread_8c_a0c0fd0ef94a8688f65d53216ae6c33e7}{thread\-\_\-wait()}! Thus, \hyperlink{kthread_8c_a0c0fd0ef94a8688f65d53216ae6c33e7}{thread\-\_\-wait()}, called by T0, must know that \hyperlink{kthread_8c_acc9196e88e8db0daa5b13544cfe62996}{thread\-\_\-notify()} has already been called, it is simply possible by looking its state. If T0 is always R\-U\-N\-N\-I\-N\-G, then it means that \hyperlink{kthread_8c_acc9196e88e8db0daa5b13544cfe62996}{thread\-\_\-notify()} has not been called yet, because otherwise the state would have been R\-E\-A\-D\-Y In that case T0 has to wait, otherwise T0 is R\-E\-A\-D\-Y and we D\-O N\-O\-T change the state The lock is to protect the sequence \mbox{[} read -\/ test -\/ modification \mbox{]} Note that it is possible that the notify() occurs after unlocking and just before \hyperlink{kthread_8c_a79c9880ce2be11d3a2c217c383d256fb}{sched\-\_\-switch()}. In this case, T0 will be R\-E\-A\-D\-Y but will lose the C\-P\-U even if it owns the resource. This is unfortunate, as the resource is locked for a quantum of time, but it is not fatal. 
+
+References thread\-\_\-s\-::lock, sched\-\_\-switch(), spin\-\_\-lock, spin\-\_\-unlock, thread\-\_\-s\-::state, T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-U\-N\-N\-I\-N\-G, and T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-W\-A\-I\-T.
+
+
+
+Referenced by thread\-\_\-barrier\-\_\-wait(), and thread\-\_\-mutex\-\_\-lock().
+
+
+\begin{DoxyCode}
+410 \{
+411     \hyperlink{mips_2atomic_8S_abff7230a2ee820f538a2574ee5b3a593}{spin\_lock} (&\hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent}->\hyperlink{structthread__s_a483959ed6abed6c12f49643c4495a7b1}{lock});                           \textcolor{comment}{// !--! critical
+       section}
+412     \textcolor{keywordflow}{if} (\hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent}->\hyperlink{structthread__s_ab3fce89938b5156047553299f71a1370}{state} == \hyperlink{kthread_8h_a83c4c9d919043cd3b5bac98b7250d506}{TH\_STATE\_RUNNING})               \textcolor{comment}{//
+       thread\_notify not happened yet}
+413          \hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent}->\hyperlink{structthread__s_ab3fce89938b5156047553299f71a1370}{state} = \hyperlink{kthread_8h_a75c1c2f7da0a338d818a2950b582b74a}{TH\_STATE\_WAIT};                  \textcolor{comment}{// give the
+       CPU back}
+414     \hyperlink{mips_2atomic_8S_a18d39a883be260c78529672999549545}{spin\_unlock} (&\hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent}->\hyperlink{structthread__s_a483959ed6abed6c12f49643c4495a7b1}{lock});                         \textcolor{comment}{// !--! end of
+       critical section}
+415     \hyperlink{kthread_8c_a79c9880ce2be11d3a2c217c383d256fb}{sched\_switch} ();                                            \textcolor{comment}{// then switch the thread}
+416 \}
+\end{DoxyCode}
+\hypertarget{kthread_8h_affe2eebf6749bc36765d45ff48c926b1}{\index{kthread.\-h@{kthread.\-h}!thread\-\_\-yield@{thread\-\_\-yield}}
+\index{thread\-\_\-yield@{thread\-\_\-yield}!kthread.h@{kthread.\-h}}
+\subsubsection[{thread\-\_\-yield}]{\setlength{\rightskip}{0pt plus 5cm}int thread\-\_\-yield (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{kthread_8h_affe2eebf6749bc36765d45ff48c926b1}
+
+
+Causes the current thread to give up the C\-P\-U in order to give it to another. 
+
+\begin{DoxyReturn}{Returns}
+0 in any cases
+\end{DoxyReturn}
+Use this function to yield the C\-P\-U while the thread is in a R\-U\-N\-N\-I\-N\-G state, which means that the thread is not waiting for any resource (as a device, mutex or anything else), so just we need to put it in a R\-E\-A\-D\-Y state and try to switch to another thread. It is not necessary to take the thread lock, since no one will change the state at this moment If thread is the only R\-E\-A\-D\-Y, it will take the C\-P\-U again. 
+
+References sched\-\_\-switch(), thread\-\_\-s\-::state, S\-U\-C\-C\-E\-S\-S, and T\-H\-\_\-\-S\-T\-A\-T\-E\-\_\-\-R\-E\-A\-D\-Y.
+
+
+
+Referenced by ns16550\-\_\-read(), soc\-\_\-timer\-\_\-init(), and soclib\-\_\-tty\-\_\-read().
+
+
+\begin{DoxyCode}
+324 \{
+325     \hyperlink{kthread_8c_a1da5431310f6068f6d1113c402eff5f8}{ThreadCurrent}->\hyperlink{structthread__s_ab3fce89938b5156047553299f71a1370}{state} = \hyperlink{kthread_8h_a1887e40b17ecfda05b4a398375d527fb}{TH\_STATE\_READY};                      \textcolor{comment}{// yield
+       the CPU but always READY}
+326     \hyperlink{kthread_8c_a79c9880ce2be11d3a2c217c383d256fb}{sched\_switch} ();                                            \textcolor{comment}{// Try to change thread}
+327     \textcolor{keywordflow}{return} \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3ac7f69f7c9e5aea9b8f54cf02870e2bf8}{SUCCESS};
+328 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\hypertarget{kthread_8h_a1da5431310f6068f6d1113c402eff5f8}{\index{kthread.\-h@{kthread.\-h}!Thread\-Current@{Thread\-Current}}
+\index{Thread\-Current@{Thread\-Current}!kthread.h@{kthread.\-h}}
+\subsubsection[{Thread\-Current}]{\setlength{\rightskip}{0pt plus 5cm}{\bf thread\-\_\-t} Thread\-Current}}\label{kthread_8h_a1da5431310f6068f6d1113c402eff5f8}
+
+
+Pointeur to the current R\-U\-N\-N\-I\-N\-G thread (only one per processor) T\-O\-D\-O should be an array if there are several processor T\-O\-D\-O add a variable to count the number of threads and check it when tbread\-\_\-create. 
+
+
+
+Referenced by thread\-\_\-barrier\-\_\-wait(), thread\-\_\-bootstrap(), thread\-\_\-join(), thread\-\_\-mutex\-\_\-destroy(), thread\-\_\-mutex\-\_\-lock(), and thread\-\_\-mutex\-\_\-unlock().
+

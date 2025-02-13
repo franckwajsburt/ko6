@@ -1,0 +1,1749 @@
+\hypertarget{kfs_8c}{\section{/users/enseig/franck/ko6/src/soft/fs/kfs/kfs.c File Reference}
+\label{kfs_8c}\index{/users/enseig/franck/ko6/src/soft/fs/kfs/kfs.\-c@{/users/enseig/franck/ko6/src/soft/fs/kfs/kfs.\-c}}
+}
+{\ttfamily \#include $<$kfs.\-h$>$}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structkfs__dentry__s}{kfs\-\_\-dentry\-\_\-s}
+\item 
+struct \hyperlink{structkfs__inode__s}{kfs\-\_\-inode\-\_\-s}
+\item 
+struct \hyperlink{structkfs__mbr__s}{kfs\-\_\-mbr\-\_\-s}
+\item 
+struct \hyperlink{structkfs__sblock__s}{kfs\-\_\-sblock\-\_\-s}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{N\-U\-L\-L}~(void $\ast$)0
+\item 
+\#define \hyperlink{kfs_8c_ae0b389bdf68187ccb1610271d36edb33}{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-N\-A\-M\-E}~28      /$\ast$ dentry name length $\ast$/
+\item 
+\#define \hyperlink{kfs_8c_a92ab7d744c9853bdebee5c81ac2b422f}{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-D\-E\-N\-T\-R\-Y}~((\hyperlink{kfs_8h_a012e85f2bb85ec2d5bdff1d298929018}{K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-D\-E\-N\-T\-R\-Y}$<$$<$12)/sizeof(\hyperlink{kfs_8c_a287f63c467f156bbaeca5cf701e916fe}{kfs\-\_\-dentry\-\_\-t})) /$\ast$ number of dentries $\ast$/
+\item 
+\#define \hyperlink{kfs_8c_ac084ea319e447d4af876044655fc46ec}{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-I\-N\-O\-D\-E}~((\hyperlink{kfs_8h_a93b1915cf843dbd16b8d274ee4751acb}{K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-I\-N\-O\-D\-E} $<$$<$12)/sizeof(\hyperlink{kfs_8c_a1b514cfe529f648b9e0a2d36b32d111d}{kfs\-\_\-inode\-\_\-t}))  /$\ast$ number of inodes $\ast$/
+\item 
+\#define \hyperlink{kfs_8c_a75563572783e6a8183fe1fa127b6453d}{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-F\-M\-A\-P}~((\hyperlink{kfs_8h_ae070eb53d573680911159a7cbb4b90e2}{K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-F\-M\-A\-P}  $<$$<$12)/sizeof(\hyperlink{kfs_8c_a7db204b3134ab7e4824022eec748871c}{kfs\-\_\-fmap\-\_\-t}))   /$\ast$ number of file maps $\ast$/
+\item 
+\#define \hyperlink{kfs_8c_af0ae18eb635e6562531a287fb89dd996}{N\-P\-G\-U}~(\hyperlink{kfs_8h_a75d29f6159278cfe6da1ae6fefb40c46}{K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-B\-O\-O\-T}+\hyperlink{kfs_8h_a2fc604f5c0a4a2971369642c96f07abf}{K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-M\-E\-T\-A})            /$\ast$ number of pages used by B\-O\-O\-T and M\-E\-T\-A $\ast$/
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef unsigned int \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\-\_\-t}
+\item 
+typedef unsigned short \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\-\_\-t}
+\item 
+typedef unsigned char \hyperlink{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}{u8\-\_\-t}
+\item 
+typedef signed int \hyperlink{kfs_8c_a2d27dc3b3d920629ee0d10b6f7bbe427}{i32\-\_\-t}
+\item 
+typedef signed short \hyperlink{kfs_8c_a8cf7c777695c7e20328dc1bcd41914eb}{i16\-\_\-t}
+\item 
+typedef signed char \hyperlink{kfs_8c_ae0202ec8eca2f399b9a57c31194a5f28}{i8\-\_\-t}
+\item 
+typedef struct \hyperlink{structkfs__dentry__s}{kfs\-\_\-dentry\-\_\-s} \hyperlink{kfs_8c_a287f63c467f156bbaeca5cf701e916fe}{kfs\-\_\-dentry\-\_\-t}
+\item 
+typedef struct \hyperlink{structkfs__inode__s}{kfs\-\_\-inode\-\_\-s} \hyperlink{kfs_8c_a1b514cfe529f648b9e0a2d36b32d111d}{kfs\-\_\-inode\-\_\-t}
+\item 
+typedef \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\-\_\-t} \hyperlink{kfs_8c_a7db204b3134ab7e4824022eec748871c}{kfs\-\_\-fmap\-\_\-t} \mbox{[}16\mbox{]}
+\begin{DoxyCompactList}\small\item\em fmap as inode extension, maps until 16 pages or 16 other fmaps \end{DoxyCompactList}\item 
+typedef struct \hyperlink{structkfs__mbr__s}{kfs\-\_\-mbr\-\_\-s} \hyperlink{kfs_8c_a70f1f4fd044c3b461db9bab02f1487b2}{kfs\-\_\-mbr\-\_\-t}
+\item 
+typedef struct \hyperlink{structkfs__sblock__s}{kfs\-\_\-sblock\-\_\-s} \hyperlink{kfs_8c_a787d908ca20e4db2488ea52f490d016e}{kfs\-\_\-sblock\-\_\-t}
+\item 
+typedef \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\-\_\-t} \hyperlink{kfs_8c_a202fc39d0ae25edf80b1c54902014eb1}{kfs\-\_\-page\-\_\-t} \mbox{[}1024\mbox{]}
+\begin{DoxyCompactList}\small\item\em atomic data segment exchanged with the disk \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{kfs_8c_ade5bf93265bc86a9ecd5019cc6e3d277}{kfs\-\_\-root} (int dentry)
+\begin{DoxyCompactList}\small\item\em read access functions to dentries \end{DoxyCompactList}\item 
+int \hyperlink{kfs_8c_a3be0d586ff3044979a3c381137d77d47}{kfs\-\_\-next} (int dentry)
+\item 
+int \hyperlink{kfs_8c_a135f3848117282c89e3be09b930eb9de}{kfs\-\_\-leaf} (int dentry)
+\item 
+int \hyperlink{kfs_8c_aae206d59d8bc4514d34dafdff1198ede}{kfs\-\_\-inode} (int dentry)
+\item 
+char $\ast$ \hyperlink{kfs_8c_a9d837cb422897570c876a655c0b762be}{kfs\-\_\-name} (int dentry)
+\item 
+int \hyperlink{kfs_8c_ac2308b1a426032672fbacdde9ee5ac81}{kfs\-\_\-isdir} (int dentry)
+\begin{DoxyCompactList}\small\item\em boolean functions for dentries or inode \end{DoxyCompactList}\item 
+int \hyperlink{kfs_8c_aaa0d81604e0d3d23f31b3beb7dcb163c}{kfs\-\_\-count} (int inode)
+\begin{DoxyCompactList}\small\item\em read access functions to inodes \end{DoxyCompactList}\item 
+int \hyperlink{kfs_8c_a8d546cf291d26ab01a150b74cc206ae1}{kfs\-\_\-type} (int inode)
+\item 
+int \hyperlink{kfs_8c_ac9581ae711d5f79aff1ed39c9739e80c}{kfs\-\_\-mode} (int inode)
+\item 
+int \hyperlink{kfs_8c_a2e7cb7a15052f57bdff8a2c1146bc072}{kfs\-\_\-size} (int inode)
+\item 
+int \hyperlink{kfs_8c_a2f522cb4edeecd6cbcebcca31d90bc75}{kfs\-\_\-owner} (int inode)
+\item 
+int \hyperlink{kfs_8c_a9b41dd15430924703df46a579ff05b2e}{kfs\-\_\-mtime} (int inode)
+\item 
+int \hyperlink{kfs_8c_a30d4e1ffe8c1ea75120811fcf3055c05}{kfs\-\_\-chmode} (int inode, int mode)
+\begin{DoxyCompactList}\small\item\em write access functions to inode's properties \end{DoxyCompactList}\item 
+int \hyperlink{kfs_8c_a3e380775665de4ff6cbc01555444cb64}{kfs\-\_\-chowner} (int inode, int owner)
+\item 
+int \hyperlink{kfs_8c_a68786a19dcb587fe18b45ae76effa1c5}{kfs\-\_\-chmtime} (int inode, int mtime)
+\item 
+static char $\ast$ \hyperlink{kfs_8c_a02d307133891efa932b3766568eb738e}{kfs\-\_\-getname} (char $\ast$pathname)
+\begin{DoxyCompactList}\small\item\em get name from pathname up to character '/' pathname argument is not destroyed. Function N\-O\-N-\/reentrant \end{DoxyCompactList}\item 
+static void \hyperlink{kfs_8c_aceb626dd864e7f2ccd7901d0506dbaf4}{kfs\-\_\-strcpy} (char $\ast$dest, char $\ast$src)
+\begin{DoxyCompactList}\small\item\em copy a string of characters \end{DoxyCompactList}\item 
+static int \hyperlink{kfs_8c_a09fba9a0bb78a0f1f159c01046c7e006}{kfs\-\_\-strcmp} (const char $\ast$\hyperlink{riscv_2threada_8S_afb19fa20b2f6715401f73ba9d4f1d177}{s1}, const char $\ast$\hyperlink{riscv_2threada_8S_a471d090c1a9e7f788067d9f57a793ec5}{s2})
+\begin{DoxyCompactList}\small\item\em compare two strings of characters \end{DoxyCompactList}\item 
+static \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\-\_\-t} \hyperlink{kfs_8c_ac54d7e40a14d08ab189631215fb3a4cc}{kfs\-\_\-alloc\-\_\-bitmap} (\hyperlink{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}{u8\-\_\-t} bitmap\mbox{[}$\,$\mbox{]}, \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\-\_\-t} $\ast$start, \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\-\_\-t} max)
+\begin{DoxyCompactList}\small\item\em bitmap allocator \end{DoxyCompactList}\item 
+static void \hyperlink{kfs_8c_a664e5f5072f4e5d09eb7f328b39bcec3}{kfs\-\_\-free\-\_\-bitmap} (\hyperlink{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}{u8\-\_\-t} bitmap\mbox{[}$\,$\mbox{]}, \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\-\_\-t} $\ast$start, \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\-\_\-t} bit)
+\begin{DoxyCompactList}\small\item\em releases one bit of a bitmap \end{DoxyCompactList}\item 
+static \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\-\_\-t} \hyperlink{kfs_8c_a66ffc964d30c5258826714ac181af25a}{kfs\-\_\-alloc\-\_\-dentry} (char $\ast$name)
+\begin{DoxyCompactList}\small\item\em allocates a new dentry, dentry 0 is for '/' thus it is never free \end{DoxyCompactList}\item 
+static void \hyperlink{kfs_8c_a5d172bef33b255bfe7ec0375abac988e}{kfs\-\_\-free\-\_\-dentry} (\hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\-\_\-t} dentry)
+\begin{DoxyCompactList}\small\item\em frees a dentry (it is not necessary to erase its content, it will be done in allocation) \end{DoxyCompactList}\item 
+static \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\-\_\-t} \hyperlink{kfs_8c_ad7d3799e6e7b1822350af7f957f63db1}{kfs\-\_\-alloc\-\_\-inode} (\hyperlink{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}{u8\-\_\-t} type)
+\begin{DoxyCompactList}\small\item\em allocates a new inode, inode 0 is for '/' thus it is never free \end{DoxyCompactList}\item 
+static void \hyperlink{kfs_8c_aadbe9ab58b58e9826dd4da1384c80798}{kfs\-\_\-free\-\_\-inode} (int inode)
+\begin{DoxyCompactList}\small\item\em frees an inode (it is not necessary to erase it, it will be done in allocation) \end{DoxyCompactList}\item 
+static int \hyperlink{kfs_8c_a4899d84042ad3892c13dc7a360f65d86}{kfs\-\_\-alloc\-\_\-fmap} (void)
+\begin{DoxyCompactList}\small\item\em allocates a new map, map 0 is never free \end{DoxyCompactList}\item 
+static void \hyperlink{kfs_8c_a2b773f0350f13077e1479fe36941da52}{kfs\-\_\-free\-\_\-fmap} (\hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\-\_\-t} fmap)
+\begin{DoxyCompactList}\small\item\em frees a map \end{DoxyCompactList}\item 
+static \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\-\_\-t} \hyperlink{kfs_8c_a53fd0386d2feed317c9d6bdc536e4540}{kfs\-\_\-alloc\-\_\-page} (void)
+\begin{DoxyCompactList}\small\item\em allocates a new page of the disk \end{DoxyCompactList}\item 
+static void \hyperlink{kfs_8c_ac364ca8f5189a2eaf2f7cbeef0a27698}{kfs\-\_\-free\-\_\-page} (\hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\-\_\-t} page)
+\begin{DoxyCompactList}\small\item\em frees a page of the disk \end{DoxyCompactList}\item 
+static int \hyperlink{kfs_8c_af148b22d686f5b43341249ba9d03eb54}{kfs\-\_\-fmap} (int inode)
+\item 
+int \hyperlink{kfs_8c_afdc75626536d311fb2fe47baef24ef55}{kfs\-\_\-page} (int inode, int pg\-\_\-offset)
+\item 
+static \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\-\_\-t} $\ast$ \hyperlink{kfs_8c_a200e5373e6e2968ecc37495280d658c7}{kfs\-\_\-ppage} (\hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\-\_\-t} inode, \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\-\_\-t} pg\-\_\-offset)
+\item 
+static int \hyperlink{kfs_8c_a23a78b350153b3b7ae5ca00a1de7484a}{kfs\-\_\-read\-\_\-page} (int $\ast$buf, \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\-\_\-t} page)
+\begin{DoxyCompactList}\small\item\em Reads from the disk to the memory buffer. There are two cases \-: 1) if kfs runs on Linux 2) if kfs runs on ko6 1) Linux\-: the kfs disk has been loaded in an array, so that's where we have to read it 2) ko6\-: the kfs disk is behind the disk device, so we need to ask the disk driver. \end{DoxyCompactList}\item 
+static int \hyperlink{kfs_8c_a82cd5257064f4d5b995d6951b9f054b3}{kfs\-\_\-write\-\_\-page} (void $\ast$buf, int page)
+\begin{DoxyCompactList}\small\item\em writes to the disk from the memory buffer \end{DoxyCompactList}\item 
+static int \hyperlink{kfs_8c_af01886bc6c6c809f5f46eda025ef5ec3}{kfs\-\_\-tree\-\_\-cb\-\_\-r} (int root, int depth, void($\ast$callback)(int dentry, int depth, int pos))
+\begin{DoxyCompactList}\small\item\em Recursively executes the callback() function for all entries in a directory. This is a deep-\/first walk. The callback() function is not executed on the root. \-\_\-cb\-\_\-r means \char`\"{}call back recursive\char`\"{} This function must not be used directly, it is used by \hyperlink{kfs_8c_a0c8753d9a11f6570f9c56b587fa2c48c}{kfs\-\_\-tree\-\_\-cb()} \end{DoxyCompactList}\item 
+int \hyperlink{kfs_8c_ac7986c65e8710a8b55857582e62ccc78}{kfs\-\_\-open} (char $\ast$pathname)
+\begin{DoxyCompactList}\small\item\em opens a file or directory, if file or directory not found, all the pathname is created \end{DoxyCompactList}\item 
+int \hyperlink{kfs_8c_a5bf1c4cc42e02a99529eefc02cf53c4b}{kfs\-\_\-openat} (int root, char $\ast$name)
+\begin{DoxyCompactList}\small\item\em looks for name in the directory root, if the name is not found, it is created \end{DoxyCompactList}\item 
+int \hyperlink{kfs_8c_aee8d1799ae389468763ccfbe157c42ec}{kfs\-\_\-readdir} (int root, int leaf, void $\ast$buf)
+\begin{DoxyCompactList}\small\item\em Reads a directory, it reads one entry from the directory dentry to memory buffer. After reading, buffer will contain the name of the directory or item. \end{DoxyCompactList}\item 
+int \hyperlink{kfs_8c_a532e7e965bd6809645bdf682ffd509dc}{kfs\-\_\-read} (int dentry, int pg\-\_\-offset, int $\ast$buf)
+\begin{DoxyCompactList}\small\item\em Reads a file, it reads one page from the file dentry to memory buffer. After reading, buffer will contain the entire page of which the offset belongs. \end{DoxyCompactList}\item 
+int \hyperlink{kfs_8c_a491e452cdf42853498249aadc91eb74b}{kfs\-\_\-set\-\_\-size} (int dentry, int newsize)
+\begin{DoxyCompactList}\small\item\em Sets the size field of the inode associated with the dentry to newsize. \end{DoxyCompactList}\item 
+int \hyperlink{kfs_8c_a57b5123b2f69a99505a7f3026eeefce9}{kfs\-\_\-write} (int dentry, int pg\-\_\-offset, void $\ast$buf)
+\begin{DoxyCompactList}\small\item\em Writes one page from memory buffer to file dentry. The buffer is written on the disk in file page of which the offset belongs. \end{DoxyCompactList}\item 
+int \hyperlink{kfs_8c_a4fa0207fb8a04e889050f380b9068e3a}{kfs\-\_\-link} (char $\ast$src\-\_\-name, char $\ast$dst\-\_\-name)
+\begin{DoxyCompactList}\small\item\em creates a new link (also called hard link) on an existing file. \end{DoxyCompactList}\item 
+int \hyperlink{kfs_8c_a46783800e799435356d388150e2a5cec}{kfs\-\_\-unlink} (char $\ast$name)
+\item 
+int \hyperlink{kfs_8c_a0c8753d9a11f6570f9c56b587fa2c48c}{kfs\-\_\-tree\-\_\-cb} (int root, void($\ast$callback)(int dentry, int depth, int postion))
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{kfs_8c_a787d908ca20e4db2488ea52f490d016e}{kfs\-\_\-sblock\-\_\-t} \hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{Kfs\-Sblock}
+\item 
+static \hyperlink{kfs_8c_a287f63c467f156bbaeca5cf701e916fe}{kfs\-\_\-dentry\-\_\-t} \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{Kfs\-Dentry} \mbox{[}\hyperlink{kfs_8c_a92ab7d744c9853bdebee5c81ac2b422f}{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-D\-E\-N\-T\-R\-Y}\mbox{]}
+\begin{DoxyCompactList}\small\item\em up to M\-A\-X\-\_\-\-D\-E\-N\-T\-R\-Y files \end{DoxyCompactList}\item 
+static \hyperlink{kfs_8c_a1b514cfe529f648b9e0a2d36b32d111d}{kfs\-\_\-inode\-\_\-t} \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{Kfs\-Inode} \mbox{[}\hyperlink{kfs_8c_ac084ea319e447d4af876044655fc46ec}{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-I\-N\-O\-D\-E}\mbox{]}
+\item 
+static \hyperlink{kfs_8c_a7db204b3134ab7e4824022eec748871c}{kfs\-\_\-fmap\-\_\-t} \hyperlink{kfs_8c_adfe2302bd3dfd42413c478b8a32174cb}{Kfs\-Fmap} \mbox{[}\hyperlink{kfs_8c_a75563572783e6a8183fe1fa127b6453d}{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-F\-M\-A\-P}\mbox{]}
+\begin{DoxyCompactList}\small\item\em up to M\-A\-X\-\_\-\-F\-M\-A\-P inode extensions \end{DoxyCompactList}\item 
+static \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\-\_\-t} \hyperlink{kfs_8c_a4418baf5eb3028d32758a1ccd600be44}{Kfs\-Offset} \mbox{[}\hyperlink{kfs_8c_ac084ea319e447d4af876044655fc46ec}{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-I\-N\-O\-D\-E}\mbox{]}
+\begin{DoxyCompactList}\small\item\em last offset used for inode by read write \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{kfs_8c_a92ab7d744c9853bdebee5c81ac2b422f}{\index{kfs.\-c@{kfs.\-c}!K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-D\-E\-N\-T\-R\-Y@{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-D\-E\-N\-T\-R\-Y}}
+\index{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-D\-E\-N\-T\-R\-Y@{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-D\-E\-N\-T\-R\-Y}!kfs.c@{kfs.\-c}}
+\subsubsection[{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-D\-E\-N\-T\-R\-Y}]{\setlength{\rightskip}{0pt plus 5cm}\#define K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-D\-E\-N\-T\-R\-Y~(({\bf K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-D\-E\-N\-T\-R\-Y}$<$$<$12)/sizeof({\bf kfs\-\_\-dentry\-\_\-t})) /$\ast$ number of dentries $\ast$/}}\label{kfs_8c_a92ab7d744c9853bdebee5c81ac2b422f}
+\hypertarget{kfs_8c_a75563572783e6a8183fe1fa127b6453d}{\index{kfs.\-c@{kfs.\-c}!K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-F\-M\-A\-P@{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-F\-M\-A\-P}}
+\index{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-F\-M\-A\-P@{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-F\-M\-A\-P}!kfs.c@{kfs.\-c}}
+\subsubsection[{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-F\-M\-A\-P}]{\setlength{\rightskip}{0pt plus 5cm}\#define K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-F\-M\-A\-P~(({\bf K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-F\-M\-A\-P}  $<$$<$12)/sizeof({\bf kfs\-\_\-fmap\-\_\-t}))   /$\ast$ number of file maps $\ast$/}}\label{kfs_8c_a75563572783e6a8183fe1fa127b6453d}
+\hypertarget{kfs_8c_ac084ea319e447d4af876044655fc46ec}{\index{kfs.\-c@{kfs.\-c}!K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-I\-N\-O\-D\-E@{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-I\-N\-O\-D\-E}}
+\index{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-I\-N\-O\-D\-E@{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-I\-N\-O\-D\-E}!kfs.c@{kfs.\-c}}
+\subsubsection[{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-I\-N\-O\-D\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-I\-N\-O\-D\-E~(({\bf K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-I\-N\-O\-D\-E} $<$$<$12)/sizeof({\bf kfs\-\_\-inode\-\_\-t}))  /$\ast$ number of inodes $\ast$/}}\label{kfs_8c_ac084ea319e447d4af876044655fc46ec}
+\hypertarget{kfs_8c_ae0b389bdf68187ccb1610271d36edb33}{\index{kfs.\-c@{kfs.\-c}!K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-N\-A\-M\-E@{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-N\-A\-M\-E}}
+\index{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-N\-A\-M\-E@{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-N\-A\-M\-E}!kfs.c@{kfs.\-c}}
+\subsubsection[{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-N\-A\-M\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-N\-A\-M\-E~28      /$\ast$ dentry name length $\ast$/}}\label{kfs_8c_ae0b389bdf68187ccb1610271d36edb33}
+
+
+Referenced by kfs\-\_\-strcpy().
+
+\hypertarget{kfs_8c_af0ae18eb635e6562531a287fb89dd996}{\index{kfs.\-c@{kfs.\-c}!N\-P\-G\-U@{N\-P\-G\-U}}
+\index{N\-P\-G\-U@{N\-P\-G\-U}!kfs.c@{kfs.\-c}}
+\subsubsection[{N\-P\-G\-U}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-P\-G\-U~({\bf K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-B\-O\-O\-T}+{\bf K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-M\-E\-T\-A})            /$\ast$ number of pages used by B\-O\-O\-T and M\-E\-T\-A $\ast$/}}\label{kfs_8c_af0ae18eb635e6562531a287fb89dd996}
+\hypertarget{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{\index{kfs.\-c@{kfs.\-c}!N\-U\-L\-L@{N\-U\-L\-L}}
+\index{N\-U\-L\-L@{N\-U\-L\-L}!kfs.c@{kfs.\-c}}
+\subsubsection[{N\-U\-L\-L}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-U\-L\-L~(void $\ast$)0}}\label{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}
+
+
+Referenced by \-\_\-\-\_\-attribute\-\_\-\-\_\-(), dev\-\_\-get(), dma\-\_\-memcpy\-\_\-user(), fdt\-\_\-find\-\_\-max\-\_\-phandle(), fdt\-\_\-find\-\_\-string\-\_\-(), fdt\-\_\-get\-\_\-alias\-\_\-namelen(), fdt\-\_\-get\-\_\-name(), fdt\-\_\-get\-\_\-property\-\_\-by\-\_\-offset(), fdt\-\_\-get\-\_\-property\-\_\-by\-\_\-offset\-\_\-(), fdt\-\_\-get\-\_\-property\-\_\-namelen(), fdt\-\_\-get\-\_\-property\-\_\-namelen\-\_\-(), fdt\-\_\-get\-\_\-string(), fdt\-\_\-get\-\_\-symbol\-\_\-namelen(), fdt\-\_\-getprop\-\_\-by\-\_\-offset(), fdt\-\_\-getprop\-\_\-namelen(), fdt\-\_\-grab\-\_\-space\-\_\-(), fdt\-\_\-mem\-\_\-rsv(), fdt\-\_\-node\-\_\-offset\-\_\-by\-\_\-compatible(), fdt\-\_\-node\-\_\-offset\-\_\-by\-\_\-phandle(), fdt\-\_\-node\-\_\-offset\-\_\-by\-\_\-prop\-\_\-value(), fdt\-\_\-num\-\_\-mem\-\_\-rsv(), fdt\-\_\-offset\-\_\-ptr(), fdt\-\_\-overlay\-\_\-target\-\_\-offset(), fdt\-\_\-parent\-\_\-offset(), fdt\-\_\-path\-\_\-getprop\-\_\-namelen(), fdt\-\_\-string(), fdt\-\_\-stringlist\-\_\-get(), get\-\_\-base\-\_\-address(), get\-\_\-irq(), getoption(), kfs\-\_\-absolute\-\_\-pathname(), kfs\-\_\-getname(), kfs\-\_\-open(), kfs\-\_\-ppage(), kfs\-\_\-tree\-\_\-cb\-\_\-r(), kfs\-\_\-write(), list\-\_\-first(), list\-\_\-getfirst(), list\-\_\-getlast(), list\-\_\-last(), main(), malloc(), malloc\-\_\-ustack(), memchr(), overlay\-\_\-apply\-\_\-node(), overlay\-\_\-merge(), overlay\-\_\-update\-\_\-local\-\_\-node\-\_\-references(), sched\-\_\-insert(), test\-\_\-ustack(), thread\-\_\-barrier\-\_\-destroy(), thread\-\_\-barrier\-\_\-init(), thread\-\_\-barrier\-\_\-wait(), thread\-\_\-create(), thread\-\_\-exit(), thread\-\_\-join(), thread\-\_\-mutex\-\_\-destroy(), thread\-\_\-mutex\-\_\-init(), thread\-\_\-mutex\-\_\-lock(), thread\-\_\-mutex\-\_\-unlock(), and try\-\_\-malloc().
+
+
+
+\subsection{Typedef Documentation}
+\hypertarget{kfs_8c_a8cf7c777695c7e20328dc1bcd41914eb}{\index{kfs.\-c@{kfs.\-c}!i16\-\_\-t@{i16\-\_\-t}}
+\index{i16\-\_\-t@{i16\-\_\-t}!kfs.c@{kfs.\-c}}
+\subsubsection[{i16\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef signed short {\bf i16\-\_\-t}}}\label{kfs_8c_a8cf7c777695c7e20328dc1bcd41914eb}
+\hypertarget{kfs_8c_a2d27dc3b3d920629ee0d10b6f7bbe427}{\index{kfs.\-c@{kfs.\-c}!i32\-\_\-t@{i32\-\_\-t}}
+\index{i32\-\_\-t@{i32\-\_\-t}!kfs.c@{kfs.\-c}}
+\subsubsection[{i32\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef signed int {\bf i32\-\_\-t}}}\label{kfs_8c_a2d27dc3b3d920629ee0d10b6f7bbe427}
+\hypertarget{kfs_8c_ae0202ec8eca2f399b9a57c31194a5f28}{\index{kfs.\-c@{kfs.\-c}!i8\-\_\-t@{i8\-\_\-t}}
+\index{i8\-\_\-t@{i8\-\_\-t}!kfs.c@{kfs.\-c}}
+\subsubsection[{i8\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef signed char {\bf i8\-\_\-t}}}\label{kfs_8c_ae0202ec8eca2f399b9a57c31194a5f28}
+\hypertarget{kfs_8c_a287f63c467f156bbaeca5cf701e916fe}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-dentry\-\_\-t@{kfs\-\_\-dentry\-\_\-t}}
+\index{kfs\-\_\-dentry\-\_\-t@{kfs\-\_\-dentry\-\_\-t}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-dentry\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf kfs\-\_\-dentry\-\_\-s}  {\bf kfs\-\_\-dentry\-\_\-t}}}\label{kfs_8c_a287f63c467f156bbaeca5cf701e916fe}
+\hypertarget{kfs_8c_a7db204b3134ab7e4824022eec748871c}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-fmap\-\_\-t@{kfs\-\_\-fmap\-\_\-t}}
+\index{kfs\-\_\-fmap\-\_\-t@{kfs\-\_\-fmap\-\_\-t}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-fmap\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf u16\-\_\-t} kfs\-\_\-fmap\-\_\-t\mbox{[}16\mbox{]}}}\label{kfs_8c_a7db204b3134ab7e4824022eec748871c}
+
+
+fmap as inode extension, maps until 16 pages or 16 other fmaps 
+
+\hypertarget{kfs_8c_a1b514cfe529f648b9e0a2d36b32d111d}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-inode\-\_\-t@{kfs\-\_\-inode\-\_\-t}}
+\index{kfs\-\_\-inode\-\_\-t@{kfs\-\_\-inode\-\_\-t}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-inode\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf kfs\-\_\-inode\-\_\-s}  {\bf kfs\-\_\-inode\-\_\-t}}}\label{kfs_8c_a1b514cfe529f648b9e0a2d36b32d111d}
+\hypertarget{kfs_8c_a70f1f4fd044c3b461db9bab02f1487b2}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-mbr\-\_\-t@{kfs\-\_\-mbr\-\_\-t}}
+\index{kfs\-\_\-mbr\-\_\-t@{kfs\-\_\-mbr\-\_\-t}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-mbr\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf kfs\-\_\-mbr\-\_\-s}  {\bf kfs\-\_\-mbr\-\_\-t}}}\label{kfs_8c_a70f1f4fd044c3b461db9bab02f1487b2}
+\hypertarget{kfs_8c_a202fc39d0ae25edf80b1c54902014eb1}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-page\-\_\-t@{kfs\-\_\-page\-\_\-t}}
+\index{kfs\-\_\-page\-\_\-t@{kfs\-\_\-page\-\_\-t}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-page\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf u32\-\_\-t} kfs\-\_\-page\-\_\-t\mbox{[}1024\mbox{]}}}\label{kfs_8c_a202fc39d0ae25edf80b1c54902014eb1}
+
+
+atomic data segment exchanged with the disk 
+
+\hypertarget{kfs_8c_a787d908ca20e4db2488ea52f490d016e}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-sblock\-\_\-t@{kfs\-\_\-sblock\-\_\-t}}
+\index{kfs\-\_\-sblock\-\_\-t@{kfs\-\_\-sblock\-\_\-t}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-sblock\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf kfs\-\_\-sblock\-\_\-s}  {\bf kfs\-\_\-sblock\-\_\-t}}}\label{kfs_8c_a787d908ca20e4db2488ea52f490d016e}
+\hypertarget{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{\index{kfs.\-c@{kfs.\-c}!u16\-\_\-t@{u16\-\_\-t}}
+\index{u16\-\_\-t@{u16\-\_\-t}!kfs.c@{kfs.\-c}}
+\subsubsection[{u16\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef unsigned short {\bf u16\-\_\-t}}}\label{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}
+\hypertarget{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{\index{kfs.\-c@{kfs.\-c}!u32\-\_\-t@{u32\-\_\-t}}
+\index{u32\-\_\-t@{u32\-\_\-t}!kfs.c@{kfs.\-c}}
+\subsubsection[{u32\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef unsigned int {\bf u32\-\_\-t}}}\label{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}
+\hypertarget{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}{\index{kfs.\-c@{kfs.\-c}!u8\-\_\-t@{u8\-\_\-t}}
+\index{u8\-\_\-t@{u8\-\_\-t}!kfs.c@{kfs.\-c}}
+\subsubsection[{u8\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef unsigned char {\bf u8\-\_\-t}}}\label{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}
+
+
+\subsection{Function Documentation}
+\hypertarget{kfs_8c_ac54d7e40a14d08ab189631215fb3a4cc}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-alloc\-\_\-bitmap@{kfs\-\_\-alloc\-\_\-bitmap}}
+\index{kfs\-\_\-alloc\-\_\-bitmap@{kfs\-\_\-alloc\-\_\-bitmap}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-alloc\-\_\-bitmap}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf u32\-\_\-t} kfs\-\_\-alloc\-\_\-bitmap (
+\begin{DoxyParamCaption}
+\item[{{\bf u8\-\_\-t}}]{bitmap\mbox{[}$\,$\mbox{]}, }
+\item[{{\bf u32\-\_\-t} $\ast$}]{start, }
+\item[{{\bf u32\-\_\-t}}]{max}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_ac54d7e40a14d08ab189631215fb3a4cc}
+
+
+bitmap allocator 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bitmap} & is a bit array, but it is accessed by byte \\
+\hline
+{\em start} & is a pointer to position of last allocated or released bit (from 0 to max-\/1) \\
+\hline
+{\em max} & is the number of bits in the bitmap \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the position of the bit found or 0 if not found, there are 2 side effects, the bit bitmap\mbox{[}\mbox{]} at the returned position is cleared and start is updated for the next search 
+\end{DoxyReturn}
+
+
+Referenced by kfs\-\_\-alloc\-\_\-dentry(), kfs\-\_\-alloc\-\_\-fmap(), kfs\-\_\-alloc\-\_\-inode(), and kfs\-\_\-alloc\-\_\-page().
+
+
+\begin{DoxyCode}
+235 \{
+236     \textcolor{keywordflow}{for} (;*start != max ; *start += 1)                      \textcolor{comment}{// search from the last allocated}
+237         \textcolor{keywordflow}{if} ((bitmap[*start/8] & (1 << (*start%8))) == 0) \{  \textcolor{comment}{// if this bit is 0 (then usable)}
+238             bitmap[*start/8] |= (1 << (*start%8));          \textcolor{comment}{// set it}
+239             \textcolor{keywordflow}{return} *start;                                  \textcolor{comment}{// and return its postion}
+240         \}
+241     \textcolor{keywordflow}{return} 0;                                               \textcolor{comment}{// whenever no bit found}
+242 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a66ffc964d30c5258826714ac181af25a}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-alloc\-\_\-dentry@{kfs\-\_\-alloc\-\_\-dentry}}
+\index{kfs\-\_\-alloc\-\_\-dentry@{kfs\-\_\-alloc\-\_\-dentry}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-alloc\-\_\-dentry}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf u32\-\_\-t} kfs\-\_\-alloc\-\_\-dentry (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_a66ffc964d30c5258826714ac181af25a}
+
+
+allocates a new dentry, dentry 0 is for '/' thus it is never free 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & of the new dentry \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+On success, the new dentry, on failure, 0 (because dentry 0 is always allocated) 
+\end{DoxyReturn}
+
+
+References kfs\-\_\-sblock\-\_\-s\-::bmp\-\_\-dentry, kfs\-\_\-sblock\-\_\-s\-::cur\-\_\-dentry, kfs\-\_\-alloc\-\_\-bitmap(), kfs\-\_\-strcpy(), and kfs\-\_\-sblock\-\_\-s\-::max\-\_\-dentry.
+
+
+
+Referenced by kfs\-\_\-openat().
+
+
+\begin{DoxyCode}
+266 \{
+267     \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} \textcolor{keyword}{new}= \hyperlink{kfs_8c_ac54d7e40a14d08ab189631215fb3a4cc}{kfs\_alloc\_bitmap} (\hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.
+      \hyperlink{structkfs__sblock__s_a7aa2f7b977d0648b2cbe5b1cdb3234fd}{bmp\_dentry}, &\hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.\hyperlink{structkfs__sblock__s_ab9a8e05095ae32b5274f22f0c937b0bd}{cur\_dentry}, \hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.
+      \hyperlink{structkfs__sblock__s_a8821a5865dacd4eea0bcae64e23b3aa5}{max\_dentry});
+268     \textcolor{keywordflow}{if} (\textcolor{keyword}{new} == 0) \textcolor{keywordflow}{return} 0;                                 \textcolor{comment}{// no more dentries available}
+269     \hyperlink{kfs_8c_aceb626dd864e7f2ccd7901d0506dbaf4}{kfs\_strcpy} (\hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[\textcolor{keyword}{new}].name, name);                 \textcolor{comment}{// copy name}
+270     \textcolor{keywordflow}{return} \textcolor{keyword}{new};                                             \textcolor{comment}{// all other fields are not initialized}
+271 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a4899d84042ad3892c13dc7a360f65d86}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-alloc\-\_\-fmap@{kfs\-\_\-alloc\-\_\-fmap}}
+\index{kfs\-\_\-alloc\-\_\-fmap@{kfs\-\_\-alloc\-\_\-fmap}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-alloc\-\_\-fmap}]{\setlength{\rightskip}{0pt plus 5cm}static int kfs\-\_\-alloc\-\_\-fmap (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_a4899d84042ad3892c13dc7a360f65d86}
+
+
+allocates a new map, map 0 is never free 
+
+\begin{DoxyReturn}{Returns}
+On success, the new map, on failure, 0 (because fmap 0 is always allocated) 
+\end{DoxyReturn}
+
+
+References kfs\-\_\-sblock\-\_\-s\-::bmp\-\_\-fmap, kfs\-\_\-sblock\-\_\-s\-::cur\-\_\-fmap, kfs\-\_\-alloc\-\_\-bitmap(), and kfs\-\_\-sblock\-\_\-s\-::max\-\_\-fmap.
+
+
+
+Referenced by kfs\-\_\-ppage().
+
+
+\begin{DoxyCode}
+330 \{
+331     \textcolor{keywordflow}{return} \hyperlink{kfs_8c_ac54d7e40a14d08ab189631215fb3a4cc}{kfs\_alloc\_bitmap} (\hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.\hyperlink{structkfs__sblock__s_a2f9dba6f80a4fc818bbe8ca84c2d1309}{bmp\_fmap}, &
+      \hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.\hyperlink{structkfs__sblock__s_acb1111b4f37733c412fb8eb4788c3c83}{cur\_fmap}, \hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.\hyperlink{structkfs__sblock__s_a5254da868c0d1d63a4aba34d19ff9b04}{max\_fmap});
+332 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_ad7d3799e6e7b1822350af7f957f63db1}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-alloc\-\_\-inode@{kfs\-\_\-alloc\-\_\-inode}}
+\index{kfs\-\_\-alloc\-\_\-inode@{kfs\-\_\-alloc\-\_\-inode}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-alloc\-\_\-inode}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf u16\-\_\-t} kfs\-\_\-alloc\-\_\-inode (
+\begin{DoxyParamCaption}
+\item[{{\bf u8\-\_\-t}}]{type}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_ad7d3799e6e7b1822350af7f957f63db1}
+
+
+allocates a new inode, inode 0 is for '/' thus it is never free 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & of the new inode \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+On success, the new inode, on failure, 0 (because inode 0 is always allocated) 
+\end{DoxyReturn}
+
+
+References kfs\-\_\-sblock\-\_\-s\-::bmp\-\_\-inode, kfs\-\_\-inode\-\_\-s\-::count, kfs\-\_\-sblock\-\_\-s\-::cur\-\_\-inode, kfs\-\_\-alloc\-\_\-bitmap(), kfs\-\_\-sblock\-\_\-s\-::max\-\_\-inode, kfs\-\_\-inode\-\_\-s\-::mode, and kfs\-\_\-inode\-\_\-s\-::type.
+
+
+
+Referenced by kfs\-\_\-openat().
+
+
+\begin{DoxyCode}
+304 \{
+305     \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} \textcolor{keyword}{new} = \hyperlink{kfs_8c_ac54d7e40a14d08ab189631215fb3a4cc}{kfs\_alloc\_bitmap} (\hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.
+      \hyperlink{structkfs__sblock__s_a4320a5d34fc85b90d0422ae8ff024d7f}{bmp\_inode}, &\hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.\hyperlink{structkfs__sblock__s_a299344e23b26aaf0f60f1f94a0faf966}{cur\_inode}, \hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.
+      \hyperlink{structkfs__sblock__s_a50bd71d628473a6b77c6b2512f6742da}{max\_inode});
+306     \textcolor{keywordflow}{if} (\textcolor{keyword}{new} == 0) \textcolor{keywordflow}{return} 0;                                 \textcolor{comment}{// no more dentries available}
+307     \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[\textcolor{keyword}{new}].\hyperlink{structkfs__inode__s_ac894cd2c4c9d7e6409c3302d1edec307}{type} = type;                              \textcolor{comment}{// type could be chosen}
+308     \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[\textcolor{keyword}{new}].\hyperlink{structkfs__inode__s_af0dd6151a1aba841d36f2d005e77aef4}{mode} = 077;                               \textcolor{comment}{// 077 == RWXRWX}
+309     \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[\textcolor{keyword}{new}].\hyperlink{structkfs__inode__s_ae5ea15e9504973dc519f2ceca209a3d8}{count} = 1;                                \textcolor{comment}{// new inode means only one
+       reference}
+310     \textcolor{keywordflow}{return} \textcolor{keyword}{new};                                             \textcolor{comment}{// at last, return the new inode}
+311 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a53fd0386d2feed317c9d6bdc536e4540}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-alloc\-\_\-page@{kfs\-\_\-alloc\-\_\-page}}
+\index{kfs\-\_\-alloc\-\_\-page@{kfs\-\_\-alloc\-\_\-page}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-alloc\-\_\-page}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf u16\-\_\-t} kfs\-\_\-alloc\-\_\-page (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_a53fd0386d2feed317c9d6bdc536e4540}
+
+
+allocates a new page of the disk 
+
+\begin{DoxyReturn}{Returns}
+On success, the new page, on failure, 0 (because page 0 is always allocated) 
+\end{DoxyReturn}
+
+
+References kfs\-\_\-sblock\-\_\-s\-::bmp\-\_\-page, kfs\-\_\-sblock\-\_\-s\-::cur\-\_\-page, kfs\-\_\-alloc\-\_\-bitmap(), and kfs\-\_\-sblock\-\_\-s\-::max\-\_\-page.
+
+
+
+Referenced by kfs\-\_\-write().
+
+
+\begin{DoxyCode}
+350 \{
+351     \textcolor{keywordflow}{return} \hyperlink{kfs_8c_ac54d7e40a14d08ab189631215fb3a4cc}{kfs\_alloc\_bitmap} (\hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.\hyperlink{structkfs__sblock__s_a163e19c03f2551155f6b94c304103da3}{bmp\_page}, &
+      \hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.\hyperlink{structkfs__sblock__s_aa52c224196e86427970e3c4a0830190f}{cur\_page}, \hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.\hyperlink{structkfs__sblock__s_a097af9f6c4329c629453634d52d2a8b0}{max\_page});
+352 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a30d4e1ffe8c1ea75120811fcf3055c05}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-chmode@{kfs\-\_\-chmode}}
+\index{kfs\-\_\-chmode@{kfs\-\_\-chmode}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-chmode}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-chmode (
+\begin{DoxyParamCaption}
+\item[{int}]{inode, }
+\item[{int}]{mode}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_a30d4e1ffe8c1ea75120811fcf3055c05}
+
+
+write access functions to inode's properties 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & of an inode \\
+\hline
+{\em mode,owner} & \& mtime are the new property value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the new property or -\/1 if failure 
+\end{DoxyReturn}
+
+
+References kfs\-\_\-inode\-\_\-s\-::mode.
+
+
+\begin{DoxyCode}
+153 \{\textcolor{keywordflow}{return} \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_af0dd6151a1aba841d36f2d005e77aef4}{mode} = mode; \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a68786a19dcb587fe18b45ae76effa1c5}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-chmtime@{kfs\-\_\-chmtime}}
+\index{kfs\-\_\-chmtime@{kfs\-\_\-chmtime}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-chmtime}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-chmtime (
+\begin{DoxyParamCaption}
+\item[{int}]{inode, }
+\item[{int}]{mtime}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_a68786a19dcb587fe18b45ae76effa1c5}
+
+
+References kfs\-\_\-inode\-\_\-s\-::mtime.
+
+
+\begin{DoxyCode}
+155 \{\textcolor{keywordflow}{return} \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_a575e296191f8d2444a26f90d58e155e6}{mtime}= mtime;\}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a3e380775665de4ff6cbc01555444cb64}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-chowner@{kfs\-\_\-chowner}}
+\index{kfs\-\_\-chowner@{kfs\-\_\-chowner}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-chowner}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-chowner (
+\begin{DoxyParamCaption}
+\item[{int}]{inode, }
+\item[{int}]{owner}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_a3e380775665de4ff6cbc01555444cb64}
+
+
+References kfs\-\_\-inode\-\_\-s\-::owner.
+
+
+\begin{DoxyCode}
+154 \{\textcolor{keywordflow}{return} \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_adecb12117172ae213c9d659ffbcd809b}{owner}= owner;\}
+\end{DoxyCode}
+\hypertarget{kfs_8c_aaa0d81604e0d3d23f31b3beb7dcb163c}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-count@{kfs\-\_\-count}}
+\index{kfs\-\_\-count@{kfs\-\_\-count}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-count}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-count (
+\begin{DoxyParamCaption}
+\item[{int}]{inode}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_aaa0d81604e0d3d23f31b3beb7dcb163c}
+
+
+read access functions to inodes 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & of an inode \\
+\hline
+{\em offset} & is the page number in the file (start at 0 to filesize / sizeof(page)) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+-\/ kfs\-\_\-count \-: number of dentry pointing to this inode
+\begin{DoxyItemize}
+\item kfs\-\_\-type \-: type defined in kfs\-\_\-enum\-\_\-e
+\item kfs\-\_\-mode \-: permission modes rwxrwx for the owner and others (there are no groups)
+\item kfs\-\_\-size \-: file size
+\item kfs\-\_\-owner \-: file or directory owner
+\item kfs\-\_\-mtime \-: modification / creation relative time
+\item kfs\-\_\-page \-: index of page of data on the disk 
+\end{DoxyItemize}
+\end{DoxyReturn}
+
+
+References kfs\-\_\-inode\-\_\-s\-::count.
+
+
+
+Referenced by kfs\-\_\-print\-\_\-dentry().
+
+
+\begin{DoxyCode}
+144 \{\textcolor{keywordflow}{return} \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_ae5ea15e9504973dc519f2ceca209a3d8}{count};\}
+\end{DoxyCode}
+\hypertarget{kfs_8c_af148b22d686f5b43341249ba9d03eb54}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-fmap@{kfs\-\_\-fmap}}
+\index{kfs\-\_\-fmap@{kfs\-\_\-fmap}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-fmap}]{\setlength{\rightskip}{0pt plus 5cm}static int kfs\-\_\-fmap (
+\begin{DoxyParamCaption}
+\item[{int}]{inode}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_af148b22d686f5b43341249ba9d03eb54}
+
+
+References kfs\-\_\-inode\-\_\-s\-::fmap.
+
+
+
+Referenced by kfs\-\_\-page().
+
+
+\begin{DoxyCode}
+365 \{\textcolor{keywordflow}{return} \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_a6a491f8ad9c0ea78d30421be44931e9b}{fmap}; \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a664e5f5072f4e5d09eb7f328b39bcec3}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-free\-\_\-bitmap@{kfs\-\_\-free\-\_\-bitmap}}
+\index{kfs\-\_\-free\-\_\-bitmap@{kfs\-\_\-free\-\_\-bitmap}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-free\-\_\-bitmap}]{\setlength{\rightskip}{0pt plus 5cm}static void kfs\-\_\-free\-\_\-bitmap (
+\begin{DoxyParamCaption}
+\item[{{\bf u8\-\_\-t}}]{bitmap\mbox{[}$\,$\mbox{]}, }
+\item[{{\bf u32\-\_\-t} $\ast$}]{start, }
+\item[{{\bf u32\-\_\-t}}]{bit}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_a664e5f5072f4e5d09eb7f328b39bcec3}
+
+
+releases one bit of a bitmap 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bitmap} & is a bit array, but it is accessed by byte \\
+\hline
+{\em start} & is a pointer to position of last allocated or released bit (from 0 to max-\/1) \\
+\hline
+{\em bit} & is the bit position to realease \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+there are 2 side effects, the bit bitmap\mbox{[}\mbox{]} at the start position is set and start is updated for the next search 
+\end{DoxyReturn}
+
+
+Referenced by kfs\-\_\-free\-\_\-dentry(), kfs\-\_\-free\-\_\-fmap(), kfs\-\_\-free\-\_\-inode(), and kfs\-\_\-free\-\_\-page().
+
+
+\begin{DoxyCode}
+253 \{
+254     bitmap [bit/8] &= ~(1<<bit%8);                          \textcolor{comment}{// clear bit in bitmap}
+255     \textcolor{keywordflow}{if} (bit < *start) *start = bit;                         \textcolor{comment}{// change position to start next time}
+256 
+257 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a5d172bef33b255bfe7ec0375abac988e}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-free\-\_\-dentry@{kfs\-\_\-free\-\_\-dentry}}
+\index{kfs\-\_\-free\-\_\-dentry@{kfs\-\_\-free\-\_\-dentry}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-free\-\_\-dentry}]{\setlength{\rightskip}{0pt plus 5cm}static void kfs\-\_\-free\-\_\-dentry (
+\begin{DoxyParamCaption}
+\item[{{\bf u16\-\_\-t}}]{dentry}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_a5d172bef33b255bfe7ec0375abac988e}
+
+
+frees a dentry (it is not necessary to erase its content, it will be done in allocation) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dentry} & to free \\
+\hline
+\end{DoxyParams}
+
+
+References kfs\-\_\-sblock\-\_\-s\-::bmp\-\_\-dentry, kfs\-\_\-sblock\-\_\-s\-::cur\-\_\-dentry, kfs\-\_\-free\-\_\-bitmap(), kfs\-\_\-dentry\-\_\-s\-::leaf, kfs\-\_\-dentry\-\_\-s\-::next, and kfs\-\_\-dentry\-\_\-s\-::root.
+
+
+
+Referenced by kfs\-\_\-unlink().
+
+
+\begin{DoxyCode}
+278 \{
+279     \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\_t} root = \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[dentry].\hyperlink{structkfs__dentry__s_aed21f3f5ab2de70ab3416afe6dd9e4d4}{root};                    \textcolor{comment}{// get the directory where
+       dentry is}
+280     \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\_t} curr = \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[root].\hyperlink{structkfs__dentry__s_a79fd3c8764d633fdb895b77856f61d61}{leaf};                      \textcolor{comment}{// get the 1st entry of this
+       directory}
+281     \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\_t} prev = 0;                                         \textcolor{comment}{// initiate previous}
+282 
+283     \textcolor{keywordflow}{while} (curr != dentry) \{                                \textcolor{comment}{// while the current entry isn't dentry}
+284         prev = curr;                                        \textcolor{comment}{// previous dentry becomes current}
+285         curr = \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[curr].\hyperlink{structkfs__dentry__s_a17c6495def8c6564de45ab64cbc49066}{next};                        \textcolor{comment}{// get the next current}
+286     \}
+287     \textcolor{keywordflow}{if} (prev == 0)                                          \textcolor{comment}{// if previous==0, dentry was the 1st}
+288         \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[root].\hyperlink{structkfs__dentry__s_a79fd3c8764d633fdb895b77856f61d61}{leaf} = \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[dentry].\hyperlink{structkfs__dentry__s_a17c6495def8c6564de45ab64cbc49066}{next};      \textcolor{comment}{// new 1st is the one
+       just after dentry}
+289     \textcolor{keywordflow}{else}                                                    \textcolor{comment}{// else}
+290         \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[prev].\hyperlink{structkfs__dentry__s_a17c6495def8c6564de45ab64cbc49066}{next} = \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[dentry].\hyperlink{structkfs__dentry__s_a17c6495def8c6564de45ab64cbc49066}{next};      \textcolor{comment}{// skip the dentry
+       prev.next=dentry.next}
+291 
+292     \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} * pi = (\hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} *)&(\hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[dentry]);             \textcolor{comment}{// erase data inside dentry}
+293     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < 8; i++, *pi++=0)
+294     \hyperlink{kfs_8c_a664e5f5072f4e5d09eb7f328b39bcec3}{kfs\_free\_bitmap} (\hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.\hyperlink{structkfs__sblock__s_a7aa2f7b977d0648b2cbe5b1cdb3234fd}{bmp\_dentry}, &
+      \hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.\hyperlink{structkfs__sblock__s_ab9a8e05095ae32b5274f22f0c937b0bd}{cur\_dentry}, dentry);  \textcolor{comment}{// free the bit}
+295 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a2b773f0350f13077e1479fe36941da52}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-free\-\_\-fmap@{kfs\-\_\-free\-\_\-fmap}}
+\index{kfs\-\_\-free\-\_\-fmap@{kfs\-\_\-free\-\_\-fmap}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-free\-\_\-fmap}]{\setlength{\rightskip}{0pt plus 5cm}static void kfs\-\_\-free\-\_\-fmap (
+\begin{DoxyParamCaption}
+\item[{{\bf u16\-\_\-t}}]{fmap}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_a2b773f0350f13077e1479fe36941da52}
+
+
+frees a map 
+
+
+\begin{DoxyParams}{Parameters}
+{\em map} & to free \\
+\hline
+\end{DoxyParams}
+
+
+References kfs\-\_\-sblock\-\_\-s\-::bmp\-\_\-fmap, kfs\-\_\-sblock\-\_\-s\-::cur\-\_\-fmap, kfs\-\_\-free\-\_\-bitmap(), and Kfs\-Fmap.
+
+
+
+Referenced by kfs\-\_\-unlink().
+
+
+\begin{DoxyCode}
+339 \{
+340     \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} * pi = (\hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} *)(\hyperlink{kfs_8c_adfe2302bd3dfd42413c478b8a32174cb}{KfsFmap}[fmap]);
+341     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < 8; i++, *pi++=0);
+342     \hyperlink{kfs_8c_a664e5f5072f4e5d09eb7f328b39bcec3}{kfs\_free\_bitmap} (\hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.\hyperlink{structkfs__sblock__s_a2f9dba6f80a4fc818bbe8ca84c2d1309}{bmp\_fmap}, &
+      \hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.\hyperlink{structkfs__sblock__s_acb1111b4f37733c412fb8eb4788c3c83}{cur\_fmap}, fmap);
+343 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_aadbe9ab58b58e9826dd4da1384c80798}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-free\-\_\-inode@{kfs\-\_\-free\-\_\-inode}}
+\index{kfs\-\_\-free\-\_\-inode@{kfs\-\_\-free\-\_\-inode}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-free\-\_\-inode}]{\setlength{\rightskip}{0pt plus 5cm}static void kfs\-\_\-free\-\_\-inode (
+\begin{DoxyParamCaption}
+\item[{int}]{inode}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_aadbe9ab58b58e9826dd4da1384c80798}
+
+
+frees an inode (it is not necessary to erase it, it will be done in allocation) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em inode} & to free \\
+\hline
+\end{DoxyParams}
+
+
+References kfs\-\_\-sblock\-\_\-s\-::bmp\-\_\-inode, kfs\-\_\-sblock\-\_\-s\-::cur\-\_\-inode, and kfs\-\_\-free\-\_\-bitmap().
+
+
+
+Referenced by kfs\-\_\-link(), and kfs\-\_\-unlink().
+
+
+\begin{DoxyCode}
+318 \{
+319     \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} * pi = (\hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} *)&(\hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode]);
+320     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < 8; i++, *pi++=0);
+321     \hyperlink{kfs_8c_a664e5f5072f4e5d09eb7f328b39bcec3}{kfs\_free\_bitmap} (\hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.\hyperlink{structkfs__sblock__s_a4320a5d34fc85b90d0422ae8ff024d7f}{bmp\_inode}, &
+      \hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.\hyperlink{structkfs__sblock__s_a299344e23b26aaf0f60f1f94a0faf966}{cur\_inode}, inode);
+322 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_ac364ca8f5189a2eaf2f7cbeef0a27698}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-free\-\_\-page@{kfs\-\_\-free\-\_\-page}}
+\index{kfs\-\_\-free\-\_\-page@{kfs\-\_\-free\-\_\-page}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-free\-\_\-page}]{\setlength{\rightskip}{0pt plus 5cm}static void kfs\-\_\-free\-\_\-page (
+\begin{DoxyParamCaption}
+\item[{{\bf u16\-\_\-t}}]{page}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_ac364ca8f5189a2eaf2f7cbeef0a27698}
+
+
+frees a page of the disk 
+
+
+\begin{DoxyParams}{Parameters}
+{\em page} & to free \\
+\hline
+\end{DoxyParams}
+
+
+References kfs\-\_\-sblock\-\_\-s\-::bmp\-\_\-page, kfs\-\_\-sblock\-\_\-s\-::cur\-\_\-page, and kfs\-\_\-free\-\_\-bitmap().
+
+
+
+Referenced by kfs\-\_\-unlink(), and kfs\-\_\-write().
+
+
+\begin{DoxyCode}
+359 \{
+360     \hyperlink{kfs_8c_a664e5f5072f4e5d09eb7f328b39bcec3}{kfs\_free\_bitmap} (\hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.\hyperlink{structkfs__sblock__s_a163e19c03f2551155f6b94c304103da3}{bmp\_page}, &
+      \hyperlink{kfs_8c_accc11417a4eed24097de41cf088d420b}{KfsSblock}.\hyperlink{structkfs__sblock__s_aa52c224196e86427970e3c4a0830190f}{cur\_page}, page);
+361 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a02d307133891efa932b3766568eb738e}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-getname@{kfs\-\_\-getname}}
+\index{kfs\-\_\-getname@{kfs\-\_\-getname}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-getname}]{\setlength{\rightskip}{0pt plus 5cm}static char$\ast$ kfs\-\_\-getname (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{pathname}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_a02d307133891efa932b3766568eb738e}
+
+
+get name from pathname up to character '/' pathname argument is not destroyed. Function N\-O\-N-\/reentrant 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pathname} & has to be an absolute pathname, thus it must start with '/' kfs\-\_\-getname ignores the last '/' at the end of pathname if pathname is N\-U\-L\-L, then kfs\-\_\-getname gives the next name in the previous pathname \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+pointer to the current name or N\-U\-L\-L on failure 
+\end{DoxyReturn}
+
+
+References N\-U\-L\-L.
+
+
+
+Referenced by kfs\-\_\-open().
+
+
+\begin{DoxyCode}
+172 \{
+173     \textcolor{keyword}{static} \textcolor{keywordtype}{char} name[32] = \textcolor{stringliteral}{""};                              \textcolor{comment}{// buffer for the extracted name}
+174     \textcolor{keyword}{static} \textcolor{keywordtype}{char} *next = name;                               \textcolor{comment}{// next name, default empty name}
+175     \textcolor{keywordtype}{char} * current = name;                                  \textcolor{comment}{// pointer used to fill the buffer}
+176 
+177     \textcolor{keywordflow}{if} (pathname) \{                                         \textcolor{comment}{// only true at first call}
+178         \textcolor{keywordflow}{if} (*pathname != \textcolor{charliteral}{'/'})                               \textcolor{comment}{// pathname must start with '/'}
+179             \textcolor{keywordflow}{return} \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL};                                    \textcolor{comment}{// failure}
+180         next = pathname;                                    \textcolor{comment}{// the next name is all pathname}
+181     \}
+182     \textcolor{keywordflow}{if} (*next == 0) \textcolor{keywordflow}{return} \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL};                            \textcolor{comment}{// no more name in pathname}
+183 
+184     \textcolor{keywordflow}{for} (;*next && *next != \textcolor{charliteral}{'/'}; *current++=*next++);       \textcolor{comment}{// strcpy till '/' excluded}
+185     *current = 0;                                           \textcolor{comment}{// end of the name}
+186 
+187     \textcolor{keywordflow}{if} (*next) next++;                                      \textcolor{comment}{// if *next == '/' go to next char}
+188     \textcolor{keywordflow}{while} (*next == \textcolor{charliteral}{'/'}) next++;                            \textcolor{comment}{// several '/' are considered as single}
+189 
+190     \textcolor{keywordflow}{return} name;                                            \textcolor{comment}{// at last return extracted name}
+191 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_aae206d59d8bc4514d34dafdff1198ede}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-inode@{kfs\-\_\-inode}}
+\index{kfs\-\_\-inode@{kfs\-\_\-inode}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-inode}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-inode (
+\begin{DoxyParamCaption}
+\item[{int}]{dentry}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_aae206d59d8bc4514d34dafdff1198ede}
+
+
+References kfs\-\_\-dentry\-\_\-s\-::inode.
+
+
+
+Referenced by kfs\-\_\-print\-\_\-dentry(), kfs\-\_\-print\-\_\-files(), kfs\-\_\-read(), kfs\-\_\-set\-\_\-size(), kfs\-\_\-write(), and split().
+
+
+\begin{DoxyCode}
+139 \{\textcolor{keywordflow}{return} \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[dentry].\hyperlink{structkfs__dentry__s_a4e87e5375dfccc972eae6a05bfa2a086}{inode};\}
+\end{DoxyCode}
+\hypertarget{kfs_8c_ac2308b1a426032672fbacdde9ee5ac81}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-isdir@{kfs\-\_\-isdir}}
+\index{kfs\-\_\-isdir@{kfs\-\_\-isdir}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-isdir}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-isdir (
+\begin{DoxyParamCaption}
+\item[{int}]{dentry}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_ac2308b1a426032672fbacdde9ee5ac81}
+
+
+boolean functions for dentries or inode 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & of a dentry \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+-\/ 0 if false, not 0 if true 
+\end{DoxyReturn}
+
+
+References kfs\-\_\-dentry\-\_\-s\-::inode, K\-F\-S\-\_\-\-D\-I\-R, and kfs\-\_\-inode\-\_\-s\-::type.
+
+
+
+Referenced by kfs\-\_\-readdir(), kfs\-\_\-tree\-\_\-cb(), and kfs\-\_\-tree\-\_\-cb\-\_\-r().
+
+
+\begin{DoxyCode}
+142 \{\textcolor{keywordflow}{return} \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[\hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[dentry].\hyperlink{structkfs__dentry__s_a4e87e5375dfccc972eae6a05bfa2a086}{inode}].\hyperlink{structkfs__inode__s_ac894cd2c4c9d7e6409c3302d1edec307}{type} == 
+      \hyperlink{kfs_8h_a60283510d9cdbdb54a244958b0938e15a606504f765ec48b73a81cee9e5063ad3}{KFS\_DIR};\}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a135f3848117282c89e3be09b930eb9de}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-leaf@{kfs\-\_\-leaf}}
+\index{kfs\-\_\-leaf@{kfs\-\_\-leaf}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-leaf}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-leaf (
+\begin{DoxyParamCaption}
+\item[{int}]{dentry}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_a135f3848117282c89e3be09b930eb9de}
+
+
+References kfs\-\_\-dentry\-\_\-s\-::leaf.
+
+
+
+Referenced by kfs\-\_\-print\-\_\-dentry().
+
+
+\begin{DoxyCode}
+138 \{\textcolor{keywordflow}{return} \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[dentry].\hyperlink{structkfs__dentry__s_a79fd3c8764d633fdb895b77856f61d61}{leaf} ;\}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a4fa0207fb8a04e889050f380b9068e3a}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-link@{kfs\-\_\-link}}
+\index{kfs\-\_\-link@{kfs\-\_\-link}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-link}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-link (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{old\-\_\-name, }
+\item[{char $\ast$}]{new\-\_\-name}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_a4fa0207fb8a04e889050f380b9068e3a}
+
+
+creates a new link (also called hard link) on an existing file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em old\-\_\-name} & is an existing file name \\
+\hline
+{\em new\-\_\-name} & is the new name of the same file as old\-\_\-name if new\-\_\-name already exists it is not created, and it's a failure \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if success, -\/1 if failure 
+\end{DoxyReturn}
+
+
+References kfs\-\_\-inode\-\_\-s\-::count, kfs\-\_\-dentry\-\_\-s\-::inode, kfs\-\_\-free\-\_\-inode(), and kfs\-\_\-open().
+
+
+
+Referenced by dummy\-\_\-disk().
+
+
+\begin{DoxyCode}
+633 \{
+634     \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\_t} src\_dentry = \hyperlink{kfs_8c_ac7986c65e8710a8b55857582e62ccc78}{kfs\_open} (src\_name);
+635     \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\_t} dst\_dentry = \hyperlink{kfs_8c_ac7986c65e8710a8b55857582e62ccc78}{kfs\_open} (dst\_name);
+636     \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\_t} src\_inode  = \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[src\_dentry].\hyperlink{structkfs__dentry__s_a4e87e5375dfccc972eae6a05bfa2a086}{inode};
+637     \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\_t} dst\_inode  = \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[dst\_dentry].\hyperlink{structkfs__dentry__s_a4e87e5375dfccc972eae6a05bfa2a086}{inode};
+638     \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[dst\_dentry].\hyperlink{structkfs__dentry__s_a4e87e5375dfccc972eae6a05bfa2a086}{inode} = src\_inode;
+639     \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[src\_inode].\hyperlink{structkfs__inode__s_ae5ea15e9504973dc519f2ceca209a3d8}{count}++;
+640     \hyperlink{kfs_8c_aadbe9ab58b58e9826dd4da1384c80798}{kfs\_free\_inode} (dst\_inode);
+641     \textcolor{keywordflow}{return} dst\_dentry;
+642 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_ac9581ae711d5f79aff1ed39c9739e80c}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-mode@{kfs\-\_\-mode}}
+\index{kfs\-\_\-mode@{kfs\-\_\-mode}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-mode}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-mode (
+\begin{DoxyParamCaption}
+\item[{int}]{inode}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_ac9581ae711d5f79aff1ed39c9739e80c}
+
+
+References kfs\-\_\-inode\-\_\-s\-::mode.
+
+
+
+Referenced by kfs\-\_\-print\-\_\-dentry().
+
+
+\begin{DoxyCode}
+146 \{\textcolor{keywordflow}{return} \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_af0dd6151a1aba841d36f2d005e77aef4}{mode}; \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a9b41dd15430924703df46a579ff05b2e}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-mtime@{kfs\-\_\-mtime}}
+\index{kfs\-\_\-mtime@{kfs\-\_\-mtime}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-mtime}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-mtime (
+\begin{DoxyParamCaption}
+\item[{int}]{inode}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_a9b41dd15430924703df46a579ff05b2e}
+
+
+References kfs\-\_\-inode\-\_\-s\-::mtime.
+
+
+
+Referenced by kfs\-\_\-print\-\_\-dentry().
+
+
+\begin{DoxyCode}
+149 \{\textcolor{keywordflow}{return} \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_a575e296191f8d2444a26f90d58e155e6}{mtime};\}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a9d837cb422897570c876a655c0b762be}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-name@{kfs\-\_\-name}}
+\index{kfs\-\_\-name@{kfs\-\_\-name}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-name}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ kfs\-\_\-name (
+\begin{DoxyParamCaption}
+\item[{int}]{dentry}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_a9d837cb422897570c876a655c0b762be}
+
+
+References kfs\-\_\-dentry\-\_\-s\-::name.
+
+
+
+Referenced by kfs\-\_\-absolute\-\_\-pathname(), and kfs\-\_\-print\-\_\-dentry().
+
+
+\begin{DoxyCode}
+140 \{\textcolor{keywordflow}{return} \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[dentry].\hyperlink{structkfs__dentry__s_a9e5a536f0b9b95dc094c58c66c61ddcc}{name} ;\}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a3be0d586ff3044979a3c381137d77d47}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-next@{kfs\-\_\-next}}
+\index{kfs\-\_\-next@{kfs\-\_\-next}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-next}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-next (
+\begin{DoxyParamCaption}
+\item[{int}]{dentry}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_a3be0d586ff3044979a3c381137d77d47}
+
+
+References kfs\-\_\-dentry\-\_\-s\-::next.
+
+
+
+Referenced by kfs\-\_\-print\-\_\-dentry().
+
+
+\begin{DoxyCode}
+137 \{\textcolor{keywordflow}{return} \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[dentry].\hyperlink{structkfs__dentry__s_a17c6495def8c6564de45ab64cbc49066}{next} ;\}
+\end{DoxyCode}
+\hypertarget{kfs_8c_ac7986c65e8710a8b55857582e62ccc78}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-open@{kfs\-\_\-open}}
+\index{kfs\-\_\-open@{kfs\-\_\-open}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-open}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-open (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{pathname}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_ac7986c65e8710a8b55857582e62ccc78}
+
+
+opens a file or directory, if file or directory not found, all the pathname is created 
+
+\char`\"{}deep-\/first walk\char`\"{} of the name tree to find or create the file defined by its absolute name 
+
+References kfs\-\_\-dentry\-\_\-s\-::inode, kfs\-\_\-getname(), kfs\-\_\-openat(), Kfs\-Offset, and N\-U\-L\-L.
+
+
+
+Referenced by build(), dummy\-\_\-disk(), kfs\-\_\-files(), kfs\-\_\-link(), kfs\-\_\-tree(), kfs\-\_\-unlink(), and main().
+
+
+\begin{DoxyCode}
+526 \{
+527     \textcolor{keywordtype}{char} * name = \hyperlink{kfs_8c_a02d307133891efa932b3766568eb738e}{kfs\_getname} (pathname);                   \textcolor{comment}{// get first name up to character
+       '/'}
+528     \textcolor{keywordflow}{if} (name == \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL}) \textcolor{keywordflow}{return} -1;                            \textcolor{comment}{// pathname not correct, failure}
+529 
+530     \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} dentry = 0;                                       \textcolor{comment}{// search from root fs}
+531     \textcolor{keywordflow}{while} ((name = \hyperlink{kfs_8c_a02d307133891efa932b3766568eb738e}{kfs\_getname} (\hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL})))                     \textcolor{comment}{// get the next name in pathname}
+532         dentry = \hyperlink{kfs_8c_a5bf1c4cc42e02a99529eefc02cf53c4b}{kfs\_openat} (dentry, name);                 \textcolor{comment}{// look for it in current directory}
+533 
+534     \hyperlink{kfs_8c_a4418baf5eb3028d32758a1ccd600be44}{KfsOffset}[\hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[dentry].\hyperlink{structkfs__dentry__s_a4e87e5375dfccc972eae6a05bfa2a086}{inode}] = 0;                 \textcolor{comment}{// by defaut, set offset
+       to firstpage}
+535     \textcolor{keywordflow}{return} dentry;                                          \textcolor{comment}{// finally, the last dentry found}
+536 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a5bf1c4cc42e02a99529eefc02cf53c4b}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-openat@{kfs\-\_\-openat}}
+\index{kfs\-\_\-openat@{kfs\-\_\-openat}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-openat}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-openat (
+\begin{DoxyParamCaption}
+\item[{int}]{root, }
+\item[{char $\ast$}]{name}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_a5bf1c4cc42e02a99529eefc02cf53c4b}
+
+
+looks for name in the directory root, if the name is not found, it is created 
+
+find or create the file defined by its relative name into the directory defined by its dentry 
+
+References kfs\-\_\-dentry\-\_\-s\-::inode, kfs\-\_\-alloc\-\_\-dentry(), kfs\-\_\-alloc\-\_\-inode(), K\-F\-S\-\_\-\-D\-I\-R, K\-F\-S\-\_\-\-F\-I\-L\-E, kfs\-\_\-strcmp(), kfs\-\_\-dentry\-\_\-s\-::leaf, kfs\-\_\-dentry\-\_\-s\-::next, kfs\-\_\-dentry\-\_\-s\-::root, and kfs\-\_\-inode\-\_\-s\-::type.
+
+
+
+Referenced by dummy\-\_\-disk(), and kfs\-\_\-open().
+
+
+\begin{DoxyCode}
+542 \{
+543     \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} leaf = \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[root].\hyperlink{structkfs__dentry__s_a79fd3c8764d633fdb895b77856f61d61}{leaf};                      \textcolor{comment}{// get first leaf of current
+       root}
+544     \textcolor{keywordtype}{int} notfound = 1;                                       \textcolor{comment}{// by default, suppose name not found}
+545 
+546     \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[\hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[root].\hyperlink{structkfs__dentry__s_a4e87e5375dfccc972eae6a05bfa2a086}{inode}].\hyperlink{structkfs__inode__s_ac894cd2c4c9d7e6409c3302d1edec307}{type} = \hyperlink{kfs_8h_a60283510d9cdbdb54a244958b0938e15a606504f765ec48b73a81cee9e5063ad3}{KFS\_DIR};         \textcolor{comment}{// root is
+       necessarily a directory}
+547 
+548     \textcolor{keywordflow}{if} (leaf) \{                                             \textcolor{comment}{// if there are leafs}
+549         \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} leaf\_next = \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[leaf].\hyperlink{structkfs__dentry__s_a17c6495def8c6564de45ab64cbc49066}{next};             \textcolor{comment}{// get next leaf}
+550         notfound = \hyperlink{kfs_8c_a09fba9a0bb78a0f1f159c01046c7e006}{kfs\_strcmp}(\hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[leaf].name, name);  \textcolor{comment}{// !=0 if different}
+551 
+552         \textcolor{keywordflow}{while} (notfound && leaf\_next) \{                     \textcolor{comment}{// while not good leaf and there is more}
+553             leaf = leaf\_next;                               \textcolor{comment}{// change the leaf to the next leaf}
+554             leaf\_next = \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[leaf].\hyperlink{structkfs__dentry__s_a17c6495def8c6564de45ab64cbc49066}{next};               \textcolor{comment}{// get next leaf}
+555             notfound= \hyperlink{kfs_8c_a09fba9a0bb78a0f1f159c01046c7e006}{kfs\_strcmp}(\hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[leaf].name,name);\textcolor{comment}{// compare current leaf}
+556         \}
+557     \}
+558 
+559     \textcolor{keywordflow}{if} (notfound) \{
+560         leaf = \hyperlink{kfs_8c_a66ffc964d30c5258826714ac181af25a}{kfs\_alloc\_dentry} (name);                     \textcolor{comment}{// create a new dentry for the
+       file}
+561         \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[leaf].\hyperlink{structkfs__dentry__s_a4e87e5375dfccc972eae6a05bfa2a086}{inode} = \hyperlink{kfs_8c_ad7d3799e6e7b1822350af7f957f63db1}{kfs\_alloc\_inode} (
+      \hyperlink{kfs_8h_a60283510d9cdbdb54a244958b0938e15ab6474350eaeb22a05c5e39fe9ccdd1cf}{KFS\_FILE}); \textcolor{comment}{// create an empty inode (default FILE)}
+562         \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[leaf].\hyperlink{structkfs__dentry__s_a79fd3c8764d633fdb895b77856f61d61}{leaf} = 0;                           \textcolor{comment}{// if new leaf is FILE, thus no
+       leaf}
+563         \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[leaf].\hyperlink{structkfs__dentry__s_aed21f3f5ab2de70ab3416afe6dd9e4d4}{root} = root;                        \textcolor{comment}{// set the root of the new leaf}
+564         \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[leaf].\hyperlink{structkfs__dentry__s_a17c6495def8c6564de45ab64cbc49066}{next} = \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[root].\hyperlink{structkfs__dentry__s_a79fd3c8764d633fdb895b77856f61d61}{leaf};        \textcolor{comment}{// put new leaf in
+       same level nodes list}
+565         \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[root].\hyperlink{structkfs__dentry__s_a79fd3c8764d633fdb895b77856f61d61}{leaf} = leaf;                        \textcolor{comment}{// the beginning of the list of
+       leafs}
+566     \}
+567 
+568     \textcolor{keywordflow}{return} leaf;                                            \textcolor{comment}{// return the found or created leaf}
+569 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a2f522cb4edeecd6cbcebcca31d90bc75}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-owner@{kfs\-\_\-owner}}
+\index{kfs\-\_\-owner@{kfs\-\_\-owner}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-owner}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-owner (
+\begin{DoxyParamCaption}
+\item[{int}]{inode}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_a2f522cb4edeecd6cbcebcca31d90bc75}
+
+
+References kfs\-\_\-inode\-\_\-s\-::owner.
+
+
+
+Referenced by kfs\-\_\-print\-\_\-dentry().
+
+
+\begin{DoxyCode}
+148 \{\textcolor{keywordflow}{return} \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_adecb12117172ae213c9d659ffbcd809b}{owner};\}
+\end{DoxyCode}
+\hypertarget{kfs_8c_afdc75626536d311fb2fe47baef24ef55}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-page@{kfs\-\_\-page}}
+\index{kfs\-\_\-page@{kfs\-\_\-page}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-page}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-page (
+\begin{DoxyParamCaption}
+\item[{int}]{inode, }
+\item[{int}]{pg\-\_\-offset}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_afdc75626536d311fb2fe47baef24ef55}
+
+
+References kfs\-\_\-fmap(), kfs\-\_\-size(), Kfs\-Fmap, and kfs\-\_\-inode\-\_\-s\-::page.
+
+
+
+Referenced by kfs\-\_\-print\-\_\-dentry(), and kfs\-\_\-read().
+
+
+\begin{DoxyCode}
+377 \{
+378     \textcolor{keywordtype}{int} \hyperlink{structfdt__reserve__entry_ace12399f157bc46877fbcddec98da67e}{size} = \hyperlink{kfs_8c_a2e7cb7a15052f57bdff8a2c1146bc072}{kfs\_size}(inode);                             \textcolor{comment}{// real size of file}
+379     \textcolor{keywordflow}{if} ((size==0) || (pg\_offset > size>>12)) \textcolor{keywordflow}{return} -1;     \textcolor{comment}{// if pg\_offset is > than the nb of page}
+380     \textcolor{keywordflow}{if} (pg\_offset < 12) \textcolor{keywordflow}{return} \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_aea74f0e1495f40cf25e36f8963b84e8b}{page}[pg\_offset];\textcolor{comment}{// page is referenced by inode}
+381     pg\_offset -= 12;                                        \textcolor{comment}{// all others are in fmaps}
+382     \textcolor{keywordtype}{int} map1 = \hyperlink{kfs_8c_af148b22d686f5b43341249ba9d03eb54}{kfs\_fmap}(inode);                             \textcolor{comment}{// get the first level}
+383     \textcolor{keywordflow}{if} (size <= 28<<12) \textcolor{keywordflow}{return} \hyperlink{kfs_8c_adfe2302bd3dfd42413c478b8a32174cb}{KfsFmap}[map1][pg\_offset];    \textcolor{comment}{// if size is <= 28 pages, then 1 level}
+384     \textcolor{keywordtype}{int} map2 = \hyperlink{kfs_8c_adfe2302bd3dfd42413c478b8a32174cb}{KfsFmap}[map1][pg\_offset/16];                 \textcolor{comment}{// else get the second  level}
+385     \textcolor{keywordflow}{return} \hyperlink{kfs_8c_adfe2302bd3dfd42413c478b8a32174cb}{KfsFmap}[map2][pg\_offset%16];                     \textcolor{comment}{// then get the page}
+386 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a200e5373e6e2968ecc37495280d658c7}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-ppage@{kfs\-\_\-ppage}}
+\index{kfs\-\_\-ppage@{kfs\-\_\-ppage}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-ppage}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf u16\-\_\-t}$\ast$ kfs\-\_\-ppage (
+\begin{DoxyParamCaption}
+\item[{{\bf u16\-\_\-t}}]{inode, }
+\item[{{\bf u16\-\_\-t}}]{pg\-\_\-offset}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_a200e5373e6e2968ecc37495280d658c7}
+returns the pointer to the box containing the page number of the disk corresponding to the page n°pg\-\_\-offset of a file. This box is in the inode or in the fmaps.
+\begin{DoxyItemize}
+\item The 12 first pages are directly referenced by the inode, thus if file is smaller than 48ki\-B we have just to look in the inode (case \mbox{[}A\mbox{]})
+\item The following 16 are referenced in a fmap pointed by the inode, but olny if file size is smaller than 28 (12+16) pages (112ki\-B) (case \mbox{[}B\mbox{]})
+\item if the file is greater than 28 pages then the 1st level of map references a 2nd level of fmap and this 2nd level of fmap references pages, thus 16 x 16 pages (1\-Mi\-B) (case \mbox{[}C\mbox{]})
+\item if fmaps are not yet allocated, the function will do it We may have to create up to 2 maps (1st and 2nd level) and a page. There are many sub-\/cases depending on the current file size and the future size. 
+\end{DoxyItemize}
+
+References kfs\-\_\-inode\-\_\-s\-::fmap, kfs\-\_\-alloc\-\_\-fmap(), Kfs\-Fmap, N\-U\-L\-L, kfs\-\_\-inode\-\_\-s\-::page, and kfs\-\_\-inode\-\_\-s\-::size.
+
+
+
+Referenced by kfs\-\_\-write().
+
+
+\begin{DoxyCode}
+402 \{
+403     \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} \hyperlink{structfdt__reserve__entry_ace12399f157bc46877fbcddec98da67e}{size} = \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_ae4c3aa6d76cc8e92a9b29c2b3707f473}{size};              \textcolor{comment}{// previous size of file}
+404     \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\_t} * pfmap2in1;                              \textcolor{comment}{// address of 2nd lev fmap in 1st lev fmap}
+405     \hyperlink{kfs_8c_a7db204b3134ab7e4824022eec748871c}{kfs\_fmap\_t} * pfmap1;                            \textcolor{comment}{// 1st level of fmap address}
+406     \hyperlink{kfs_8c_a7db204b3134ab7e4824022eec748871c}{kfs\_fmap\_t} * pfmap2;                            \textcolor{comment}{// 2nd level of fmap address}
+407     \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} fmap;                                     \textcolor{comment}{// 2nd level of fmap}
+408     \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} old\_pg\_size = size >> 12;                 \textcolor{comment}{// old last page offset of the file}
+409 
+410     \textcolor{keywordflow}{if} (pg\_offset < 12)                             \textcolor{comment}{// if inside 12 pages mapped by inode}
+411         \textcolor{keywordflow}{return} &(\hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_aea74f0e1495f40cf25e36f8963b84e8b}{page}[pg\_offset]);  \textcolor{comment}{// -- get the address of page number}
+412 
+413     \textcolor{keywordflow}{if} (old\_pg\_size < 12) \{                         \textcolor{comment}{// if old size is <= 12 pages}
+414         fmap = \hyperlink{kfs_8c_a4899d84042ad3892c13dc7a360f65d86}{kfs\_alloc\_fmap}();                    \textcolor{comment}{// -- alloc a new fmap}
+415         \textcolor{keywordflow}{if} (fmap == 0) \textcolor{keywordflow}{return} \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL};                 \textcolor{comment}{// -- no more fmap}
+416         \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_a6a491f8ad9c0ea78d30421be44931e9b}{fmap} = fmap;                \textcolor{comment}{// -- connect inode to the 1st level fmap}
+417     \}
+418     pg\_offset -= 12;                                \textcolor{comment}{// shift of 12 for the pg\_offset}
+419     pfmap1 = &(\hyperlink{kfs_8c_adfe2302bd3dfd42413c478b8a32174cb}{KfsFmap}[\hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_a6a491f8ad9c0ea78d30421be44931e9b}{fmap}]);      \textcolor{comment}{// get the address of 1st level of
+       fmap}
+420     \textcolor{keywordflow}{if} (pg\_offset < 16)                             \textcolor{comment}{// if new page offset is < 28}
+421         \textcolor{keywordflow}{return} &((*pfmap1)[pg\_offset]);             \textcolor{comment}{// -- get addr of page nbr in 1st level fmap}
+422 
+423     \textcolor{keywordflow}{if} (old\_pg\_size < 28) \{                         \textcolor{comment}{// if need to change from a 1 to 2 level fmap}
+424         fmap = \hyperlink{kfs_8c_a4899d84042ad3892c13dc7a360f65d86}{kfs\_alloc\_fmap}();                    \textcolor{comment}{// -- new 1st level fmap}
+425         \textcolor{keywordflow}{if} (fmap == 0) \textcolor{keywordflow}{return} \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL};                 \textcolor{comment}{// -- no more fmap}
+426         \hyperlink{kfs_8c_adfe2302bd3dfd42413c478b8a32174cb}{KfsFmap}[fmap][0] = \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_a6a491f8ad9c0ea78d30421be44931e9b}{fmap};    \textcolor{comment}{// -- the old fmap that becomes 2nd
+       level}
+427         \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_a6a491f8ad9c0ea78d30421be44931e9b}{fmap} = fmap;                \textcolor{comment}{// -- connect inode to the 1st level fmap}
+428         pfmap1 = &(\hyperlink{kfs_8c_adfe2302bd3dfd42413c478b8a32174cb}{KfsFmap}[\hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_a6a491f8ad9c0ea78d30421be44931e9b}{fmap}]);  \textcolor{comment}{// -- get the new addr of 1st level
+       of fmap}
+429     \}
+430     pfmap2in1 = &((*pfmap1)[pg\_offset/16]);         \textcolor{comment}{// get addr of 2nd fmap in 1st fmap}
+431     \textcolor{keywordflow}{if} (*pfmap2in1 == 0) \{                          \textcolor{comment}{// if 2nd level does not exit}
+432         fmap = \hyperlink{kfs_8c_a4899d84042ad3892c13dc7a360f65d86}{kfs\_alloc\_fmap}();                    \textcolor{comment}{// -- new 2nd level of fmap}
+433         \textcolor{keywordflow}{if} (fmap == 0) \textcolor{keywordflow}{return} \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL};                 \textcolor{comment}{// -- no more fmap}
+434         *pfmap2in1 = fmap;                          \textcolor{comment}{// -- update le 1st level of fmap}
+435     \}
+436     pfmap2 = &(\hyperlink{kfs_8c_adfe2302bd3dfd42413c478b8a32174cb}{KfsFmap}[*pfmap2in1]);                \textcolor{comment}{// get the address of 2nd level of fmap}
+437     \textcolor{keywordflow}{return} &((*pfmap2)[pg\_offset%16]);              \textcolor{comment}{// get addr of page nbr in 2nd level fmap}
+438 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a532e7e965bd6809645bdf682ffd509dc}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-read@{kfs\-\_\-read}}
+\index{kfs\-\_\-read@{kfs\-\_\-read}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-read}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-read (
+\begin{DoxyParamCaption}
+\item[{int}]{dentry, }
+\item[{int}]{pg\-\_\-offset, }
+\item[{int $\ast$}]{buf}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_a532e7e965bd6809645bdf682ffd509dc}
+
+
+Reads a file, it reads one page from the file dentry to memory buffer. After reading, buffer will contain the entire page of which the offset belongs. 
+
+Try to read an entire page (4ki\-B) from file dentry 
+
+References kfs\-\_\-inode(), kfs\-\_\-page(), and kfs\-\_\-read\-\_\-page().
+
+
+
+Referenced by dummy\-\_\-disk(), kfs\-\_\-print\-\_\-files(), and split().
+
+
+\begin{DoxyCode}
+590 \{
+591     \textcolor{keywordtype}{int} page = \hyperlink{kfs_8c_afdc75626536d311fb2fe47baef24ef55}{kfs\_page} (\hyperlink{kfs_8c_aae206d59d8bc4514d34dafdff1198ede}{kfs\_inode} (dentry), pg\_offset);     \textcolor{comment}{// get the page number in the
+       disk}
+592     \textcolor{keywordflow}{if} (page == -1) \textcolor{keywordflow}{return} 0;                               \textcolor{comment}{// if outside of the file}
+593     \textcolor{keywordflow}{return} \hyperlink{kfs_8c_a23a78b350153b3b7ae5ca00a1de7484a}{kfs\_read\_page} (buf, page);                       \textcolor{comment}{// at last read disk page to buf}
+594 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a23a78b350153b3b7ae5ca00a1de7484a}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-read\-\_\-page@{kfs\-\_\-read\-\_\-page}}
+\index{kfs\-\_\-read\-\_\-page@{kfs\-\_\-read\-\_\-page}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-read\-\_\-page}]{\setlength{\rightskip}{0pt plus 5cm}static int kfs\-\_\-read\-\_\-page (
+\begin{DoxyParamCaption}
+\item[{int $\ast$}]{buf, }
+\item[{{\bf u16\-\_\-t}}]{page}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_a23a78b350153b3b7ae5ca00a1de7484a}
+
+
+Reads from the disk to the memory buffer. There are two cases \-: 1) if kfs runs on Linux 2) if kfs runs on ko6 1) Linux\-: the kfs disk has been loaded in an array, so that's where we have to read it 2) ko6\-: the kfs disk is behind the disk device, so we need to ask the disk driver. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & is a buffer address in memory \\
+\hline
+{\em page} & is a page number on disk, if page == 0 then the page is considered as full of 0 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if buf is filled with 0, 1 if the page read is not empty or -\/1 in case of failure If page read on disk in empty, but we return 1 it is not a problem 
+\end{DoxyReturn}
+
+
+Referenced by kfs\-\_\-read().
+
+
+\begin{DoxyCode}
+451 \{
+452     \textcolor{keywordtype}{int} a = 0;                                              \textcolor{comment}{// counter of words}
+453     \textcolor{keywordflow}{if} (page == 0) \{                                        \textcolor{comment}{// the page 0 is full of 0}
+454         \textcolor{keywordflow}{for} (; a != 1024; a++, *(\textcolor{keywordtype}{int} *)buf++ = 0);          \textcolor{comment}{// fill buffer with 0}
+455         \textcolor{keywordflow}{return} 0;                                           \textcolor{comment}{// success}
+456     \}
+457 \textcolor{preprocessor}{#ifdef HOST}
+458 \textcolor{preprocessor}{}    \textcolor{keywordtype}{int} * ppage = (\textcolor{keywordtype}{int} *)KfsDisk[page];               \textcolor{comment}{// ppage points to the first int of page}
+459     \textcolor{keywordflow}{for} (; a != 1024; a++, *buf++ = *ppage++);
+460     \textcolor{keywordflow}{return} 1;                                               \textcolor{comment}{// success}
+461 \textcolor{preprocessor}{#else}
+462 \textcolor{preprocessor}{}    \textcolor{keywordflow}{return} -1;                                              \textcolor{comment}{// FIXME  Real disk not yet handled}
+463 \textcolor{preprocessor}{#endif}
+464 \textcolor{preprocessor}{}\}
+\end{DoxyCode}
+\hypertarget{kfs_8c_aee8d1799ae389468763ccfbe157c42ec}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-readdir@{kfs\-\_\-readdir}}
+\index{kfs\-\_\-readdir@{kfs\-\_\-readdir}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-readdir}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-readdir (
+\begin{DoxyParamCaption}
+\item[{int}]{root, }
+\item[{int}]{leaf, }
+\item[{void $\ast$}]{buf}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_aee8d1799ae389468763ccfbe157c42ec}
+
+
+Reads a directory, it reads one entry from the directory dentry to memory buffer. After reading, buffer will contain the name of the directory or item. 
+
+readdir reads all entries in a directory 
+
+References kfs\-\_\-isdir(), kfs\-\_\-strcpy(), kfs\-\_\-dentry\-\_\-s\-::leaf, and kfs\-\_\-dentry\-\_\-s\-::next.
+
+
+
+Referenced by kfs\-\_\-tree\-\_\-cb\-\_\-r().
+
+
+\begin{DoxyCode}
+575 \{
+576     \textcolor{keywordflow}{if} (!\hyperlink{kfs_8c_ac2308b1a426032672fbacdde9ee5ac81}{kfs\_isdir}(root)) \textcolor{keywordflow}{return} -1;                        \textcolor{comment}{// root dentry must be a directory}
+577 
+578     \textcolor{keywordflow}{if} (buf) \hyperlink{kfs_8c_aceb626dd864e7f2ccd7901d0506dbaf4}{kfs\_strcpy} (buf, \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[leaf].name);        \textcolor{comment}{// if asked, get this leaf
+       dentry name}
+579     \textcolor{keywordflow}{if} (leaf == root)                                       \textcolor{comment}{// at first, leaf is the root}
+580         \textcolor{keywordflow}{return} \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[root].\hyperlink{structkfs__dentry__s_a79fd3c8764d633fdb895b77856f61d61}{leaf};                        \textcolor{comment}{// get the first leaf thus 0 if
+       empty}
+581 
+582     \textcolor{keywordflow}{if} (\hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[leaf].root != root) \textcolor{keywordflow}{return} -1;            \textcolor{comment}{// leaf must be in root directory}
+583     \textcolor{keywordflow}{return} \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[leaf].\hyperlink{structkfs__dentry__s_a17c6495def8c6564de45ab64cbc49066}{next};                            \textcolor{comment}{// find and return next leaf (0 if
+       last)}
+584 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_ade5bf93265bc86a9ecd5019cc6e3d277}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-root@{kfs\-\_\-root}}
+\index{kfs\-\_\-root@{kfs\-\_\-root}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-root}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-root (
+\begin{DoxyParamCaption}
+\item[{int}]{dentry}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_ade5bf93265bc86a9ecd5019cc6e3d277}
+
+
+read access functions to dentries 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & of a dentry \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+-\/ a dentry number for \hyperlink{kfs_8c_ade5bf93265bc86a9ecd5019cc6e3d277}{kfs\-\_\-root()}, \hyperlink{kfs_8c_a3be0d586ff3044979a3c381137d77d47}{kfs\-\_\-next()}, \hyperlink{kfs_8c_a135f3848117282c89e3be09b930eb9de}{kfs\-\_\-leaf()}. For these three functions, 0 means either file system root '/' or last leaf
+\begin{DoxyItemize}
+\item the inode number for \hyperlink{kfs_8c_aae206d59d8bc4514d34dafdff1198ede}{kfs\-\_\-inode()}, there is always one
+\item the pointer to the entry name for \hyperlink{kfs_8c_a9d837cb422897570c876a655c0b762be}{kfs\-\_\-name()} 
+\end{DoxyItemize}
+\end{DoxyReturn}
+
+
+References kfs\-\_\-dentry\-\_\-s\-::root.
+
+
+
+Referenced by kfs\-\_\-absolute\-\_\-pathname(), and kfs\-\_\-print\-\_\-dentry().
+
+
+\begin{DoxyCode}
+136 \{\textcolor{keywordflow}{return} \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[dentry].\hyperlink{structkfs__dentry__s_aed21f3f5ab2de70ab3416afe6dd9e4d4}{root} ;\}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a491e452cdf42853498249aadc91eb74b}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-set\-\_\-size@{kfs\-\_\-set\-\_\-size}}
+\index{kfs\-\_\-set\-\_\-size@{kfs\-\_\-set\-\_\-size}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-set\-\_\-size}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-set\-\_\-size (
+\begin{DoxyParamCaption}
+\item[{int}]{dentry, }
+\item[{int}]{newsize}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_a491e452cdf42853498249aadc91eb74b}
+
+
+Sets the size field of the inode associated with the dentry to newsize. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dentry} & given by open or openat \\
+\hline
+{\em newsize} & new size of the file \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int \-: the size of the file after modification 
+\end{DoxyReturn}
+
+
+References kfs\-\_\-inode(), kfs\-\_\-size(), and kfs\-\_\-inode\-\_\-s\-::size.
+
+
+
+Referenced by add\-\_\-new\-\_\-file(), and dummy\-\_\-disk().
+
+
+\begin{DoxyCode}
+601 \{
+602     \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\_t} inode = \hyperlink{kfs_8c_aae206d59d8bc4514d34dafdff1198ede}{kfs\_inode}(dentry);                \textcolor{comment}{// get inode associated with the dentry}
+603     \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_ae4c3aa6d76cc8e92a9b29c2b3707f473}{size} = newsize;                 \textcolor{comment}{// set the new size}
+604 
+605     \textcolor{keywordflow}{return} \hyperlink{kfs_8c_a2e7cb7a15052f57bdff8a2c1146bc072}{kfs\_size}(inode);
+606 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a2e7cb7a15052f57bdff8a2c1146bc072}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-size@{kfs\-\_\-size}}
+\index{kfs\-\_\-size@{kfs\-\_\-size}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-size}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-size (
+\begin{DoxyParamCaption}
+\item[{int}]{inode}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_a2e7cb7a15052f57bdff8a2c1146bc072}
+
+
+References kfs\-\_\-inode\-\_\-s\-::size.
+
+
+
+Referenced by kfs\-\_\-page(), kfs\-\_\-print\-\_\-dentry(), kfs\-\_\-print\-\_\-files(), kfs\-\_\-set\-\_\-size(), and split().
+
+
+\begin{DoxyCode}
+147 \{\textcolor{keywordflow}{return} \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_ae4c3aa6d76cc8e92a9b29c2b3707f473}{size}; \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a09fba9a0bb78a0f1f159c01046c7e006}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-strcmp@{kfs\-\_\-strcmp}}
+\index{kfs\-\_\-strcmp@{kfs\-\_\-strcmp}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-strcmp}]{\setlength{\rightskip}{0pt plus 5cm}static int kfs\-\_\-strcmp (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{s1, }
+\item[{const char $\ast$}]{s2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_a09fba9a0bb78a0f1f159c01046c7e006}
+
+
+compare two strings of characters 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s1} & is the first string \\
+\hline
+{\em s2} & is the second string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if s1 == s2 or the difference between s1 and s2 on the first character that differs 
+\end{DoxyReturn}
+
+
+Referenced by kfs\-\_\-openat().
+
+
+\begin{DoxyCode}
+213 \{
+214     \hyperlink{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}{u8\_t} c1, c2;
+215     \textcolor{keywordflow}{do} \{
+216         c1 = (\hyperlink{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}{u8\_t}) *\hyperlink{riscv_2kpanica_8S_ab075f86d8c4bc4706ade8f8b5af13288}{s1}++;
+217         c2 = (\hyperlink{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}{u8\_t}) *\hyperlink{riscv_2kpanica_8S_a08f4a1bf17498bc7df004b0c8b93cff1}{s2}++;
+218     \}
+219     \textcolor{keywordflow}{while} (c1 && (c1 == c2));
+220     \textcolor{keywordflow}{return} c1 - c2;
+221 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_aceb626dd864e7f2ccd7901d0506dbaf4}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-strcpy@{kfs\-\_\-strcpy}}
+\index{kfs\-\_\-strcpy@{kfs\-\_\-strcpy}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-strcpy}]{\setlength{\rightskip}{0pt plus 5cm}static void kfs\-\_\-strcpy (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{dest, }
+\item[{char $\ast$}]{src}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_aceb626dd864e7f2ccd7901d0506dbaf4}
+
+
+copy a string of characters 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dest} & is the address of the destination buffer \\
+\hline
+{\em src} & is the address of the source buffer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+nothing but the side effect on destination buffer 
+\end{DoxyReturn}
+
+
+References K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-N\-A\-M\-E.
+
+
+
+Referenced by kfs\-\_\-alloc\-\_\-dentry(), and kfs\-\_\-readdir().
+
+
+\begin{DoxyCode}
+200 \{
+201     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; (i < \hyperlink{kfs_8c_ae0b389bdf68187ccb1610271d36edb33}{KFS\_MAX\_NAME}) && (*src); i++)
+202         *dest++ = *src++;
+203     *dest = 0;
+204 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a0c8753d9a11f6570f9c56b587fa2c48c}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-tree\-\_\-cb@{kfs\-\_\-tree\-\_\-cb}}
+\index{kfs\-\_\-tree\-\_\-cb@{kfs\-\_\-tree\-\_\-cb}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-tree\-\_\-cb}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-tree\-\_\-cb (
+\begin{DoxyParamCaption}
+\item[{int}]{root, }
+\item[{void($\ast$)(int dentry, int depth, int postion)}]{callback}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_a0c8753d9a11f6570f9c56b587fa2c48c}
+
+
+References kfs\-\_\-isdir(), and kfs\-\_\-tree\-\_\-cb\-\_\-r().
+
+
+
+Referenced by kfs\-\_\-files(), kfs\-\_\-tree(), and main().
+
+
+\begin{DoxyCode}
+682 \{
+683     callback (root, 0, 0);                                  \textcolor{comment}{// callback function execution on root}
+684     \textcolor{keywordflow}{if} (!\hyperlink{kfs_8c_ac2308b1a426032672fbacdde9ee5ac81}{kfs\_isdir}(root)) \textcolor{keywordflow}{return} 1;                         \textcolor{comment}{// if not a directory, it is finished}
+685     \textcolor{keywordflow}{return} 1+\hyperlink{kfs_8c_af01886bc6c6c809f5f46eda025ef5ec3}{kfs\_tree\_cb\_r} (root, 1, callback);             \textcolor{comment}{// else start the recursion}
+686 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_af01886bc6c6c809f5f46eda025ef5ec3}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-tree\-\_\-cb\-\_\-r@{kfs\-\_\-tree\-\_\-cb\-\_\-r}}
+\index{kfs\-\_\-tree\-\_\-cb\-\_\-r@{kfs\-\_\-tree\-\_\-cb\-\_\-r}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-tree\-\_\-cb\-\_\-r}]{\setlength{\rightskip}{0pt plus 5cm}static int kfs\-\_\-tree\-\_\-cb\-\_\-r (
+\begin{DoxyParamCaption}
+\item[{int}]{root, }
+\item[{int}]{depth, }
+\item[{void($\ast$)(int dentry, int depth, int pos)}]{callback}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_af01886bc6c6c809f5f46eda025ef5ec3}
+
+
+Recursively executes the callback() function for all entries in a directory. This is a deep-\/first walk. The callback() function is not executed on the root. \-\_\-cb\-\_\-r means \char`\"{}call back recursive\char`\"{} This function must not be used directly, it is used by \hyperlink{kfs_8c_a0c8753d9a11f6570f9c56b587fa2c48c}{kfs\-\_\-tree\-\_\-cb()} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & has to be a dentry of a directory \\
+\hline
+{\em depth} & is the current depth of the walk \\
+\hline
+{\em callback} & is the callback function exectuted on each entry the call back function receives 3 arguments
+\begin{DoxyItemize}
+\item dentry is the current entry in this directory which can be of any type
+\item depth is the current depth of the walk (necessarily $>$= 1)
+\item pos is the current position in the current direcrory 
+\end{DoxyItemize}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the number of calls of callback() 
+\end{DoxyReturn}
+
+
+References kfs\-\_\-isdir(), kfs\-\_\-readdir(), and N\-U\-L\-L.
+
+
+
+Referenced by kfs\-\_\-tree\-\_\-cb().
+
+
+\begin{DoxyCode}
+503 \{
+504     \textcolor{keywordtype}{int} calls = 0;                                          \textcolor{comment}{// nb of calls at this depth}
+505     \textcolor{keywordtype}{int} pos = 0;                                            \textcolor{comment}{// leaf position in current directory}
+506     \textcolor{keywordtype}{int} leaf = \hyperlink{kfs_8c_aee8d1799ae389468763ccfbe157c42ec}{kfs\_readdir} (root, root, \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL});              \textcolor{comment}{// root dentry has to be a
+       directory}
+507     \textcolor{keywordflow}{if} (leaf == -1) \textcolor{keywordflow}{return} 0;                               \textcolor{comment}{// if root is not a directory do nothing}
+508     \textcolor{keywordflow}{while} (leaf) \{                                          \textcolor{comment}{// while a leaf has been found}
+509         callback (leaf, depth, pos++);                      \textcolor{comment}{// callback function execution}
+510         calls++;                                            \textcolor{comment}{// increment the number of calls}
+511         \textcolor{keywordflow}{if} (leaf && \hyperlink{kfs_8c_ac2308b1a426032672fbacdde9ee5ac81}{kfs\_isdir}(leaf))                        \textcolor{comment}{// if current leaf is a directory}
+512             calls += \hyperlink{kfs_8c_af01886bc6c6c809f5f46eda025ef5ec3}{kfs\_tree\_cb\_r} (leaf, depth+1,callback);\textcolor{comment}{// recursive call to
+       kfs\_tree\_cb\_r()}
+513         leaf = \hyperlink{kfs_8c_aee8d1799ae389468763ccfbe157c42ec}{kfs\_readdir} (root, leaf, \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL});              \textcolor{comment}{// get the next leaf in current
+       root}
+514     \}
+515     \textcolor{keywordflow}{return} calls;
+516 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a8d546cf291d26ab01a150b74cc206ae1}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-type@{kfs\-\_\-type}}
+\index{kfs\-\_\-type@{kfs\-\_\-type}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-type (
+\begin{DoxyParamCaption}
+\item[{int}]{inode}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_a8d546cf291d26ab01a150b74cc206ae1}
+
+
+References kfs\-\_\-inode\-\_\-s\-::type.
+
+
+
+Referenced by kfs\-\_\-print\-\_\-dentry(), kfs\-\_\-print\-\_\-files(), and split().
+
+
+\begin{DoxyCode}
+145 \{\textcolor{keywordflow}{return} \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_ac894cd2c4c9d7e6409c3302d1edec307}{type}; \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a46783800e799435356d388150e2a5cec}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-unlink@{kfs\-\_\-unlink}}
+\index{kfs\-\_\-unlink@{kfs\-\_\-unlink}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-unlink}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-unlink (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{name}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_a46783800e799435356d388150e2a5cec}
+
+
+References kfs\-\_\-inode\-\_\-s\-::fmap, kfs\-\_\-dentry\-\_\-s\-::inode, kfs\-\_\-free\-\_\-dentry(), kfs\-\_\-free\-\_\-fmap(), kfs\-\_\-free\-\_\-inode(), kfs\-\_\-free\-\_\-page(), kfs\-\_\-open(), Kfs\-Fmap, kfs\-\_\-inode\-\_\-s\-::page, and kfs\-\_\-inode\-\_\-s\-::size.
+
+
+\begin{DoxyCode}
+648 \{
+649     \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\_t} dentry = \hyperlink{kfs_8c_ac7986c65e8710a8b55857582e62ccc78}{kfs\_open} (name);
+650     \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} inode = \hyperlink{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{KfsDentry}[dentry].\hyperlink{structkfs__dentry__s_a4e87e5375dfccc972eae6a05bfa2a086}{inode};
+651     \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} \hyperlink{structfdt__reserve__entry_ace12399f157bc46877fbcddec98da67e}{size} = \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_ae4c3aa6d76cc8e92a9b29c2b3707f473}{size};
+652     \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} fmap1 = \hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_a6a491f8ad9c0ea78d30421be44931e9b}{fmap};
+653     \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} fmap2 = 0;
+654     \hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\_t} freemap=0;
+655     \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\_t} * ppage;
+656 
+657     \hyperlink{kfs_8c_a5d172bef33b255bfe7ec0375abac988e}{kfs\_free\_dentry} (dentry);
+658 
+659     \textcolor{keywordflow}{if} (\hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].count-- == 0) \{
+660         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} s = size, p = 0; s > 0; s -= 1<<12, p++)\{
+661             \textcolor{keywordflow}{if} (p < 12) \{
+662                 ppage = &(\hyperlink{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{KfsInode}[inode].\hyperlink{structkfs__inode__s_aea74f0e1495f40cf25e36f8963b84e8b}{page}[p]);
+663             \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (size <= (28<<12)) \{
+664                 ppage = &(\hyperlink{kfs_8c_adfe2302bd3dfd42413c478b8a32174cb}{KfsFmap}[fmap1][p-12]);
+665                 \textcolor{keywordflow}{if} (p == size>>12) freemap=1;
+666             \} \textcolor{keywordflow}{else} \{
+667                 fmap2 = \hyperlink{kfs_8c_adfe2302bd3dfd42413c478b8a32174cb}{KfsFmap}[fmap1][(p-12)/16];
+668                 ppage = &(\hyperlink{kfs_8c_adfe2302bd3dfd42413c478b8a32174cb}{KfsFmap}[fmap2][(p-12)%16]);
+669                 \textcolor{keywordflow}{if} ((p-12)%16 == 15) freemap=2;
+670                 \textcolor{keywordflow}{if} (p == size>>12) freemap=3;
+671             \}
+672             \hyperlink{kfs_8c_ac364ca8f5189a2eaf2f7cbeef0a27698}{kfs\_free\_page} (*ppage);
+673             \textcolor{keywordflow}{if} (freemap & 1) \hyperlink{kfs_8c_a2b773f0350f13077e1479fe36941da52}{kfs\_free\_fmap}(fmap1);
+674             \textcolor{keywordflow}{if} (freemap & 2) \hyperlink{kfs_8c_a2b773f0350f13077e1479fe36941da52}{kfs\_free\_fmap}(fmap2);
+675         \}
+676         \hyperlink{kfs_8c_aadbe9ab58b58e9826dd4da1384c80798}{kfs\_free\_inode} (inode);
+677     \}
+678     \textcolor{keywordflow}{return} 0;
+679 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a57b5123b2f69a99505a7f3026eeefce9}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-write@{kfs\-\_\-write}}
+\index{kfs\-\_\-write@{kfs\-\_\-write}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-write}]{\setlength{\rightskip}{0pt plus 5cm}int kfs\-\_\-write (
+\begin{DoxyParamCaption}
+\item[{int}]{dentry, }
+\item[{int}]{pg\-\_\-offset, }
+\item[{void $\ast$}]{buffer}
+\end{DoxyParamCaption}
+)}}\label{kfs_8c_a57b5123b2f69a99505a7f3026eeefce9}
+
+
+Writes one page from memory buffer to file dentry. The buffer is written on the disk in file page of which the offset belongs. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dentry} & given by open or openat \\
+\hline
+{\em pg\-\_\-offset} & is the number of the page that will be written \\
+\hline
+{\em buffer} & contains the page to write (at least one page length) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the number of pages written 1 if success with page in disk as a side effect, 0 if success but buffer was full of 0, thus no page needs to be allocated -\/1 if something is wrong 
+\end{DoxyReturn}
+
+
+References kfs\-\_\-alloc\-\_\-page(), kfs\-\_\-free\-\_\-page(), kfs\-\_\-inode(), kfs\-\_\-ppage(), kfs\-\_\-write\-\_\-page(), and N\-U\-L\-L.
+
+
+
+Referenced by add\-\_\-new\-\_\-file(), and dummy\-\_\-disk().
+
+
+\begin{DoxyCode}
+618 \{
+619     \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\_t} inode = \hyperlink{kfs_8c_aae206d59d8bc4514d34dafdff1198ede}{kfs\_inode}(dentry);                \textcolor{comment}{// get inode associated with the dentry}
+620     \hyperlink{kfs_8c_afc6499c1f28697aa3bfc2804d496fd11}{u16\_t} *ppage = \hyperlink{kfs_8c_a200e5373e6e2968ecc37495280d658c7}{kfs\_ppage} (inode, pg\_offset);    \textcolor{comment}{// get addr in fmaps of page number
+       (alloc fmap)}
+621     \textcolor{keywordflow}{if} (ppage == \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL}) \textcolor{keywordflow}{return} -1;                   \textcolor{comment}{// NULL means no more space in fmaps}
+622     \textcolor{keywordflow}{if} (*ppage == 0) *ppage = \hyperlink{kfs_8c_a53fd0386d2feed317c9d6bdc536e4540}{kfs\_alloc\_page}();     \textcolor{comment}{// if page absent, allocate a new page}
+623     \textcolor{keywordflow}{if} (*ppage == 0) \textcolor{keywordflow}{return} -1;                     \textcolor{comment}{// 0 means no more space on the disk}
+624     \textcolor{keywordflow}{if} (\hyperlink{kfs_8c_a82cd5257064f4d5b995d6951b9f054b3}{kfs\_write\_page} (buf, *ppage)) \textcolor{keywordflow}{return} 1;     \textcolor{comment}{// at last write disk page from buf}
+625     \hyperlink{kfs_8c_ac364ca8f5189a2eaf2f7cbeef0a27698}{kfs\_free\_page} (*ppage);                         \textcolor{comment}{// if returns 0, it means page full of 0}
+626     \textcolor{keywordflow}{return} *ppage = 0;                              \textcolor{comment}{// erase page number in fmap;}
+627 \}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a82cd5257064f4d5b995d6951b9f054b3}{\index{kfs.\-c@{kfs.\-c}!kfs\-\_\-write\-\_\-page@{kfs\-\_\-write\-\_\-page}}
+\index{kfs\-\_\-write\-\_\-page@{kfs\-\_\-write\-\_\-page}!kfs.c@{kfs.\-c}}
+\subsubsection[{kfs\-\_\-write\-\_\-page}]{\setlength{\rightskip}{0pt plus 5cm}static int kfs\-\_\-write\-\_\-page (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{buf, }
+\item[{int}]{page}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_a82cd5257064f4d5b995d6951b9f054b3}
+
+
+writes to the disk from the memory buffer 
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & is a buffer address in memory \\
+\hline
+{\em page} & is a page number on disk \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if new page is full of 0, 1 if the page written is not empty or -\/1 in case of failure. If page written on disk in empty, but we return 1 it is not a problem 
+\end{DoxyReturn}
+
+
+References buffer, and K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-D\-I\-S\-K.
+
+
+
+Referenced by kfs\-\_\-write().
+
+
+\begin{DoxyCode}
+474 \{
+475 \textcolor{preprocessor}{#ifdef HOST}
+476 \textcolor{preprocessor}{}    \textcolor{keywordtype}{int} res = 0;                                            \textcolor{comment}{// return value}
+477     \textcolor{keywordtype}{int} a = 0;                                              \textcolor{comment}{// counter of words}
+478     \textcolor{keywordtype}{int} * \hyperlink{ktools_8c_a527b76b33fb8beec7f2df7e0c032aef6}{buffer} = (\textcolor{keywordtype}{int} *)buf;                              \textcolor{comment}{// cast buf to int}
+479     \textcolor{keywordtype}{int} * ppage = (\textcolor{keywordtype}{int} *)KfsDisk[page];                     \textcolor{comment}{// ppage points to the first int of page}
+480     \textcolor{keywordflow}{if} ((page == 0) || (page >= \hyperlink{kfs_8h_a7c0f2945d18d92bc9b2e754b377335b3}{KFS\_NPG\_DISK})) \textcolor{keywordflow}{return} -1;   \textcolor{comment}{// condition : 0 < page <
+       KFS\_NBPAGES}
+481     \textcolor{keywordflow}{for}(;a != 1024; a++, res |= (*ppage++ = *buffer++));    \textcolor{comment}{// memory buf to disk page, compute res}
+482     \textcolor{keywordflow}{return} (res) ? 1 : 0;                                   \textcolor{comment}{// if res remains 0 return 0 else 1}
+483 \textcolor{preprocessor}{#else}
+484 \textcolor{preprocessor}{}    \textcolor{keywordflow}{return} -1;                                              \textcolor{comment}{// FIXME Real disk not yet handled}
+485 \textcolor{preprocessor}{#endif}
+486 \textcolor{preprocessor}{}\}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\hypertarget{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}{\index{kfs.\-c@{kfs.\-c}!Kfs\-Dentry@{Kfs\-Dentry}}
+\index{Kfs\-Dentry@{Kfs\-Dentry}!kfs.c@{kfs.\-c}}
+\subsubsection[{Kfs\-Dentry}]{\setlength{\rightskip}{0pt plus 5cm}{\bf kfs\-\_\-dentry\-\_\-t} Kfs\-Dentry\mbox{[}{\bf K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-D\-E\-N\-T\-R\-Y}\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_a4c9c9ecc30db3a783a700f4e79f9561e}
+
+
+up to M\-A\-X\-\_\-\-D\-E\-N\-T\-R\-Y files 
+
+\hypertarget{kfs_8c_adfe2302bd3dfd42413c478b8a32174cb}{\index{kfs.\-c@{kfs.\-c}!Kfs\-Fmap@{Kfs\-Fmap}}
+\index{Kfs\-Fmap@{Kfs\-Fmap}!kfs.c@{kfs.\-c}}
+\subsubsection[{Kfs\-Fmap}]{\setlength{\rightskip}{0pt plus 5cm}{\bf kfs\-\_\-fmap\-\_\-t} Kfs\-Fmap\mbox{[}{\bf K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-F\-M\-A\-P}\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_adfe2302bd3dfd42413c478b8a32174cb}
+
+
+up to M\-A\-X\-\_\-\-F\-M\-A\-P inode extensions 
+
+
+
+Referenced by kfs\-\_\-free\-\_\-fmap(), kfs\-\_\-page(), kfs\-\_\-ppage(), and kfs\-\_\-unlink().
+
+\hypertarget{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}{\index{kfs.\-c@{kfs.\-c}!Kfs\-Inode@{Kfs\-Inode}}
+\index{Kfs\-Inode@{Kfs\-Inode}!kfs.c@{kfs.\-c}}
+\subsubsection[{Kfs\-Inode}]{\setlength{\rightskip}{0pt plus 5cm}{\bf kfs\-\_\-inode\-\_\-t} Kfs\-Inode\mbox{[}{\bf K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-I\-N\-O\-D\-E}\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_ace1088077311b5b6a4d2fa6d330f4ccf}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+= \{    
+    [0] = \{.type=\hyperlink{kfs_8h_a60283510d9cdbdb54a244958b0938e15a606504f765ec48b73a81cee9e5063ad3}{KFS\_DIR}, .mode=077\}
+\}
+\end{DoxyCode}
+\hypertarget{kfs_8c_a4418baf5eb3028d32758a1ccd600be44}{\index{kfs.\-c@{kfs.\-c}!Kfs\-Offset@{Kfs\-Offset}}
+\index{Kfs\-Offset@{Kfs\-Offset}!kfs.c@{kfs.\-c}}
+\subsubsection[{Kfs\-Offset}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u16\-\_\-t} Kfs\-Offset\mbox{[}{\bf K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-I\-N\-O\-D\-E}\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_a4418baf5eb3028d32758a1ccd600be44}
+
+
+last offset used for inode by read write 
+
+
+
+Referenced by kfs\-\_\-open().
+
+\hypertarget{kfs_8c_accc11417a4eed24097de41cf088d420b}{\index{kfs.\-c@{kfs.\-c}!Kfs\-Sblock@{Kfs\-Sblock}}
+\index{Kfs\-Sblock@{Kfs\-Sblock}!kfs.c@{kfs.\-c}}
+\subsubsection[{Kfs\-Sblock}]{\setlength{\rightskip}{0pt plus 5cm}{\bf kfs\-\_\-sblock\-\_\-t} Kfs\-Sblock\hspace{0.3cm}{\ttfamily [static]}}}\label{kfs_8c_accc11417a4eed24097de41cf088d420b}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+= \{                   
+    .max\_dentry = \hyperlink{kfs_8c_a92ab7d744c9853bdebee5c81ac2b422f}{KFS\_MAX\_DENTRY},                   
+    .max\_inode  = \hyperlink{kfs_8c_ac084ea319e447d4af876044655fc46ec}{KFS\_MAX\_INODE},
+    .max\_fmap   = \hyperlink{kfs_8c_a75563572783e6a8183fe1fa127b6453d}{KFS\_MAX\_FMAP},
+    .max\_page   = \hyperlink{kfs_8h_a7c0f2945d18d92bc9b2e754b377335b3}{KFS\_NPG\_DISK},
+    .cur\_dentry = 1,                                
+    .cur\_inode  = 1,                                
+    .cur\_fmap   = 1,                                
+    .cur\_page   = \hyperlink{kfs_8c_af0ae18eb635e6562531a287fb89dd996}{NPGU},                             
+    .bmp\_dentry = \{ [0] = 1 \},                      
+    .bmp\_inode  = \{ [0] = 1 \},                      
+    .bmp\_fmap   = \{ [0] = 1 \},                      
+    .bmp\_page   = \{                                 
+        [0 ... ((\hyperlink{kfs_8c_af0ae18eb635e6562531a287fb89dd996}{NPGU}-1)/8)-1] = 0xFF,              
+        [((\hyperlink{kfs_8c_af0ae18eb635e6562531a287fb89dd996}{NPGU}+7)/8)-1] = (1<<(1+((\hyperlink{kfs_8c_af0ae18eb635e6562531a287fb89dd996}{NPGU}+7)%8)))-1\} 
+\}
+\end{DoxyCode}

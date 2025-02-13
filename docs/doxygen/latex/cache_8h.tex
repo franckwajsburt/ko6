@@ -1,0 +1,86 @@
+\hypertarget{cache_8h}{\section{/users/enseig/franck/ko6/src/soft/hal/cpu/cache.h File Reference}
+\label{cache_8h}\index{/users/enseig/franck/ko6/src/soft/hal/cpu/cache.\-h@{/users/enseig/franck/ko6/src/soft/hal/cpu/cache.\-h}}
+}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+size\-\_\-t \hyperlink{cache_8h_a7737fc4bdea8d6ab04f67ef74c3f1b9d}{cachelinesize} (void)
+\begin{DoxyCompactList}\small\item\em get the cache line size in bytes \end{DoxyCompactList}\item 
+void \hyperlink{cache_8h_acee7d1cb74888818094d7b85e2e7a1c5}{dcache\-\_\-buf\-\_\-invalidate} (void $\ast$buf, unsigned size)
+\begin{DoxyCompactList}\small\item\em invalidate all line of the buffer buf \end{DoxyCompactList}\item 
+void \hyperlink{cache_8h_ae63d2b64eeb0e4e0ab3f691b3cf26b76}{dcache\-\_\-invalidate} (void $\ast$addr)
+\begin{DoxyCompactList}\small\item\em invalidate all line of the buffer buf \end{DoxyCompactList}\item 
+unsigned \hyperlink{cache_8h_abf3939f90cf715aaf2403a41f2c15623}{uncached\-\_\-load} (void $\ast$addr)
+\begin{DoxyCompactList}\small\item\em get the value pointed by addr without use the cache this function must be used for all shared variables between several cpu \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{cache_8h_a7737fc4bdea8d6ab04f67ef74c3f1b9d}{\index{cache.\-h@{cache.\-h}!cachelinesize@{cachelinesize}}
+\index{cachelinesize@{cachelinesize}!cache.h@{cache.\-h}}
+\subsubsection[{cachelinesize}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t cachelinesize (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{cache_8h_a7737fc4bdea8d6ab04f67ef74c3f1b9d}
+
+
+get the cache line size in bytes 
+
+\begin{DoxyReturn}{Returns}
+the size 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+63 \{
+64     \textcolor{keywordflow}{return} \hyperlink{mips_2cpu__user_8S_a2824a7b580dd3afd46068b42af360fa6}{syscall\_fct} (0, 0, 0, 0, \hyperlink{syscalls_8h_aa01c11788b75eea69fa87959f6fac5b4}{SYSCALL\_CACHELINESIZE});
+65 \}
+\end{DoxyCode}
+\hypertarget{cache_8h_acee7d1cb74888818094d7b85e2e7a1c5}{\index{cache.\-h@{cache.\-h}!dcache\-\_\-buf\-\_\-invalidate@{dcache\-\_\-buf\-\_\-invalidate}}
+\index{dcache\-\_\-buf\-\_\-invalidate@{dcache\-\_\-buf\-\_\-invalidate}!cache.h@{cache.\-h}}
+\subsubsection[{dcache\-\_\-buf\-\_\-invalidate}]{\setlength{\rightskip}{0pt plus 5cm}void dcache\-\_\-buf\-\_\-invalidate (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{buf, }
+\item[{unsigned}]{size}
+\end{DoxyParamCaption}
+)}}\label{cache_8h_acee7d1cb74888818094d7b85e2e7a1c5}
+
+
+invalidate all line of the buffer buf 
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & first address \\
+\hline
+{\em size} & of buffer in bytes \\
+\hline
+\end{DoxyParams}
+\hypertarget{cache_8h_ae63d2b64eeb0e4e0ab3f691b3cf26b76}{\index{cache.\-h@{cache.\-h}!dcache\-\_\-invalidate@{dcache\-\_\-invalidate}}
+\index{dcache\-\_\-invalidate@{dcache\-\_\-invalidate}!cache.h@{cache.\-h}}
+\subsubsection[{dcache\-\_\-invalidate}]{\setlength{\rightskip}{0pt plus 5cm}void dcache\-\_\-invalidate (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{addr}
+\end{DoxyParamCaption}
+)}}\label{cache_8h_ae63d2b64eeb0e4e0ab3f691b3cf26b76}
+
+
+invalidate all line of the buffer buf 
+
+
+\begin{DoxyParams}{Parameters}
+{\em addr} & address to invalidate \\
+\hline
+\end{DoxyParams}
+\hypertarget{cache_8h_abf3939f90cf715aaf2403a41f2c15623}{\index{cache.\-h@{cache.\-h}!uncached\-\_\-load@{uncached\-\_\-load}}
+\index{uncached\-\_\-load@{uncached\-\_\-load}!cache.h@{cache.\-h}}
+\subsubsection[{uncached\-\_\-load}]{\setlength{\rightskip}{0pt plus 5cm}unsigned uncached\-\_\-load (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{addr}
+\end{DoxyParamCaption}
+)}}\label{cache_8h_abf3939f90cf715aaf2403a41f2c15623}
+
+
+get the value pointed by addr without use the cache this function must be used for all shared variables between several cpu 
+
+\begin{DoxyReturn}{Returns}
+the pointed value 
+\end{DoxyReturn}

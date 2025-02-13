@@ -1,0 +1,133 @@
+\hypertarget{fdt_8h}{\section{/users/enseig/franck/ko6/src/soft/external/libfdt/fdt.h File Reference}
+\label{fdt_8h}\index{/users/enseig/franck/ko6/src/soft/external/libfdt/fdt.\-h@{/users/enseig/franck/ko6/src/soft/external/libfdt/fdt.\-h}}
+}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structfdt__header}{fdt\-\_\-header}
+\item 
+struct \hyperlink{structfdt__reserve__entry}{fdt\-\_\-reserve\-\_\-entry}
+\item 
+struct \hyperlink{structfdt__node__header}{fdt\-\_\-node\-\_\-header}
+\item 
+struct \hyperlink{structfdt__property}{fdt\-\_\-property}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{fdt_8h_a5d5b14eccb44e809abddd8a946ddc8a3}{F\-D\-T\-\_\-\-M\-A\-G\-I\-C}~0xd00dfeed	/$\ast$ 4\-: version, 4\-: total size $\ast$/
+\item 
+\#define \hyperlink{fdt_8h_ada36dac7d767aceec040a00307dba77b}{F\-D\-T\-\_\-\-T\-A\-G\-S\-I\-Z\-E}~sizeof(\hyperlink{libfdt__env_8h_a76887ac8786252752fb3f9a39b21f3af}{fdt32\-\_\-t})
+\item 
+\#define \hyperlink{fdt_8h_a84974b092f97d4f2588c8efb4f6fdd67}{F\-D\-T\-\_\-\-B\-E\-G\-I\-N\-\_\-\-N\-O\-D\-E}~0x1		/$\ast$ Start node\-: full name $\ast$/
+\item 
+\#define \hyperlink{fdt_8h_a97c9b3b1971681a8183442ddd0a8009c}{F\-D\-T\-\_\-\-E\-N\-D\-\_\-\-N\-O\-D\-E}~0x2		/$\ast$ End node $\ast$/
+\item 
+\#define \hyperlink{fdt_8h_a3304a9313cbf7ecced77f89ff5f25dde}{F\-D\-T\-\_\-\-P\-R\-O\-P}
+\item 
+\#define \hyperlink{fdt_8h_a95f6ec2ae047c13339f80ca6adeafc21}{F\-D\-T\-\_\-\-N\-O\-P}~0x4		/$\ast$ nop $\ast$/
+\item 
+\#define \hyperlink{fdt_8h_a53275b16340fb458df4782462f283d8c}{F\-D\-T\-\_\-\-E\-N\-D}~0x9
+\item 
+\#define \hyperlink{fdt_8h_ace28b75a3463b5d1f3bd243ea2116f47}{F\-D\-T\-\_\-\-V1\-\_\-\-S\-I\-Z\-E}~(7$\ast$sizeof(\hyperlink{libfdt__env_8h_a76887ac8786252752fb3f9a39b21f3af}{fdt32\-\_\-t}))
+\item 
+\#define \hyperlink{fdt_8h_a690d667a7d782d1896416e6425c57984}{F\-D\-T\-\_\-\-V2\-\_\-\-S\-I\-Z\-E}~(\hyperlink{fdt_8h_ace28b75a3463b5d1f3bd243ea2116f47}{F\-D\-T\-\_\-\-V1\-\_\-\-S\-I\-Z\-E} + sizeof(\hyperlink{libfdt__env_8h_a76887ac8786252752fb3f9a39b21f3af}{fdt32\-\_\-t}))
+\item 
+\#define \hyperlink{fdt_8h_afb54e1aad74fab1ab1dae9911657912e}{F\-D\-T\-\_\-\-V3\-\_\-\-S\-I\-Z\-E}~(\hyperlink{fdt_8h_a690d667a7d782d1896416e6425c57984}{F\-D\-T\-\_\-\-V2\-\_\-\-S\-I\-Z\-E} + sizeof(\hyperlink{libfdt__env_8h_a76887ac8786252752fb3f9a39b21f3af}{fdt32\-\_\-t}))
+\item 
+\#define \hyperlink{fdt_8h_ac1999ce4eecaf54075bfac7650e2ceeb}{F\-D\-T\-\_\-\-V16\-\_\-\-S\-I\-Z\-E}~\hyperlink{fdt_8h_afb54e1aad74fab1ab1dae9911657912e}{F\-D\-T\-\_\-\-V3\-\_\-\-S\-I\-Z\-E}
+\item 
+\#define \hyperlink{fdt_8h_a1dde12f91e2367a11482a396047ae45b}{F\-D\-T\-\_\-\-V17\-\_\-\-S\-I\-Z\-E}~(\hyperlink{fdt_8h_ac1999ce4eecaf54075bfac7650e2ceeb}{F\-D\-T\-\_\-\-V16\-\_\-\-S\-I\-Z\-E} + sizeof(\hyperlink{libfdt__env_8h_a76887ac8786252752fb3f9a39b21f3af}{fdt32\-\_\-t}))
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{fdt_8h_a84974b092f97d4f2588c8efb4f6fdd67}{\index{fdt.\-h@{fdt.\-h}!F\-D\-T\-\_\-\-B\-E\-G\-I\-N\-\_\-\-N\-O\-D\-E@{F\-D\-T\-\_\-\-B\-E\-G\-I\-N\-\_\-\-N\-O\-D\-E}}
+\index{F\-D\-T\-\_\-\-B\-E\-G\-I\-N\-\_\-\-N\-O\-D\-E@{F\-D\-T\-\_\-\-B\-E\-G\-I\-N\-\_\-\-N\-O\-D\-E}!fdt.h@{fdt.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-B\-E\-G\-I\-N\-\_\-\-N\-O\-D\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-B\-E\-G\-I\-N\-\_\-\-N\-O\-D\-E~0x1		/$\ast$ Start node\-: full name $\ast$/}}\label{fdt_8h_a84974b092f97d4f2588c8efb4f6fdd67}
+
+
+Referenced by fdt\-\_\-add\-\_\-subnode\-\_\-namelen(), fdt\-\_\-begin\-\_\-node(), fdt\-\_\-check\-\_\-full(), fdt\-\_\-check\-\_\-node\-\_\-offset\-\_\-(), fdt\-\_\-next\-\_\-node(), and fdt\-\_\-next\-\_\-tag().
+
+\hypertarget{fdt_8h_a53275b16340fb458df4782462f283d8c}{\index{fdt.\-h@{fdt.\-h}!F\-D\-T\-\_\-\-E\-N\-D@{F\-D\-T\-\_\-\-E\-N\-D}}
+\index{F\-D\-T\-\_\-\-E\-N\-D@{F\-D\-T\-\_\-\-E\-N\-D}!fdt.h@{fdt.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-E\-N\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-E\-N\-D~0x9}}\label{fdt_8h_a53275b16340fb458df4782462f283d8c}
+
+
+Referenced by fdt\-\_\-check\-\_\-full(), fdt\-\_\-finish(), fdt\-\_\-next\-\_\-node(), fdt\-\_\-next\-\_\-tag(), fdt\-\_\-open\-\_\-into(), and nextprop\-\_\-().
+
+\hypertarget{fdt_8h_a97c9b3b1971681a8183442ddd0a8009c}{\index{fdt.\-h@{fdt.\-h}!F\-D\-T\-\_\-\-E\-N\-D\-\_\-\-N\-O\-D\-E@{F\-D\-T\-\_\-\-E\-N\-D\-\_\-\-N\-O\-D\-E}}
+\index{F\-D\-T\-\_\-\-E\-N\-D\-\_\-\-N\-O\-D\-E@{F\-D\-T\-\_\-\-E\-N\-D\-\_\-\-N\-O\-D\-E}!fdt.h@{fdt.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-E\-N\-D\-\_\-\-N\-O\-D\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-E\-N\-D\-\_\-\-N\-O\-D\-E~0x2		/$\ast$ End node $\ast$/}}\label{fdt_8h_a97c9b3b1971681a8183442ddd0a8009c}
+
+
+Referenced by fdt\-\_\-add\-\_\-subnode\-\_\-namelen(), fdt\-\_\-check\-\_\-full(), fdt\-\_\-end\-\_\-node(), fdt\-\_\-next\-\_\-node(), and fdt\-\_\-next\-\_\-tag().
+
+\hypertarget{fdt_8h_a5d5b14eccb44e809abddd8a946ddc8a3}{\index{fdt.\-h@{fdt.\-h}!F\-D\-T\-\_\-\-M\-A\-G\-I\-C@{F\-D\-T\-\_\-\-M\-A\-G\-I\-C}}
+\index{F\-D\-T\-\_\-\-M\-A\-G\-I\-C@{F\-D\-T\-\_\-\-M\-A\-G\-I\-C}!fdt.h@{fdt.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-M\-A\-G\-I\-C}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-M\-A\-G\-I\-C~0xd00dfeed	/$\ast$ 4\-: version, 4\-: total size $\ast$/}}\label{fdt_8h_a5d5b14eccb44e809abddd8a946ddc8a3}
+
+
+Referenced by fdt\-\_\-check\-\_\-header(), fdt\-\_\-finish(), fdt\-\_\-get\-\_\-string(), fdt\-\_\-open\-\_\-into(), fdt\-\_\-ro\-\_\-probe\-\_\-(), and fdt\-\_\-sw\-\_\-probe\-\_\-().
+
+\hypertarget{fdt_8h_a95f6ec2ae047c13339f80ca6adeafc21}{\index{fdt.\-h@{fdt.\-h}!F\-D\-T\-\_\-\-N\-O\-P@{F\-D\-T\-\_\-\-N\-O\-P}}
+\index{F\-D\-T\-\_\-\-N\-O\-P@{F\-D\-T\-\_\-\-N\-O\-P}!fdt.h@{fdt.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-N\-O\-P}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-N\-O\-P~0x4		/$\ast$ nop $\ast$/}}\label{fdt_8h_a95f6ec2ae047c13339f80ca6adeafc21}
+
+
+Referenced by fdt\-\_\-add\-\_\-subnode\-\_\-namelen(), fdt\-\_\-check\-\_\-full(), fdt\-\_\-next\-\_\-node(), fdt\-\_\-next\-\_\-tag(), fdt\-\_\-nop\-\_\-region\-\_\-(), and nextprop\-\_\-().
+
+\hypertarget{fdt_8h_a3304a9313cbf7ecced77f89ff5f25dde}{\index{fdt.\-h@{fdt.\-h}!F\-D\-T\-\_\-\-P\-R\-O\-P@{F\-D\-T\-\_\-\-P\-R\-O\-P}}
+\index{F\-D\-T\-\_\-\-P\-R\-O\-P@{F\-D\-T\-\_\-\-P\-R\-O\-P}!fdt.h@{fdt.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-P\-R\-O\-P}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-P\-R\-O\-P}}\label{fdt_8h_a3304a9313cbf7ecced77f89ff5f25dde}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+0x3     \textcolor{comment}{/* Property: name off,}
+\textcolor{comment}{                       size, content */}
+\end{DoxyCode}
+
+
+Referenced by fdt\-\_\-add\-\_\-property\-\_\-(), fdt\-\_\-add\-\_\-subnode\-\_\-namelen(), fdt\-\_\-check\-\_\-full(), fdt\-\_\-check\-\_\-prop\-\_\-offset\-\_\-(), fdt\-\_\-finish(), fdt\-\_\-next\-\_\-node(), fdt\-\_\-next\-\_\-tag(), fdt\-\_\-property\-\_\-placeholder(), and nextprop\-\_\-().
+
+\hypertarget{fdt_8h_ada36dac7d767aceec040a00307dba77b}{\index{fdt.\-h@{fdt.\-h}!F\-D\-T\-\_\-\-T\-A\-G\-S\-I\-Z\-E@{F\-D\-T\-\_\-\-T\-A\-G\-S\-I\-Z\-E}}
+\index{F\-D\-T\-\_\-\-T\-A\-G\-S\-I\-Z\-E@{F\-D\-T\-\_\-\-T\-A\-G\-S\-I\-Z\-E}!fdt.h@{fdt.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-T\-A\-G\-S\-I\-Z\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-T\-A\-G\-S\-I\-Z\-E~sizeof({\bf fdt32\-\_\-t})}}\label{fdt_8h_ada36dac7d767aceec040a00307dba77b}
+
+
+Referenced by fdt\-\_\-add\-\_\-subnode\-\_\-namelen(), fdt\-\_\-check\-\_\-node\-\_\-offset\-\_\-(), fdt\-\_\-check\-\_\-prop\-\_\-offset\-\_\-(), fdt\-\_\-end\-\_\-node(), and fdt\-\_\-next\-\_\-tag().
+
+\hypertarget{fdt_8h_ac1999ce4eecaf54075bfac7650e2ceeb}{\index{fdt.\-h@{fdt.\-h}!F\-D\-T\-\_\-\-V16\-\_\-\-S\-I\-Z\-E@{F\-D\-T\-\_\-\-V16\-\_\-\-S\-I\-Z\-E}}
+\index{F\-D\-T\-\_\-\-V16\-\_\-\-S\-I\-Z\-E@{F\-D\-T\-\_\-\-V16\-\_\-\-S\-I\-Z\-E}!fdt.h@{fdt.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-V16\-\_\-\-S\-I\-Z\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-V16\-\_\-\-S\-I\-Z\-E~{\bf F\-D\-T\-\_\-\-V3\-\_\-\-S\-I\-Z\-E}}}\label{fdt_8h_ac1999ce4eecaf54075bfac7650e2ceeb}
+
+
+Referenced by fdt\-\_\-header\-\_\-size\-\_\-().
+
+\hypertarget{fdt_8h_a1dde12f91e2367a11482a396047ae45b}{\index{fdt.\-h@{fdt.\-h}!F\-D\-T\-\_\-\-V17\-\_\-\-S\-I\-Z\-E@{F\-D\-T\-\_\-\-V17\-\_\-\-S\-I\-Z\-E}}
+\index{F\-D\-T\-\_\-\-V17\-\_\-\-S\-I\-Z\-E@{F\-D\-T\-\_\-\-V17\-\_\-\-S\-I\-Z\-E}!fdt.h@{fdt.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-V17\-\_\-\-S\-I\-Z\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-V17\-\_\-\-S\-I\-Z\-E~({\bf F\-D\-T\-\_\-\-V16\-\_\-\-S\-I\-Z\-E} + sizeof({\bf fdt32\-\_\-t}))}}\label{fdt_8h_a1dde12f91e2367a11482a396047ae45b}
+
+
+Referenced by fdt\-\_\-header\-\_\-size(), and fdt\-\_\-header\-\_\-size\-\_\-().
+
+\hypertarget{fdt_8h_ace28b75a3463b5d1f3bd243ea2116f47}{\index{fdt.\-h@{fdt.\-h}!F\-D\-T\-\_\-\-V1\-\_\-\-S\-I\-Z\-E@{F\-D\-T\-\_\-\-V1\-\_\-\-S\-I\-Z\-E}}
+\index{F\-D\-T\-\_\-\-V1\-\_\-\-S\-I\-Z\-E@{F\-D\-T\-\_\-\-V1\-\_\-\-S\-I\-Z\-E}!fdt.h@{fdt.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-V1\-\_\-\-S\-I\-Z\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-V1\-\_\-\-S\-I\-Z\-E~(7$\ast$sizeof({\bf fdt32\-\_\-t}))}}\label{fdt_8h_ace28b75a3463b5d1f3bd243ea2116f47}
+
+
+Referenced by fdt\-\_\-check\-\_\-full(), and fdt\-\_\-header\-\_\-size\-\_\-().
+
+\hypertarget{fdt_8h_a690d667a7d782d1896416e6425c57984}{\index{fdt.\-h@{fdt.\-h}!F\-D\-T\-\_\-\-V2\-\_\-\-S\-I\-Z\-E@{F\-D\-T\-\_\-\-V2\-\_\-\-S\-I\-Z\-E}}
+\index{F\-D\-T\-\_\-\-V2\-\_\-\-S\-I\-Z\-E@{F\-D\-T\-\_\-\-V2\-\_\-\-S\-I\-Z\-E}!fdt.h@{fdt.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-V2\-\_\-\-S\-I\-Z\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-V2\-\_\-\-S\-I\-Z\-E~({\bf F\-D\-T\-\_\-\-V1\-\_\-\-S\-I\-Z\-E} + sizeof({\bf fdt32\-\_\-t}))}}\label{fdt_8h_a690d667a7d782d1896416e6425c57984}
+
+
+Referenced by fdt\-\_\-header\-\_\-size\-\_\-().
+
+\hypertarget{fdt_8h_afb54e1aad74fab1ab1dae9911657912e}{\index{fdt.\-h@{fdt.\-h}!F\-D\-T\-\_\-\-V3\-\_\-\-S\-I\-Z\-E@{F\-D\-T\-\_\-\-V3\-\_\-\-S\-I\-Z\-E}}
+\index{F\-D\-T\-\_\-\-V3\-\_\-\-S\-I\-Z\-E@{F\-D\-T\-\_\-\-V3\-\_\-\-S\-I\-Z\-E}!fdt.h@{fdt.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-V3\-\_\-\-S\-I\-Z\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-V3\-\_\-\-S\-I\-Z\-E~({\bf F\-D\-T\-\_\-\-V2\-\_\-\-S\-I\-Z\-E} + sizeof({\bf fdt32\-\_\-t}))}}\label{fdt_8h_afb54e1aad74fab1ab1dae9911657912e}
+
+
+Referenced by fdt\-\_\-header\-\_\-size\-\_\-().
+

@@ -1,0 +1,47 @@
+\hypertarget{cpuregs_8h}{\section{/users/enseig/franck/ko6/src/soft/hal/cpu/cpuregs.h File Reference}
+\label{cpuregs_8h}\index{/users/enseig/franck/ko6/src/soft/hal/cpu/cpuregs.\-h@{/users/enseig/franck/ko6/src/soft/hal/cpu/cpuregs.\-h}}
+}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+unsigned \hyperlink{cpuregs_8h_a6f8d66e44afa86c6e39901b0dbbf709e}{clock} (void)
+\begin{DoxyCompactList}\small\item\em clock cycle counter \end{DoxyCompactList}\item 
+unsigned \hyperlink{cpuregs_8h_a5c7c978ab352f02680b961d2b9f5a9c5}{cpuid} (void)
+\begin{DoxyCompactList}\small\item\em cpu identifier \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{cpuregs_8h_a6f8d66e44afa86c6e39901b0dbbf709e}{\index{cpuregs.\-h@{cpuregs.\-h}!clock@{clock}}
+\index{clock@{clock}!cpuregs.h@{cpuregs.\-h}}
+\subsubsection[{clock}]{\setlength{\rightskip}{0pt plus 5cm}unsigned clock (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{cpuregs_8h_a6f8d66e44afa86c6e39901b0dbbf709e}
+
+
+clock cycle counter 
+
+\begin{DoxyReturn}{Returns}
+the number of cycles from the reset 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+48 \{
+49     \textcolor{keywordflow}{return} \hyperlink{mips_2cpu__user_8S_a2824a7b580dd3afd46068b42af360fa6}{syscall\_fct} (0, 0, 0, 0, \hyperlink{syscalls_8h_a1b284030b6f72253c3e7546fd551020f}{SYSCALL\_CLOCK});
+50 \}
+\end{DoxyCode}
+\hypertarget{cpuregs_8h_a5c7c978ab352f02680b961d2b9f5a9c5}{\index{cpuregs.\-h@{cpuregs.\-h}!cpuid@{cpuid}}
+\index{cpuid@{cpuid}!cpuregs.h@{cpuregs.\-h}}
+\subsubsection[{cpuid}]{\setlength{\rightskip}{0pt plus 5cm}unsigned cpuid (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{cpuregs_8h_a5c7c978ab352f02680b961d2b9f5a9c5}
+
+
+cpu identifier 
+
+\begin{DoxyReturn}{Returns}
+the current cpu identifier from 0 to N\-C\-P\-U\-S-\/1 
+\end{DoxyReturn}

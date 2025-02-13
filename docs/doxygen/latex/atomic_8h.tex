@@ -1,0 +1,80 @@
+\hypertarget{atomic_8h}{\section{/users/enseig/franck/ko6/src/soft/hal/cpu/atomic.h File Reference}
+\label{atomic_8h}\index{/users/enseig/franck/ko6/src/soft/hal/cpu/atomic.\-h@{/users/enseig/franck/ko6/src/soft/hal/cpu/atomic.\-h}}
+}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef unsigned \hyperlink{atomic_8h_ac96e125536af227ccca8875138c83e42}{spinlock\-\_\-t}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{atomic_8h_a92a25e1136e165cc5472d68e3901e364}{spin\-\_\-lock} (\hyperlink{atomic_8h_ac96e125536af227ccca8875138c83e42}{spinlock\-\_\-t} $\ast$lock)
+\begin{DoxyCompactList}\small\item\em get the lock, block until success \end{DoxyCompactList}\item 
+void \hyperlink{atomic_8h_a73864b9b10141e82915121078d853a9e}{spin\-\_\-unlock} (\hyperlink{atomic_8h_ac96e125536af227ccca8875138c83e42}{spinlock\-\_\-t} $\ast$lock)
+\begin{DoxyCompactList}\small\item\em release the lock \end{DoxyCompactList}\item 
+int \hyperlink{atomic_8h_aa1f3892cb11568fa77c9c4b6fd2e153e}{atomic\-\_\-add} (int $\ast$counter, int val)
+\begin{DoxyCompactList}\small\item\em add a value to the pointed value, block until success \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{atomic_8h_ac96e125536af227ccca8875138c83e42}{\index{atomic.\-h@{atomic.\-h}!spinlock\-\_\-t@{spinlock\-\_\-t}}
+\index{spinlock\-\_\-t@{spinlock\-\_\-t}!atomic.h@{atomic.\-h}}
+\subsubsection[{spinlock\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef unsigned {\bf spinlock\-\_\-t}}}\label{atomic_8h_ac96e125536af227ccca8875138c83e42}
+Same as for the I\-R\-Qs and some drivers, the function here are marked extern because they need to be implemented at some point by a platform-\/specific file It's a simple word, but it is forbidden to read it directly to not copy it in cache 
+
+\subsection{Function Documentation}
+\hypertarget{atomic_8h_aa1f3892cb11568fa77c9c4b6fd2e153e}{\index{atomic.\-h@{atomic.\-h}!atomic\-\_\-add@{atomic\-\_\-add}}
+\index{atomic\-\_\-add@{atomic\-\_\-add}!atomic.h@{atomic.\-h}}
+\subsubsection[{atomic\-\_\-add}]{\setlength{\rightskip}{0pt plus 5cm}int atomic\-\_\-add (
+\begin{DoxyParamCaption}
+\item[{int $\ast$}]{counter, }
+\item[{int}]{val}
+\end{DoxyParamCaption}
+)}}\label{atomic_8h_aa1f3892cb11568fa77c9c4b6fd2e153e}
+
+
+add a value to the pointed value, block until success 
+
+
+\begin{DoxyParams}{Parameters}
+{\em counter} & pointer to change \\
+\hline
+{\em val} & value to add \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the new value 
+\end{DoxyReturn}
+\hypertarget{atomic_8h_a92a25e1136e165cc5472d68e3901e364}{\index{atomic.\-h@{atomic.\-h}!spin\-\_\-lock@{spin\-\_\-lock}}
+\index{spin\-\_\-lock@{spin\-\_\-lock}!atomic.h@{atomic.\-h}}
+\subsubsection[{spin\-\_\-lock}]{\setlength{\rightskip}{0pt plus 5cm}void spin\-\_\-lock (
+\begin{DoxyParamCaption}
+\item[{{\bf spinlock\-\_\-t} $\ast$}]{lock}
+\end{DoxyParamCaption}
+)}}\label{atomic_8h_a92a25e1136e165cc5472d68e3901e364}
+
+
+get the lock, block until success 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lock} & blocking function until lock is free \\
+\hline
+\end{DoxyParams}
+\hypertarget{atomic_8h_a73864b9b10141e82915121078d853a9e}{\index{atomic.\-h@{atomic.\-h}!spin\-\_\-unlock@{spin\-\_\-unlock}}
+\index{spin\-\_\-unlock@{spin\-\_\-unlock}!atomic.h@{atomic.\-h}}
+\subsubsection[{spin\-\_\-unlock}]{\setlength{\rightskip}{0pt plus 5cm}void spin\-\_\-unlock (
+\begin{DoxyParamCaption}
+\item[{{\bf spinlock\-\_\-t} $\ast$}]{lock}
+\end{DoxyParamCaption}
+)}}\label{atomic_8h_a73864b9b10141e82915121078d853a9e}
+
+
+release the lock 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lock} & freeing the lock \\
+\hline
+\end{DoxyParams}

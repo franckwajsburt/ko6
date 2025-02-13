@@ -1,0 +1,247 @@
+\hypertarget{ns16550_8h}{\section{/users/enseig/franck/ko6/src/soft/hal/devices/chardev/ns16550.h File Reference}
+\label{ns16550_8h}\index{/users/enseig/franck/ko6/src/soft/hal/devices/chardev/ns16550.\-h@{/users/enseig/franck/ko6/src/soft/hal/devices/chardev/ns16550.\-h}}
+}
+{\ttfamily \#include $<$hal/devices/chardev.\-h$>$}\\*
+{\ttfamily \#include $<$hal/cpu/irq.\-h$>$}\\*
+{\ttfamily \#include $<$kernel/kthread.\-h$>$}\\*
+{\ttfamily \#include $<$kernel/klibc.\-h$>$}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structns16550__general__regs__s}{ns16550\-\_\-general\-\_\-regs\-\_\-s}
+\begin{DoxyCompactList}\small\item\em N\-S16550 general purpose register map, accessible when L\-C\-R.\-D\-L\-A\-B = 0. \end{DoxyCompactList}\item 
+struct \hyperlink{structns16550__dlab__regs__s}{ns16550\-\_\-dlab\-\_\-regs\-\_\-s}
+\begin{DoxyCompactList}\small\item\em N\-S16550 Baudrate control registers, accessible when L\-C\-R.\-D\-L\-A\-B = 1. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{ns16550_8h_ab4e3ccd1f0f57d4389b7966c734aaefd}{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-A\-T\-A\-\_\-\-R\-E\-A\-D\-Y}~1
+\item 
+\#define \hyperlink{ns16550_8h_a7ea34a8c6d702c962d5e10378a1eeaf3}{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-T\-H\-R\-\_\-\-E\-M\-P\-T\-Y}~2
+\item 
+\#define \hyperlink{ns16550_8h_aa713094b2dcb81d205de12e00b097b88}{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-R\-E\-C\-V\-L\-\_\-\-S\-T\-A\-T\-U\-S}~4
+\item 
+\#define \hyperlink{ns16550_8h_a57f72ab3a33687b4159dffb48362ec74}{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-M\-O\-D\-E\-M\-\_\-\-S\-T\-A\-T\-U\-S}~8
+\item 
+\#define \hyperlink{ns16550_8h_afe34e12537afa07add5cfe03cc059e46}{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-M\-A\-\_\-\-R\-X\-\_\-\-E\-N\-D}~64
+\item 
+\#define \hyperlink{ns16550_8h_a0f483d2f6152c0abdb25b1fa398f6029}{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-M\-A\-\_\-\-T\-X\-\_\-\-E\-N\-D}~128
+\item 
+\#define \hyperlink{ns16550_8h_a19c5f125e63c06d815f4018be25fcc2c}{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-5}~0
+\item 
+\#define \hyperlink{ns16550_8h_a85776bb8b57f2f6ae3a41c43ba6f9158}{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-6}~1
+\item 
+\#define \hyperlink{ns16550_8h_ac2b5a5ec6741996c7c907d3f7de0d9c4}{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-7}~2
+\item 
+\#define \hyperlink{ns16550_8h_ae1e743308a2e2853ee1b3d04d791d18c}{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-8}~3
+\item 
+\#define \hyperlink{ns16550_8h_a645353dc8c5eaf136dd877e3492bd816}{N\-S16550\-\_\-\-S\-T\-O\-P\-S\-\_\-\-B\-I\-T\-\_\-2}~4
+\item 
+\#define \hyperlink{ns16550_8h_ac14b0c8543a53b7e4ea2b92b99a6d73e}{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-O\-D\-D}~8
+\item 
+\#define \hyperlink{ns16550_8h_a1079228314b8b8ada6f5e9500de0866d}{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-E\-V\-E\-N}~24
+\item 
+\#define \hyperlink{ns16550_8h_ac85d6240002a7ef0de29b48a1d00aef5}{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-F\-O\-R\-C\-E\-D\-\_\-0}~40
+\item 
+\#define \hyperlink{ns16550_8h_a84843285dac8ecac469790337422024a}{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-F\-O\-R\-C\-E\-D\-\_\-1}~56
+\item 
+\#define \hyperlink{ns16550_8h_a0eb8be372261d8637fe7c9e77fd320cf}{N\-S16550\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-D\-L\-A\-B}~128
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structns16550__general__regs__s}{ns16550\-\_\-general\-\_\-regs\-\_\-s} \hyperlink{ns16550_8h_a4822c68c34db0e622ba8e60845db2894}{\-\_\-\-\_\-attribute\-\_\-\-\_\-} ((packed))
+\item 
+void \hyperlink{ns16550_8h_ae454489b1aed9bb4342ee26403d4ee93}{ns16550\-\_\-isr} (unsigned irq, struct \hyperlink{structchardev__s}{chardev\-\_\-s} $\ast$cdev)
+\begin{DoxyCompactList}\small\item\em Interrupt Service Routine for N\-S16550 U\-A\-R\-T The I\-S\-R push received character into the software fifo (cdev-\/$>$fifo) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+unsigned char \hyperlink{ns16550_8h_a7f821a525d9280577d574f5c02002aaf}{hr}
+\item 
+unsigned char \hyperlink{ns16550_8h_a6053ddeddfda5293c71e12864d2d868c}{ier}
+\item 
+unsigned char \hyperlink{ns16550_8h_ac64837627485de9bede4a664e1f15bb8}{isr}
+\item 
+unsigned char \hyperlink{ns16550_8h_ac2c16e1e2498b5059b9638a980fdb47d}{fcr}
+\item 
+unsigned char \hyperlink{ns16550_8h_a87ca5a7aa6ddf9592ec678486769718a}{lcr}
+\item 
+unsigned char \hyperlink{ns16550_8h_aca20cfd402e3b6c5d6383a8275769acf}{mcr}
+\item 
+unsigned char \hyperlink{ns16550_8h_a7c685ddb5485b803bf4643b1a8ffaf40}{lsr}
+\item 
+unsigned char \hyperlink{ns16550_8h_a73f2356dcbcc4516f1d5d058d785cbba}{msr}
+\item 
+unsigned char \hyperlink{ns16550_8h_a1b52dd6680b10d117c1edc6b94bed1e0}{spr}
+\item 
+unsigned char \hyperlink{ns16550_8h_aefe0bdf1fc0c2ef000adc6982a33e995}{dll}
+\item 
+unsigned char \hyperlink{ns16550_8h_a42f5cd2fd222d3cc4532387824d1a731}{dlm}
+\item 
+unsigned char \hyperlink{ns16550_8h_a2e26f1467bdbe1cd31f6df29a40bc4d5}{\-\_\-\-\_\-ignore} \mbox{[}5\mbox{]}
+\item 
+unsigned char \hyperlink{ns16550_8h_a963f73640fc48d0e7ae38fda1c394f33}{psd}
+\item 
+struct \hyperlink{structchardev__ops__s}{chardev\-\_\-ops\-\_\-s} \hyperlink{ns16550_8h_a0ee065bfc31437abc862a858a0c0e641}{N\-S16550\-Ops}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{ns16550_8h_a0eb8be372261d8637fe7c9e77fd320cf}{\index{ns16550.\-h@{ns16550.\-h}!N\-S16550\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-D\-L\-A\-B@{N\-S16550\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-D\-L\-A\-B}}
+\index{N\-S16550\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-D\-L\-A\-B@{N\-S16550\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-D\-L\-A\-B}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{N\-S16550\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-D\-L\-A\-B}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-S16550\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-D\-L\-A\-B~128}}\label{ns16550_8h_a0eb8be372261d8637fe7c9e77fd320cf}
+
+
+Referenced by ns16550\-\_\-init().
+
+\hypertarget{ns16550_8h_ab4e3ccd1f0f57d4389b7966c734aaefd}{\index{ns16550.\-h@{ns16550.\-h}!N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-A\-T\-A\-\_\-\-R\-E\-A\-D\-Y@{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-A\-T\-A\-\_\-\-R\-E\-A\-D\-Y}}
+\index{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-A\-T\-A\-\_\-\-R\-E\-A\-D\-Y@{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-A\-T\-A\-\_\-\-R\-E\-A\-D\-Y}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-A\-T\-A\-\_\-\-R\-E\-A\-D\-Y}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-A\-T\-A\-\_\-\-R\-E\-A\-D\-Y~1}}\label{ns16550_8h_ab4e3ccd1f0f57d4389b7966c734aaefd}
+
+
+Referenced by ns16550\-\_\-init().
+
+\hypertarget{ns16550_8h_afe34e12537afa07add5cfe03cc059e46}{\index{ns16550.\-h@{ns16550.\-h}!N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-M\-A\-\_\-\-R\-X\-\_\-\-E\-N\-D@{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-M\-A\-\_\-\-R\-X\-\_\-\-E\-N\-D}}
+\index{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-M\-A\-\_\-\-R\-X\-\_\-\-E\-N\-D@{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-M\-A\-\_\-\-R\-X\-\_\-\-E\-N\-D}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-M\-A\-\_\-\-R\-X\-\_\-\-E\-N\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-M\-A\-\_\-\-R\-X\-\_\-\-E\-N\-D~64}}\label{ns16550_8h_afe34e12537afa07add5cfe03cc059e46}
+\hypertarget{ns16550_8h_a0f483d2f6152c0abdb25b1fa398f6029}{\index{ns16550.\-h@{ns16550.\-h}!N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-M\-A\-\_\-\-T\-X\-\_\-\-E\-N\-D@{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-M\-A\-\_\-\-T\-X\-\_\-\-E\-N\-D}}
+\index{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-M\-A\-\_\-\-T\-X\-\_\-\-E\-N\-D@{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-M\-A\-\_\-\-T\-X\-\_\-\-E\-N\-D}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-M\-A\-\_\-\-T\-X\-\_\-\-E\-N\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-S16550\-\_\-\-I\-N\-T\-\_\-\-D\-M\-A\-\_\-\-T\-X\-\_\-\-E\-N\-D~128}}\label{ns16550_8h_a0f483d2f6152c0abdb25b1fa398f6029}
+\hypertarget{ns16550_8h_a57f72ab3a33687b4159dffb48362ec74}{\index{ns16550.\-h@{ns16550.\-h}!N\-S16550\-\_\-\-I\-N\-T\-\_\-\-M\-O\-D\-E\-M\-\_\-\-S\-T\-A\-T\-U\-S@{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-M\-O\-D\-E\-M\-\_\-\-S\-T\-A\-T\-U\-S}}
+\index{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-M\-O\-D\-E\-M\-\_\-\-S\-T\-A\-T\-U\-S@{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-M\-O\-D\-E\-M\-\_\-\-S\-T\-A\-T\-U\-S}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-M\-O\-D\-E\-M\-\_\-\-S\-T\-A\-T\-U\-S}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-S16550\-\_\-\-I\-N\-T\-\_\-\-M\-O\-D\-E\-M\-\_\-\-S\-T\-A\-T\-U\-S~8}}\label{ns16550_8h_a57f72ab3a33687b4159dffb48362ec74}
+\hypertarget{ns16550_8h_aa713094b2dcb81d205de12e00b097b88}{\index{ns16550.\-h@{ns16550.\-h}!N\-S16550\-\_\-\-I\-N\-T\-\_\-\-R\-E\-C\-V\-L\-\_\-\-S\-T\-A\-T\-U\-S@{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-R\-E\-C\-V\-L\-\_\-\-S\-T\-A\-T\-U\-S}}
+\index{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-R\-E\-C\-V\-L\-\_\-\-S\-T\-A\-T\-U\-S@{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-R\-E\-C\-V\-L\-\_\-\-S\-T\-A\-T\-U\-S}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-R\-E\-C\-V\-L\-\_\-\-S\-T\-A\-T\-U\-S}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-S16550\-\_\-\-I\-N\-T\-\_\-\-R\-E\-C\-V\-L\-\_\-\-S\-T\-A\-T\-U\-S~4}}\label{ns16550_8h_aa713094b2dcb81d205de12e00b097b88}
+\hypertarget{ns16550_8h_a7ea34a8c6d702c962d5e10378a1eeaf3}{\index{ns16550.\-h@{ns16550.\-h}!N\-S16550\-\_\-\-I\-N\-T\-\_\-\-T\-H\-R\-\_\-\-E\-M\-P\-T\-Y@{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-T\-H\-R\-\_\-\-E\-M\-P\-T\-Y}}
+\index{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-T\-H\-R\-\_\-\-E\-M\-P\-T\-Y@{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-T\-H\-R\-\_\-\-E\-M\-P\-T\-Y}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{N\-S16550\-\_\-\-I\-N\-T\-\_\-\-T\-H\-R\-\_\-\-E\-M\-P\-T\-Y}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-S16550\-\_\-\-I\-N\-T\-\_\-\-T\-H\-R\-\_\-\-E\-M\-P\-T\-Y~2}}\label{ns16550_8h_a7ea34a8c6d702c962d5e10378a1eeaf3}
+\hypertarget{ns16550_8h_a1079228314b8b8ada6f5e9500de0866d}{\index{ns16550.\-h@{ns16550.\-h}!N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-E\-V\-E\-N@{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-E\-V\-E\-N}}
+\index{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-E\-V\-E\-N@{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-E\-V\-E\-N}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-E\-V\-E\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-E\-V\-E\-N~24}}\label{ns16550_8h_a1079228314b8b8ada6f5e9500de0866d}
+\hypertarget{ns16550_8h_ac85d6240002a7ef0de29b48a1d00aef5}{\index{ns16550.\-h@{ns16550.\-h}!N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-F\-O\-R\-C\-E\-D\-\_\-0@{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-F\-O\-R\-C\-E\-D\-\_\-0}}
+\index{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-F\-O\-R\-C\-E\-D\-\_\-0@{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-F\-O\-R\-C\-E\-D\-\_\-0}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-F\-O\-R\-C\-E\-D\-\_\-0}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-F\-O\-R\-C\-E\-D\-\_\-0~40}}\label{ns16550_8h_ac85d6240002a7ef0de29b48a1d00aef5}
+\hypertarget{ns16550_8h_a84843285dac8ecac469790337422024a}{\index{ns16550.\-h@{ns16550.\-h}!N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-F\-O\-R\-C\-E\-D\-\_\-1@{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-F\-O\-R\-C\-E\-D\-\_\-1}}
+\index{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-F\-O\-R\-C\-E\-D\-\_\-1@{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-F\-O\-R\-C\-E\-D\-\_\-1}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-F\-O\-R\-C\-E\-D\-\_\-1}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-F\-O\-R\-C\-E\-D\-\_\-1~56}}\label{ns16550_8h_a84843285dac8ecac469790337422024a}
+\hypertarget{ns16550_8h_ac14b0c8543a53b7e4ea2b92b99a6d73e}{\index{ns16550.\-h@{ns16550.\-h}!N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-O\-D\-D@{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-O\-D\-D}}
+\index{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-O\-D\-D@{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-O\-D\-D}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-O\-D\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-S16550\-\_\-\-P\-A\-R\-I\-T\-Y\-\_\-\-O\-D\-D~8}}\label{ns16550_8h_ac14b0c8543a53b7e4ea2b92b99a6d73e}
+\hypertarget{ns16550_8h_a645353dc8c5eaf136dd877e3492bd816}{\index{ns16550.\-h@{ns16550.\-h}!N\-S16550\-\_\-\-S\-T\-O\-P\-S\-\_\-\-B\-I\-T\-\_\-2@{N\-S16550\-\_\-\-S\-T\-O\-P\-S\-\_\-\-B\-I\-T\-\_\-2}}
+\index{N\-S16550\-\_\-\-S\-T\-O\-P\-S\-\_\-\-B\-I\-T\-\_\-2@{N\-S16550\-\_\-\-S\-T\-O\-P\-S\-\_\-\-B\-I\-T\-\_\-2}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{N\-S16550\-\_\-\-S\-T\-O\-P\-S\-\_\-\-B\-I\-T\-\_\-2}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-S16550\-\_\-\-S\-T\-O\-P\-S\-\_\-\-B\-I\-T\-\_\-2~4}}\label{ns16550_8h_a645353dc8c5eaf136dd877e3492bd816}
+\hypertarget{ns16550_8h_a19c5f125e63c06d815f4018be25fcc2c}{\index{ns16550.\-h@{ns16550.\-h}!N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-5@{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-5}}
+\index{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-5@{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-5}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-5}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-5~0}}\label{ns16550_8h_a19c5f125e63c06d815f4018be25fcc2c}
+\hypertarget{ns16550_8h_a85776bb8b57f2f6ae3a41c43ba6f9158}{\index{ns16550.\-h@{ns16550.\-h}!N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-6@{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-6}}
+\index{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-6@{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-6}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-6}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-6~1}}\label{ns16550_8h_a85776bb8b57f2f6ae3a41c43ba6f9158}
+\hypertarget{ns16550_8h_ac2b5a5ec6741996c7c907d3f7de0d9c4}{\index{ns16550.\-h@{ns16550.\-h}!N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-7@{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-7}}
+\index{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-7@{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-7}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-7}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-7~2}}\label{ns16550_8h_ac2b5a5ec6741996c7c907d3f7de0d9c4}
+\hypertarget{ns16550_8h_ae1e743308a2e2853ee1b3d04d791d18c}{\index{ns16550.\-h@{ns16550.\-h}!N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-8@{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-8}}
+\index{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-8@{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-8}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-8}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-S16550\-\_\-\-W\-O\-R\-D\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-8~3}}\label{ns16550_8h_ae1e743308a2e2853ee1b3d04d791d18c}
+
+
+Referenced by ns16550\-\_\-init().
+
+
+
+\subsection{Function Documentation}
+\hypertarget{ns16550_8h_a4822c68c34db0e622ba8e60845db2894}{\index{ns16550.\-h@{ns16550.\-h}!\-\_\-\-\_\-attribute\-\_\-\-\_\-@{\-\_\-\-\_\-attribute\-\_\-\-\_\-}}
+\index{\-\_\-\-\_\-attribute\-\_\-\-\_\-@{\-\_\-\-\_\-attribute\-\_\-\-\_\-}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{\-\_\-\-\_\-attribute\-\_\-\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf ns16550\-\_\-general\-\_\-regs\-\_\-s} \-\_\-\-\_\-attribute\-\_\-\-\_\- (
+\begin{DoxyParamCaption}
+\item[{(packed)}]{}
+\end{DoxyParamCaption}
+)}}\label{ns16550_8h_a4822c68c34db0e622ba8e60845db2894}
+\hypertarget{ns16550_8h_ae454489b1aed9bb4342ee26403d4ee93}{\index{ns16550.\-h@{ns16550.\-h}!ns16550\-\_\-isr@{ns16550\-\_\-isr}}
+\index{ns16550\-\_\-isr@{ns16550\-\_\-isr}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{ns16550\-\_\-isr}]{\setlength{\rightskip}{0pt plus 5cm}void ns16550\-\_\-isr (
+\begin{DoxyParamCaption}
+\item[{unsigned}]{irq, }
+\item[{struct {\bf chardev\-\_\-s} $\ast$}]{cdev}
+\end{DoxyParamCaption}
+)}}\label{ns16550_8h_ae454489b1aed9bb4342ee26403d4ee93}
+
+
+Interrupt Service Routine for N\-S16550 U\-A\-R\-T The I\-S\-R push received character into the software fifo (cdev-\/$>$fifo) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em irq} & the irq linked to this I\-S\-R \\
+\hline
+{\em cdev} & the device linked to this I\-S\-R \\
+\hline
+\end{DoxyParams}
+
+
+References chardev\-\_\-s\-::address, chardev\-\_\-s\-::driver\-\_\-data, fifo\-\_\-push(), and ns16550\-\_\-general\-\_\-regs\-\_\-s\-::hr.
+
+
+
+Referenced by soc\-\_\-tty\-\_\-init().
+
+
+\begin{DoxyCode}
+117 \{
+118     \textcolor{keyword}{volatile} \textcolor{keyword}{struct }\hyperlink{structns16550__general__regs__s}{ns16550\_general\_regs\_s} *regs = 
+119         (\textcolor{keyword}{struct }\hyperlink{structns16550__general__regs__s}{ns16550\_general\_regs\_s} *) cdev->\hyperlink{structchardev__s_add1481ed869132ee70ac2f97038eeb4f}{address};
+120     
+121     \textcolor{keyword}{struct} \hyperlink{structfifo__s}{fifo\_s} *fifo = (\textcolor{keyword}{struct} \hyperlink{structfifo__s}{fifo\_s} *) cdev->\hyperlink{structchardev__s_a2265cc57d5d141a86e93b0247db7022d}{driver\_data};
+122     \textcolor{keywordtype}{char} c = regs->\hyperlink{structns16550__general__regs__s_a0648ee0f30ad5388707d65e8ff11df40}{hr};
+123     \hyperlink{klibc_8c_a9d82a64f65502ac9554fc0c28b8f1f44}{fifo\_push}(fifo, c);
+124 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\hypertarget{ns16550_8h_a2e26f1467bdbe1cd31f6df29a40bc4d5}{\index{ns16550.\-h@{ns16550.\-h}!\-\_\-\-\_\-ignore@{\-\_\-\-\_\-ignore}}
+\index{\-\_\-\-\_\-ignore@{\-\_\-\-\_\-ignore}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{\-\_\-\-\_\-ignore}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char \-\_\-\-\_\-ignore\mbox{[}5\mbox{]}}}\label{ns16550_8h_a2e26f1467bdbe1cd31f6df29a40bc4d5}
+\hypertarget{ns16550_8h_aefe0bdf1fc0c2ef000adc6982a33e995}{\index{ns16550.\-h@{ns16550.\-h}!dll@{dll}}
+\index{dll@{dll}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{dll}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char dll}}\label{ns16550_8h_aefe0bdf1fc0c2ef000adc6982a33e995}
+\hypertarget{ns16550_8h_a42f5cd2fd222d3cc4532387824d1a731}{\index{ns16550.\-h@{ns16550.\-h}!dlm@{dlm}}
+\index{dlm@{dlm}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{dlm}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char dlm}}\label{ns16550_8h_a42f5cd2fd222d3cc4532387824d1a731}
+\hypertarget{ns16550_8h_ac2c16e1e2498b5059b9638a980fdb47d}{\index{ns16550.\-h@{ns16550.\-h}!fcr@{fcr}}
+\index{fcr@{fcr}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{fcr}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char fcr}}\label{ns16550_8h_ac2c16e1e2498b5059b9638a980fdb47d}
+\hypertarget{ns16550_8h_a7f821a525d9280577d574f5c02002aaf}{\index{ns16550.\-h@{ns16550.\-h}!hr@{hr}}
+\index{hr@{hr}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{hr}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char hr}}\label{ns16550_8h_a7f821a525d9280577d574f5c02002aaf}
+\hypertarget{ns16550_8h_a6053ddeddfda5293c71e12864d2d868c}{\index{ns16550.\-h@{ns16550.\-h}!ier@{ier}}
+\index{ier@{ier}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{ier}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char ier}}\label{ns16550_8h_a6053ddeddfda5293c71e12864d2d868c}
+\hypertarget{ns16550_8h_ac64837627485de9bede4a664e1f15bb8}{\index{ns16550.\-h@{ns16550.\-h}!isr@{isr}}
+\index{isr@{isr}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{isr}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char isr}}\label{ns16550_8h_ac64837627485de9bede4a664e1f15bb8}
+\hypertarget{ns16550_8h_a87ca5a7aa6ddf9592ec678486769718a}{\index{ns16550.\-h@{ns16550.\-h}!lcr@{lcr}}
+\index{lcr@{lcr}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{lcr}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char lcr}}\label{ns16550_8h_a87ca5a7aa6ddf9592ec678486769718a}
+\hypertarget{ns16550_8h_a7c685ddb5485b803bf4643b1a8ffaf40}{\index{ns16550.\-h@{ns16550.\-h}!lsr@{lsr}}
+\index{lsr@{lsr}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{lsr}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char lsr}}\label{ns16550_8h_a7c685ddb5485b803bf4643b1a8ffaf40}
+\hypertarget{ns16550_8h_aca20cfd402e3b6c5d6383a8275769acf}{\index{ns16550.\-h@{ns16550.\-h}!mcr@{mcr}}
+\index{mcr@{mcr}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{mcr}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char mcr}}\label{ns16550_8h_aca20cfd402e3b6c5d6383a8275769acf}
+\hypertarget{ns16550_8h_a73f2356dcbcc4516f1d5d058d785cbba}{\index{ns16550.\-h@{ns16550.\-h}!msr@{msr}}
+\index{msr@{msr}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{msr}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char msr}}\label{ns16550_8h_a73f2356dcbcc4516f1d5d058d785cbba}
+\hypertarget{ns16550_8h_a0ee065bfc31437abc862a858a0c0e641}{\index{ns16550.\-h@{ns16550.\-h}!N\-S16550\-Ops@{N\-S16550\-Ops}}
+\index{N\-S16550\-Ops@{N\-S16550\-Ops}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{N\-S16550\-Ops}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf chardev\-\_\-ops\-\_\-s} N\-S16550\-Ops}}\label{ns16550_8h_a0ee065bfc31437abc862a858a0c0e641}
+
+
+Referenced by ns16550\-\_\-init(), and soc\-\_\-tty\-\_\-init().
+
+\hypertarget{ns16550_8h_a963f73640fc48d0e7ae38fda1c394f33}{\index{ns16550.\-h@{ns16550.\-h}!psd@{psd}}
+\index{psd@{psd}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{psd}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char psd}}\label{ns16550_8h_a963f73640fc48d0e7ae38fda1c394f33}
+\hypertarget{ns16550_8h_a1b52dd6680b10d117c1edc6b94bed1e0}{\index{ns16550.\-h@{ns16550.\-h}!spr@{spr}}
+\index{spr@{spr}!ns16550.h@{ns16550.\-h}}
+\subsubsection[{spr}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char spr}}\label{ns16550_8h_a1b52dd6680b10d117c1edc6b94bed1e0}

@@ -1,0 +1,81 @@
+\hypertarget{soclib-tty_8h}{\section{/users/enseig/franck/ko6/src/soft/hal/devices/chardev/soclib-\/tty.h File Reference}
+\label{soclib-tty_8h}\index{/users/enseig/franck/ko6/src/soft/hal/devices/chardev/soclib-\/tty.\-h@{/users/enseig/franck/ko6/src/soft/hal/devices/chardev/soclib-\/tty.\-h}}
+}
+{\ttfamily \#include $<$hal/devices/chardev.\-h$>$}\\*
+{\ttfamily \#include $<$hal/cpu/irq.\-h$>$}\\*
+{\ttfamily \#include $<$kernel/kthread.\-h$>$}\\*
+{\ttfamily \#include $<$kernel/klibc.\-h$>$}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structsoclib__tty__regs__s}{soclib\-\_\-tty\-\_\-regs\-\_\-s}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{soclib-tty_8h_abee08020bafa1f698839a8d477dcdafa}{soclib\-\_\-tty\-\_\-isr} (unsigned irq, struct \hyperlink{structchardev__s}{chardev\-\_\-s} $\ast$cdev)
+\begin{DoxyCompactList}\small\item\em I\-S\-R for the soclib tty device The only interrupt handled is the one raised when a character is received by the tty device. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structsoclib__tty__regs__s}{soclib\-\_\-tty\-\_\-regs\-\_\-s} \hyperlink{soclib-tty_8h_a1d3bdc9d877594ceaf22370e6cb9a58a}{\-\_\-\-\_\-attribute\-\_\-\-\_\-}
+\item 
+struct \hyperlink{structchardev__ops__s}{chardev\-\_\-ops\-\_\-s} \hyperlink{soclib-tty_8h_ac60ea3e14652d47e0814fac85c18b2ff}{Soclib\-T\-T\-Y\-Ops}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{soclib-tty_8h_abee08020bafa1f698839a8d477dcdafa}{\index{soclib-\/tty.\-h@{soclib-\/tty.\-h}!soclib\-\_\-tty\-\_\-isr@{soclib\-\_\-tty\-\_\-isr}}
+\index{soclib\-\_\-tty\-\_\-isr@{soclib\-\_\-tty\-\_\-isr}!soclib-tty.h@{soclib-\/tty.\-h}}
+\subsubsection[{soclib\-\_\-tty\-\_\-isr}]{\setlength{\rightskip}{0pt plus 5cm}void soclib\-\_\-tty\-\_\-isr (
+\begin{DoxyParamCaption}
+\item[{unsigned}]{irq, }
+\item[{struct {\bf chardev\-\_\-s} $\ast$}]{cdev}
+\end{DoxyParamCaption}
+)}}\label{soclib-tty_8h_abee08020bafa1f698839a8d477dcdafa}
+
+
+I\-S\-R for the soclib tty device The only interrupt handled is the one raised when a character is received by the tty device. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em irq} & the irq linked to this isr \\
+\hline
+{\em cdev} & the device linked to this isr \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+nothing 
+\end{DoxyReturn}
+
+
+References chardev\-\_\-s\-::address, chardev\-\_\-s\-::driver\-\_\-data, fifo\-\_\-push(), and soclib\-\_\-tty\-\_\-regs\-\_\-s\-::read.
+
+
+
+Referenced by soc\-\_\-tty\-\_\-init().
+
+
+\begin{DoxyCode}
+86 \{
+87     \textcolor{keyword}{struct }\hyperlink{structsoclib__tty__regs__s}{soclib\_tty\_regs\_s} *regs = 
+88         (\textcolor{keyword}{struct }\hyperlink{structsoclib__tty__regs__s}{soclib\_tty\_regs\_s} *) cdev->\hyperlink{structchardev__s_add1481ed869132ee70ac2f97038eeb4f}{address};
+89     
+90     \textcolor{keyword}{struct} \hyperlink{structfifo__s}{fifo\_s} *fifo = (\textcolor{keyword}{struct} \hyperlink{structfifo__s}{fifo\_s} *) cdev->\hyperlink{structchardev__s_a2265cc57d5d141a86e93b0247db7022d}{driver\_data};
+91     \textcolor{keywordtype}{char} c = regs->\hyperlink{structsoclib__tty__regs__s_a1cfb8ccac69fc204c1d0c9e946e5a94f}{read};
+92     \hyperlink{klibc_8c_a9d82a64f65502ac9554fc0c28b8f1f44}{fifo\_push}(fifo, c);
+93 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\hypertarget{soclib-tty_8h_a1d3bdc9d877594ceaf22370e6cb9a58a}{\index{soclib-\/tty.\-h@{soclib-\/tty.\-h}!\-\_\-\-\_\-attribute\-\_\-\-\_\-@{\-\_\-\-\_\-attribute\-\_\-\-\_\-}}
+\index{\-\_\-\-\_\-attribute\-\_\-\-\_\-@{\-\_\-\-\_\-attribute\-\_\-\-\_\-}!soclib-tty.h@{soclib-\/tty.\-h}}
+\subsubsection[{\-\_\-\-\_\-attribute\-\_\-\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf ns16550\-\_\-dlab\-\_\-regs\-\_\-s} \-\_\-\-\_\-attribute\-\_\-\-\_\-}}\label{soclib-tty_8h_a1d3bdc9d877594ceaf22370e6cb9a58a}
+\hypertarget{soclib-tty_8h_ac60ea3e14652d47e0814fac85c18b2ff}{\index{soclib-\/tty.\-h@{soclib-\/tty.\-h}!Soclib\-T\-T\-Y\-Ops@{Soclib\-T\-T\-Y\-Ops}}
+\index{Soclib\-T\-T\-Y\-Ops@{Soclib\-T\-T\-Y\-Ops}!soclib-tty.h@{soclib-\/tty.\-h}}
+\subsubsection[{Soclib\-T\-T\-Y\-Ops}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf chardev\-\_\-ops\-\_\-s} Soclib\-T\-T\-Y\-Ops}}\label{soclib-tty_8h_ac60ea3e14652d47e0814fac85c18b2ff}
+
+
+Referenced by soc\-\_\-tty\-\_\-init(), and soclib\-\_\-tty\-\_\-init().
+

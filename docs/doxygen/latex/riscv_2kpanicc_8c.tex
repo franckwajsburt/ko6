@@ -1,0 +1,124 @@
+\hypertarget{riscv_2kpanicc_8c}{\section{/users/enseig/franck/ko6/src/soft/hal/cpu/riscv/kpanicc.c File Reference}
+\label{riscv_2kpanicc_8c}\index{/users/enseig/franck/ko6/src/soft/hal/cpu/riscv/kpanicc.\-c@{/users/enseig/franck/ko6/src/soft/hal/cpu/riscv/kpanicc.\-c}}
+}
+{\ttfamily \#include $<$hal/cpu/riscv/context.\-h$>$}\\*
+{\ttfamily \#include $<$kernel/klibc.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{riscv_2kpanicc_8c_a2ee4bcd38b15349e16e7a59018b45aba}{kdump} (unsigned cause, unsigned reg\-\_\-tab\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em dump all registers values from a table filled by \hyperlink{mips_2kpanica_8S_a7f530336b5f1563eee0a1052ea0d4a9b}{kpanic()} then exit program this function cannot be static because it is used by hcpua.\-S file \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+unsigned \hyperlink{riscv_2kpanicc_8c_a0082ae414fed384bc55eb64768a5d4d6}{K\-Panic\-Regs\-Val} \mbox{[}\hyperlink{riscv_2context_8h_a2c9f87500759b1f7dd423ee12268f6b5}{K\-P\-A\-N\-I\-C\-\_\-\-R\-E\-G\-S\-\_\-\-N\-R}\mbox{]}
+\begin{DoxyCompactList}\small\item\em Table filled by \hyperlink{mips_2kpanica_8S_a7f530336b5f1563eee0a1052ea0d4a9b}{kpanic()} and read by kdump this table cannot be static because it is used by kpanica.\-S file. \end{DoxyCompactList}\item 
+static char $\ast$ \hyperlink{riscv_2kpanicc_8c_a76b8b4812a3bad464e7cc3e391d931d2}{K\-Panic\-Regs\-Name} \mbox{[}\hyperlink{riscv_2context_8h_a2c9f87500759b1f7dd423ee12268f6b5}{K\-P\-A\-N\-I\-C\-\_\-\-R\-E\-G\-S\-\_\-\-N\-R}\mbox{]}
+\begin{DoxyCompactList}\small\item\em register name, the order must the same as defined in hcpu\-\_\-soc.\-h files \end{DoxyCompactList}\item 
+static char $\ast$ \hyperlink{riscv_2kpanicc_8c_ae98da7a52862732025c0c833a6776aec}{K\-Panic\-Cause\-Name} \mbox{[}16\mbox{]}
+\begin{DoxyCompactList}\small\item\em cause name (see 3.\-1.\-15, privileged spec) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{riscv_2kpanicc_8c_a2ee4bcd38b15349e16e7a59018b45aba}{\index{riscv/kpanicc.\-c@{riscv/kpanicc.\-c}!kdump@{kdump}}
+\index{kdump@{kdump}!riscv/kpanicc.c@{riscv/kpanicc.\-c}}
+\subsubsection[{kdump}]{\setlength{\rightskip}{0pt plus 5cm}void kdump (
+\begin{DoxyParamCaption}
+\item[{unsigned}]{cause, }
+\item[{unsigned}]{reg\-\_\-tab\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}}\label{riscv_2kpanicc_8c_a2ee4bcd38b15349e16e7a59018b45aba}
+
+
+dump all registers values from a table filled by \hyperlink{mips_2kpanica_8S_a7f530336b5f1563eee0a1052ea0d4a9b}{kpanic()} then exit program this function cannot be static because it is used by hcpua.\-S file 
+
+
+
+References K\-P\-A\-N\-I\-C\-\_\-\-M\-E\-P\-C, K\-P\-A\-N\-I\-C\-\_\-\-R\-E\-G\-S\-\_\-\-N\-R, K\-Panic\-Cause\-Name, K\-Panic\-Regs\-Name, K\-Panic\-Regs\-Val, kprintf(), and sched\-\_\-dump().
+
+
+\begin{DoxyCode}
+63 \{
+64     \textcolor{keywordtype}{int} nl = 0;
+65 
+66     \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\textcolor{stringliteral}{"\(\backslash\)n[%d] <%p> KERNEL PANIC: %s\(\backslash\)n\(\backslash\)n"},
+67             0,                                          \textcolor{comment}{// FIXME: TSC Time Stamp Counter}
+68             \hyperlink{mips_2kpanicc_8c_a0082ae414fed384bc55eb64768a5d4d6}{KPanicRegsVal}[\hyperlink{riscv_2context_8h_a6346f0bd5d3fefcbc35f67d3f85bd292}{KPANIC\_MEPC}],                 \textcolor{comment}{// faulty instruction
+       address}
+69             \hyperlink{riscv_2kpanicc_8c_ae98da7a52862732025c0c833a6776aec}{KPanicCauseName}[cause]);                    \textcolor{comment}{// Comprehensive cause name}
+70 
+71     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < \hyperlink{mips_2context_8h_a2c9f87500759b1f7dd423ee12268f6b5}{KPANIC\_REGS\_NR}; i++) \{
+72         \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\textcolor{stringliteral}{"%s: %p  "}, \hyperlink{riscv_2kpanicc_8c_a76b8b4812a3bad464e7cc3e391d931d2}{KPanicRegsName}[i], 
+      \hyperlink{mips_2kpanicc_8c_a0082ae414fed384bc55eb64768a5d4d6}{KPanicRegsVal}[i]);
+73         \textcolor{keywordflow}{if} (++nl == 4) \{
+74             \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf} (\textcolor{stringliteral}{"\(\backslash\)n"});
+75             nl = 0;
+76         \}
+77     \}
+78     \hyperlink{klibc_8c_ac4ae3bb8e59735d2b772e77186b52228}{kprintf}(\textcolor{stringliteral}{"\(\backslash\)n"});
+79 
+80     \hyperlink{kthread_8c_a02cfe68dc8f379c88d448172f997b09e}{sched\_dump}();
+81     \textcolor{keywordflow}{while} (1); \textcolor{comment}{// never returns}
+82 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\hypertarget{riscv_2kpanicc_8c_ae98da7a52862732025c0c833a6776aec}{\index{riscv/kpanicc.\-c@{riscv/kpanicc.\-c}!K\-Panic\-Cause\-Name@{K\-Panic\-Cause\-Name}}
+\index{K\-Panic\-Cause\-Name@{K\-Panic\-Cause\-Name}!riscv/kpanicc.c@{riscv/kpanicc.\-c}}
+\subsubsection[{K\-Panic\-Cause\-Name}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ K\-Panic\-Cause\-Name\mbox{[}16\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}}\label{riscv_2kpanicc_8c_ae98da7a52862732025c0c833a6776aec}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+= \{
+    [0 ... 15] = \textcolor{stringliteral}{"Other cause or Application exit()"},   
+    [0] = \textcolor{stringliteral}{"Instruction address misaligned"},
+    [1] = \textcolor{stringliteral}{"Instruction access fault"},
+    [2] = \textcolor{stringliteral}{"Illegal instruction"},
+    [3] = \textcolor{stringliteral}{"Breakpoint"},
+    [4] = \textcolor{stringliteral}{"Load address misaligned"},
+    [5] = \textcolor{stringliteral}{"Load access fault"},
+    [6] = \textcolor{stringliteral}{"Store/AMO address misaligned"},
+    [7] = \textcolor{stringliteral}{"Store/AMO access fault"},
+    [9] = \textcolor{stringliteral}{"Environment call from S-mode"},
+    [11] = \textcolor{stringliteral}{"Environment call from M-mode"},
+    [12] = \textcolor{stringliteral}{"Instruction page fault"},
+    [13] = \textcolor{stringliteral}{"Load page fault"},
+    [15] = \textcolor{stringliteral}{"Store/AMO page fault"}
+\}
+\end{DoxyCode}
+
+
+cause name (see 3.\-1.\-15, privileged spec) 
+
+
+
+Referenced by kdump().
+
+\hypertarget{riscv_2kpanicc_8c_a76b8b4812a3bad464e7cc3e391d931d2}{\index{riscv/kpanicc.\-c@{riscv/kpanicc.\-c}!K\-Panic\-Regs\-Name@{K\-Panic\-Regs\-Name}}
+\index{K\-Panic\-Regs\-Name@{K\-Panic\-Regs\-Name}!riscv/kpanicc.c@{riscv/kpanicc.\-c}}
+\subsubsection[{K\-Panic\-Regs\-Name}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ K\-Panic\-Regs\-Name\mbox{[}{\bf K\-P\-A\-N\-I\-C\-\_\-\-R\-E\-G\-S\-\_\-\-N\-R}\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}}\label{riscv_2kpanicc_8c_a76b8b4812a3bad464e7cc3e391d931d2}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+= \{
+    \textcolor{stringliteral}{"RA  "}, \textcolor{stringliteral}{"SP  "}, \textcolor{stringliteral}{"GP  "}, \textcolor{stringliteral}{"TP  "}, \textcolor{stringliteral}{"T0  "}, \textcolor{stringliteral}{"T1  "}, \textcolor{stringliteral}{"T2  "}, \textcolor{stringliteral}{"S0  "},
+    \textcolor{stringliteral}{"S1  "}, \textcolor{stringliteral}{"A0  "}, \textcolor{stringliteral}{"A1  "}, \textcolor{stringliteral}{"A2  "}, \textcolor{stringliteral}{"A3  "}, \textcolor{stringliteral}{"A4  "}, \textcolor{stringliteral}{"A5  "}, \textcolor{stringliteral}{"A6  "},
+    \textcolor{stringliteral}{"A7  "}, \textcolor{stringliteral}{"S2  "}, \textcolor{stringliteral}{"S3  "}, \textcolor{stringliteral}{"S4  "}, \textcolor{stringliteral}{"S5  "}, \textcolor{stringliteral}{"S6  "}, \textcolor{stringliteral}{"S7  "}, \textcolor{stringliteral}{"S8  "},
+    \textcolor{stringliteral}{"S9  "}, \textcolor{stringliteral}{"S10 "}, \textcolor{stringliteral}{"S11 "}, \textcolor{stringliteral}{"T3  "}, \textcolor{stringliteral}{"T4  "}, \textcolor{stringliteral}{"T5  "}, \textcolor{stringliteral}{"T6  "},      
+    \textcolor{stringliteral}{"MEPC"}, \textcolor{stringliteral}{"MTVAL "}, \textcolor{stringliteral}{"    MSTATUS "}, \textcolor{stringliteral}{"   MCYCLE "} 
+\}
+\end{DoxyCode}
+
+
+register name, the order must the same as defined in hcpu\-\_\-soc.\-h files 
+
+
+
+Referenced by kdump().
+
+\hypertarget{riscv_2kpanicc_8c_a0082ae414fed384bc55eb64768a5d4d6}{\index{riscv/kpanicc.\-c@{riscv/kpanicc.\-c}!K\-Panic\-Regs\-Val@{K\-Panic\-Regs\-Val}}
+\index{K\-Panic\-Regs\-Val@{K\-Panic\-Regs\-Val}!riscv/kpanicc.c@{riscv/kpanicc.\-c}}
+\subsubsection[{K\-Panic\-Regs\-Val}]{\setlength{\rightskip}{0pt plus 5cm}unsigned K\-Panic\-Regs\-Val\mbox{[}{\bf K\-P\-A\-N\-I\-C\-\_\-\-R\-E\-G\-S\-\_\-\-N\-R}\mbox{]}}}\label{riscv_2kpanicc_8c_a0082ae414fed384bc55eb64768a5d4d6}
+
+
+Table filled by \hyperlink{mips_2kpanica_8S_a7f530336b5f1563eee0a1052ea0d4a9b}{kpanic()} and read by kdump this table cannot be static because it is used by kpanica.\-S file. 
+

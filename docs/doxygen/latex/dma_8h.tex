@@ -1,0 +1,51 @@
+\hypertarget{dma_8h}{\section{/users/enseig/franck/ko6/src/soft/hal/devices/dma.h File Reference}
+\label{dma_8h}\index{/users/enseig/franck/ko6/src/soft/hal/devices/dma.\-h@{/users/enseig/franck/ko6/src/soft/hal/devices/dma.\-h}}
+}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structdma__ops__s}{dma\-\_\-ops\-\_\-s}
+\begin{DoxyCompactList}\small\item\em Functions prototypes of the D\-M\-A device, they should be implemented by a device driver. They serve as an interface between the kernel and the driver. \end{DoxyCompactList}\item 
+struct \hyperlink{structdma__s}{dma\-\_\-s}
+\begin{DoxyCompactList}\small\item\em D\-M\-A device specific information. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{dma_8h_af17023464eb4ace08274aa4adfdeb042}{dma\-\_\-alloc}()~(struct \hyperlink{structdma__s}{dma\-\_\-s}$\ast$) (\hyperlink{kdev_8h_aebc03eb0791b35f8c76bacae806c694d}{dev\-\_\-alloc}(\hyperlink{kdev_8h_a13c83819eabea78dd368dd60d38f5c8da5e7ce9b2bc266f89c5a699e97bae4e41}{D\-M\-A\-\_\-\-D\-E\-V}, sizeof(struct \hyperlink{structdma__s}{dma\-\_\-s}))-\/$>$data)
+\item 
+\#define \hyperlink{dma_8h_ab7b132ec5de4439a90137a52001a4801}{dma\-\_\-get}(no)~(struct \hyperlink{structdma__s}{dma\-\_\-s}$\ast$) (\hyperlink{kdev_8h_a2ef6e307b42bc3dfed255511099e42af}{dev\-\_\-get}(\hyperlink{kdev_8h_a13c83819eabea78dd368dd60d38f5c8da5e7ce9b2bc266f89c5a699e97bae4e41}{D\-M\-A\-\_\-\-D\-E\-V}, no)-\/$>$data)
+\item 
+\#define \hyperlink{dma_8h_a744d9a488600a567a7e32aec5ae14419}{dma\-\_\-count}()~(\hyperlink{kdev_8h_a31c87cb296fe4cc9ac9e1f854b62f98a}{dev\-\_\-next\-\_\-no}(\hyperlink{kdev_8h_a13c83819eabea78dd368dd60d38f5c8da5e7ce9b2bc266f89c5a699e97bae4e41}{D\-M\-A\-\_\-\-D\-E\-V}) -\/ 1)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{dma_8h_af17023464eb4ace08274aa4adfdeb042}{\index{dma.\-h@{dma.\-h}!dma\-\_\-alloc@{dma\-\_\-alloc}}
+\index{dma\-\_\-alloc@{dma\-\_\-alloc}!dma.h@{dma.\-h}}
+\subsubsection[{dma\-\_\-alloc}]{\setlength{\rightskip}{0pt plus 5cm}\#define dma\-\_\-alloc(
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)~(struct {\bf dma\-\_\-s}$\ast$) ({\bf dev\-\_\-alloc}({\bf D\-M\-A\-\_\-\-D\-E\-V}, sizeof(struct {\bf dma\-\_\-s}))-\/$>$data)}}\label{dma_8h_af17023464eb4ace08274aa4adfdeb042}
+
+
+Referenced by soc\-\_\-dma\-\_\-init().
+
+\hypertarget{dma_8h_a744d9a488600a567a7e32aec5ae14419}{\index{dma.\-h@{dma.\-h}!dma\-\_\-count@{dma\-\_\-count}}
+\index{dma\-\_\-count@{dma\-\_\-count}!dma.h@{dma.\-h}}
+\subsubsection[{dma\-\_\-count}]{\setlength{\rightskip}{0pt plus 5cm}\#define dma\-\_\-count(
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)~({\bf dev\-\_\-next\-\_\-no}({\bf D\-M\-A\-\_\-\-D\-E\-V}) -\/ 1)}}\label{dma_8h_a744d9a488600a567a7e32aec5ae14419}
+\hypertarget{dma_8h_ab7b132ec5de4439a90137a52001a4801}{\index{dma.\-h@{dma.\-h}!dma\-\_\-get@{dma\-\_\-get}}
+\index{dma\-\_\-get@{dma\-\_\-get}!dma.h@{dma.\-h}}
+\subsubsection[{dma\-\_\-get}]{\setlength{\rightskip}{0pt plus 5cm}\#define dma\-\_\-get(
+\begin{DoxyParamCaption}
+\item[{}]{no}
+\end{DoxyParamCaption}
+)~(struct {\bf dma\-\_\-s}$\ast$) ({\bf dev\-\_\-get}({\bf D\-M\-A\-\_\-\-D\-E\-V}, no)-\/$>$data)}}\label{dma_8h_ab7b132ec5de4439a90137a52001a4801}
+
+
+Referenced by dma\-\_\-memcpy\-\_\-user().
+

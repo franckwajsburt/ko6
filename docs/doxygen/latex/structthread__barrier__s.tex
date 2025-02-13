@@ -1,0 +1,79 @@
+\hypertarget{structthread__barrier__s}{\section{thread\-\_\-barrier\-\_\-s Struct Reference}
+\label{structthread__barrier__s}\index{thread\-\_\-barrier\-\_\-s@{thread\-\_\-barrier\-\_\-s}}
+}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{structthread__barrier__s_a0ca24d9e62459d13238ea86bbb85c61c}{magic}
+\begin{DoxyCompactList}\small\item\em magic number to check the validity of the barrier \end{DoxyCompactList}\item 
+\hyperlink{atomic_8h_ac96e125536af227ccca8875138c83e42}{spinlock\-\_\-t} \hyperlink{structthread__barrier__s_a8bbb69142ae57e50b5c83c31a8b00138}{lock}
+\begin{DoxyCompactList}\small\item\em protection against parallel modifications \end{DoxyCompactList}\item 
+size\-\_\-t \hyperlink{structthread__barrier__s_a49aeee62a81db234144e01be301540ef}{expected}
+\begin{DoxyCompactList}\small\item\em number of expected threads \end{DoxyCompactList}\item 
+size\-\_\-t \hyperlink{structthread__barrier__s_a2d4b05b20a64eb8536021d7a553c1de1}{waiting}
+\begin{DoxyCompactList}\small\item\em number of threads waiting \end{DoxyCompactList}\item 
+\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} \hyperlink{structthread__barrier__s_a64884bf0d1a1ef7f4a06521553e2e066}{wait}
+\begin{DoxyCompactList}\small\item\em list element to chain threads that are wainting for the mutex \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{structthread__barrier__s_a49aeee62a81db234144e01be301540ef}{\index{thread\-\_\-barrier\-\_\-s@{thread\-\_\-barrier\-\_\-s}!expected@{expected}}
+\index{expected@{expected}!thread_barrier_s@{thread\-\_\-barrier\-\_\-s}}
+\subsubsection[{expected}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t thread\-\_\-barrier\-\_\-s\-::expected}}\label{structthread__barrier__s_a49aeee62a81db234144e01be301540ef}
+
+
+number of expected threads 
+
+
+
+Referenced by thread\-\_\-barrier\-\_\-init(), and thread\-\_\-barrier\-\_\-wait().
+
+\hypertarget{structthread__barrier__s_a8bbb69142ae57e50b5c83c31a8b00138}{\index{thread\-\_\-barrier\-\_\-s@{thread\-\_\-barrier\-\_\-s}!lock@{lock}}
+\index{lock@{lock}!thread_barrier_s@{thread\-\_\-barrier\-\_\-s}}
+\subsubsection[{lock}]{\setlength{\rightskip}{0pt plus 5cm}{\bf spinlock\-\_\-t} thread\-\_\-barrier\-\_\-s\-::lock}}\label{structthread__barrier__s_a8bbb69142ae57e50b5c83c31a8b00138}
+
+
+protection against parallel modifications 
+
+
+
+Referenced by thread\-\_\-barrier\-\_\-destroy(), thread\-\_\-barrier\-\_\-init(), and thread\-\_\-barrier\-\_\-wait().
+
+\hypertarget{structthread__barrier__s_a0ca24d9e62459d13238ea86bbb85c61c}{\index{thread\-\_\-barrier\-\_\-s@{thread\-\_\-barrier\-\_\-s}!magic@{magic}}
+\index{magic@{magic}!thread_barrier_s@{thread\-\_\-barrier\-\_\-s}}
+\subsubsection[{magic}]{\setlength{\rightskip}{0pt plus 5cm}int thread\-\_\-barrier\-\_\-s\-::magic}}\label{structthread__barrier__s_a0ca24d9e62459d13238ea86bbb85c61c}
+
+
+magic number to check the validity of the barrier 
+
+
+
+Referenced by thread\-\_\-barrier\-\_\-destroy(), thread\-\_\-barrier\-\_\-init(), and thread\-\_\-barrier\-\_\-wait().
+
+\hypertarget{structthread__barrier__s_a64884bf0d1a1ef7f4a06521553e2e066}{\index{thread\-\_\-barrier\-\_\-s@{thread\-\_\-barrier\-\_\-s}!wait@{wait}}
+\index{wait@{wait}!thread_barrier_s@{thread\-\_\-barrier\-\_\-s}}
+\subsubsection[{wait}]{\setlength{\rightskip}{0pt plus 5cm}{\bf list\-\_\-t} thread\-\_\-barrier\-\_\-s\-::wait}}\label{structthread__barrier__s_a64884bf0d1a1ef7f4a06521553e2e066}
+
+
+list element to chain threads that are wainting for the mutex 
+
+
+
+Referenced by thread\-\_\-barrier\-\_\-init(), and thread\-\_\-barrier\-\_\-wait().
+
+\hypertarget{structthread__barrier__s_a2d4b05b20a64eb8536021d7a553c1de1}{\index{thread\-\_\-barrier\-\_\-s@{thread\-\_\-barrier\-\_\-s}!waiting@{waiting}}
+\index{waiting@{waiting}!thread_barrier_s@{thread\-\_\-barrier\-\_\-s}}
+\subsubsection[{waiting}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t thread\-\_\-barrier\-\_\-s\-::waiting}}\label{structthread__barrier__s_a2d4b05b20a64eb8536021d7a553c1de1}
+
+
+number of threads waiting 
+
+
+
+Referenced by thread\-\_\-barrier\-\_\-destroy(), thread\-\_\-barrier\-\_\-init(), and thread\-\_\-barrier\-\_\-wait().
+
+
+
+The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/users/enseig/franck/ko6/src/soft/kernel/\hyperlink{ksynchro_8c}{ksynchro.\-c}\end{DoxyCompactItemize}

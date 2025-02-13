@@ -1,0 +1,98 @@
+\hypertarget{structchardev__ops__s}{\section{chardev\-\_\-ops\-\_\-s Struct Reference}
+\label{structchardev__ops__s}\index{chardev\-\_\-ops\-\_\-s@{chardev\-\_\-ops\-\_\-s}}
+}
+
+
+Functions prototypes of character device, they should be implemented by a device driver. They serve as an interface between the kernel and the driver.  
+
+
+
+
+{\ttfamily \#include $<$chardev.\-h$>$}
+
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+void($\ast$ \hyperlink{structchardev__ops__s_acde8ff309c1553a2209756737f2b2d31}{chardev\-\_\-init} )(struct \hyperlink{structchardev__s}{chardev\-\_\-s} $\ast$chardev, unsigned address, unsigned baudrate)
+\begin{DoxyCompactList}\small\item\em Generic function that initialize the chardev device. \end{DoxyCompactList}\item 
+int($\ast$ \hyperlink{structchardev__ops__s_a2e4cf779f0295cc24fb52cfd53b3cd29}{chardev\-\_\-write} )(struct \hyperlink{structchardev__s}{chardev\-\_\-s} $\ast$chardev, char $\ast$buf, unsigned count)
+\begin{DoxyCompactList}\small\item\em Generic function that write to the chardev device. \end{DoxyCompactList}\item 
+int($\ast$ \hyperlink{structchardev__ops__s_a5313da07e348354aa0f29c0a4f7f7511}{chardev\-\_\-read} )(struct \hyperlink{structchardev__s}{chardev\-\_\-s} $\ast$chardev, char $\ast$buf, unsigned count)
+\begin{DoxyCompactList}\small\item\em Generic function that reads from the chardev device. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Functions prototypes of character device, they should be implemented by a device driver. They serve as an interface between the kernel and the driver. 
+
+\subsection{Member Data Documentation}
+\hypertarget{structchardev__ops__s_acde8ff309c1553a2209756737f2b2d31}{\index{chardev\-\_\-ops\-\_\-s@{chardev\-\_\-ops\-\_\-s}!chardev\-\_\-init@{chardev\-\_\-init}}
+\index{chardev\-\_\-init@{chardev\-\_\-init}!chardev_ops_s@{chardev\-\_\-ops\-\_\-s}}
+\subsubsection[{chardev\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void($\ast$ chardev\-\_\-ops\-\_\-s\-::chardev\-\_\-init)(struct {\bf chardev\-\_\-s} $\ast$chardev, unsigned address, unsigned baudrate)}}\label{structchardev__ops__s_acde8ff309c1553a2209756737f2b2d31}
+
+
+Generic function that initialize the chardev device. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em chardev} & the char device \\
+\hline
+{\em address} & base address of the device memory-\/mapped registers \\
+\hline
+{\em baudrate} & the device baudrate \\
+\hline
+\end{DoxyParams}
+
+
+Referenced by soc\-\_\-tty\-\_\-init().
+
+\hypertarget{structchardev__ops__s_a5313da07e348354aa0f29c0a4f7f7511}{\index{chardev\-\_\-ops\-\_\-s@{chardev\-\_\-ops\-\_\-s}!chardev\-\_\-read@{chardev\-\_\-read}}
+\index{chardev\-\_\-read@{chardev\-\_\-read}!chardev_ops_s@{chardev\-\_\-ops\-\_\-s}}
+\subsubsection[{chardev\-\_\-read}]{\setlength{\rightskip}{0pt plus 5cm}int($\ast$ chardev\-\_\-ops\-\_\-s\-::chardev\-\_\-read)(struct {\bf chardev\-\_\-s} $\ast$chardev, char $\ast$buf, unsigned count)}}\label{structchardev__ops__s_a5313da07e348354aa0f29c0a4f7f7511}
+
+
+Generic function that reads from the chardev device. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em chardev} & the chardev device \\
+\hline
+{\em buf} & the buffer that will receive the data from the chardev \\
+\hline
+{\em count} & the number of bytes that should be written into the buffer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of bytes actually read 
+\end{DoxyReturn}
+
+
+Referenced by tty\-\_\-read().
+
+\hypertarget{structchardev__ops__s_a2e4cf779f0295cc24fb52cfd53b3cd29}{\index{chardev\-\_\-ops\-\_\-s@{chardev\-\_\-ops\-\_\-s}!chardev\-\_\-write@{chardev\-\_\-write}}
+\index{chardev\-\_\-write@{chardev\-\_\-write}!chardev_ops_s@{chardev\-\_\-ops\-\_\-s}}
+\subsubsection[{chardev\-\_\-write}]{\setlength{\rightskip}{0pt plus 5cm}int($\ast$ chardev\-\_\-ops\-\_\-s\-::chardev\-\_\-write)(struct {\bf chardev\-\_\-s} $\ast$chardev, char $\ast$buf, unsigned count)}}\label{structchardev__ops__s_a2e4cf779f0295cc24fb52cfd53b3cd29}
+
+
+Generic function that write to the chardev device. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em chardev} & the chardev device \\
+\hline
+{\em buf} & the buffer to write to the chardev \\
+\hline
+{\em count} & the number of bytes to write \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of bytes actually written 
+\end{DoxyReturn}
+
+
+Referenced by tty\-\_\-write().
+
+
+
+The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/users/enseig/franck/ko6/src/soft/hal/devices/\hyperlink{chardev_8h}{chardev.\-h}\end{DoxyCompactItemize}

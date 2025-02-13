@@ -1,0 +1,278 @@
+\hypertarget{libfdt__env_8h}{\section{/users/enseig/franck/ko6/src/soft/external/libfdt/libfdt\-\_\-env.h File Reference}
+\label{libfdt__env_8h}\index{/users/enseig/franck/ko6/src/soft/external/libfdt/libfdt\-\_\-env.\-h@{/users/enseig/franck/ko6/src/soft/external/libfdt/libfdt\-\_\-env.\-h}}
+}
+{\ttfamily \#include $<$stddef.\-h$>$}\\*
+{\ttfamily \#include $<$common/cstd.\-h$>$}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{libfdt__env_8h_aad78893ea1078428cbc0b42edc86a574}{F\-D\-T\-\_\-\-F\-O\-R\-C\-E}
+\item 
+\#define \hyperlink{libfdt__env_8h_a4f89bfb3087f9d97db82d77616931e16}{F\-D\-T\-\_\-\-B\-I\-T\-W\-I\-S\-E}
+\item 
+\#define \hyperlink{libfdt__env_8h_a3d910014a8638ce531b884ecad935f25}{E\-X\-T\-R\-A\-C\-T\-\_\-\-B\-Y\-T\-E}(x, n)~((unsigned long long)((\hyperlink{libfdt__env_8h_aba7bc1797add20fe3efdf37ced1182c5}{uint8\-\_\-t} $\ast$)\&x)\mbox{[}n\mbox{]})
+\item 
+\#define \hyperlink{libfdt__env_8h_aeab912ed41ddb1ef15e4b4c6ac14e666}{C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T16}(x)~((\hyperlink{libfdt__env_8h_a3d910014a8638ce531b884ecad935f25}{E\-X\-T\-R\-A\-C\-T\-\_\-\-B\-Y\-T\-E}(x, 0) $<$$<$ 8) $|$ \hyperlink{libfdt__env_8h_a3d910014a8638ce531b884ecad935f25}{E\-X\-T\-R\-A\-C\-T\-\_\-\-B\-Y\-T\-E}(x, 1))
+\item 
+\#define \hyperlink{libfdt__env_8h_ad455c74090723a17a4c183ae02f4c401}{C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T32}(x)
+\item 
+\#define \hyperlink{libfdt__env_8h_a75cbcf8d6ddc9779aaf52a9a1087a8f6}{C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T64}(x)
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef unsigned char \hyperlink{libfdt__env_8h_aba7bc1797add20fe3efdf37ced1182c5}{uint8\-\_\-t}
+\item 
+typedef unsigned short \hyperlink{libfdt__env_8h_a273cf69d639a59973b6019625df33e30}{uint16\-\_\-t}
+\item 
+typedef unsigned int \hyperlink{libfdt__env_8h_a435d1572bf3f880d55459d9805097f62}{uint32\-\_\-t}
+\item 
+typedef unsigned long long \hyperlink{libfdt__env_8h_aaa5d1cd013383c889537491c3cfd9aad}{uint64\-\_\-t}
+\item 
+typedef unsigned long \hyperlink{libfdt__env_8h_a83242de74310b4aec3fc506bc3644211}{uintptr\-\_\-t}
+\item 
+typedef int \hyperlink{libfdt__env_8h_a32f2e37ee053cf2ce8ca28d1f74630e5}{int32\-\_\-t}
+\item 
+typedef int \hyperlink{libfdt__env_8h_a1062901a7428fdd9c7f180f5e01ea056}{bool}
+\item 
+typedef \hyperlink{libfdt__env_8h_a273cf69d639a59973b6019625df33e30}{uint16\-\_\-t} \hyperlink{libfdt__env_8h_a4f89bfb3087f9d97db82d77616931e16}{F\-D\-T\-\_\-\-B\-I\-T\-W\-I\-S\-E} \hyperlink{libfdt__env_8h_a82fb6f39888712295eff2995092fd355}{fdt16\-\_\-t}
+\item 
+typedef \hyperlink{libfdt__env_8h_a435d1572bf3f880d55459d9805097f62}{uint32\-\_\-t} \hyperlink{libfdt__env_8h_a4f89bfb3087f9d97db82d77616931e16}{F\-D\-T\-\_\-\-B\-I\-T\-W\-I\-S\-E} \hyperlink{libfdt__env_8h_a76887ac8786252752fb3f9a39b21f3af}{fdt32\-\_\-t}
+\item 
+typedef \hyperlink{libfdt__env_8h_aaa5d1cd013383c889537491c3cfd9aad}{uint64\-\_\-t} \hyperlink{libfdt__env_8h_a4f89bfb3087f9d97db82d77616931e16}{F\-D\-T\-\_\-\-B\-I\-T\-W\-I\-S\-E} \hyperlink{libfdt__env_8h_ace50a73711239df43c98cc1d5fedd1f8}{fdt64\-\_\-t}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{libfdt__env_8h_a273cf69d639a59973b6019625df33e30}{uint16\-\_\-t} \hyperlink{libfdt__env_8h_a55a50a3b689fcf397a5df7dac2533c1c}{fdt16\-\_\-to\-\_\-cpu} (\hyperlink{libfdt__env_8h_a82fb6f39888712295eff2995092fd355}{fdt16\-\_\-t} x)
+\item 
+static \hyperlink{libfdt__env_8h_a82fb6f39888712295eff2995092fd355}{fdt16\-\_\-t} \hyperlink{libfdt__env_8h_a4c4ebf681c2d259b45fd08763dfbdb12}{cpu\-\_\-to\-\_\-fdt16} (\hyperlink{libfdt__env_8h_a273cf69d639a59973b6019625df33e30}{uint16\-\_\-t} x)
+\item 
+static \hyperlink{libfdt__env_8h_a435d1572bf3f880d55459d9805097f62}{uint32\-\_\-t} \hyperlink{libfdt__env_8h_a6485ea7225a1927cc5ab1a34dabe298f}{fdt32\-\_\-to\-\_\-cpu} (\hyperlink{libfdt__env_8h_a76887ac8786252752fb3f9a39b21f3af}{fdt32\-\_\-t} x)
+\item 
+static \hyperlink{libfdt__env_8h_a76887ac8786252752fb3f9a39b21f3af}{fdt32\-\_\-t} \hyperlink{libfdt__env_8h_a06ce41f441b8a56710000af3c3e516e5}{cpu\-\_\-to\-\_\-fdt32} (\hyperlink{libfdt__env_8h_a435d1572bf3f880d55459d9805097f62}{uint32\-\_\-t} x)
+\item 
+static \hyperlink{libfdt__env_8h_aaa5d1cd013383c889537491c3cfd9aad}{uint64\-\_\-t} \hyperlink{libfdt__env_8h_a5396406ea98e87fd7a42e0d1d7a80a89}{fdt64\-\_\-to\-\_\-cpu} (\hyperlink{libfdt__env_8h_ace50a73711239df43c98cc1d5fedd1f8}{fdt64\-\_\-t} x)
+\item 
+static \hyperlink{libfdt__env_8h_ace50a73711239df43c98cc1d5fedd1f8}{fdt64\-\_\-t} \hyperlink{libfdt__env_8h_a516d5270419a4000d9617b3df5e6f665}{cpu\-\_\-to\-\_\-fdt64} (\hyperlink{libfdt__env_8h_aaa5d1cd013383c889537491c3cfd9aad}{uint64\-\_\-t} x)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{libfdt__env_8h_aeab912ed41ddb1ef15e4b4c6ac14e666}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T16@{C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T16}}
+\index{C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T16@{C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T16}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T16}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T16(
+\begin{DoxyParamCaption}
+\item[{}]{x}
+\end{DoxyParamCaption}
+)~(({\bf E\-X\-T\-R\-A\-C\-T\-\_\-\-B\-Y\-T\-E}(x, 0) $<$$<$ 8) $|$ {\bf E\-X\-T\-R\-A\-C\-T\-\_\-\-B\-Y\-T\-E}(x, 1))}}\label{libfdt__env_8h_aeab912ed41ddb1ef15e4b4c6ac14e666}
+
+
+Referenced by cpu\-\_\-to\-\_\-fdt16(), and fdt16\-\_\-to\-\_\-cpu().
+
+\hypertarget{libfdt__env_8h_ad455c74090723a17a4c183ae02f4c401}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T32@{C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T32}}
+\index{C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T32@{C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T32}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T32}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T32(
+\begin{DoxyParamCaption}
+\item[{}]{x}
+\end{DoxyParamCaption}
+)}}\label{libfdt__env_8h_ad455c74090723a17a4c183ae02f4c401}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+((\hyperlink{libfdt__env_8h_a3d910014a8638ce531b884ecad935f25}{EXTRACT\_BYTE}(x, 0) << 24) | (\hyperlink{libfdt__env_8h_a3d910014a8638ce531b884ecad935f25}{EXTRACT\_BYTE}(x, 1) << 16) | \(\backslash\)
+             (\hyperlink{libfdt__env_8h_a3d910014a8638ce531b884ecad935f25}{EXTRACT\_BYTE}(x, 2) << 8) | \hyperlink{libfdt__env_8h_a3d910014a8638ce531b884ecad935f25}{EXTRACT\_BYTE}(x, 3))
+\end{DoxyCode}
+
+
+Referenced by cpu\-\_\-to\-\_\-fdt32(), and fdt32\-\_\-to\-\_\-cpu().
+
+\hypertarget{libfdt__env_8h_a75cbcf8d6ddc9779aaf52a9a1087a8f6}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T64@{C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T64}}
+\index{C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T64@{C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T64}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T64}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T64(
+\begin{DoxyParamCaption}
+\item[{}]{x}
+\end{DoxyParamCaption}
+)}}\label{libfdt__env_8h_a75cbcf8d6ddc9779aaf52a9a1087a8f6}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+((\hyperlink{libfdt__env_8h_a3d910014a8638ce531b884ecad935f25}{EXTRACT\_BYTE}(x, 0) << 56) | (\hyperlink{libfdt__env_8h_a3d910014a8638ce531b884ecad935f25}{EXTRACT\_BYTE}(x, 1) << 48) | \(\backslash\)
+             (\hyperlink{libfdt__env_8h_a3d910014a8638ce531b884ecad935f25}{EXTRACT\_BYTE}(x, 2) << 40) | (\hyperlink{libfdt__env_8h_a3d910014a8638ce531b884ecad935f25}{EXTRACT\_BYTE}(x, 3) << 32) | \(\backslash\)
+             (\hyperlink{libfdt__env_8h_a3d910014a8638ce531b884ecad935f25}{EXTRACT\_BYTE}(x, 4) << 24) | (\hyperlink{libfdt__env_8h_a3d910014a8638ce531b884ecad935f25}{EXTRACT\_BYTE}(x, 5) << 16) | \(\backslash\)
+             (\hyperlink{libfdt__env_8h_a3d910014a8638ce531b884ecad935f25}{EXTRACT\_BYTE}(x, 6) << 8) | \hyperlink{libfdt__env_8h_a3d910014a8638ce531b884ecad935f25}{EXTRACT\_BYTE}(x, 7))
+\end{DoxyCode}
+
+
+Referenced by cpu\-\_\-to\-\_\-fdt64(), and fdt64\-\_\-to\-\_\-cpu().
+
+\hypertarget{libfdt__env_8h_a3d910014a8638ce531b884ecad935f25}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!E\-X\-T\-R\-A\-C\-T\-\_\-\-B\-Y\-T\-E@{E\-X\-T\-R\-A\-C\-T\-\_\-\-B\-Y\-T\-E}}
+\index{E\-X\-T\-R\-A\-C\-T\-\_\-\-B\-Y\-T\-E@{E\-X\-T\-R\-A\-C\-T\-\_\-\-B\-Y\-T\-E}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{E\-X\-T\-R\-A\-C\-T\-\_\-\-B\-Y\-T\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define E\-X\-T\-R\-A\-C\-T\-\_\-\-B\-Y\-T\-E(
+\begin{DoxyParamCaption}
+\item[{}]{x, }
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~((unsigned long long)(({\bf uint8\-\_\-t} $\ast$)\&x)\mbox{[}n\mbox{]})}}\label{libfdt__env_8h_a3d910014a8638ce531b884ecad935f25}
+\hypertarget{libfdt__env_8h_a4f89bfb3087f9d97db82d77616931e16}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!F\-D\-T\-\_\-\-B\-I\-T\-W\-I\-S\-E@{F\-D\-T\-\_\-\-B\-I\-T\-W\-I\-S\-E}}
+\index{F\-D\-T\-\_\-\-B\-I\-T\-W\-I\-S\-E@{F\-D\-T\-\_\-\-B\-I\-T\-W\-I\-S\-E}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-B\-I\-T\-W\-I\-S\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-B\-I\-T\-W\-I\-S\-E}}\label{libfdt__env_8h_a4f89bfb3087f9d97db82d77616931e16}
+\hypertarget{libfdt__env_8h_aad78893ea1078428cbc0b42edc86a574}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!F\-D\-T\-\_\-\-F\-O\-R\-C\-E@{F\-D\-T\-\_\-\-F\-O\-R\-C\-E}}
+\index{F\-D\-T\-\_\-\-F\-O\-R\-C\-E@{F\-D\-T\-\_\-\-F\-O\-R\-C\-E}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-F\-O\-R\-C\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-F\-O\-R\-C\-E}}\label{libfdt__env_8h_aad78893ea1078428cbc0b42edc86a574}
+
+
+Referenced by cpu\-\_\-to\-\_\-fdt16(), cpu\-\_\-to\-\_\-fdt32(), cpu\-\_\-to\-\_\-fdt64(), fdt16\-\_\-to\-\_\-cpu(), fdt32\-\_\-to\-\_\-cpu(), and fdt64\-\_\-to\-\_\-cpu().
+
+
+
+\subsection{Typedef Documentation}
+\hypertarget{libfdt__env_8h_a1062901a7428fdd9c7f180f5e01ea056}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!bool@{bool}}
+\index{bool@{bool}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{bool}]{\setlength{\rightskip}{0pt plus 5cm}typedef int {\bf bool}}}\label{libfdt__env_8h_a1062901a7428fdd9c7f180f5e01ea056}
+\hypertarget{libfdt__env_8h_a82fb6f39888712295eff2995092fd355}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!fdt16\-\_\-t@{fdt16\-\_\-t}}
+\index{fdt16\-\_\-t@{fdt16\-\_\-t}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{fdt16\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf uint16\-\_\-t} {\bf F\-D\-T\-\_\-\-B\-I\-T\-W\-I\-S\-E} {\bf fdt16\-\_\-t}}}\label{libfdt__env_8h_a82fb6f39888712295eff2995092fd355}
+\hypertarget{libfdt__env_8h_a76887ac8786252752fb3f9a39b21f3af}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!fdt32\-\_\-t@{fdt32\-\_\-t}}
+\index{fdt32\-\_\-t@{fdt32\-\_\-t}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{fdt32\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf uint32\-\_\-t} {\bf F\-D\-T\-\_\-\-B\-I\-T\-W\-I\-S\-E} {\bf fdt32\-\_\-t}}}\label{libfdt__env_8h_a76887ac8786252752fb3f9a39b21f3af}
+\hypertarget{libfdt__env_8h_ace50a73711239df43c98cc1d5fedd1f8}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!fdt64\-\_\-t@{fdt64\-\_\-t}}
+\index{fdt64\-\_\-t@{fdt64\-\_\-t}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{fdt64\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf uint64\-\_\-t} {\bf F\-D\-T\-\_\-\-B\-I\-T\-W\-I\-S\-E} {\bf fdt64\-\_\-t}}}\label{libfdt__env_8h_ace50a73711239df43c98cc1d5fedd1f8}
+\hypertarget{libfdt__env_8h_a32f2e37ee053cf2ce8ca28d1f74630e5}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!int32\-\_\-t@{int32\-\_\-t}}
+\index{int32\-\_\-t@{int32\-\_\-t}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{int32\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef int {\bf int32\-\_\-t}}}\label{libfdt__env_8h_a32f2e37ee053cf2ce8ca28d1f74630e5}
+\hypertarget{libfdt__env_8h_a273cf69d639a59973b6019625df33e30}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!uint16\-\_\-t@{uint16\-\_\-t}}
+\index{uint16\-\_\-t@{uint16\-\_\-t}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{uint16\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef unsigned short {\bf uint16\-\_\-t}}}\label{libfdt__env_8h_a273cf69d639a59973b6019625df33e30}
+\hypertarget{libfdt__env_8h_a435d1572bf3f880d55459d9805097f62}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!uint32\-\_\-t@{uint32\-\_\-t}}
+\index{uint32\-\_\-t@{uint32\-\_\-t}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{uint32\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef unsigned int {\bf uint32\-\_\-t}}}\label{libfdt__env_8h_a435d1572bf3f880d55459d9805097f62}
+\hypertarget{libfdt__env_8h_aaa5d1cd013383c889537491c3cfd9aad}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!uint64\-\_\-t@{uint64\-\_\-t}}
+\index{uint64\-\_\-t@{uint64\-\_\-t}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{uint64\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef unsigned long long {\bf uint64\-\_\-t}}}\label{libfdt__env_8h_aaa5d1cd013383c889537491c3cfd9aad}
+\hypertarget{libfdt__env_8h_aba7bc1797add20fe3efdf37ced1182c5}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!uint8\-\_\-t@{uint8\-\_\-t}}
+\index{uint8\-\_\-t@{uint8\-\_\-t}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{uint8\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef unsigned char {\bf uint8\-\_\-t}}}\label{libfdt__env_8h_aba7bc1797add20fe3efdf37ced1182c5}
+\hypertarget{libfdt__env_8h_a83242de74310b4aec3fc506bc3644211}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!uintptr\-\_\-t@{uintptr\-\_\-t}}
+\index{uintptr\-\_\-t@{uintptr\-\_\-t}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{uintptr\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef unsigned long {\bf uintptr\-\_\-t}}}\label{libfdt__env_8h_a83242de74310b4aec3fc506bc3644211}
+
+
+\subsection{Function Documentation}
+\hypertarget{libfdt__env_8h_a4c4ebf681c2d259b45fd08763dfbdb12}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!cpu\-\_\-to\-\_\-fdt16@{cpu\-\_\-to\-\_\-fdt16}}
+\index{cpu\-\_\-to\-\_\-fdt16@{cpu\-\_\-to\-\_\-fdt16}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{cpu\-\_\-to\-\_\-fdt16}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf fdt16\-\_\-t} cpu\-\_\-to\-\_\-fdt16 (
+\begin{DoxyParamCaption}
+\item[{{\bf uint16\-\_\-t}}]{x}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{libfdt__env_8h_a4c4ebf681c2d259b45fd08763dfbdb12}
+
+
+References C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T16, and F\-D\-T\-\_\-\-F\-O\-R\-C\-E.
+
+
+\begin{DoxyCode}
+59 \{
+60     \textcolor{keywordflow}{return} (\hyperlink{libfdt__env_8h_aad78893ea1078428cbc0b42edc86a574}{FDT\_FORCE} \hyperlink{libfdt__env_8h_a82fb6f39888712295eff2995092fd355}{fdt16\_t})\hyperlink{libfdt__env_8h_aeab912ed41ddb1ef15e4b4c6ac14e666}{CPU\_TO\_FDT16}(x);
+61 \}
+\end{DoxyCode}
+\hypertarget{libfdt__env_8h_a06ce41f441b8a56710000af3c3e516e5}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!cpu\-\_\-to\-\_\-fdt32@{cpu\-\_\-to\-\_\-fdt32}}
+\index{cpu\-\_\-to\-\_\-fdt32@{cpu\-\_\-to\-\_\-fdt32}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{cpu\-\_\-to\-\_\-fdt32}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf fdt32\-\_\-t} cpu\-\_\-to\-\_\-fdt32 (
+\begin{DoxyParamCaption}
+\item[{{\bf uint32\-\_\-t}}]{x}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{libfdt__env_8h_a06ce41f441b8a56710000af3c3e516e5}
+
+
+References C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T32, and F\-D\-T\-\_\-\-F\-O\-R\-C\-E.
+
+
+
+Referenced by fdt\-\_\-add\-\_\-property\-\_\-(), fdt\-\_\-add\-\_\-subnode\-\_\-namelen(), fdt\-\_\-appendprop(), fdt\-\_\-appendprop\-\_\-u32(), fdt\-\_\-begin\-\_\-node(), fdt\-\_\-end\-\_\-node(), fdt\-\_\-finish(), fdt\-\_\-nop\-\_\-region\-\_\-(), fdt\-\_\-property\-\_\-placeholder(), fdt\-\_\-property\-\_\-u32(), fdt\-\_\-resize\-\_\-property\-\_\-(), fdt\-\_\-setprop\-\_\-inplace\-\_\-u32(), fdt\-\_\-setprop\-\_\-u32(), overlay\-\_\-fixup\-\_\-one\-\_\-phandle(), and overlay\-\_\-update\-\_\-local\-\_\-node\-\_\-references().
+
+
+\begin{DoxyCode}
+68 \{
+69     \textcolor{keywordflow}{return} (\hyperlink{libfdt__env_8h_aad78893ea1078428cbc0b42edc86a574}{FDT\_FORCE} \hyperlink{libfdt__env_8h_a76887ac8786252752fb3f9a39b21f3af}{fdt32\_t})\hyperlink{libfdt__env_8h_ad455c74090723a17a4c183ae02f4c401}{CPU\_TO\_FDT32}(x);
+70 \}
+\end{DoxyCode}
+\hypertarget{libfdt__env_8h_a516d5270419a4000d9617b3df5e6f665}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!cpu\-\_\-to\-\_\-fdt64@{cpu\-\_\-to\-\_\-fdt64}}
+\index{cpu\-\_\-to\-\_\-fdt64@{cpu\-\_\-to\-\_\-fdt64}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{cpu\-\_\-to\-\_\-fdt64}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf fdt64\-\_\-t} cpu\-\_\-to\-\_\-fdt64 (
+\begin{DoxyParamCaption}
+\item[{{\bf uint64\-\_\-t}}]{x}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{libfdt__env_8h_a516d5270419a4000d9617b3df5e6f665}
+
+
+References C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T64, and F\-D\-T\-\_\-\-F\-O\-R\-C\-E.
+
+
+
+Referenced by fdt\-\_\-add\-\_\-mem\-\_\-rsv(), fdt\-\_\-add\-\_\-reservemap\-\_\-entry(), fdt\-\_\-appendprop\-\_\-u64(), fdt\-\_\-property\-\_\-u64(), fdt\-\_\-setprop\-\_\-inplace\-\_\-u64(), and fdt\-\_\-setprop\-\_\-u64().
+
+
+\begin{DoxyCode}
+77 \{
+78     \textcolor{keywordflow}{return} (\hyperlink{libfdt__env_8h_aad78893ea1078428cbc0b42edc86a574}{FDT\_FORCE} \hyperlink{libfdt__env_8h_ace50a73711239df43c98cc1d5fedd1f8}{fdt64\_t})\hyperlink{libfdt__env_8h_a75cbcf8d6ddc9779aaf52a9a1087a8f6}{CPU\_TO\_FDT64}(x);
+79 \}
+\end{DoxyCode}
+\hypertarget{libfdt__env_8h_a55a50a3b689fcf397a5df7dac2533c1c}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!fdt16\-\_\-to\-\_\-cpu@{fdt16\-\_\-to\-\_\-cpu}}
+\index{fdt16\-\_\-to\-\_\-cpu@{fdt16\-\_\-to\-\_\-cpu}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{fdt16\-\_\-to\-\_\-cpu}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf uint16\-\_\-t} fdt16\-\_\-to\-\_\-cpu (
+\begin{DoxyParamCaption}
+\item[{{\bf fdt16\-\_\-t}}]{x}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{libfdt__env_8h_a55a50a3b689fcf397a5df7dac2533c1c}
+
+
+References C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T16, and F\-D\-T\-\_\-\-F\-O\-R\-C\-E.
+
+
+\begin{DoxyCode}
+55 \{
+56     \textcolor{keywordflow}{return} (\hyperlink{libfdt__env_8h_aad78893ea1078428cbc0b42edc86a574}{FDT\_FORCE} \hyperlink{libfdt__env_8h_a273cf69d639a59973b6019625df33e30}{uint16\_t})\hyperlink{libfdt__env_8h_aeab912ed41ddb1ef15e4b4c6ac14e666}{CPU\_TO\_FDT16}(x);
+57 \}
+\end{DoxyCode}
+\hypertarget{libfdt__env_8h_a6485ea7225a1927cc5ab1a34dabe298f}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!fdt32\-\_\-to\-\_\-cpu@{fdt32\-\_\-to\-\_\-cpu}}
+\index{fdt32\-\_\-to\-\_\-cpu@{fdt32\-\_\-to\-\_\-cpu}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{fdt32\-\_\-to\-\_\-cpu}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf uint32\-\_\-t} fdt32\-\_\-to\-\_\-cpu (
+\begin{DoxyParamCaption}
+\item[{{\bf fdt32\-\_\-t}}]{x}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{libfdt__env_8h_a6485ea7225a1927cc5ab1a34dabe298f}
+
+
+References C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T32, and F\-D\-T\-\_\-\-F\-O\-R\-C\-E.
+
+
+
+Referenced by fdt32\-\_\-ld\-\_\-(), fdt\-\_\-cells(), fdt\-\_\-finish(), fdt\-\_\-next\-\_\-tag(), get\-\_\-base\-\_\-address(), get\-\_\-irq(), overlay\-\_\-get\-\_\-target\-\_\-phandle(), overlay\-\_\-phandle\-\_\-add\-\_\-offset(), and overlay\-\_\-update\-\_\-local\-\_\-node\-\_\-references().
+
+
+\begin{DoxyCode}
+64 \{
+65     \textcolor{keywordflow}{return} (\hyperlink{libfdt__env_8h_aad78893ea1078428cbc0b42edc86a574}{FDT\_FORCE} \hyperlink{libfdt__env_8h_a435d1572bf3f880d55459d9805097f62}{uint32\_t})\hyperlink{libfdt__env_8h_ad455c74090723a17a4c183ae02f4c401}{CPU\_TO\_FDT32}(x);
+66 \}
+\end{DoxyCode}
+\hypertarget{libfdt__env_8h_a5396406ea98e87fd7a42e0d1d7a80a89}{\index{libfdt\-\_\-env.\-h@{libfdt\-\_\-env.\-h}!fdt64\-\_\-to\-\_\-cpu@{fdt64\-\_\-to\-\_\-cpu}}
+\index{fdt64\-\_\-to\-\_\-cpu@{fdt64\-\_\-to\-\_\-cpu}!libfdt_env.h@{libfdt\-\_\-env.\-h}}
+\subsubsection[{fdt64\-\_\-to\-\_\-cpu}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf uint64\-\_\-t} fdt64\-\_\-to\-\_\-cpu (
+\begin{DoxyParamCaption}
+\item[{{\bf fdt64\-\_\-t}}]{x}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{libfdt__env_8h_a5396406ea98e87fd7a42e0d1d7a80a89}
+
+
+References C\-P\-U\-\_\-\-T\-O\-\_\-\-F\-D\-T64, and F\-D\-T\-\_\-\-F\-O\-R\-C\-E.
+
+
+
+Referenced by fdt64\-\_\-ld\-\_\-().
+
+
+\begin{DoxyCode}
+73 \{
+74     \textcolor{keywordflow}{return} (\hyperlink{libfdt__env_8h_aad78893ea1078428cbc0b42edc86a574}{FDT\_FORCE} \hyperlink{libfdt__env_8h_aaa5d1cd013383c889537491c3cfd9aad}{uint64\_t})\hyperlink{libfdt__env_8h_a75cbcf8d6ddc9779aaf52a9a1087a8f6}{CPU\_TO\_FDT64}(x);
+75 \}
+\end{DoxyCode}

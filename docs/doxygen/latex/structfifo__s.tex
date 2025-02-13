@@ -1,0 +1,74 @@
+\hypertarget{structfifo__s}{\section{fifo\-\_\-s Struct Reference}
+\label{structfifo__s}\index{fifo\-\_\-s@{fifo\-\_\-s}}
+}
+
+
+Simple fifo (1 writer -\/ 1 reader)  
+
+
+
+
+{\ttfamily \#include $<$klibc.\-h$>$}
+
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+char \hyperlink{structfifo__s_a404947915e9c75b5cbbd89187eb80af5}{data} \mbox{[}\hyperlink{klibc_8h_ab297050456738a4bc51658025f2521c6}{F\-I\-F\-O\-\_\-\-D\-E\-P\-T\-H}\mbox{]}
+\begin{DoxyCompactList}\small\item\em Circular array. \end{DoxyCompactList}\item 
+unsigned \hyperlink{structfifo__s_a19b8017ce5eae056136497331734326c}{pt\-\_\-read}
+\begin{DoxyCompactList}\small\item\em Read pointer. \end{DoxyCompactList}\item 
+unsigned \hyperlink{structfifo__s_a32bc3dae5f99ee248fae7d2fde0f2a46}{pt\-\_\-write}
+\begin{DoxyCompactList}\small\item\em Write pointer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Simple fifo (1 writer -\/ 1 reader) 
+
+
+\begin{DoxyItemize}
+\item data buffer of data
+\item pt\-\_\-write write pointer for L fifos (0 at the beginning)
+\item pt\-\_\-read read pointer for L fifos (0 at the beginning)
+\end{DoxyItemize}
+
+data\mbox{[}\mbox{]} is used as a circular array. At the beginning (pt\-\_\-read == pt\-\_\-write) means an empty fifo then when we push a data, we write it at pt\-\_\-write, the we increment pt\-\_\-write \% fifo\-\_\-size. The fifo is full when it remains only one free cell, then when (pt\-\_\-write + 1)size == pt\-\_\-read 
+
+\subsection{Member Data Documentation}
+\hypertarget{structfifo__s_a404947915e9c75b5cbbd89187eb80af5}{\index{fifo\-\_\-s@{fifo\-\_\-s}!data@{data}}
+\index{data@{data}!fifo_s@{fifo\-\_\-s}}
+\subsubsection[{data}]{\setlength{\rightskip}{0pt plus 5cm}char fifo\-\_\-s\-::data\mbox{[}{\bf F\-I\-F\-O\-\_\-\-D\-E\-P\-T\-H}\mbox{]}}}\label{structfifo__s_a404947915e9c75b5cbbd89187eb80af5}
+
+
+Circular array. 
+
+
+
+Referenced by fifo\-\_\-pull(), and fifo\-\_\-push().
+
+\hypertarget{structfifo__s_a19b8017ce5eae056136497331734326c}{\index{fifo\-\_\-s@{fifo\-\_\-s}!pt\-\_\-read@{pt\-\_\-read}}
+\index{pt\-\_\-read@{pt\-\_\-read}!fifo_s@{fifo\-\_\-s}}
+\subsubsection[{pt\-\_\-read}]{\setlength{\rightskip}{0pt plus 5cm}unsigned fifo\-\_\-s\-::pt\-\_\-read}}\label{structfifo__s_a19b8017ce5eae056136497331734326c}
+
+
+Read pointer. 
+
+
+
+Referenced by fifo\-\_\-pull(), and fifo\-\_\-push().
+
+\hypertarget{structfifo__s_a32bc3dae5f99ee248fae7d2fde0f2a46}{\index{fifo\-\_\-s@{fifo\-\_\-s}!pt\-\_\-write@{pt\-\_\-write}}
+\index{pt\-\_\-write@{pt\-\_\-write}!fifo_s@{fifo\-\_\-s}}
+\subsubsection[{pt\-\_\-write}]{\setlength{\rightskip}{0pt plus 5cm}unsigned fifo\-\_\-s\-::pt\-\_\-write}}\label{structfifo__s_a32bc3dae5f99ee248fae7d2fde0f2a46}
+
+
+Write pointer. 
+
+
+
+Referenced by fifo\-\_\-pull(), and fifo\-\_\-push().
+
+
+
+The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/users/enseig/franck/ko6/src/soft/kernel/\hyperlink{klibc_8h}{klibc.\-h}\end{DoxyCompactItemize}

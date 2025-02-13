@@ -1,0 +1,243 @@
+\hypertarget{structthread__s}{\section{thread\-\_\-s Struct Reference}
+\label{structthread__s}\index{thread\-\_\-s@{thread\-\_\-s}}
+}
+
+
+\hyperlink{structthread__s}{thread\-\_\-s} structure which contains all we need to define a thread the size of \hyperlink{structthread__s}{thread\-\_\-s} struct is a multiple of a page and have to be aligned (on a page) thread\-\_\-t structure is a pointer to a thread\-\_\-t structure Be th as pointer to a struct \hyperlink{structthread__s}{thread\-\_\-s} \-: thread\-\_\-t th th is at the beginning of a page, (that is (th \& 0x\-F\-F\-F)==0) the top of kernel stack is (char $\ast$)th + n $\ast$ P\-A\-G\-E\-\_\-\-S\-I\-Z\-E th is allocated with kmalloc(\-P\-A\-G\-E\-\_\-\-S\-I\-Z\-E) is thread\-\_\-create\-\_\-kernel() kstack\-\_\-b is a pointer to the top of kernel stack, this field has to be the first field of the structure because, thus is is easy to get it  
+
+
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{structthread__s_a6885e765fcfe5d2ad0e5a07c2df3ee69}{kstack\-\_\-b}
+\begin{DoxyCompactList}\small\item\em kernel stack beginning (the highest addr, outside the stack) \end{DoxyCompactList}\item 
+int \hyperlink{structthread__s_a8d51270c2f7572479276f7629940c3ea}{ustack\-\_\-b}
+\begin{DoxyCompactList}\small\item\em user stack beginning (the highest address, outside the stack) \end{DoxyCompactList}\item 
+int \hyperlink{structthread__s_a021e8a50ddb4a5978f18d6babfc4ea6e}{ustack\-\_\-e}
+\begin{DoxyCompactList}\small\item\em user stack end (thus the lowest addr) \end{DoxyCompactList}\item 
+int \hyperlink{structthread__s_a2eda0c064f0ed88103b27bf2b5a640e2}{type}
+\begin{DoxyCompactList}\small\item\em two types \-: 0 user, 1 kernel \end{DoxyCompactList}\item 
+\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} \hyperlink{structthread__s_a291769866cccb5d37937ef14cedc38bf}{wait}
+\begin{DoxyCompactList}\small\item\em list element to chain threads waiting for the same resource \end{DoxyCompactList}\item 
+\hyperlink{atomic_8h_ac96e125536af227ccca8875138c83e42}{spinlock\-\_\-t} \hyperlink{structthread__s_a483959ed6abed6c12f49643c4495a7b1}{lock}
+\begin{DoxyCompactList}\small\item\em lock to protected structure during modification \end{DoxyCompactList}\item 
+int \hyperlink{structthread__s_ab3fce89938b5156047553299f71a1370}{state}
+\begin{DoxyCompactList}\small\item\em thread state from the scheduler point of view \end{DoxyCompactList}\item 
+\hyperlink{usermem_8h_a2694d17ea62fba3e63b915cca82721d7}{\-\_\-tls\-\_\-t} $\ast$ \hyperlink{structthread__s_a7ad218d5b7c4b6bc9c4602e6b1a89815}{ptls}
+\begin{DoxyCompactList}\small\item\em ptr to current thread local storage (see \hyperlink{usermem_8h}{common/usermem.\-h}) \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{structthread__s_aeefa131a48c8c3c45e6c3c0819f21cd0}{retval}
+\begin{DoxyCompactList}\small\item\em return value \end{DoxyCompactList}\item 
+\hyperlink{kthread_8h_a755fbb4a945decf90cb1c0eb5fd16878}{thread\-\_\-t} \hyperlink{structthread__s_a84fafe08d8ef25fc4b5a8fb1e833619c}{join}
+\begin{DoxyCompactList}\small\item\em expected thread in case of \hyperlink{kthread_8c_a4e54fc344bbd735b027c03629927abb9}{thread\-\_\-join()} \end{DoxyCompactList}\item 
+int \hyperlink{structthread__s_a63551d8e6d21a7370c5b3652cea282fc}{start}
+\begin{DoxyCompactList}\small\item\em pointer to the function which calls fun(arg) \end{DoxyCompactList}\item 
+int \hyperlink{structthread__s_a9a97385576dda275389e95ef13168cfc}{fun}
+\begin{DoxyCompactList}\small\item\em pointer to the thread function (cast to int) \end{DoxyCompactList}\item 
+int \hyperlink{structthread__s_a5cdab21069c6c184a86d024a0aa238aa}{arg}
+\begin{DoxyCompactList}\small\item\em thread argument (cast to int) \end{DoxyCompactList}\item 
+int \hyperlink{structthread__s_ad1ed1d821f595f5a7c1d68f09ba36bf5}{tid}
+\begin{DoxyCompactList}\small\item\em thread identifer M\-U\-S\-T B\-E P\-L\-A\-C\-E\-D J\-U\-S\-T B\-E\-F\-O\-R\-E C\-O\-N\-T\-E\-X\-T (trace) \end{DoxyCompactList}\item 
+unsigned long long \hyperlink{structthread__s_ae4614b780e1a47305c562869870d6e41}{krandseed}
+\begin{DoxyCompactList}\small\item\em each thread has its own kernel random seed, it is thread safe \end{DoxyCompactList}\item 
+int \hyperlink{structthread__s_a668771e7e3444ba13544b50e1ff312a6}{context} \mbox{[}\hyperlink{riscv_2context_8h_a6184dc1954e7a66049cb4b3b314c87f9}{T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S\-I\-Z\-E}\mbox{]}
+\begin{DoxyCompactList}\small\item\em table to store registers when thread lose the cpu \end{DoxyCompactList}\item 
+int \hyperlink{structthread__s_a1159b3f03199aed705bf099f2eb33a92}{kstack} \mbox{[}1\mbox{]}
+\begin{DoxyCompactList}\small\item\em lowest address of kernel stack of thread (with M\-A\-G\-I\-C\-\_\-\-S\-T\-A\-C\-K) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{structthread__s}{thread\-\_\-s} structure which contains all we need to define a thread the size of \hyperlink{structthread__s}{thread\-\_\-s} struct is a multiple of a page and have to be aligned (on a page) thread\-\_\-t structure is a pointer to a thread\-\_\-t structure Be th as pointer to a struct \hyperlink{structthread__s}{thread\-\_\-s} \-: thread\-\_\-t th th is at the beginning of a page, (that is (th \& 0x\-F\-F\-F)==0) the top of kernel stack is (char $\ast$)th + n $\ast$ P\-A\-G\-E\-\_\-\-S\-I\-Z\-E th is allocated with kmalloc(\-P\-A\-G\-E\-\_\-\-S\-I\-Z\-E) is thread\-\_\-create\-\_\-kernel() kstack\-\_\-b is a pointer to the top of kernel stack, this field has to be the first field of the structure because, thus is is easy to get it 
+
+\subsection{Member Data Documentation}
+\hypertarget{structthread__s_a5cdab21069c6c184a86d024a0aa238aa}{\index{thread\-\_\-s@{thread\-\_\-s}!arg@{arg}}
+\index{arg@{arg}!thread_s@{thread\-\_\-s}}
+\subsubsection[{arg}]{\setlength{\rightskip}{0pt plus 5cm}int thread\-\_\-s\-::arg}}\label{structthread__s_a5cdab21069c6c184a86d024a0aa238aa}
+
+
+thread argument (cast to int) 
+
+
+
+Referenced by sched\-\_\-dump(), thread\-\_\-bootstrap(), and thread\-\_\-create().
+
+\hypertarget{structthread__s_a668771e7e3444ba13544b50e1ff312a6}{\index{thread\-\_\-s@{thread\-\_\-s}!context@{context}}
+\index{context@{context}!thread_s@{thread\-\_\-s}}
+\subsubsection[{context}]{\setlength{\rightskip}{0pt plus 5cm}int thread\-\_\-s\-::context\mbox{[}{\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S\-I\-Z\-E}\mbox{]}}}\label{structthread__s_a668771e7e3444ba13544b50e1ff312a6}
+
+
+table to store registers when thread lose the cpu 
+
+
+
+Referenced by sched\-\_\-switch(), thread\-\_\-create(), and thread\-\_\-main\-\_\-load().
+
+\hypertarget{structthread__s_a9a97385576dda275389e95ef13168cfc}{\index{thread\-\_\-s@{thread\-\_\-s}!fun@{fun}}
+\index{fun@{fun}!thread_s@{thread\-\_\-s}}
+\subsubsection[{fun}]{\setlength{\rightskip}{0pt plus 5cm}int thread\-\_\-s\-::fun}}\label{structthread__s_a9a97385576dda275389e95ef13168cfc}
+
+
+pointer to the thread function (cast to int) 
+
+
+
+Referenced by sched\-\_\-dump(), thread\-\_\-bootstrap(), and thread\-\_\-create().
+
+\hypertarget{structthread__s_a84fafe08d8ef25fc4b5a8fb1e833619c}{\index{thread\-\_\-s@{thread\-\_\-s}!join@{join}}
+\index{join@{join}!thread_s@{thread\-\_\-s}}
+\subsubsection[{join}]{\setlength{\rightskip}{0pt plus 5cm}{\bf thread\-\_\-t} thread\-\_\-s\-::join}}\label{structthread__s_a84fafe08d8ef25fc4b5a8fb1e833619c}
+
+
+expected thread in case of \hyperlink{kthread_8c_a4e54fc344bbd735b027c03629927abb9}{thread\-\_\-join()} 
+
+
+
+Referenced by sched\-\_\-dump(), thread\-\_\-create(), thread\-\_\-exit(), and thread\-\_\-join().
+
+\hypertarget{structthread__s_ae4614b780e1a47305c562869870d6e41}{\index{thread\-\_\-s@{thread\-\_\-s}!krandseed@{krandseed}}
+\index{krandseed@{krandseed}!thread_s@{thread\-\_\-s}}
+\subsubsection[{krandseed}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long long thread\-\_\-s\-::krandseed}}\label{structthread__s_ae4614b780e1a47305c562869870d6e41}
+
+
+each thread has its own kernel random seed, it is thread safe 
+
+
+
+Referenced by thread\-\_\-create(), and thread\-\_\-krandseed().
+
+\hypertarget{structthread__s_a1159b3f03199aed705bf099f2eb33a92}{\index{thread\-\_\-s@{thread\-\_\-s}!kstack@{kstack}}
+\index{kstack@{kstack}!thread_s@{thread\-\_\-s}}
+\subsubsection[{kstack}]{\setlength{\rightskip}{0pt plus 5cm}int thread\-\_\-s\-::kstack\mbox{[}1\mbox{]}}}\label{structthread__s_a1159b3f03199aed705bf099f2eb33a92}
+
+
+lowest address of kernel stack of thread (with M\-A\-G\-I\-C\-\_\-\-S\-T\-A\-C\-K) 
+
+
+
+Referenced by sched\-\_\-dump(), and thread\-\_\-create().
+
+\hypertarget{structthread__s_a6885e765fcfe5d2ad0e5a07c2df3ee69}{\index{thread\-\_\-s@{thread\-\_\-s}!kstack\-\_\-b@{kstack\-\_\-b}}
+\index{kstack\-\_\-b@{kstack\-\_\-b}!thread_s@{thread\-\_\-s}}
+\subsubsection[{kstack\-\_\-b}]{\setlength{\rightskip}{0pt plus 5cm}int thread\-\_\-s\-::kstack\-\_\-b}}\label{structthread__s_a6885e765fcfe5d2ad0e5a07c2df3ee69}
+
+
+kernel stack beginning (the highest addr, outside the stack) 
+
+
+
+Referenced by sched\-\_\-dump(), and thread\-\_\-create().
+
+\hypertarget{structthread__s_a483959ed6abed6c12f49643c4495a7b1}{\index{thread\-\_\-s@{thread\-\_\-s}!lock@{lock}}
+\index{lock@{lock}!thread_s@{thread\-\_\-s}}
+\subsubsection[{lock}]{\setlength{\rightskip}{0pt plus 5cm}{\bf spinlock\-\_\-t} thread\-\_\-s\-::lock}}\label{structthread__s_a483959ed6abed6c12f49643c4495a7b1}
+
+
+lock to protected structure during modification 
+
+
+
+Referenced by thread\-\_\-exit(), thread\-\_\-join(), thread\-\_\-notify(), and thread\-\_\-wait().
+
+\hypertarget{structthread__s_a7ad218d5b7c4b6bc9c4602e6b1a89815}{\index{thread\-\_\-s@{thread\-\_\-s}!ptls@{ptls}}
+\index{ptls@{ptls}!thread_s@{thread\-\_\-s}}
+\subsubsection[{ptls}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-\_\-tls\-\_\-t}$\ast$ thread\-\_\-s\-::ptls}}\label{structthread__s_a7ad218d5b7c4b6bc9c4602e6b1a89815}
+
+
+ptr to current thread local storage (see \hyperlink{usermem_8h}{common/usermem.\-h}) 
+
+
+
+Referenced by sched\-\_\-dump(), sched\-\_\-switch(), thread\-\_\-create(), thread\-\_\-errno(), and thread\-\_\-main\-\_\-load().
+
+\hypertarget{structthread__s_aeefa131a48c8c3c45e6c3c0819f21cd0}{\index{thread\-\_\-s@{thread\-\_\-s}!retval@{retval}}
+\index{retval@{retval}!thread_s@{thread\-\_\-s}}
+\subsubsection[{retval}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ thread\-\_\-s\-::retval}}\label{structthread__s_aeefa131a48c8c3c45e6c3c0819f21cd0}
+
+
+return value 
+
+
+
+Referenced by sched\-\_\-dump(), thread\-\_\-create(), thread\-\_\-exit(), and thread\-\_\-join().
+
+\hypertarget{structthread__s_a63551d8e6d21a7370c5b3652cea282fc}{\index{thread\-\_\-s@{thread\-\_\-s}!start@{start}}
+\index{start@{start}!thread_s@{thread\-\_\-s}}
+\subsubsection[{start}]{\setlength{\rightskip}{0pt plus 5cm}int thread\-\_\-s\-::start}}\label{structthread__s_a63551d8e6d21a7370c5b3652cea282fc}
+
+
+pointer to the function which calls fun(arg) 
+
+
+
+Referenced by sched\-\_\-dump(), thread\-\_\-bootstrap(), and thread\-\_\-create().
+
+\hypertarget{structthread__s_ab3fce89938b5156047553299f71a1370}{\index{thread\-\_\-s@{thread\-\_\-s}!state@{state}}
+\index{state@{state}!thread_s@{thread\-\_\-s}}
+\subsubsection[{state}]{\setlength{\rightskip}{0pt plus 5cm}int thread\-\_\-s\-::state}}\label{structthread__s_ab3fce89938b5156047553299f71a1370}
+
+
+thread state from the scheduler point of view 
+
+
+
+Referenced by sched\-\_\-dump(), sched\-\_\-switch(), thread\-\_\-bootstrap(), thread\-\_\-create(), thread\-\_\-exit(), thread\-\_\-join(), thread\-\_\-notify(), thread\-\_\-wait(), and thread\-\_\-yield().
+
+\hypertarget{structthread__s_ad1ed1d821f595f5a7c1d68f09ba36bf5}{\index{thread\-\_\-s@{thread\-\_\-s}!tid@{tid}}
+\index{tid@{tid}!thread_s@{thread\-\_\-s}}
+\subsubsection[{tid}]{\setlength{\rightskip}{0pt plus 5cm}int thread\-\_\-s\-::tid}}\label{structthread__s_ad1ed1d821f595f5a7c1d68f09ba36bf5}
+
+
+thread identifer M\-U\-S\-T B\-E P\-L\-A\-C\-E\-D J\-U\-S\-T B\-E\-F\-O\-R\-E C\-O\-N\-T\-E\-X\-T (trace) 
+
+
+
+Referenced by sched\-\_\-dump(), and sched\-\_\-insert().
+
+\hypertarget{structthread__s_a2eda0c064f0ed88103b27bf2b5a640e2}{\index{thread\-\_\-s@{thread\-\_\-s}!type@{type}}
+\index{type@{type}!thread_s@{thread\-\_\-s}}
+\subsubsection[{type}]{\setlength{\rightskip}{0pt plus 5cm}int thread\-\_\-s\-::type}}\label{structthread__s_a2eda0c064f0ed88103b27bf2b5a640e2}
+
+
+two types \-: 0 user, 1 kernel 
+
+
+
+Referenced by sched\-\_\-dump().
+
+\hypertarget{structthread__s_a8d51270c2f7572479276f7629940c3ea}{\index{thread\-\_\-s@{thread\-\_\-s}!ustack\-\_\-b@{ustack\-\_\-b}}
+\index{ustack\-\_\-b@{ustack\-\_\-b}!thread_s@{thread\-\_\-s}}
+\subsubsection[{ustack\-\_\-b}]{\setlength{\rightskip}{0pt plus 5cm}int thread\-\_\-s\-::ustack\-\_\-b}}\label{structthread__s_a8d51270c2f7572479276f7629940c3ea}
+
+
+user stack beginning (the highest address, outside the stack) 
+
+
+
+Referenced by sched\-\_\-dump(), and thread\-\_\-create().
+
+\hypertarget{structthread__s_a021e8a50ddb4a5978f18d6babfc4ea6e}{\index{thread\-\_\-s@{thread\-\_\-s}!ustack\-\_\-e@{ustack\-\_\-e}}
+\index{ustack\-\_\-e@{ustack\-\_\-e}!thread_s@{thread\-\_\-s}}
+\subsubsection[{ustack\-\_\-e}]{\setlength{\rightskip}{0pt plus 5cm}int thread\-\_\-s\-::ustack\-\_\-e}}\label{structthread__s_a021e8a50ddb4a5978f18d6babfc4ea6e}
+
+
+user stack end (thus the lowest addr) 
+
+
+
+Referenced by sched\-\_\-dump(), and thread\-\_\-create().
+
+\hypertarget{structthread__s_a291769866cccb5d37937ef14cedc38bf}{\index{thread\-\_\-s@{thread\-\_\-s}!wait@{wait}}
+\index{wait@{wait}!thread_s@{thread\-\_\-s}}
+\subsubsection[{wait}]{\setlength{\rightskip}{0pt plus 5cm}{\bf list\-\_\-t} thread\-\_\-s\-::wait}}\label{structthread__s_a291769866cccb5d37937ef14cedc38bf}
+
+
+list element to chain threads waiting for the same resource 
+
+
+
+Referenced by sched\-\_\-dump(), thread\-\_\-addlast(), and thread\-\_\-create().
+
+
+
+The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/users/enseig/franck/ko6/src/soft/kernel/\hyperlink{kthread_8c}{kthread.\-c}\end{DoxyCompactItemize}

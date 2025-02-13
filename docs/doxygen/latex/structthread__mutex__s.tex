@@ -1,0 +1,66 @@
+\hypertarget{structthread__mutex__s}{\section{thread\-\_\-mutex\-\_\-s Struct Reference}
+\label{structthread__mutex__s}\index{thread\-\_\-mutex\-\_\-s@{thread\-\_\-mutex\-\_\-s}}
+}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{atomic_8h_ac96e125536af227ccca8875138c83e42}{spinlock\-\_\-t} \hyperlink{structthread__mutex__s_a541c29b3f7adb7366d0fa924fe212045}{lock}
+\begin{DoxyCompactList}\small\item\em protection against parallel modifications \end{DoxyCompactList}\item 
+unsigned \hyperlink{structthread__mutex__s_a8755c9b956e9b431348fe2a47957246d}{busy}
+\begin{DoxyCompactList}\small\item\em 1 mutex is busy ; 0 mutex is free \end{DoxyCompactList}\item 
+\hyperlink{list_8h_ad3b2684139c847cd572cb7b9679ce227}{list\-\_\-t} \hyperlink{structthread__mutex__s_ad48ae2f605a85e11fa31e11c78cb726c}{wait}
+\begin{DoxyCompactList}\small\item\em list element to chain threads that are wainting for the mutex \end{DoxyCompactList}\item 
+\hyperlink{kthread_8h_a755fbb4a945decf90cb1c0eb5fd16878}{thread\-\_\-t} \hyperlink{structthread__mutex__s_aebfefcc73771f614b7f19296a46e2b04}{owner}
+\begin{DoxyCompactList}\small\item\em a thread has to be locked and unlocked by the same thread \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{structthread__mutex__s_a8755c9b956e9b431348fe2a47957246d}{\index{thread\-\_\-mutex\-\_\-s@{thread\-\_\-mutex\-\_\-s}!busy@{busy}}
+\index{busy@{busy}!thread_mutex_s@{thread\-\_\-mutex\-\_\-s}}
+\subsubsection[{busy}]{\setlength{\rightskip}{0pt plus 5cm}unsigned thread\-\_\-mutex\-\_\-s\-::busy}}\label{structthread__mutex__s_a8755c9b956e9b431348fe2a47957246d}
+
+
+1 mutex is busy ; 0 mutex is free 
+
+
+
+Referenced by thread\-\_\-mutex\-\_\-destroy(), thread\-\_\-mutex\-\_\-init(), thread\-\_\-mutex\-\_\-lock(), and thread\-\_\-mutex\-\_\-unlock().
+
+\hypertarget{structthread__mutex__s_a541c29b3f7adb7366d0fa924fe212045}{\index{thread\-\_\-mutex\-\_\-s@{thread\-\_\-mutex\-\_\-s}!lock@{lock}}
+\index{lock@{lock}!thread_mutex_s@{thread\-\_\-mutex\-\_\-s}}
+\subsubsection[{lock}]{\setlength{\rightskip}{0pt plus 5cm}{\bf spinlock\-\_\-t} thread\-\_\-mutex\-\_\-s\-::lock}}\label{structthread__mutex__s_a541c29b3f7adb7366d0fa924fe212045}
+
+
+protection against parallel modifications 
+
+
+
+Referenced by thread\-\_\-mutex\-\_\-init(), thread\-\_\-mutex\-\_\-lock(), and thread\-\_\-mutex\-\_\-unlock().
+
+\hypertarget{structthread__mutex__s_aebfefcc73771f614b7f19296a46e2b04}{\index{thread\-\_\-mutex\-\_\-s@{thread\-\_\-mutex\-\_\-s}!owner@{owner}}
+\index{owner@{owner}!thread_mutex_s@{thread\-\_\-mutex\-\_\-s}}
+\subsubsection[{owner}]{\setlength{\rightskip}{0pt plus 5cm}{\bf thread\-\_\-t} thread\-\_\-mutex\-\_\-s\-::owner}}\label{structthread__mutex__s_aebfefcc73771f614b7f19296a46e2b04}
+
+
+a thread has to be locked and unlocked by the same thread 
+
+
+
+Referenced by thread\-\_\-mutex\-\_\-destroy(), thread\-\_\-mutex\-\_\-init(), thread\-\_\-mutex\-\_\-lock(), and thread\-\_\-mutex\-\_\-unlock().
+
+\hypertarget{structthread__mutex__s_ad48ae2f605a85e11fa31e11c78cb726c}{\index{thread\-\_\-mutex\-\_\-s@{thread\-\_\-mutex\-\_\-s}!wait@{wait}}
+\index{wait@{wait}!thread_mutex_s@{thread\-\_\-mutex\-\_\-s}}
+\subsubsection[{wait}]{\setlength{\rightskip}{0pt plus 5cm}{\bf list\-\_\-t} thread\-\_\-mutex\-\_\-s\-::wait}}\label{structthread__mutex__s_ad48ae2f605a85e11fa31e11c78cb726c}
+
+
+list element to chain threads that are wainting for the mutex 
+
+
+
+Referenced by thread\-\_\-mutex\-\_\-init(), thread\-\_\-mutex\-\_\-lock(), and thread\-\_\-mutex\-\_\-unlock().
+
+
+
+The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/users/enseig/franck/ko6/src/soft/kernel/\hyperlink{ksynchro_8c}{ksynchro.\-c}\end{DoxyCompactItemize}

@@ -1,0 +1,172 @@
+\hypertarget{mips_2entry_8S}{\section{/users/enseig/franck/ko6/src/soft/hal/cpu/mips/entry.S File Reference}
+\label{mips_2entry_8S}\index{/users/enseig/franck/ko6/src/soft/hal/cpu/mips/entry.\-S@{/users/enseig/franck/ko6/src/soft/hal/cpu/mips/entry.\-S}}
+}
+{\ttfamily \#include $<$common/syscalls.\-h$>$}\\*
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+section \hyperlink{mips_2entry_8S_a337fb5bad1df922a0879d51e6c2c399c}{boot}
+\item 
+section ax \hyperlink{mips_2entry_8S_a834b90b9918d03bb7f429b845f72164a}{la}
+\item 
+section ax \hyperlink{kmemory_8c_a869ed24619b20d01d0f6c457c069ec96}{\-\_\-\-\_\-kdata\-\_\-end} \hyperlink{kinit_8c_a7316311400d5b710f1b974a353b10d1c}{kinit} \\*
+\-\_\-\-\_\-dtb\-\_\-address jr section \hyperlink{mips_2entry_8S_a7f1cfe80f85e2f1bd9103b0960e09009}{kentry}
+\item 
+section ax \hyperlink{kmemory_8c_a869ed24619b20d01d0f6c457c069ec96}{\-\_\-\-\_\-kdata\-\_\-end} \hyperlink{kinit_8c_a7316311400d5b710f1b974a353b10d1c}{kinit} \\*
+\-\_\-\-\_\-dtb\-\_\-address jr section ax \\*
+org \hyperlink{mips_2entry_8S_a1d8aee1caeac6c96721f7c6296321af9}{andi}
+\item 
+section ax \hyperlink{kmemory_8c_a869ed24619b20d01d0f6c457c069ec96}{\-\_\-\-\_\-kdata\-\_\-end} \hyperlink{kinit_8c_a7316311400d5b710f1b974a353b10d1c}{kinit} \\*
+\-\_\-\-\_\-dtb\-\_\-address jr section ax \\*
+org \hyperlink{mips_2entry_8S_a4aae0b089c5269a564bd882bfc76d8de}{li}
+\item 
+section ax \hyperlink{kmemory_8c_a869ed24619b20d01d0f6c457c069ec96}{\-\_\-\-\_\-kdata\-\_\-end} \hyperlink{kinit_8c_a7316311400d5b710f1b974a353b10d1c}{kinit} \\*
+\-\_\-\-\_\-dtb\-\_\-address jr section ax \\*
+org \hyperlink{mips_2entry_8S_a744f7a335784b23d045867be1a1a37a5}{beq}
+\item 
+section ax \hyperlink{kmemory_8c_a869ed24619b20d01d0f6c457c069ec96}{\-\_\-\-\_\-kdata\-\_\-end} \hyperlink{kinit_8c_a7316311400d5b710f1b974a353b10d1c}{kinit} \\*
+\-\_\-\-\_\-dtb\-\_\-address jr section ax \\*
+org syscall\-\_\-handler \\*
+\hyperlink{mips_2entry_8S_a9d2aa3bc4e44a8ffda50e5b21ab6fb59}{irq\-\_\-handler} j \hyperlink{kpanic_8h_af2300a4e16ba31370a9ae2920be551d5}{kpanic} \hyperlink{mips_2entry_8S_a37916740c132fd7bd4e7a87888d28df0}{syscall\-\_\-handler}
+\item 
+section ax \hyperlink{kmemory_8c_a869ed24619b20d01d0f6c457c069ec96}{\-\_\-\-\_\-kdata\-\_\-end} \hyperlink{kinit_8c_a7316311400d5b710f1b974a353b10d1c}{kinit} \\*
+\-\_\-\-\_\-dtb\-\_\-address jr section ax \\*
+org \hyperlink{mips_2entry_8S_a37916740c132fd7bd4e7a87888d28df0}{syscall\-\_\-handler} \\*
+\hyperlink{mips_2entry_8S_a9d2aa3bc4e44a8ffda50e5b21ab6fb59}{irq\-\_\-handler} j \hyperlink{kpanic_8h_af2300a4e16ba31370a9ae2920be551d5}{kpanic} \\*
+\hyperlink{kthread_8h_a1da5431310f6068f6d1113c402eff5f8}{Thread\-Current} \hyperlink{mips_2entry_8S_a470726200bc61516f5c1638535329434}{lw}
+\item 
+section ax \hyperlink{kmemory_8c_a869ed24619b20d01d0f6c457c069ec96}{\-\_\-\-\_\-kdata\-\_\-end} \hyperlink{kinit_8c_a7316311400d5b710f1b974a353b10d1c}{kinit} \\*
+\-\_\-\-\_\-dtb\-\_\-address jr section ax \\*
+org \hyperlink{mips_2entry_8S_a37916740c132fd7bd4e7a87888d28df0}{syscall\-\_\-handler} \\*
+\hyperlink{mips_2entry_8S_a9d2aa3bc4e44a8ffda50e5b21ab6fb59}{irq\-\_\-handler} j \hyperlink{kpanic_8h_af2300a4e16ba31370a9ae2920be551d5}{kpanic} \\*
+\hyperlink{kthread_8h_a1da5431310f6068f6d1113c402eff5f8}{Thread\-Current} \hyperlink{mips_2entry_8S_a50257344f74ff9744ffcbbcac96a8f4c}{sw}
+\item 
+section ax \hyperlink{kmemory_8c_a869ed24619b20d01d0f6c457c069ec96}{\-\_\-\-\_\-kdata\-\_\-end} \hyperlink{kinit_8c_a7316311400d5b710f1b974a353b10d1c}{kinit} \\*
+\-\_\-\-\_\-dtb\-\_\-address jr section ax \\*
+org \hyperlink{mips_2entry_8S_a37916740c132fd7bd4e7a87888d28df0}{syscall\-\_\-handler} \\*
+\hyperlink{mips_2entry_8S_a9d2aa3bc4e44a8ffda50e5b21ab6fb59}{irq\-\_\-handler} j \hyperlink{kpanic_8h_af2300a4e16ba31370a9ae2920be551d5}{kpanic} \\*
+\hyperlink{kthread_8h_a1da5431310f6068f6d1113c402eff5f8}{Thread\-Current} \hyperlink{mips_2entry_8S_aae5f46ad86c522e1de85124f02dc03eb}{addiu}
+\item 
+section ax \hyperlink{kmemory_8c_a869ed24619b20d01d0f6c457c069ec96}{\-\_\-\-\_\-kdata\-\_\-end} \hyperlink{kinit_8c_a7316311400d5b710f1b974a353b10d1c}{kinit} \\*
+\-\_\-\-\_\-dtb\-\_\-address jr section ax \\*
+org \hyperlink{mips_2entry_8S_a37916740c132fd7bd4e7a87888d28df0}{syscall\-\_\-handler} \\*
+\hyperlink{mips_2entry_8S_a9d2aa3bc4e44a8ffda50e5b21ab6fb59}{irq\-\_\-handler} j \hyperlink{kpanic_8h_af2300a4e16ba31370a9ae2920be551d5}{kpanic} \\*
+\hyperlink{kthread_8h_a1da5431310f6068f6d1113c402eff5f8}{Thread\-Current} $\ast$ \hyperlink{mips_2entry_8S_a8e7cde31a48ccd62aababed857194696}{mfc0}
+\item 
+section ax \hyperlink{kmemory_8c_a869ed24619b20d01d0f6c457c069ec96}{\-\_\-\-\_\-kdata\-\_\-end} \hyperlink{kinit_8c_a7316311400d5b710f1b974a353b10d1c}{kinit} \\*
+\-\_\-\-\_\-dtb\-\_\-address jr section ax \\*
+org \hyperlink{mips_2entry_8S_a37916740c132fd7bd4e7a87888d28df0}{syscall\-\_\-handler} \\*
+\hyperlink{mips_2entry_8S_a9d2aa3bc4e44a8ffda50e5b21ab6fb59}{irq\-\_\-handler} j \hyperlink{kpanic_8h_af2300a4e16ba31370a9ae2920be551d5}{kpanic} \\*
+\hyperlink{kthread_8h_a1da5431310f6068f6d1113c402eff5f8}{Thread\-Current} $\ast$ \hyperlink{mips_2entry_8S_a586efcb1ce14274ebde0a48ee5903ea6}{mtc0}
+\item 
+section ax \hyperlink{kmemory_8c_a869ed24619b20d01d0f6c457c069ec96}{\-\_\-\-\_\-kdata\-\_\-end} \hyperlink{kinit_8c_a7316311400d5b710f1b974a353b10d1c}{kinit} \\*
+\-\_\-\-\_\-dtb\-\_\-address jr section ax \\*
+org \hyperlink{mips_2entry_8S_a37916740c132fd7bd4e7a87888d28df0}{syscall\-\_\-handler} \\*
+\hyperlink{mips_2entry_8S_a9d2aa3bc4e44a8ffda50e5b21ab6fb59}{irq\-\_\-handler} j \hyperlink{kpanic_8h_af2300a4e16ba31370a9ae2920be551d5}{kpanic} \\*
+\hyperlink{kthread_8h_a1da5431310f6068f6d1113c402eff5f8}{Thread\-Current} \hyperlink{ksyscalls_8c_ac032bde1c16f368d24dbcde8d400a203}{Syscall\-Vector} \\*
+\hyperlink{syscalls_8h_ac2c7a2e51ade374764c90e27cca50a57}{S\-Y\-S\-C\-A\-L\-L\-\_\-\-N\-R} \hyperlink{mips_2entry_8S_a7be273109aad6a792e6f802e2f94dd1e}{sll}
+\item 
+section ax \hyperlink{kmemory_8c_a869ed24619b20d01d0f6c457c069ec96}{\-\_\-\-\_\-kdata\-\_\-end} \hyperlink{kinit_8c_a7316311400d5b710f1b974a353b10d1c}{kinit} \\*
+\-\_\-\-\_\-dtb\-\_\-address jr section ax \\*
+org \hyperlink{mips_2entry_8S_a37916740c132fd7bd4e7a87888d28df0}{syscall\-\_\-handler} \\*
+\hyperlink{mips_2entry_8S_a9d2aa3bc4e44a8ffda50e5b21ab6fb59}{irq\-\_\-handler} j \hyperlink{kpanic_8h_af2300a4e16ba31370a9ae2920be551d5}{kpanic} \\*
+\hyperlink{kthread_8h_a1da5431310f6068f6d1113c402eff5f8}{Thread\-Current} \hyperlink{ksyscalls_8c_ac032bde1c16f368d24dbcde8d400a203}{Syscall\-Vector} \\*
+\hyperlink{syscalls_8h_ac2c7a2e51ade374764c90e27cca50a57}{S\-Y\-S\-C\-A\-L\-L\-\_\-\-N\-R} \hyperlink{mips_2entry_8S_a682077bbfc5c816e663862d043c9c7b9}{addu}
+\item 
+section ax \hyperlink{kmemory_8c_a869ed24619b20d01d0f6c457c069ec96}{\-\_\-\-\_\-kdata\-\_\-end} \hyperlink{kinit_8c_a7316311400d5b710f1b974a353b10d1c}{kinit} \\*
+\-\_\-\-\_\-dtb\-\_\-address jr section ax \\*
+org \hyperlink{mips_2entry_8S_a37916740c132fd7bd4e7a87888d28df0}{syscall\-\_\-handler} \\*
+irq\-\_\-handler j \hyperlink{kpanic_8h_af2300a4e16ba31370a9ae2920be551d5}{kpanic} \\*
+\hyperlink{kthread_8h_a1da5431310f6068f6d1113c402eff5f8}{Thread\-Current} \hyperlink{ksyscalls_8c_ac032bde1c16f368d24dbcde8d400a203}{Syscall\-Vector} \\*
+\hyperlink{syscalls_8h_ac2c7a2e51ade374764c90e27cca50a57}{S\-Y\-S\-C\-A\-L\-L\-\_\-\-N\-R} jalr $\ast$eret \hyperlink{mips_2entry_8S_a9d2aa3bc4e44a8ffda50e5b21ab6fb59}{irq\-\_\-handler}
+\item 
+section ax \hyperlink{kmemory_8c_a869ed24619b20d01d0f6c457c069ec96}{\-\_\-\-\_\-kdata\-\_\-end} \hyperlink{kinit_8c_a7316311400d5b710f1b974a353b10d1c}{kinit} \\*
+\-\_\-\-\_\-dtb\-\_\-address jr section ax \\*
+org \hyperlink{mips_2entry_8S_a37916740c132fd7bd4e7a87888d28df0}{syscall\-\_\-handler} \\*
+\hyperlink{mips_2entry_8S_a9d2aa3bc4e44a8ffda50e5b21ab6fb59}{irq\-\_\-handler} j \hyperlink{kpanic_8h_af2300a4e16ba31370a9ae2920be551d5}{kpanic} \\*
+\hyperlink{kthread_8h_a1da5431310f6068f6d1113c402eff5f8}{Thread\-Current} \hyperlink{ksyscalls_8c_ac032bde1c16f368d24dbcde8d400a203}{Syscall\-Vector} \\*
+\hyperlink{syscalls_8h_ac2c7a2e51ade374764c90e27cca50a57}{S\-Y\-S\-C\-A\-L\-L\-\_\-\-N\-R} jalr $\ast$eret \hyperlink{mips_2entry_8S_aae6ab066bc5ab6b3da2216daf346ae3a}{ext}
+\item 
+section ax \hyperlink{kmemory_8c_a869ed24619b20d01d0f6c457c069ec96}{\-\_\-\-\_\-kdata\-\_\-end} \hyperlink{kinit_8c_a7316311400d5b710f1b974a353b10d1c}{kinit} \\*
+\-\_\-\-\_\-dtb\-\_\-address jr section ax \\*
+org \hyperlink{mips_2entry_8S_a37916740c132fd7bd4e7a87888d28df0}{syscall\-\_\-handler} \\*
+\hyperlink{mips_2entry_8S_a9d2aa3bc4e44a8ffda50e5b21ab6fb59}{irq\-\_\-handler} j \hyperlink{kpanic_8h_af2300a4e16ba31370a9ae2920be551d5}{kpanic} \\*
+\hyperlink{kthread_8h_a1da5431310f6068f6d1113c402eff5f8}{Thread\-Current} \hyperlink{ksyscalls_8c_ac032bde1c16f368d24dbcde8d400a203}{Syscall\-Vector} \\*
+\hyperlink{syscalls_8h_ac2c7a2e51ade374764c90e27cca50a57}{S\-Y\-S\-C\-A\-L\-L\-\_\-\-N\-R} jalr $\ast$eret \hyperlink{mips_2entry_8S_aedc2f03ca41306be3ed5bee49a63b326}{move}
+\item 
+section ax \hyperlink{kmemory_8c_a869ed24619b20d01d0f6c457c069ec96}{\-\_\-\-\_\-kdata\-\_\-end} \hyperlink{kinit_8c_a7316311400d5b710f1b974a353b10d1c}{kinit} \\*
+\-\_\-\-\_\-dtb\-\_\-address jr section ax \\*
+org \hyperlink{mips_2entry_8S_a37916740c132fd7bd4e7a87888d28df0}{syscall\-\_\-handler} \\*
+\hyperlink{mips_2entry_8S_a9d2aa3bc4e44a8ffda50e5b21ab6fb59}{irq\-\_\-handler} j \hyperlink{kpanic_8h_af2300a4e16ba31370a9ae2920be551d5}{kpanic} \\*
+\hyperlink{kthread_8h_a1da5431310f6068f6d1113c402eff5f8}{Thread\-Current} \hyperlink{ksyscalls_8c_ac032bde1c16f368d24dbcde8d400a203}{Syscall\-Vector} \\*
+\hyperlink{syscalls_8h_ac2c7a2e51ade374764c90e27cca50a57}{S\-Y\-S\-C\-A\-L\-L\-\_\-\-N\-R} jalr $\ast$eret \\*
+\hyperlink{mips_2entry_8S_aa28b32f4e79871f57f2456daed530508}{irq\-\_\-kernel} \hyperlink{mips_2entry_8S_a50e17158d795021fb36a813c89b7a645}{irq\-\_\-user}
+\item 
+section ax \hyperlink{kmemory_8c_a869ed24619b20d01d0f6c457c069ec96}{\-\_\-\-\_\-kdata\-\_\-end} \hyperlink{kinit_8c_a7316311400d5b710f1b974a353b10d1c}{kinit} \\*
+\-\_\-\-\_\-dtb\-\_\-address jr section ax \\*
+org \hyperlink{mips_2entry_8S_a37916740c132fd7bd4e7a87888d28df0}{syscall\-\_\-handler} \\*
+\hyperlink{mips_2entry_8S_a9d2aa3bc4e44a8ffda50e5b21ab6fb59}{irq\-\_\-handler} j \hyperlink{kpanic_8h_af2300a4e16ba31370a9ae2920be551d5}{kpanic} \\*
+\hyperlink{kthread_8h_a1da5431310f6068f6d1113c402eff5f8}{Thread\-Current} \hyperlink{ksyscalls_8c_ac032bde1c16f368d24dbcde8d400a203}{Syscall\-Vector} \\*
+\hyperlink{syscalls_8h_ac2c7a2e51ade374764c90e27cca50a57}{S\-Y\-S\-C\-A\-L\-L\-\_\-\-N\-R} jalr $\ast$eret \\*
+irq\-\_\-kernel \hyperlink{kthread_8h_a1da5431310f6068f6d1113c402eff5f8}{Thread\-Current} \hyperlink{mips_2entry_8S_aa28b32f4e79871f57f2456daed530508}{irq\-\_\-kernel}
+\end{DoxyCompactItemize}
+
+
+\subsection{Variable Documentation}
+\hypertarget{mips_2entry_8S_aae5f46ad86c522e1de85124f02dc03eb}{\index{mips/entry.\-S@{mips/entry.\-S}!addiu@{addiu}}
+\index{addiu@{addiu}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{addiu}]{\setlength{\rightskip}{0pt plus 5cm}section ax {\bf \-\_\-\-\_\-kdata\-\_\-end} {\bf kinit} \-\_\-\-\_\-dtb\-\_\-address jr section ax org {\bf syscall\-\_\-handler} {\bf irq\-\_\-handler} j {\bf kpanic} {\bf Thread\-Current} addiu}}\label{mips_2entry_8S_aae5f46ad86c522e1de85124f02dc03eb}
+\hypertarget{mips_2entry_8S_a682077bbfc5c816e663862d043c9c7b9}{\index{mips/entry.\-S@{mips/entry.\-S}!addu@{addu}}
+\index{addu@{addu}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{addu}]{\setlength{\rightskip}{0pt plus 5cm}section ax {\bf \-\_\-\-\_\-kdata\-\_\-end} {\bf kinit} \-\_\-\-\_\-dtb\-\_\-address jr section ax org {\bf syscall\-\_\-handler} {\bf irq\-\_\-handler} j {\bf kpanic} {\bf Thread\-Current} {\bf Syscall\-Vector} {\bf S\-Y\-S\-C\-A\-L\-L\-\_\-\-N\-R} addu}}\label{mips_2entry_8S_a682077bbfc5c816e663862d043c9c7b9}
+\hypertarget{mips_2entry_8S_a1d8aee1caeac6c96721f7c6296321af9}{\index{mips/entry.\-S@{mips/entry.\-S}!andi@{andi}}
+\index{andi@{andi}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{andi}]{\setlength{\rightskip}{0pt plus 5cm}section ax {\bf \-\_\-\-\_\-kdata\-\_\-end} {\bf kinit} \-\_\-\-\_\-dtb\-\_\-address jr section ax org {\bf syscall\-\_\-handler} {\bf irq\-\_\-handler} j {\bf kpanic} {\bf Thread\-Current} {\bf Syscall\-Vector} andi}}\label{mips_2entry_8S_a1d8aee1caeac6c96721f7c6296321af9}
+\hypertarget{mips_2entry_8S_a744f7a335784b23d045867be1a1a37a5}{\index{mips/entry.\-S@{mips/entry.\-S}!beq@{beq}}
+\index{beq@{beq}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{beq}]{\setlength{\rightskip}{0pt plus 5cm}section ax {\bf \-\_\-\-\_\-kdata\-\_\-end} {\bf kinit} \-\_\-\-\_\-dtb\-\_\-address jr section ax org {\bf syscall\-\_\-handler} {\bf irq\-\_\-handler} j {\bf kpanic} {\bf Thread\-Current} {\bf Syscall\-Vector} {\bf S\-Y\-S\-C\-A\-L\-L\-\_\-\-N\-R} jalr $\ast$eret beq}}\label{mips_2entry_8S_a744f7a335784b23d045867be1a1a37a5}
+\hypertarget{mips_2entry_8S_a337fb5bad1df922a0879d51e6c2c399c}{\index{mips/entry.\-S@{mips/entry.\-S}!boot@{boot}}
+\index{boot@{boot}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{boot}]{\setlength{\rightskip}{0pt plus 5cm}section ax boot}}\label{mips_2entry_8S_a337fb5bad1df922a0879d51e6c2c399c}
+\hypertarget{mips_2entry_8S_aae6ab066bc5ab6b3da2216daf346ae3a}{\index{mips/entry.\-S@{mips/entry.\-S}!ext@{ext}}
+\index{ext@{ext}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{ext}]{\setlength{\rightskip}{0pt plus 5cm}section ax {\bf \-\_\-\-\_\-kdata\-\_\-end} {\bf kinit} \-\_\-\-\_\-dtb\-\_\-address jr section ax org {\bf syscall\-\_\-handler} {\bf irq\-\_\-handler} j {\bf kpanic} {\bf Thread\-Current} {\bf Syscall\-Vector} {\bf S\-Y\-S\-C\-A\-L\-L\-\_\-\-N\-R} jalr $\ast$ eret ext}}\label{mips_2entry_8S_aae6ab066bc5ab6b3da2216daf346ae3a}
+\hypertarget{mips_2entry_8S_a9d2aa3bc4e44a8ffda50e5b21ab6fb59}{\index{mips/entry.\-S@{mips/entry.\-S}!irq\-\_\-handler@{irq\-\_\-handler}}
+\index{irq\-\_\-handler@{irq\-\_\-handler}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{irq\-\_\-handler}]{\setlength{\rightskip}{0pt plus 5cm}section ax {\bf \-\_\-\-\_\-kdata\-\_\-end} {\bf kinit} \-\_\-\-\_\-dtb\-\_\-address jr section ax org {\bf syscall\-\_\-handler} irq\-\_\-handler j {\bf kpanic} {\bf Thread\-Current} {\bf Syscall\-Vector} {\bf S\-Y\-S\-C\-A\-L\-L\-\_\-\-N\-R} jalr $\ast$ eret irq\-\_\-handler}}\label{mips_2entry_8S_a9d2aa3bc4e44a8ffda50e5b21ab6fb59}
+\hypertarget{mips_2entry_8S_aa28b32f4e79871f57f2456daed530508}{\index{mips/entry.\-S@{mips/entry.\-S}!irq\-\_\-kernel@{irq\-\_\-kernel}}
+\index{irq\-\_\-kernel@{irq\-\_\-kernel}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{irq\-\_\-kernel}]{\setlength{\rightskip}{0pt plus 5cm}section ax {\bf \-\_\-\-\_\-kdata\-\_\-end} {\bf kinit} \-\_\-\-\_\-dtb\-\_\-address jr section ax org {\bf syscall\-\_\-handler} {\bf irq\-\_\-handler} j {\bf kpanic} {\bf Thread\-Current} {\bf Syscall\-Vector} {\bf S\-Y\-S\-C\-A\-L\-L\-\_\-\-N\-R} jalr $\ast$ eret irq\-\_\-kernel {\bf Thread\-Current} irq\-\_\-kernel}}\label{mips_2entry_8S_aa28b32f4e79871f57f2456daed530508}
+\hypertarget{mips_2entry_8S_a50e17158d795021fb36a813c89b7a645}{\index{mips/entry.\-S@{mips/entry.\-S}!irq\-\_\-user@{irq\-\_\-user}}
+\index{irq\-\_\-user@{irq\-\_\-user}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{irq\-\_\-user}]{\setlength{\rightskip}{0pt plus 5cm}section ax {\bf \-\_\-\-\_\-kdata\-\_\-end} {\bf kinit} \-\_\-\-\_\-dtb\-\_\-address jr section ax org {\bf syscall\-\_\-handler} {\bf irq\-\_\-handler} j {\bf kpanic} {\bf Thread\-Current} {\bf Syscall\-Vector} {\bf S\-Y\-S\-C\-A\-L\-L\-\_\-\-N\-R} jalr $\ast$ eret {\bf irq\-\_\-kernel} irq\-\_\-user}}\label{mips_2entry_8S_a50e17158d795021fb36a813c89b7a645}
+\hypertarget{mips_2entry_8S_a7f1cfe80f85e2f1bd9103b0960e09009}{\index{mips/entry.\-S@{mips/entry.\-S}!kentry@{kentry}}
+\index{kentry@{kentry}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{kentry}]{\setlength{\rightskip}{0pt plus 5cm}section ax {\bf \-\_\-\-\_\-kdata\-\_\-end} {\bf kinit} \-\_\-\-\_\-dtb\-\_\-address jr section ax org kentry}}\label{mips_2entry_8S_a7f1cfe80f85e2f1bd9103b0960e09009}
+\hypertarget{mips_2entry_8S_a834b90b9918d03bb7f429b845f72164a}{\index{mips/entry.\-S@{mips/entry.\-S}!la@{la}}
+\index{la@{la}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{la}]{\setlength{\rightskip}{0pt plus 5cm}globl {\bf kpanic} {\bf K\-Panic\-Regs\-Val} set noat {\bf K\-P\-A\-N\-I\-C\-\_\-\-A\-T} $\ast$set at {\bf K\-P\-A\-N\-I\-C\-\_\-\-V0} {\bf K\-P\-A\-N\-I\-C\-\_\-\-V1} {\bf K\-P\-A\-N\-I\-C\-\_\-\-A0} {\bf K\-P\-A\-N\-I\-C\-\_\-\-A1} {\bf K\-P\-A\-N\-I\-C\-\_\-\-A2} {\bf K\-P\-A\-N\-I\-C\-\_\-\-A3} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T0} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T1} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T2} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T3} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T4} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T5} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T6} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T7} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S0} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S1} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S2} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S3} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S4} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S5} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S6} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S7} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T8} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T9} {\bf K\-P\-A\-N\-I\-C\-\_\-\-G\-P} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S\-P} {\bf K\-P\-A\-N\-I\-C\-\_\-\-F\-P} {\bf K\-P\-A\-N\-I\-C\-\_\-\-R\-A} mfhi mflo {\bf K\-P\-A\-N\-I\-C\-\_\-\-C\-O\-U\-N\-T} {\bf K\-P\-A\-N\-I\-C\-\_\-\-B\-A\-R} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S\-R} {\bf K\-P\-A\-N\-I\-C\-\_\-\-C\-R} {\bf K\-P\-A\-N\-I\-C\-\_\-\-E\-P\-C} {\bf K\-P\-A\-N\-I\-C\-\_\-\-H\-I} {\bf K\-P\-A\-N\-I\-C\-\_\-\-L\-O} la}}\label{mips_2entry_8S_a834b90b9918d03bb7f429b845f72164a}
+\hypertarget{mips_2entry_8S_a4aae0b089c5269a564bd882bfc76d8de}{\index{mips/entry.\-S@{mips/entry.\-S}!li@{li}}
+\index{li@{li}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{li}]{\setlength{\rightskip}{0pt plus 5cm}section ax {\bf \-\_\-\-\_\-kdata\-\_\-end} {\bf kinit} \-\_\-\-\_\-dtb\-\_\-address jr section ax org li}}\label{mips_2entry_8S_a4aae0b089c5269a564bd882bfc76d8de}
+\hypertarget{mips_2entry_8S_a470726200bc61516f5c1638535329434}{\index{mips/entry.\-S@{mips/entry.\-S}!lw@{lw}}
+\index{lw@{lw}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{lw}]{\setlength{\rightskip}{0pt plus 5cm}section text globl {\bf thread\-\_\-context\-\_\-save} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S0} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S1} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S2} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S3} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S4} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S5} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S6} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S7} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S8} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S\-R} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-E\-P\-C} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-R\-A} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S\-P} jr globl {\bf thread\-\_\-context\-\_\-load} {\bf T\-H\-\_\-\-T\-I\-D} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S0} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S1} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S2} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S3} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S4} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S5} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S6} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S7} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S8} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S\-R} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-E\-P\-C} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-R\-A} $\ast$ lw}}\label{mips_2entry_8S_a470726200bc61516f5c1638535329434}
+\hypertarget{mips_2entry_8S_a8e7cde31a48ccd62aababed857194696}{\index{mips/entry.\-S@{mips/entry.\-S}!mfc0@{mfc0}}
+\index{mfc0@{mfc0}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{mfc0}]{\setlength{\rightskip}{0pt plus 5cm}globl {\bf kpanic} {\bf K\-Panic\-Regs\-Val} set noat {\bf K\-P\-A\-N\-I\-C\-\_\-\-A\-T} $\ast$set at {\bf K\-P\-A\-N\-I\-C\-\_\-\-V0} {\bf K\-P\-A\-N\-I\-C\-\_\-\-V1} {\bf K\-P\-A\-N\-I\-C\-\_\-\-A0} {\bf K\-P\-A\-N\-I\-C\-\_\-\-A1} {\bf K\-P\-A\-N\-I\-C\-\_\-\-A2} {\bf K\-P\-A\-N\-I\-C\-\_\-\-A3} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T0} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T1} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T2} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T3} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T4} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T5} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T6} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T7} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S0} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S1} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S2} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S3} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S4} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S5} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S6} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S7} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T8} {\bf K\-P\-A\-N\-I\-C\-\_\-\-T9} {\bf K\-P\-A\-N\-I\-C\-\_\-\-G\-P} {\bf K\-P\-A\-N\-I\-C\-\_\-\-S\-P} {\bf K\-P\-A\-N\-I\-C\-\_\-\-F\-P} {\bf K\-P\-A\-N\-I\-C\-\_\-\-R\-A} mfc0}}\label{mips_2entry_8S_a8e7cde31a48ccd62aababed857194696}
+\hypertarget{mips_2entry_8S_aedc2f03ca41306be3ed5bee49a63b326}{\index{mips/entry.\-S@{mips/entry.\-S}!move@{move}}
+\index{move@{move}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{move}]{\setlength{\rightskip}{0pt plus 5cm}section ax {\bf \-\_\-\-\_\-kdata\-\_\-end} {\bf kinit} \-\_\-\-\_\-dtb\-\_\-address jr section ax org {\bf syscall\-\_\-handler} {\bf irq\-\_\-handler} j {\bf kpanic} {\bf Thread\-Current} {\bf Syscall\-Vector} {\bf S\-Y\-S\-C\-A\-L\-L\-\_\-\-N\-R} jalr $\ast$ eret move}}\label{mips_2entry_8S_aedc2f03ca41306be3ed5bee49a63b326}
+\hypertarget{mips_2entry_8S_a586efcb1ce14274ebde0a48ee5903ea6}{\index{mips/entry.\-S@{mips/entry.\-S}!mtc0@{mtc0}}
+\index{mtc0@{mtc0}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{mtc0}]{\setlength{\rightskip}{0pt plus 5cm}section text globl {\bf thread\-\_\-context\-\_\-save} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S0} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S1} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S2} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S3} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S4} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S5} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S6} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S7} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S8} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S\-R} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-E\-P\-C} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-R\-A} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S\-P} jr globl {\bf thread\-\_\-context\-\_\-load} {\bf T\-H\-\_\-\-T\-I\-D} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S0} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S1} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S2} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S3} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S4} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S5} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S6} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S7} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S8} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S\-R} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-E\-P\-C} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-R\-A} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S\-P} mtc0}}\label{mips_2entry_8S_a586efcb1ce14274ebde0a48ee5903ea6}
+\hypertarget{mips_2entry_8S_a7be273109aad6a792e6f802e2f94dd1e}{\index{mips/entry.\-S@{mips/entry.\-S}!sll@{sll}}
+\index{sll@{sll}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{sll}]{\setlength{\rightskip}{0pt plus 5cm}section ax {\bf \-\_\-\-\_\-kdata\-\_\-end} {\bf kinit} \-\_\-\-\_\-dtb\-\_\-address jr section ax org {\bf syscall\-\_\-handler} {\bf irq\-\_\-handler} j {\bf kpanic} {\bf Thread\-Current} {\bf Syscall\-Vector} {\bf S\-Y\-S\-C\-A\-L\-L\-\_\-\-N\-R} sll}}\label{mips_2entry_8S_a7be273109aad6a792e6f802e2f94dd1e}
+\hypertarget{mips_2entry_8S_a50257344f74ff9744ffcbbcac96a8f4c}{\index{mips/entry.\-S@{mips/entry.\-S}!sw@{sw}}
+\index{sw@{sw}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{sw}]{\setlength{\rightskip}{0pt plus 5cm}section text globl {\bf thread\-\_\-context\-\_\-save} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S0} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S1} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S2} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S3} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S4} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S5} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S6} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S7} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S8} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-S\-R} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-E\-P\-C} {\bf T\-H\-\_\-\-C\-O\-N\-T\-E\-X\-T\-\_\-\-R\-A} $\ast$ sw}}\label{mips_2entry_8S_a50257344f74ff9744ffcbbcac96a8f4c}
+\hypertarget{mips_2entry_8S_a37916740c132fd7bd4e7a87888d28df0}{\index{mips/entry.\-S@{mips/entry.\-S}!syscall\-\_\-handler@{syscall\-\_\-handler}}
+\index{syscall\-\_\-handler@{syscall\-\_\-handler}!mips/entry.S@{mips/entry.\-S}}
+\subsubsection[{syscall\-\_\-handler}]{\setlength{\rightskip}{0pt plus 5cm}section ax {\bf \-\_\-\-\_\-kdata\-\_\-end} {\bf kinit} \-\_\-\-\_\-dtb\-\_\-address jr section ax org syscall\-\_\-handler {\bf irq\-\_\-handler} j {\bf kpanic} syscall\-\_\-handler}}\label{mips_2entry_8S_a37916740c132fd7bd4e7a87888d28df0}

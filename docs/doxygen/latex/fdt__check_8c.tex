@@ -1,0 +1,113 @@
+\hypertarget{fdt__check_8c}{\section{/users/enseig/franck/ko6/src/soft/external/libfdt/fdt\-\_\-check.c File Reference}
+\label{fdt__check_8c}\index{/users/enseig/franck/ko6/src/soft/external/libfdt/fdt\-\_\-check.\-c@{/users/enseig/franck/ko6/src/soft/external/libfdt/fdt\-\_\-check.\-c}}
+}
+{\ttfamily \#include \char`\"{}libfdt\-\_\-env.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$external/libfdt/fdt.\-h$>$}\\*
+{\ttfamily \#include $<$external/libfdt/libfdt.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}libfdt\-\_\-internal.\-h\char`\"{}}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{fdt__check_8c_a9dc21cc097687bcc05c5f536d2313a10}{fdt\-\_\-check\-\_\-full} (const void $\ast$fdt, size\-\_\-t bufsize)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{fdt__check_8c_a9dc21cc097687bcc05c5f536d2313a10}{\index{fdt\-\_\-check.\-c@{fdt\-\_\-check.\-c}!fdt\-\_\-check\-\_\-full@{fdt\-\_\-check\-\_\-full}}
+\index{fdt\-\_\-check\-\_\-full@{fdt\-\_\-check\-\_\-full}!fdt_check.c@{fdt\-\_\-check.\-c}}
+\subsubsection[{fdt\-\_\-check\-\_\-full}]{\setlength{\rightskip}{0pt plus 5cm}int fdt\-\_\-check\-\_\-full (
+\begin{DoxyParamCaption}
+\item[{const void $\ast$}]{fdt, }
+\item[{size\-\_\-t}]{bufsize}
+\end{DoxyParamCaption}
+)}}\label{fdt__check_8c_a9dc21cc097687bcc05c5f536d2313a10}
+
+
+References F\-D\-T\-\_\-\-B\-E\-G\-I\-N\-\_\-\-N\-O\-D\-E, fdt\-\_\-check\-\_\-header(), F\-D\-T\-\_\-\-E\-N\-D, F\-D\-T\-\_\-\-E\-N\-D\-\_\-\-N\-O\-D\-E, F\-D\-T\-\_\-\-E\-R\-R\-\_\-\-B\-A\-D\-S\-T\-R\-U\-C\-T\-U\-R\-E, F\-D\-T\-\_\-\-E\-R\-R\-\_\-\-I\-N\-T\-E\-R\-N\-A\-L, F\-D\-T\-\_\-\-E\-R\-R\-\_\-\-T\-R\-U\-N\-C\-A\-T\-E\-D, fdt\-\_\-get\-\_\-name(), fdt\-\_\-getprop\-\_\-by\-\_\-offset(), fdt\-\_\-header\-\_\-size(), fdt\-\_\-next\-\_\-tag(), F\-D\-T\-\_\-\-N\-O\-P, fdt\-\_\-num\-\_\-mem\-\_\-rsv(), F\-D\-T\-\_\-\-P\-R\-O\-P, fdt\-\_\-totalsize, F\-D\-T\-\_\-\-V1\-\_\-\-S\-I\-Z\-E, and I\-N\-T\-\_\-\-M\-A\-X.
+
+
+\begin{DoxyCode}
+14 \{
+15     \textcolor{keywordtype}{int} err;
+16     \textcolor{keywordtype}{int} num\_memrsv;
+17     \textcolor{keywordtype}{int} offset, nextoffset = 0;
+18     \hyperlink{libfdt__env_8h_a435d1572bf3f880d55459d9805097f62}{uint32\_t} \hyperlink{structfdt__property_a6c0d0fd0e741c931f7b3ca1482193740}{tag};
+19     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} depth = 0;
+20     \textcolor{keyword}{const} \textcolor{keywordtype}{void} *prop;
+21     \textcolor{keyword}{const} \textcolor{keywordtype}{char} *propname;
+22     \textcolor{keywordtype}{bool} expect\_end = \textcolor{keyword}{false};
+23 
+24     \textcolor{keywordflow}{if} (bufsize < \hyperlink{fdt_8h_ace28b75a3463b5d1f3bd243ea2116f47}{FDT\_V1\_SIZE})
+25         \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_a2b814a0775d93b5da1442fc091e49958}{FDT\_ERR\_TRUNCATED};
+26     \textcolor{keywordflow}{if} (bufsize < \hyperlink{fdt_8c_afab057440e1d6aa051c30d16d3f416e0}{fdt\_header\_size}(fdt))
+27         \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_a2b814a0775d93b5da1442fc091e49958}{FDT\_ERR\_TRUNCATED};
+28     err = \hyperlink{fdt_8c_a2359dff8b66918e18ba70baab42f2cf1}{fdt\_check\_header}(fdt);
+29     \textcolor{keywordflow}{if} (err != 0)
+30         \textcolor{keywordflow}{return} err;
+31     \textcolor{keywordflow}{if} (bufsize < \hyperlink{libfdt_8h_a2acbb1f436008e0830f7e329bbb13cd0}{fdt\_totalsize}(fdt))
+32         \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_a2b814a0775d93b5da1442fc091e49958}{FDT\_ERR\_TRUNCATED};
+33 
+34     num\_memrsv = \hyperlink{fdt__ro_8c_a79fa5b76564c75c9fb00fe8ca3ba3eee}{fdt\_num\_mem\_rsv}(fdt);
+35     \textcolor{keywordflow}{if} (num\_memrsv < 0)
+36         \textcolor{keywordflow}{return} num\_memrsv;
+37 
+38     \textcolor{keywordflow}{while} (1) \{
+39         offset = nextoffset;
+40         tag = \hyperlink{fdt_8c_ae1b4b34a1b1fa1230d3ccacf14446b61}{fdt\_next\_tag}(fdt, offset, &nextoffset);
+41 
+42         \textcolor{keywordflow}{if} (nextoffset < 0)
+43             \textcolor{keywordflow}{return} nextoffset;
+44 
+45         \textcolor{comment}{/* If we see two root nodes, something is wrong */}
+46         \textcolor{keywordflow}{if} (expect\_end && tag != \hyperlink{fdt_8h_a53275b16340fb458df4782462f283d8c}{FDT\_END})
+47             \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_aef7e5f2183c72ef2b4698bb918d8f2f7}{FDT\_ERR\_BADSTRUCTURE};
+48 
+49         \textcolor{keywordflow}{switch} (tag) \{
+50         \textcolor{keywordflow}{case} \hyperlink{fdt_8h_a95f6ec2ae047c13339f80ca6adeafc21}{FDT\_NOP}:
+51             \textcolor{keywordflow}{break};
+52 
+53         \textcolor{keywordflow}{case} \hyperlink{fdt_8h_a53275b16340fb458df4782462f283d8c}{FDT\_END}:
+54             \textcolor{keywordflow}{if} (depth != 0)
+55                 \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_aef7e5f2183c72ef2b4698bb918d8f2f7}{FDT\_ERR\_BADSTRUCTURE};
+56             \textcolor{keywordflow}{return} 0;
+57 
+58         \textcolor{keywordflow}{case} \hyperlink{fdt_8h_a84974b092f97d4f2588c8efb4f6fdd67}{FDT\_BEGIN\_NODE}:
+59             depth++;
+60             \textcolor{keywordflow}{if} (depth > \hyperlink{cstd_8h_a9ec306f36d50c7375e74f0d1c55a3a67}{INT\_MAX})
+61                 \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_aef7e5f2183c72ef2b4698bb918d8f2f7}{FDT\_ERR\_BADSTRUCTURE};
+62 
+63             \textcolor{comment}{/* The root node must have an empty name */}
+64             \textcolor{keywordflow}{if} (depth == 1) \{
+65                 \textcolor{keyword}{const} \textcolor{keywordtype}{char} *name;
+66                 \textcolor{keywordtype}{int} \hyperlink{structfdt__property_a48e6236319453578c3ca7c106b382a2f}{len};
+67 
+68                 name = \hyperlink{fdt__ro_8c_a22a72941a288c00c88c36164fdc793c0}{fdt\_get\_name}(fdt, offset, &len);
+69                 \textcolor{keywordflow}{if} (!name)
+70                     \textcolor{keywordflow}{return} \hyperlink{structfdt__property_a48e6236319453578c3ca7c106b382a2f}{len};
+71 
+72                 \textcolor{keywordflow}{if} (*name || len)
+73                     \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_aef7e5f2183c72ef2b4698bb918d8f2f7}{FDT\_ERR\_BADSTRUCTURE};
+74             \}
+75             \textcolor{keywordflow}{break};
+76 
+77         \textcolor{keywordflow}{case} \hyperlink{fdt_8h_a97c9b3b1971681a8183442ddd0a8009c}{FDT\_END\_NODE}:
+78             \textcolor{keywordflow}{if} (depth == 0)
+79                 \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_aef7e5f2183c72ef2b4698bb918d8f2f7}{FDT\_ERR\_BADSTRUCTURE};
+80             depth--;
+81             \textcolor{keywordflow}{if} (depth == 0)
+82                 expect\_end = \textcolor{keyword}{true};
+83             \textcolor{keywordflow}{break};
+84 
+85         \textcolor{keywordflow}{case} \hyperlink{fdt_8h_a3304a9313cbf7ecced77f89ff5f25dde}{FDT\_PROP}:
+86             prop = \hyperlink{fdt__ro_8c_a631207472dcddda9470f5791260da0fd}{fdt\_getprop\_by\_offset}(fdt, offset, &propname,
+87                              &err);
+88             \textcolor{keywordflow}{if} (!prop)
+89                 \textcolor{keywordflow}{return} err;
+90             \textcolor{keywordflow}{break};
+91 
+92         \textcolor{keywordflow}{default}:
+93             \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_a02625761a47e8012c53fb389dd25fadd}{FDT\_ERR\_INTERNAL};
+94         \}
+95     \}
+96 \}
+\end{DoxyCode}

@@ -1,0 +1,568 @@
+\hypertarget{libfdt__internal_8h}{\section{/users/enseig/franck/ko6/src/soft/external/libfdt/libfdt\-\_\-internal.h File Reference}
+\label{libfdt__internal_8h}\index{/users/enseig/franck/ko6/src/soft/external/libfdt/libfdt\-\_\-internal.\-h@{/users/enseig/franck/ko6/src/soft/external/libfdt/libfdt\-\_\-internal.\-h}}
+}
+{\ttfamily \#include $<$external/libfdt/fdt.\-h$>$}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{libfdt__internal_8h_a47d522a4cadae635e3549c08f4032c3b}{F\-D\-T\-\_\-\-A\-L\-I\-G\-N}(x, a)~(((x) + (a) -\/ 1) \& $\sim$((a) -\/ 1))
+\item 
+\#define \hyperlink{libfdt__internal_8h_a8955518b67338925d939fe2389b41796}{F\-D\-T\-\_\-\-T\-A\-G\-A\-L\-I\-G\-N}(x)~(\hyperlink{libfdt__internal_8h_a47d522a4cadae635e3549c08f4032c3b}{F\-D\-T\-\_\-\-A\-L\-I\-G\-N}((x), \hyperlink{fdt_8h_ada36dac7d767aceec040a00307dba77b}{F\-D\-T\-\_\-\-T\-A\-G\-S\-I\-Z\-E}))
+\item 
+\#define \hyperlink{libfdt__internal_8h_ad6927f926180469d5c044ec5d3b2f84b}{F\-D\-T\-\_\-\-R\-O\-\_\-\-P\-R\-O\-B\-E}(fdt)
+\item 
+\#define \hyperlink{libfdt__internal_8h_a8beb41f034bfe7967b246bbad463a575}{F\-D\-T\-\_\-\-S\-W\-\_\-\-M\-A\-G\-I\-C}~($\sim$\hyperlink{fdt_8h_a5d5b14eccb44e809abddd8a946ddc8a3}{F\-D\-T\-\_\-\-M\-A\-G\-I\-C})
+\item 
+\#define \hyperlink{libfdt__internal_8h_a3a0c2600c311a1dc98a630160f0835b3}{F\-D\-T\-\_\-\-A\-S\-S\-U\-M\-E\-\_\-\-M\-A\-S\-K}~0
+\item 
+\#define \hyperlink{libfdt__internal_8h_ae26d08ffdd441f73ecf7de7ca35176b9}{can\-\_\-assume}(\-\_\-assume)~\hyperlink{libfdt__internal_8h_af7bd4a400e1fdc9a44f3b34203319c37}{can\-\_\-assume\-\_\-}(A\-S\-S\-U\-M\-E\-\_\- \#\# \-\_\-assume)
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \\*
+\hyperlink{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55baab743d878e05e058f5cddc278cb092ee}{A\-S\-S\-U\-M\-E\-\_\-\-P\-E\-R\-F\-E\-C\-T} = 0xff, 
+\hyperlink{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55baee7dca6868b312c63f8f2c143a5c3256}{A\-S\-S\-U\-M\-E\-\_\-\-V\-A\-L\-I\-D\-\_\-\-D\-T\-B} = 1 $<$$<$ 0, 
+\hyperlink{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55baa6a0060789d8938bc96d4839db17869a}{A\-S\-S\-U\-M\-E\-\_\-\-V\-A\-L\-I\-D\-\_\-\-I\-N\-P\-U\-T} = 1 $<$$<$ 1, 
+\hyperlink{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55ba9ca3361e9a58872c554a377c7b4b1570}{A\-S\-S\-U\-M\-E\-\_\-\-L\-A\-T\-E\-S\-T} = 1 $<$$<$ 2, 
+\\*
+\hyperlink{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55bac2d35d04cf12848ecbd5acc05536907b}{A\-S\-S\-U\-M\-E\-\_\-\-N\-O\-\_\-\-R\-O\-L\-L\-B\-A\-C\-K} = 1 $<$$<$ 3, 
+\hyperlink{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55ba716a54f429f9d9af269dc25fa48eb6fa}{A\-S\-S\-U\-M\-E\-\_\-\-L\-I\-B\-F\-D\-T\-\_\-\-O\-R\-D\-E\-R} = 1 $<$$<$ 4, 
+\hyperlink{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55ba88e1c99ec67f0e46005a0280f1211146}{A\-S\-S\-U\-M\-E\-\_\-\-L\-I\-B\-F\-D\-T\-\_\-\-F\-L\-A\-W\-L\-E\-S\-S} = 1 $<$$<$ 5
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{libfdt__env_8h_a32f2e37ee053cf2ce8ca28d1f74630e5}{int32\-\_\-t} \hyperlink{libfdt__internal_8h_a69f9fe649e0c3dccd2eac79dafe54a4a}{fdt\-\_\-ro\-\_\-probe\-\_\-} (const void $\ast$fdt)
+\item 
+int \hyperlink{libfdt__internal_8h_a8f4832389aff9d7c0663b6b70cdd42dd}{fdt\-\_\-check\-\_\-node\-\_\-offset\-\_\-} (const void $\ast$fdt, int offset)
+\item 
+int \hyperlink{libfdt__internal_8h_a299827db3d34b686d9ca7f4c60b88a08}{fdt\-\_\-check\-\_\-prop\-\_\-offset\-\_\-} (const void $\ast$fdt, int offset)
+\item 
+const char $\ast$ \hyperlink{libfdt__internal_8h_af68faaab7e7f2c691bfb1679da262bf5}{fdt\-\_\-find\-\_\-string\-\_\-} (const char $\ast$strtab, int tabsize, const char $\ast$s)
+\item 
+int \hyperlink{libfdt__internal_8h_aa3588d65811fd67a0c11c5c60341caa7}{fdt\-\_\-node\-\_\-end\-\_\-offset\-\_\-} (void $\ast$fdt, int nodeoffset)
+\item 
+static const void $\ast$ \hyperlink{libfdt__internal_8h_a669df6806fbbdd717cef1c9c821dff06}{fdt\-\_\-offset\-\_\-ptr\-\_\-} (const void $\ast$fdt, int offset)
+\item 
+static void $\ast$ \hyperlink{libfdt__internal_8h_ae42dc2243a1db6dc0c0eee8771367315}{fdt\-\_\-offset\-\_\-ptr\-\_\-w\-\_\-} (void $\ast$fdt, int offset)
+\item 
+static struct \hyperlink{structfdt__reserve__entry}{fdt\-\_\-reserve\-\_\-entry} $\ast$ \hyperlink{libfdt__internal_8h_ac64edb5a2b383f975d498c4cad5ee81f}{fdt\-\_\-mem\-\_\-rsv\-\_\-} (const void $\ast$fdt, int n)
+\item 
+static struct \hyperlink{structfdt__reserve__entry}{fdt\-\_\-reserve\-\_\-entry} $\ast$ \hyperlink{libfdt__internal_8h_a8ca1c0f897d5cfa497cd9f4c52f8f5e9}{fdt\-\_\-mem\-\_\-rsv\-\_\-w\-\_\-} (void $\ast$fdt, int n)
+\item 
+static \hyperlink{libfdt__env_8h_a435d1572bf3f880d55459d9805097f62}{uint32\-\_\-t} \hyperlink{libfdt__internal_8h_a066e0e174590b6a1a34eef6a0c777710}{fdt32\-\_\-ld\-\_\-} (const \hyperlink{libfdt__env_8h_a76887ac8786252752fb3f9a39b21f3af}{fdt32\-\_\-t} $\ast$p)
+\item 
+static \hyperlink{libfdt__env_8h_aaa5d1cd013383c889537491c3cfd9aad}{uint64\-\_\-t} \hyperlink{libfdt__internal_8h_af075236a40c956f7e24e7ba5235f35ce}{fdt64\-\_\-ld\-\_\-} (const \hyperlink{libfdt__env_8h_ace50a73711239df43c98cc1d5fedd1f8}{fdt64\-\_\-t} $\ast$p)
+\item 
+static \hyperlink{libfdt__env_8h_a1062901a7428fdd9c7f180f5e01ea056}{bool} \hyperlink{libfdt__internal_8h_af7bd4a400e1fdc9a44f3b34203319c37}{can\-\_\-assume\-\_\-} (int mask)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{libfdt__internal_8h_ae26d08ffdd441f73ecf7de7ca35176b9}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!can\-\_\-assume@{can\-\_\-assume}}
+\index{can\-\_\-assume@{can\-\_\-assume}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{can\-\_\-assume}]{\setlength{\rightskip}{0pt plus 5cm}\#define can\-\_\-assume(
+\begin{DoxyParamCaption}
+\item[{}]{\-\_\-assume}
+\end{DoxyParamCaption}
+)~{\bf can\-\_\-assume\-\_\-}(A\-S\-S\-U\-M\-E\-\_\- \#\# \-\_\-assume)}}\label{libfdt__internal_8h_ae26d08ffdd441f73ecf7de7ca35176b9}
+helper macros for checking assumptions 
+
+Referenced by fdt\-\_\-add\-\_\-property\-\_\-(), fdt\-\_\-add\-\_\-subnode\-\_\-namelen(), fdt\-\_\-check\-\_\-header(), fdt\-\_\-check\-\_\-node\-\_\-offset\-\_\-(), fdt\-\_\-check\-\_\-prop\-\_\-offset\-\_\-(), fdt\-\_\-find\-\_\-add\-\_\-string\-\_\-(), fdt\-\_\-get\-\_\-mem\-\_\-rsv(), fdt\-\_\-get\-\_\-name(), fdt\-\_\-get\-\_\-property\-\_\-by\-\_\-offset(), fdt\-\_\-get\-\_\-property\-\_\-by\-\_\-offset\-\_\-(), fdt\-\_\-get\-\_\-property\-\_\-namelen(), fdt\-\_\-get\-\_\-property\-\_\-namelen\-\_\-(), fdt\-\_\-get\-\_\-string(), fdt\-\_\-getprop\-\_\-by\-\_\-offset(), fdt\-\_\-getprop\-\_\-namelen(), fdt\-\_\-header\-\_\-size(), fdt\-\_\-mem\-\_\-rsv(), fdt\-\_\-move(), fdt\-\_\-next\-\_\-tag(), fdt\-\_\-node\-\_\-depth(), fdt\-\_\-offset\-\_\-ptr(), fdt\-\_\-open\-\_\-into(), fdt\-\_\-resize(), fdt\-\_\-ro\-\_\-probe\-\_\-(), fdt\-\_\-rw\-\_\-probe\-\_\-(), fdt\-\_\-supernode\-\_\-atdepth\-\_\-offset(), fdt\-\_\-sw\-\_\-probe\-\_\-(), fdt\-\_\-sw\-\_\-probe\-\_\-memrsv\-\_\-(), and fdt\-\_\-sw\-\_\-probe\-\_\-struct\-\_\-().
+
+\hypertarget{libfdt__internal_8h_a47d522a4cadae635e3549c08f4032c3b}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!F\-D\-T\-\_\-\-A\-L\-I\-G\-N@{F\-D\-T\-\_\-\-A\-L\-I\-G\-N}}
+\index{F\-D\-T\-\_\-\-A\-L\-I\-G\-N@{F\-D\-T\-\_\-\-A\-L\-I\-G\-N}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-A\-L\-I\-G\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-A\-L\-I\-G\-N(
+\begin{DoxyParamCaption}
+\item[{}]{x, }
+\item[{}]{a}
+\end{DoxyParamCaption}
+)~(((x) + (a) -\/ 1) \& $\sim$((a) -\/ 1))}}\label{libfdt__internal_8h_a47d522a4cadae635e3549c08f4032c3b}
+
+
+Referenced by fdt\-\_\-blocks\-\_\-misordered\-\_\-(), fdt\-\_\-create\-\_\-with\-\_\-flags(), fdt\-\_\-open\-\_\-into(), and fdt\-\_\-packblocks\-\_\-().
+
+\hypertarget{libfdt__internal_8h_a3a0c2600c311a1dc98a630160f0835b3}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!F\-D\-T\-\_\-\-A\-S\-S\-U\-M\-E\-\_\-\-M\-A\-S\-K@{F\-D\-T\-\_\-\-A\-S\-S\-U\-M\-E\-\_\-\-M\-A\-S\-K}}
+\index{F\-D\-T\-\_\-\-A\-S\-S\-U\-M\-E\-\_\-\-M\-A\-S\-K@{F\-D\-T\-\_\-\-A\-S\-S\-U\-M\-E\-\_\-\-M\-A\-S\-K}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-A\-S\-S\-U\-M\-E\-\_\-\-M\-A\-S\-K}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-A\-S\-S\-U\-M\-E\-\_\-\-M\-A\-S\-K~0}}\label{libfdt__internal_8h_a3a0c2600c311a1dc98a630160f0835b3}
+
+
+Referenced by can\-\_\-assume\-\_\-().
+
+\hypertarget{libfdt__internal_8h_ad6927f926180469d5c044ec5d3b2f84b}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!F\-D\-T\-\_\-\-R\-O\-\_\-\-P\-R\-O\-B\-E@{F\-D\-T\-\_\-\-R\-O\-\_\-\-P\-R\-O\-B\-E}}
+\index{F\-D\-T\-\_\-\-R\-O\-\_\-\-P\-R\-O\-B\-E@{F\-D\-T\-\_\-\-R\-O\-\_\-\-P\-R\-O\-B\-E}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-R\-O\-\_\-\-P\-R\-O\-B\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-R\-O\-\_\-\-P\-R\-O\-B\-E(
+\begin{DoxyParamCaption}
+\item[{}]{fdt}
+\end{DoxyParamCaption}
+)}}\label{libfdt__internal_8h_ad6927f926180469d5c044ec5d3b2f84b}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\{                           \hyperlink{libfdt__env_8h_a32f2e37ee053cf2ce8ca28d1f74630e5}{\(\backslash\)}
+\hyperlink{libfdt__env_8h_a32f2e37ee053cf2ce8ca28d1f74630e5}{        int32\_t} totalsize\_;                \(\backslash\)
+        if ((totalsize\_ = \hyperlink{fdt_8c_a69f9fe649e0c3dccd2eac79dafe54a4a}{fdt\_ro\_probe\_}(fdt)) < 0) \(\backslash\)
+            return totalsize\_;          \(\backslash\)
+    \}
+\end{DoxyCode}
+
+
+Referenced by fdt\-\_\-get\-\_\-mem\-\_\-rsv(), fdt\-\_\-get\-\_\-path(), fdt\-\_\-move(), fdt\-\_\-node\-\_\-offset\-\_\-by\-\_\-compatible(), fdt\-\_\-node\-\_\-offset\-\_\-by\-\_\-phandle(), fdt\-\_\-node\-\_\-offset\-\_\-by\-\_\-prop\-\_\-value(), fdt\-\_\-open\-\_\-into(), fdt\-\_\-overlay\-\_\-apply(), fdt\-\_\-path\-\_\-offset\-\_\-namelen(), fdt\-\_\-rw\-\_\-probe\-\_\-(), fdt\-\_\-subnode\-\_\-offset\-\_\-namelen(), fdt\-\_\-supernode\-\_\-atdepth\-\_\-offset(), and get\-\_\-path\-\_\-len().
+
+\hypertarget{libfdt__internal_8h_a8beb41f034bfe7967b246bbad463a575}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!F\-D\-T\-\_\-\-S\-W\-\_\-\-M\-A\-G\-I\-C@{F\-D\-T\-\_\-\-S\-W\-\_\-\-M\-A\-G\-I\-C}}
+\index{F\-D\-T\-\_\-\-S\-W\-\_\-\-M\-A\-G\-I\-C@{F\-D\-T\-\_\-\-S\-W\-\_\-\-M\-A\-G\-I\-C}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-S\-W\-\_\-\-M\-A\-G\-I\-C}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-S\-W\-\_\-\-M\-A\-G\-I\-C~($\sim${\bf F\-D\-T\-\_\-\-M\-A\-G\-I\-C})}}\label{libfdt__internal_8h_a8beb41f034bfe7967b246bbad463a575}
+
+
+Referenced by fdt\-\_\-create\-\_\-with\-\_\-flags(), fdt\-\_\-get\-\_\-string(), fdt\-\_\-ro\-\_\-probe\-\_\-(), and fdt\-\_\-sw\-\_\-probe\-\_\-().
+
+\hypertarget{libfdt__internal_8h_a8955518b67338925d939fe2389b41796}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!F\-D\-T\-\_\-\-T\-A\-G\-A\-L\-I\-G\-N@{F\-D\-T\-\_\-\-T\-A\-G\-A\-L\-I\-G\-N}}
+\index{F\-D\-T\-\_\-\-T\-A\-G\-A\-L\-I\-G\-N@{F\-D\-T\-\_\-\-T\-A\-G\-A\-L\-I\-G\-N}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{F\-D\-T\-\_\-\-T\-A\-G\-A\-L\-I\-G\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-T\-A\-G\-A\-L\-I\-G\-N(
+\begin{DoxyParamCaption}
+\item[{}]{x}
+\end{DoxyParamCaption}
+)~({\bf F\-D\-T\-\_\-\-A\-L\-I\-G\-N}((x), {\bf F\-D\-T\-\_\-\-T\-A\-G\-S\-I\-Z\-E}))}}\label{libfdt__internal_8h_a8955518b67338925d939fe2389b41796}
+
+
+Referenced by fdt\-\_\-add\-\_\-property\-\_\-(), fdt\-\_\-add\-\_\-subnode\-\_\-namelen(), fdt\-\_\-appendprop(), fdt\-\_\-begin\-\_\-node(), fdt\-\_\-delprop(), fdt\-\_\-next\-\_\-tag(), fdt\-\_\-property\-\_\-placeholder(), fdt\-\_\-resize\-\_\-property\-\_\-(), and fdt\-\_\-set\-\_\-name().
+
+
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55b}{\subsubsection[{anonymous enum}]{\setlength{\rightskip}{0pt plus 5cm}anonymous enum}}\label{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55b}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{A\-S\-S\-U\-M\-E\-\_\-\-P\-E\-R\-F\-E\-C\-T@{A\-S\-S\-U\-M\-E\-\_\-\-P\-E\-R\-F\-E\-C\-T}!libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}}\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!A\-S\-S\-U\-M\-E\-\_\-\-P\-E\-R\-F\-E\-C\-T@{A\-S\-S\-U\-M\-E\-\_\-\-P\-E\-R\-F\-E\-C\-T}}\item[{\em 
+\hypertarget{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55baab743d878e05e058f5cddc278cb092ee}{A\-S\-S\-U\-M\-E\-\_\-\-P\-E\-R\-F\-E\-C\-T}\label{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55baab743d878e05e058f5cddc278cb092ee}
+}]\index{A\-S\-S\-U\-M\-E\-\_\-\-V\-A\-L\-I\-D\-\_\-\-D\-T\-B@{A\-S\-S\-U\-M\-E\-\_\-\-V\-A\-L\-I\-D\-\_\-\-D\-T\-B}!libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}}\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!A\-S\-S\-U\-M\-E\-\_\-\-V\-A\-L\-I\-D\-\_\-\-D\-T\-B@{A\-S\-S\-U\-M\-E\-\_\-\-V\-A\-L\-I\-D\-\_\-\-D\-T\-B}}\item[{\em 
+\hypertarget{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55baee7dca6868b312c63f8f2c143a5c3256}{A\-S\-S\-U\-M\-E\-\_\-\-V\-A\-L\-I\-D\-\_\-\-D\-T\-B}\label{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55baee7dca6868b312c63f8f2c143a5c3256}
+}]\index{A\-S\-S\-U\-M\-E\-\_\-\-V\-A\-L\-I\-D\-\_\-\-I\-N\-P\-U\-T@{A\-S\-S\-U\-M\-E\-\_\-\-V\-A\-L\-I\-D\-\_\-\-I\-N\-P\-U\-T}!libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}}\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!A\-S\-S\-U\-M\-E\-\_\-\-V\-A\-L\-I\-D\-\_\-\-I\-N\-P\-U\-T@{A\-S\-S\-U\-M\-E\-\_\-\-V\-A\-L\-I\-D\-\_\-\-I\-N\-P\-U\-T}}\item[{\em 
+\hypertarget{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55baa6a0060789d8938bc96d4839db17869a}{A\-S\-S\-U\-M\-E\-\_\-\-V\-A\-L\-I\-D\-\_\-\-I\-N\-P\-U\-T}\label{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55baa6a0060789d8938bc96d4839db17869a}
+}]\index{A\-S\-S\-U\-M\-E\-\_\-\-L\-A\-T\-E\-S\-T@{A\-S\-S\-U\-M\-E\-\_\-\-L\-A\-T\-E\-S\-T}!libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}}\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!A\-S\-S\-U\-M\-E\-\_\-\-L\-A\-T\-E\-S\-T@{A\-S\-S\-U\-M\-E\-\_\-\-L\-A\-T\-E\-S\-T}}\item[{\em 
+\hypertarget{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55ba9ca3361e9a58872c554a377c7b4b1570}{A\-S\-S\-U\-M\-E\-\_\-\-L\-A\-T\-E\-S\-T}\label{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55ba9ca3361e9a58872c554a377c7b4b1570}
+}]\index{A\-S\-S\-U\-M\-E\-\_\-\-N\-O\-\_\-\-R\-O\-L\-L\-B\-A\-C\-K@{A\-S\-S\-U\-M\-E\-\_\-\-N\-O\-\_\-\-R\-O\-L\-L\-B\-A\-C\-K}!libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}}\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!A\-S\-S\-U\-M\-E\-\_\-\-N\-O\-\_\-\-R\-O\-L\-L\-B\-A\-C\-K@{A\-S\-S\-U\-M\-E\-\_\-\-N\-O\-\_\-\-R\-O\-L\-L\-B\-A\-C\-K}}\item[{\em 
+\hypertarget{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55bac2d35d04cf12848ecbd5acc05536907b}{A\-S\-S\-U\-M\-E\-\_\-\-N\-O\-\_\-\-R\-O\-L\-L\-B\-A\-C\-K}\label{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55bac2d35d04cf12848ecbd5acc05536907b}
+}]\index{A\-S\-S\-U\-M\-E\-\_\-\-L\-I\-B\-F\-D\-T\-\_\-\-O\-R\-D\-E\-R@{A\-S\-S\-U\-M\-E\-\_\-\-L\-I\-B\-F\-D\-T\-\_\-\-O\-R\-D\-E\-R}!libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}}\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!A\-S\-S\-U\-M\-E\-\_\-\-L\-I\-B\-F\-D\-T\-\_\-\-O\-R\-D\-E\-R@{A\-S\-S\-U\-M\-E\-\_\-\-L\-I\-B\-F\-D\-T\-\_\-\-O\-R\-D\-E\-R}}\item[{\em 
+\hypertarget{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55ba716a54f429f9d9af269dc25fa48eb6fa}{A\-S\-S\-U\-M\-E\-\_\-\-L\-I\-B\-F\-D\-T\-\_\-\-O\-R\-D\-E\-R}\label{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55ba716a54f429f9d9af269dc25fa48eb6fa}
+}]\index{A\-S\-S\-U\-M\-E\-\_\-\-L\-I\-B\-F\-D\-T\-\_\-\-F\-L\-A\-W\-L\-E\-S\-S@{A\-S\-S\-U\-M\-E\-\_\-\-L\-I\-B\-F\-D\-T\-\_\-\-F\-L\-A\-W\-L\-E\-S\-S}!libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}}\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!A\-S\-S\-U\-M\-E\-\_\-\-L\-I\-B\-F\-D\-T\-\_\-\-F\-L\-A\-W\-L\-E\-S\-S@{A\-S\-S\-U\-M\-E\-\_\-\-L\-I\-B\-F\-D\-T\-\_\-\-F\-L\-A\-W\-L\-E\-S\-S}}\item[{\em 
+\hypertarget{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55ba88e1c99ec67f0e46005a0280f1211146}{A\-S\-S\-U\-M\-E\-\_\-\-L\-I\-B\-F\-D\-T\-\_\-\-F\-L\-A\-W\-L\-E\-S\-S}\label{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55ba88e1c99ec67f0e46005a0280f1211146}
+}]\end{description}
+\end{Desc}
+
+\begin{DoxyCode}
+89      \{
+90     \textcolor{comment}{/*}
+91 \textcolor{comment}{     * This does essentially no checks. Only the latest device-tree}
+92 \textcolor{comment}{     * version is correctly handled. Inconsistencies or errors in the device}
+93 \textcolor{comment}{     * tree may cause undefined behaviour or crashes. Invalid parameters}
+94 \textcolor{comment}{     * passed to libfdt may do the same.}
+95 \textcolor{comment}{     *}
+96 \textcolor{comment}{     * If an error occurs when modifying the tree it may leave the tree in}
+97 \textcolor{comment}{     * an intermediate (but valid) state. As an example, adding a property}
+98 \textcolor{comment}{     * where there is insufficient space may result in the property name}
+99 \textcolor{comment}{     * being added to the string table even though the property itself is}
+100 \textcolor{comment}{     * not added to the struct section.}
+101 \textcolor{comment}{     *}
+102 \textcolor{comment}{     * Only use this if you have a fully validated device tree with}
+103 \textcolor{comment}{     * the latest supported version and wish to minimise code size.}
+104 \textcolor{comment}{     */}
+105     \hyperlink{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55baab743d878e05e058f5cddc278cb092ee}{ASSUME\_PERFECT}        = 0xff,
+106 
+107     \textcolor{comment}{/*}
+108 \textcolor{comment}{     * This assumes that the device tree is sane. i.e. header metadata}
+109 \textcolor{comment}{     * and basic hierarchy are correct.}
+110 \textcolor{comment}{     *}
+111 \textcolor{comment}{     * With this assumption enabled, normal device trees produced by libfdt}
+112 \textcolor{comment}{     * and the compiler should be handled safely. Malicious device trees and}
+113 \textcolor{comment}{     * complete garbage may cause libfdt to behave badly or crash. Truncated}
+114 \textcolor{comment}{     * device trees (e.g. those only partially loaded) can also cause}
+115 \textcolor{comment}{     * problems.}
+116 \textcolor{comment}{     *}
+117 \textcolor{comment}{     * Note: Only checks that relate exclusively to the device tree itself}
+118 \textcolor{comment}{     * (not the parameters passed to libfdt) are disabled by this}
+119 \textcolor{comment}{     * assumption. This includes checking headers, tags and the like.}
+120 \textcolor{comment}{     */}
+121     \hyperlink{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55baee7dca6868b312c63f8f2c143a5c3256}{ASSUME\_VALID\_DTB}    = 1 << 0,
+122 
+123     \textcolor{comment}{/*}
+124 \textcolor{comment}{     * This builds on ASSUME\_VALID\_DTB and further assumes that libfdt}
+125 \textcolor{comment}{     * functions are called with valid parameters, i.e. not trigger}
+126 \textcolor{comment}{     * FDT\_ERR\_BADOFFSET or offsets that are out of bounds. It disables any}
+127 \textcolor{comment}{     * extensive checking of parameters and the device tree, making various}
+128 \textcolor{comment}{     * assumptions about correctness.}
+129 \textcolor{comment}{     *}
+130 \textcolor{comment}{     * It doesn't make sense to enable this assumption unless}
+131 \textcolor{comment}{     * ASSUME\_VALID\_DTB is also enabled.}
+132 \textcolor{comment}{     */}
+133     \hyperlink{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55baa6a0060789d8938bc96d4839db17869a}{ASSUME\_VALID\_INPUT}    = 1 << 1,
+134 
+135     \textcolor{comment}{/*}
+136 \textcolor{comment}{     * This disables checks for device-tree version and removes all code}
+137 \textcolor{comment}{     * which handles older versions.}
+138 \textcolor{comment}{     *}
+139 \textcolor{comment}{     * Only enable this if you know you have a device tree with the latest}
+140 \textcolor{comment}{     * version.}
+141 \textcolor{comment}{     */}
+142     \hyperlink{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55ba9ca3361e9a58872c554a377c7b4b1570}{ASSUME\_LATEST}      = 1 << 2,
+143 
+144     \textcolor{comment}{/*}
+145 \textcolor{comment}{     * This assumes that it is OK for a failed addition to the device tree,}
+146 \textcolor{comment}{     * due to lack of space or some other problem, to skip any rollback}
+147 \textcolor{comment}{     * steps (such as dropping the property name from the string table).}
+148 \textcolor{comment}{     * This is safe to enable in most circumstances, even though it may}
+149 \textcolor{comment}{     * leave the tree in a sub-optimal state.}
+150 \textcolor{comment}{     */}
+151     \hyperlink{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55bac2d35d04cf12848ecbd5acc05536907b}{ASSUME\_NO\_ROLLBACK}    = 1 << 3,
+152 
+153     \textcolor{comment}{/*}
+154 \textcolor{comment}{     * This assumes that the device tree components appear in a 'convenient'}
+155 \textcolor{comment}{     * order, i.e. the memory reservation block first, then the structure}
+156 \textcolor{comment}{     * block and finally the string block.}
+157 \textcolor{comment}{     *}
+158 \textcolor{comment}{     * This order is not specified by the device-tree specification,}
+159 \textcolor{comment}{     * but is expected by libfdt. The device-tree compiler always created}
+160 \textcolor{comment}{     * device trees with this order.}
+161 \textcolor{comment}{     *}
+162 \textcolor{comment}{     * This assumption disables a check in fdt\_open\_into() and removes the}
+163 \textcolor{comment}{     * ability to fix the problem there. This is safe if you know that the}
+164 \textcolor{comment}{     * device tree is correctly ordered. See fdt\_blocks\_misordered\_().}
+165 \textcolor{comment}{     */}
+166     \hyperlink{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55ba716a54f429f9d9af269dc25fa48eb6fa}{ASSUME\_LIBFDT\_ORDER}  = 1 << 4,
+167 
+168     \textcolor{comment}{/*}
+169 \textcolor{comment}{     * This assumes that libfdt itself does not have any internal bugs. It}
+170 \textcolor{comment}{     * drops certain checks that should never be needed unless libfdt has an}
+171 \textcolor{comment}{     * undiscovered bug.}
+172 \textcolor{comment}{     *}
+173 \textcolor{comment}{     * This can generally be considered safe to enable.}
+174 \textcolor{comment}{     */}
+175     \hyperlink{libfdt__internal_8h_a06fc87d81c62e9abb8790b6e5713c55ba88e1c99ec67f0e46005a0280f1211146}{ASSUME\_LIBFDT\_FLAWLESS}    = 1 << 5,
+176 \};
+\end{DoxyCode}
+
+
+\subsection{Function Documentation}
+\hypertarget{libfdt__internal_8h_af7bd4a400e1fdc9a44f3b34203319c37}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!can\-\_\-assume\-\_\-@{can\-\_\-assume\-\_\-}}
+\index{can\-\_\-assume\-\_\-@{can\-\_\-assume\-\_\-}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{can\-\_\-assume\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf bool} can\-\_\-assume\-\_\- (
+\begin{DoxyParamCaption}
+\item[{int}]{mask}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{libfdt__internal_8h_af7bd4a400e1fdc9a44f3b34203319c37}
+\hyperlink{libfdt__internal_8h_af7bd4a400e1fdc9a44f3b34203319c37}{can\-\_\-assume\-\_\-()} -\/ check if a particular assumption is enabled
+
+\-: Mask to check (A\-S\-S\-U\-M\-E\-\_\-...) \begin{DoxyReturn}{Returns}
+true if that assumption is enabled, else false 
+\end{DoxyReturn}
+
+
+References F\-D\-T\-\_\-\-A\-S\-S\-U\-M\-E\-\_\-\-M\-A\-S\-K.
+
+
+\begin{DoxyCode}
+185 \{
+186     \textcolor{keywordflow}{return} \hyperlink{libfdt__internal_8h_a3a0c2600c311a1dc98a630160f0835b3}{FDT\_ASSUME\_MASK} & mask;
+187 \}
+\end{DoxyCode}
+\hypertarget{libfdt__internal_8h_a066e0e174590b6a1a34eef6a0c777710}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!fdt32\-\_\-ld\-\_\-@{fdt32\-\_\-ld\-\_\-}}
+\index{fdt32\-\_\-ld\-\_\-@{fdt32\-\_\-ld\-\_\-}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{fdt32\-\_\-ld\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf uint32\-\_\-t} fdt32\-\_\-ld\-\_\- (
+\begin{DoxyParamCaption}
+\item[{const {\bf fdt32\-\_\-t} $\ast$}]{p}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{libfdt__internal_8h_a066e0e174590b6a1a34eef6a0c777710}
+
+
+References fdt32\-\_\-to\-\_\-cpu().
+
+
+
+Referenced by fdt\-\_\-get\-\_\-phandle(), fdt\-\_\-get\-\_\-property\-\_\-by\-\_\-offset\-\_\-(), fdt\-\_\-get\-\_\-property\-\_\-namelen\-\_\-(), fdt\-\_\-getprop\-\_\-by\-\_\-offset(), and fdt\-\_\-getprop\-\_\-namelen().
+
+
+\begin{DoxyCode}
+59 \{
+60     \textcolor{keywordflow}{return} \hyperlink{libfdt__env_8h_a6485ea7225a1927cc5ab1a34dabe298f}{fdt32\_to\_cpu}(*p);
+61 \}
+\end{DoxyCode}
+\hypertarget{libfdt__internal_8h_af075236a40c956f7e24e7ba5235f35ce}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!fdt64\-\_\-ld\-\_\-@{fdt64\-\_\-ld\-\_\-}}
+\index{fdt64\-\_\-ld\-\_\-@{fdt64\-\_\-ld\-\_\-}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{fdt64\-\_\-ld\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf uint64\-\_\-t} fdt64\-\_\-ld\-\_\- (
+\begin{DoxyParamCaption}
+\item[{const {\bf fdt64\-\_\-t} $\ast$}]{p}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{libfdt__internal_8h_af075236a40c956f7e24e7ba5235f35ce}
+
+
+References fdt64\-\_\-to\-\_\-cpu().
+
+
+
+Referenced by fdt\-\_\-get\-\_\-mem\-\_\-rsv(), and fdt\-\_\-num\-\_\-mem\-\_\-rsv().
+
+
+\begin{DoxyCode}
+64 \{
+65     \textcolor{keywordflow}{return} \hyperlink{libfdt__env_8h_a5396406ea98e87fd7a42e0d1d7a80a89}{fdt64\_to\_cpu}(*p);
+66 \}
+\end{DoxyCode}
+\hypertarget{libfdt__internal_8h_a8f4832389aff9d7c0663b6b70cdd42dd}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!fdt\-\_\-check\-\_\-node\-\_\-offset\-\_\-@{fdt\-\_\-check\-\_\-node\-\_\-offset\-\_\-}}
+\index{fdt\-\_\-check\-\_\-node\-\_\-offset\-\_\-@{fdt\-\_\-check\-\_\-node\-\_\-offset\-\_\-}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{fdt\-\_\-check\-\_\-node\-\_\-offset\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}int fdt\-\_\-check\-\_\-node\-\_\-offset\-\_\- (
+\begin{DoxyParamCaption}
+\item[{const void $\ast$}]{fdt, }
+\item[{int}]{offset}
+\end{DoxyParamCaption}
+)}}\label{libfdt__internal_8h_a8f4832389aff9d7c0663b6b70cdd42dd}
+
+
+References can\-\_\-assume, F\-D\-T\-\_\-\-B\-E\-G\-I\-N\-\_\-\-N\-O\-D\-E, F\-D\-T\-\_\-\-E\-R\-R\-\_\-\-B\-A\-D\-O\-F\-F\-S\-E\-T, fdt\-\_\-next\-\_\-tag(), and F\-D\-T\-\_\-\-T\-A\-G\-S\-I\-Z\-E.
+
+
+
+Referenced by fdt\-\_\-add\-\_\-property\-\_\-(), fdt\-\_\-first\-\_\-property\-\_\-offset(), fdt\-\_\-get\-\_\-name(), and fdt\-\_\-next\-\_\-node().
+
+
+\begin{DoxyCode}
+224 \{
+225     \textcolor{keywordflow}{if} (!\hyperlink{libfdt__internal_8h_ae26d08ffdd441f73ecf7de7ca35176b9}{can\_assume}(VALID\_INPUT)
+226         && ((offset < 0) || (offset % \hyperlink{fdt_8h_ada36dac7d767aceec040a00307dba77b}{FDT\_TAGSIZE})))
+227         \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_a5025b6b09a009bd2b516e6a831d7ce72}{FDT\_ERR\_BADOFFSET};
+228 
+229     \textcolor{keywordflow}{if} (\hyperlink{fdt_8c_ae1b4b34a1b1fa1230d3ccacf14446b61}{fdt\_next\_tag}(fdt, offset, &offset) != \hyperlink{fdt_8h_a84974b092f97d4f2588c8efb4f6fdd67}{FDT\_BEGIN\_NODE})
+230         \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_a5025b6b09a009bd2b516e6a831d7ce72}{FDT\_ERR\_BADOFFSET};
+231 
+232     \textcolor{keywordflow}{return} offset;
+233 \}
+\end{DoxyCode}
+\hypertarget{libfdt__internal_8h_a299827db3d34b686d9ca7f4c60b88a08}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!fdt\-\_\-check\-\_\-prop\-\_\-offset\-\_\-@{fdt\-\_\-check\-\_\-prop\-\_\-offset\-\_\-}}
+\index{fdt\-\_\-check\-\_\-prop\-\_\-offset\-\_\-@{fdt\-\_\-check\-\_\-prop\-\_\-offset\-\_\-}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{fdt\-\_\-check\-\_\-prop\-\_\-offset\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}int fdt\-\_\-check\-\_\-prop\-\_\-offset\-\_\- (
+\begin{DoxyParamCaption}
+\item[{const void $\ast$}]{fdt, }
+\item[{int}]{offset}
+\end{DoxyParamCaption}
+)}}\label{libfdt__internal_8h_a299827db3d34b686d9ca7f4c60b88a08}
+
+
+References can\-\_\-assume, F\-D\-T\-\_\-\-E\-R\-R\-\_\-\-B\-A\-D\-O\-F\-F\-S\-E\-T, fdt\-\_\-next\-\_\-tag(), F\-D\-T\-\_\-\-P\-R\-O\-P, and F\-D\-T\-\_\-\-T\-A\-G\-S\-I\-Z\-E.
+
+
+
+Referenced by fdt\-\_\-get\-\_\-property\-\_\-by\-\_\-offset\-\_\-(), and fdt\-\_\-next\-\_\-property\-\_\-offset().
+
+
+\begin{DoxyCode}
+236 \{
+237     \textcolor{keywordflow}{if} (!\hyperlink{libfdt__internal_8h_ae26d08ffdd441f73ecf7de7ca35176b9}{can\_assume}(VALID\_INPUT)
+238         && ((offset < 0) || (offset % \hyperlink{fdt_8h_ada36dac7d767aceec040a00307dba77b}{FDT\_TAGSIZE})))
+239         \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_a5025b6b09a009bd2b516e6a831d7ce72}{FDT\_ERR\_BADOFFSET};
+240 
+241     \textcolor{keywordflow}{if} (\hyperlink{fdt_8c_ae1b4b34a1b1fa1230d3ccacf14446b61}{fdt\_next\_tag}(fdt, offset, &offset) != \hyperlink{fdt_8h_a3304a9313cbf7ecced77f89ff5f25dde}{FDT\_PROP})
+242         \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_a5025b6b09a009bd2b516e6a831d7ce72}{FDT\_ERR\_BADOFFSET};
+243 
+244     \textcolor{keywordflow}{return} offset;
+245 \}
+\end{DoxyCode}
+\hypertarget{libfdt__internal_8h_af68faaab7e7f2c691bfb1679da262bf5}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!fdt\-\_\-find\-\_\-string\-\_\-@{fdt\-\_\-find\-\_\-string\-\_\-}}
+\index{fdt\-\_\-find\-\_\-string\-\_\-@{fdt\-\_\-find\-\_\-string\-\_\-}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{fdt\-\_\-find\-\_\-string\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ fdt\-\_\-find\-\_\-string\-\_\- (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{strtab, }
+\item[{int}]{tabsize, }
+\item[{const char $\ast$}]{s}
+\end{DoxyParamCaption}
+)}}\label{libfdt__internal_8h_af68faaab7e7f2c691bfb1679da262bf5}
+
+
+References fdt\-\_\-property\-::len, memcmp(), N\-U\-L\-L, and strlen().
+
+
+
+Referenced by fdt\-\_\-find\-\_\-add\-\_\-string\-\_\-().
+
+
+\begin{DoxyCode}
+316 \{
+317     \textcolor{keywordtype}{int} \hyperlink{structfdt__property_a48e6236319453578c3ca7c106b382a2f}{len} = \hyperlink{cstd_8c_a54684bded3e61e2d78d490650f9b706a}{strlen}(s) + 1;
+318     \textcolor{keyword}{const} \textcolor{keywordtype}{char} *last = strtab + tabsize - \hyperlink{structfdt__property_a48e6236319453578c3ca7c106b382a2f}{len};
+319     \textcolor{keyword}{const} \textcolor{keywordtype}{char} *p;
+320 
+321     \textcolor{keywordflow}{for} (p = strtab; p <= last; p++)
+322         \textcolor{keywordflow}{if} (\hyperlink{cstd_8c_ace6c4869ab3af01c6f27eac47773917a}{memcmp}(p, s, len) == 0)
+323             \textcolor{keywordflow}{return} p;
+324     \textcolor{keywordflow}{return} \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL};
+325 \}
+\end{DoxyCode}
+\hypertarget{libfdt__internal_8h_ac64edb5a2b383f975d498c4cad5ee81f}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!fdt\-\_\-mem\-\_\-rsv\-\_\-@{fdt\-\_\-mem\-\_\-rsv\-\_\-}}
+\index{fdt\-\_\-mem\-\_\-rsv\-\_\-@{fdt\-\_\-mem\-\_\-rsv\-\_\-}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{fdt\-\_\-mem\-\_\-rsv\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}static struct {\bf fdt\-\_\-reserve\-\_\-entry}$\ast$ fdt\-\_\-mem\-\_\-rsv\-\_\- (
+\begin{DoxyParamCaption}
+\item[{const void $\ast$}]{fdt, }
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{libfdt__internal_8h_ac64edb5a2b383f975d498c4cad5ee81f}
+
+
+References fdt\-\_\-off\-\_\-mem\-\_\-rsvmap.
+
+
+
+Referenced by fdt\-\_\-mem\-\_\-rsv(), and fdt\-\_\-mem\-\_\-rsv\-\_\-w\-\_\-().
+
+
+\begin{DoxyCode}
+37 \{
+38     \textcolor{keyword}{const} \textcolor{keyword}{struct }\hyperlink{structfdt__reserve__entry}{fdt\_reserve\_entry} *rsv\_table =
+39         (\textcolor{keyword}{const} \textcolor{keyword}{struct }\hyperlink{structfdt__reserve__entry}{fdt\_reserve\_entry} *)
+40         ((\textcolor{keyword}{const} \textcolor{keywordtype}{char} *)fdt + \hyperlink{libfdt_8h_ad34e2939365df0a17061d177356b4e39}{fdt\_off\_mem\_rsvmap}(fdt));
+41 
+42     \textcolor{keywordflow}{return} rsv\_table + n;
+43 \}
+\end{DoxyCode}
+\hypertarget{libfdt__internal_8h_a8ca1c0f897d5cfa497cd9f4c52f8f5e9}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!fdt\-\_\-mem\-\_\-rsv\-\_\-w\-\_\-@{fdt\-\_\-mem\-\_\-rsv\-\_\-w\-\_\-}}
+\index{fdt\-\_\-mem\-\_\-rsv\-\_\-w\-\_\-@{fdt\-\_\-mem\-\_\-rsv\-\_\-w\-\_\-}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{fdt\-\_\-mem\-\_\-rsv\-\_\-w\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}static struct {\bf fdt\-\_\-reserve\-\_\-entry}$\ast$ fdt\-\_\-mem\-\_\-rsv\-\_\-w\-\_\- (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{fdt, }
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{libfdt__internal_8h_a8ca1c0f897d5cfa497cd9f4c52f8f5e9}
+
+
+References fdt\-\_\-mem\-\_\-rsv\-\_\-().
+
+
+
+Referenced by fdt\-\_\-add\-\_\-mem\-\_\-rsv(), and fdt\-\_\-del\-\_\-mem\-\_\-rsv().
+
+
+\begin{DoxyCode}
+45 \{
+46     \textcolor{keywordflow}{return} (\textcolor{keywordtype}{void} *)(\hyperlink{libfdt__env_8h_a83242de74310b4aec3fc506bc3644211}{uintptr\_t})\hyperlink{libfdt__internal_8h_ac64edb5a2b383f975d498c4cad5ee81f}{fdt\_mem\_rsv\_}(fdt, n);
+47 \}
+\end{DoxyCode}
+\hypertarget{libfdt__internal_8h_aa3588d65811fd67a0c11c5c60341caa7}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!fdt\-\_\-node\-\_\-end\-\_\-offset\-\_\-@{fdt\-\_\-node\-\_\-end\-\_\-offset\-\_\-}}
+\index{fdt\-\_\-node\-\_\-end\-\_\-offset\-\_\-@{fdt\-\_\-node\-\_\-end\-\_\-offset\-\_\-}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{fdt\-\_\-node\-\_\-end\-\_\-offset\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}int fdt\-\_\-node\-\_\-end\-\_\-offset\-\_\- (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{fdt, }
+\item[{int}]{nodeoffset}
+\end{DoxyParamCaption}
+)}}\label{libfdt__internal_8h_aa3588d65811fd67a0c11c5c60341caa7}
+
+
+References fdt\-\_\-next\-\_\-node().
+
+
+
+Referenced by fdt\-\_\-del\-\_\-node(), and fdt\-\_\-nop\-\_\-node().
+
+
+\begin{DoxyCode}
+74 \{
+75     \textcolor{keywordtype}{int} depth = 0;
+76 
+77     \textcolor{keywordflow}{while} ((offset >= 0) && (depth >= 0))
+78         offset = \hyperlink{fdt_8c_a6603ac8041afcc7fde5c0b25de765103}{fdt\_next\_node}(fdt, offset, &depth);
+79 
+80     \textcolor{keywordflow}{return} offset;
+81 \}
+\end{DoxyCode}
+\hypertarget{libfdt__internal_8h_a669df6806fbbdd717cef1c9c821dff06}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!fdt\-\_\-offset\-\_\-ptr\-\_\-@{fdt\-\_\-offset\-\_\-ptr\-\_\-}}
+\index{fdt\-\_\-offset\-\_\-ptr\-\_\-@{fdt\-\_\-offset\-\_\-ptr\-\_\-}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{fdt\-\_\-offset\-\_\-ptr\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}static const void$\ast$ fdt\-\_\-offset\-\_\-ptr\-\_\- (
+\begin{DoxyParamCaption}
+\item[{const void $\ast$}]{fdt, }
+\item[{int}]{offset}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{libfdt__internal_8h_a669df6806fbbdd717cef1c9c821dff06}
+
+
+References fdt\-\_\-off\-\_\-dt\-\_\-struct.
+
+
+
+Referenced by fdt\-\_\-get\-\_\-name(), fdt\-\_\-get\-\_\-property\-\_\-by\-\_\-offset\-\_\-(), fdt\-\_\-offset\-\_\-ptr(), and fdt\-\_\-offset\-\_\-ptr\-\_\-w\-\_\-().
+
+
+\begin{DoxyCode}
+27 \{
+28     \textcolor{keywordflow}{return} (\textcolor{keyword}{const} \textcolor{keywordtype}{char} *)fdt + \hyperlink{libfdt_8h_ae2ef3611d83ac29bb6de09594ead9969}{fdt\_off\_dt\_struct}(fdt) + offset;
+29 \}
+\end{DoxyCode}
+\hypertarget{libfdt__internal_8h_ae42dc2243a1db6dc0c0eee8771367315}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!fdt\-\_\-offset\-\_\-ptr\-\_\-w\-\_\-@{fdt\-\_\-offset\-\_\-ptr\-\_\-w\-\_\-}}
+\index{fdt\-\_\-offset\-\_\-ptr\-\_\-w\-\_\-@{fdt\-\_\-offset\-\_\-ptr\-\_\-w\-\_\-}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{fdt\-\_\-offset\-\_\-ptr\-\_\-w\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}static void$\ast$ fdt\-\_\-offset\-\_\-ptr\-\_\-w\-\_\- (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{fdt, }
+\item[{int}]{offset}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{libfdt__internal_8h_ae42dc2243a1db6dc0c0eee8771367315}
+
+
+References fdt\-\_\-offset\-\_\-ptr\-\_\-().
+
+
+
+Referenced by fdt\-\_\-add\-\_\-property\-\_\-(), fdt\-\_\-add\-\_\-subnode\-\_\-namelen(), fdt\-\_\-del\-\_\-node(), fdt\-\_\-finish(), and fdt\-\_\-grab\-\_\-space\-\_\-().
+
+
+\begin{DoxyCode}
+32 \{
+33     \textcolor{keywordflow}{return} (\textcolor{keywordtype}{void} *)(\hyperlink{libfdt__env_8h_a83242de74310b4aec3fc506bc3644211}{uintptr\_t})\hyperlink{libfdt__internal_8h_a669df6806fbbdd717cef1c9c821dff06}{fdt\_offset\_ptr\_}(fdt, offset);
+34 \}
+\end{DoxyCode}
+\hypertarget{libfdt__internal_8h_a69f9fe649e0c3dccd2eac79dafe54a4a}{\index{libfdt\-\_\-internal.\-h@{libfdt\-\_\-internal.\-h}!fdt\-\_\-ro\-\_\-probe\-\_\-@{fdt\-\_\-ro\-\_\-probe\-\_\-}}
+\index{fdt\-\_\-ro\-\_\-probe\-\_\-@{fdt\-\_\-ro\-\_\-probe\-\_\-}!libfdt_internal.h@{libfdt\-\_\-internal.\-h}}
+\subsubsection[{fdt\-\_\-ro\-\_\-probe\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}{\bf int32\-\_\-t} fdt\-\_\-ro\-\_\-probe\-\_\- (
+\begin{DoxyParamCaption}
+\item[{const void $\ast$}]{fdt}
+\end{DoxyParamCaption}
+)}}\label{libfdt__internal_8h_a69f9fe649e0c3dccd2eac79dafe54a4a}
+
+
+References can\-\_\-assume, F\-D\-T\-\_\-\-E\-R\-R\-\_\-\-A\-L\-I\-G\-N\-M\-E\-N\-T, F\-D\-T\-\_\-\-E\-R\-R\-\_\-\-B\-A\-D\-M\-A\-G\-I\-C, F\-D\-T\-\_\-\-E\-R\-R\-\_\-\-B\-A\-D\-S\-T\-A\-T\-E, F\-D\-T\-\_\-\-E\-R\-R\-\_\-\-B\-A\-D\-V\-E\-R\-S\-I\-O\-N, F\-D\-T\-\_\-\-E\-R\-R\-\_\-\-T\-R\-U\-N\-C\-A\-T\-E\-D, F\-D\-T\-\_\-\-F\-I\-R\-S\-T\-\_\-\-S\-U\-P\-P\-O\-R\-T\-E\-D\-\_\-\-V\-E\-R\-S\-I\-O\-N, fdt\-\_\-last\-\_\-comp\-\_\-version, F\-D\-T\-\_\-\-L\-A\-S\-T\-\_\-\-S\-U\-P\-P\-O\-R\-T\-E\-D\-\_\-\-V\-E\-R\-S\-I\-O\-N, F\-D\-T\-\_\-\-M\-A\-G\-I\-C, fdt\-\_\-magic, fdt\-\_\-size\-\_\-dt\-\_\-struct, F\-D\-T\-\_\-\-S\-W\-\_\-\-M\-A\-G\-I\-C, fdt\-\_\-totalsize, fdt\-\_\-version, and I\-N\-T32\-\_\-\-M\-A\-X.
+
+
+
+Referenced by fdt\-\_\-get\-\_\-name(), and fdt\-\_\-get\-\_\-string().
+
+
+\begin{DoxyCode}
+19 \{
+20     \hyperlink{libfdt__env_8h_a435d1572bf3f880d55459d9805097f62}{uint32\_t} totalsize = \hyperlink{libfdt_8h_a2acbb1f436008e0830f7e329bbb13cd0}{fdt\_totalsize}(fdt);
+21 
+22     \textcolor{keywordflow}{if} (\hyperlink{libfdt__internal_8h_ae26d08ffdd441f73ecf7de7ca35176b9}{can\_assume}(VALID\_DTB))
+23         \textcolor{keywordflow}{return} totalsize;
+24 
+25     \textcolor{comment}{/* The device tree must be at an 8-byte aligned address */}
+26     \textcolor{keywordflow}{if} ((\hyperlink{libfdt__env_8h_a83242de74310b4aec3fc506bc3644211}{uintptr\_t})fdt & 7)
+27         \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_a3700c1466eed663efeb8cfcfb68410e7}{FDT\_ERR\_ALIGNMENT};
+28 
+29     \textcolor{keywordflow}{if} (\hyperlink{libfdt_8h_a783c67f6971d10232c84ecd0aa76f461}{fdt\_magic}(fdt) == \hyperlink{fdt_8h_a5d5b14eccb44e809abddd8a946ddc8a3}{FDT\_MAGIC}) \{
+30         \textcolor{comment}{/* Complete tree */}
+31         \textcolor{keywordflow}{if} (!\hyperlink{libfdt__internal_8h_ae26d08ffdd441f73ecf7de7ca35176b9}{can\_assume}(LATEST)) \{
+32             \textcolor{keywordflow}{if} (\hyperlink{libfdt_8h_a13dbe2495fe8e67717bc708c523c781e}{fdt\_version}(fdt) < \hyperlink{libfdt_8h_ab71fe9f2c75280cd75b42263dd2aa3f1}{FDT\_FIRST\_SUPPORTED\_VERSION})
+33                 \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_ad2a3b277a1e6987ead001fcd2415d88d}{FDT\_ERR\_BADVERSION};
+34             \textcolor{keywordflow}{if} (\hyperlink{libfdt_8h_a6b64d727951727aa9464061496abc1e9}{fdt\_last\_comp\_version}(fdt) >
+35                     \hyperlink{libfdt_8h_a3d13a6bfa946b38c95d1c327d4139c22}{FDT\_LAST\_SUPPORTED\_VERSION})
+36                 \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_ad2a3b277a1e6987ead001fcd2415d88d}{FDT\_ERR\_BADVERSION};
+37         \}
+38     \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\hyperlink{libfdt_8h_a783c67f6971d10232c84ecd0aa76f461}{fdt\_magic}(fdt) == \hyperlink{libfdt__internal_8h_a8beb41f034bfe7967b246bbad463a575}{FDT\_SW\_MAGIC}) \{
+39         \textcolor{comment}{/* Unfinished sequential-write blob */}
+40         \textcolor{keywordflow}{if} (!\hyperlink{libfdt__internal_8h_ae26d08ffdd441f73ecf7de7ca35176b9}{can\_assume}(VALID\_INPUT) && \hyperlink{libfdt_8h_a73b5fa0a791f02805b93ea70c6cb30ab}{fdt\_size\_dt\_struct}(fdt) == 0)
+41             \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_a87f75249bba66fc5e21110e00a990a81}{FDT\_ERR\_BADSTATE};
+42     \} \textcolor{keywordflow}{else} \{
+43         \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_abb777d59bc55628f8736b2b6c799213b}{FDT\_ERR\_BADMAGIC};
+44     \}
+45 
+46     \textcolor{keywordflow}{if} (totalsize < \hyperlink{cstd_8h_a181807730d4a375f848ba139813ce04f}{INT32\_MAX})
+47         \textcolor{keywordflow}{return} totalsize;
+48     \textcolor{keywordflow}{else}
+49         \textcolor{keywordflow}{return} -\hyperlink{libfdt_8h_a2b814a0775d93b5da1442fc091e49958}{FDT\_ERR\_TRUNCATED};
+50 \}
+\end{DoxyCode}

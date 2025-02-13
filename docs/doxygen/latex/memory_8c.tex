@@ -1,0 +1,352 @@
+\hypertarget{memory_8c}{\section{/users/enseig/franck/ko6/src/soft/ulib/memory.c File Reference}
+\label{memory_8c}\index{/users/enseig/franck/ko6/src/soft/ulib/memory.\-c@{/users/enseig/franck/ko6/src/soft/ulib/memory.\-c}}
+}
+{\ttfamily \#include $<$libc.\-h$>$}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structblock__info__s}{block\-\_\-info\-\_\-s}
+\item 
+struct \hyperlink{structheap__s}{heap\-\_\-s}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{memory_8c_af1a89b64a4a03cb2d9a2d85f5fe22cc8}{L\-I\-N\-E\-\_\-\-F\-L\-O\-O\-R}(p)~(\hyperlink{memory_8c_a08a87168dbf41c274c7f5f9918c8706b}{block\-\_\-info\-\_\-t} $\ast$)\hyperlink{libc_8h_af76aa89c75eec80890c7a792f1fadda7}{F\-L\-O\-O\-R}((size\-\_\-t)(p),\hyperlink{memory_8c_a7a2da4d001f5945106528b32581206e2}{Cache\-Line\-Size})
+\item 
+\#define \hyperlink{memory_8c_a3a87b4316a18ec284c0bf42e28b80cc4}{L\-I\-N\-E\-\_\-\-C\-E\-I\-L}(p)~(\hyperlink{memory_8c_a08a87168dbf41c274c7f5f9918c8706b}{block\-\_\-info\-\_\-t} $\ast$)\hyperlink{libc_8h_afa6921cfca101af04b9dcc8d29bc7b16}{C\-E\-I\-L}((size\-\_\-t)(p),\hyperlink{memory_8c_a7a2da4d001f5945106528b32581206e2}{Cache\-Line\-Size})
+\item 
+\#define \hyperlink{memory_8c_ae4cf233b234f33932972141bf43a21ca}{B\-I\-N\-F\-O\-\_\-\-S\-Z}~sizeof(\hyperlink{memory_8c_a08a87168dbf41c274c7f5f9918c8706b}{block\-\_\-info\-\_\-t})
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structblock__info__s}{block\-\_\-info\-\_\-s} \hyperlink{memory_8c_a08a87168dbf41c274c7f5f9918c8706b}{block\-\_\-info\-\_\-t}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void $\ast$ \hyperlink{memory_8c_a9b6f9a29c91d120939f0c366cb9f4f0a}{try\-\_\-malloc} (size\-\_\-t size)
+\item 
+static void \hyperlink{memory_8c_ae2c7c3335205e5be143a46369368f7fc}{merge} (\hyperlink{memory_8c_a08a87168dbf41c274c7f5f9918c8706b}{block\-\_\-info\-\_\-t} $\ast$ptr)
+\item 
+void $\ast$ \hyperlink{memory_8c_a1be6e4aaff502b12e6bcf78b9b7d0b10}{sbrk} (int incr)
+\begin{DoxyCompactList}\small\item\em change the boundary of the heap \end{DoxyCompactList}\item 
+void \hyperlink{memory_8c_a79ae899c68cf906a377211d58937ee65}{malloc\-\_\-init} (void $\ast$beg)
+\begin{DoxyCompactList}\small\item\em Heap initialiation, called only once before to call the \hyperlink{ktools_8c_a0ddf1224851353fc92bfbff6f499fa97}{main()} fonction. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{memory_8c_a7ac38fce3243a7dcf448301ee9ffd392}{malloc} (size\-\_\-t size)
+\item 
+void \hyperlink{memory_8c_afbedc913aa4651b3c3b4b3aecd9b4711}{free} (void $\ast$ptr)
+\begin{DoxyCompactList}\small\item\em free an allocated object with \hyperlink{memory_8c_a7ac38fce3243a7dcf448301ee9ffd392}{malloc()}, object is not erased. \end{DoxyCompactList}\item 
+void \hyperlink{memory_8c_abec89c1ec75c687671f30b1cc0875f9d}{malloc\-\_\-print} (size\-\_\-t level)
+\begin{DoxyCompactList}\small\item\em print the heap state \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static size\-\_\-t \hyperlink{memory_8c_a7a2da4d001f5945106528b32581206e2}{Cache\-Line\-Size}
+\item 
+static struct \hyperlink{structheap__s}{heap\-\_\-s} \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{memory_8c_ae4cf233b234f33932972141bf43a21ca}{\index{memory.\-c@{memory.\-c}!B\-I\-N\-F\-O\-\_\-\-S\-Z@{B\-I\-N\-F\-O\-\_\-\-S\-Z}}
+\index{B\-I\-N\-F\-O\-\_\-\-S\-Z@{B\-I\-N\-F\-O\-\_\-\-S\-Z}!memory.c@{memory.\-c}}
+\subsubsection[{B\-I\-N\-F\-O\-\_\-\-S\-Z}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-I\-N\-F\-O\-\_\-\-S\-Z~sizeof({\bf block\-\_\-info\-\_\-t})}}\label{memory_8c_ae4cf233b234f33932972141bf43a21ca}
+
+
+Referenced by malloc\-\_\-print(), and try\-\_\-malloc().
+
+\hypertarget{memory_8c_a3a87b4316a18ec284c0bf42e28b80cc4}{\index{memory.\-c@{memory.\-c}!L\-I\-N\-E\-\_\-\-C\-E\-I\-L@{L\-I\-N\-E\-\_\-\-C\-E\-I\-L}}
+\index{L\-I\-N\-E\-\_\-\-C\-E\-I\-L@{L\-I\-N\-E\-\_\-\-C\-E\-I\-L}!memory.c@{memory.\-c}}
+\subsubsection[{L\-I\-N\-E\-\_\-\-C\-E\-I\-L}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-I\-N\-E\-\_\-\-C\-E\-I\-L(
+\begin{DoxyParamCaption}
+\item[{}]{p}
+\end{DoxyParamCaption}
+)~({\bf block\-\_\-info\-\_\-t} $\ast$){\bf C\-E\-I\-L}((size\-\_\-t)(p),{\bf Cache\-Line\-Size})}}\label{memory_8c_a3a87b4316a18ec284c0bf42e28b80cc4}
+
+
+Referenced by try\-\_\-malloc().
+
+\hypertarget{memory_8c_af1a89b64a4a03cb2d9a2d85f5fe22cc8}{\index{memory.\-c@{memory.\-c}!L\-I\-N\-E\-\_\-\-F\-L\-O\-O\-R@{L\-I\-N\-E\-\_\-\-F\-L\-O\-O\-R}}
+\index{L\-I\-N\-E\-\_\-\-F\-L\-O\-O\-R@{L\-I\-N\-E\-\_\-\-F\-L\-O\-O\-R}!memory.c@{memory.\-c}}
+\subsubsection[{L\-I\-N\-E\-\_\-\-F\-L\-O\-O\-R}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-I\-N\-E\-\_\-\-F\-L\-O\-O\-R(
+\begin{DoxyParamCaption}
+\item[{}]{p}
+\end{DoxyParamCaption}
+)~({\bf block\-\_\-info\-\_\-t} $\ast$){\bf F\-L\-O\-O\-R}((size\-\_\-t)(p),{\bf Cache\-Line\-Size})}}\label{memory_8c_af1a89b64a4a03cb2d9a2d85f5fe22cc8}
+
+
+Referenced by malloc\-\_\-init().
+
+
+
+\subsection{Typedef Documentation}
+\hypertarget{memory_8c_a08a87168dbf41c274c7f5f9918c8706b}{\index{memory.\-c@{memory.\-c}!block\-\_\-info\-\_\-t@{block\-\_\-info\-\_\-t}}
+\index{block\-\_\-info\-\_\-t@{block\-\_\-info\-\_\-t}!memory.c@{memory.\-c}}
+\subsubsection[{block\-\_\-info\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf block\-\_\-info\-\_\-s}  {\bf block\-\_\-info\-\_\-t}}}\label{memory_8c_a08a87168dbf41c274c7f5f9918c8706b}
+
+
+\subsection{Function Documentation}
+\hypertarget{memory_8c_afbedc913aa4651b3c3b4b3aecd9b4711}{\index{memory.\-c@{memory.\-c}!free@{free}}
+\index{free@{free}!memory.c@{memory.\-c}}
+\subsubsection[{free}]{\setlength{\rightskip}{0pt plus 5cm}void free (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{ptr}
+\end{DoxyParamCaption}
+)}}\label{memory_8c_afbedc913aa4651b3c3b4b3aecd9b4711}
+
+
+free an allocated object with \hyperlink{memory_8c_a7ac38fce3243a7dcf448301ee9ffd392}{malloc()}, object is not erased. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ptr} & previously allocated object pointer \\
+\hline
+\end{DoxyParams}
+
+
+References exit(), block\-\_\-info\-\_\-s\-::full, block\-\_\-info\-\_\-s\-::magic, and M\-A\-G\-I\-C\-\_\-\-H\-E\-A\-P.
+
+
+
+Referenced by build(), and split().
+
+
+\begin{DoxyCode}
+110 \{
+111     \hyperlink{structblock__info__s}{block\_info\_t} *info = (\hyperlink{structblock__info__s}{block\_info\_t} *)ptr - 1;           \textcolor{comment}{// block\_info is just
+       before ptr}
+112     \textcolor{keywordflow}{if} (!ptr || !info->\hyperlink{structblock__info__s_a630efa05da2102ab8ea4f41836e8fdf1}{full} || (info->\hyperlink{structblock__info__s_ac16e3bd98da13d928f64af612e8f8c40}{magic} != \hyperlink{usermem_8h_a90d67f1ad6ff70aec014a689031953a2}{MAGIC\_HEAP})) \textcolor{comment}{// pt NULL OR segment free
+       OR not MAGIC}
+113         \hyperlink{klibc_8c_a55e99c539cf7723ec15e856b7e0a8cee}{exit}(1);                                            \textcolor{comment}{// memory corrupted}
+114     info->\hyperlink{structblock__info__s_a630efa05da2102ab8ea4f41836e8fdf1}{full} = 0;                                         \textcolor{comment}{// erase the full flag}
+115 \}
+\end{DoxyCode}
+\hypertarget{memory_8c_a7ac38fce3243a7dcf448301ee9ffd392}{\index{memory.\-c@{memory.\-c}!malloc@{malloc}}
+\index{malloc@{malloc}!memory.c@{memory.\-c}}
+\subsubsection[{malloc}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ malloc (
+\begin{DoxyParamCaption}
+\item[{size\-\_\-t}]{size}
+\end{DoxyParamCaption}
+)}}\label{memory_8c_a7ac38fce3243a7dcf448301ee9ffd392}
+
+
+References heap\-\_\-s\-::beg, E\-N\-O\-M\-E\-M, errno, Heap, merge(), N\-U\-L\-L, and try\-\_\-malloc().
+
+
+
+Referenced by build(), and split().
+
+
+\begin{DoxyCode}
+98 \{
+99     \hyperlink{structblock__info__s}{block\_info\_t} *ptr = \hyperlink{memory_8c_a9b6f9a29c91d120939f0c366cb9f4f0a}{try\_malloc} (size);                  \textcolor{comment}{// Search for a block}
+100     \textcolor{keywordflow}{if} (ptr == \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL}) \{                                      \textcolor{comment}{// if no free space}
+101         \hyperlink{memory_8c_ae2c7c3335205e5be143a46369368f7fc}{merge} (\hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a30840749cc5d580c1d1560051e4c8c2a}{beg});                                   \textcolor{comment}{// merge all free blocks from
+       beginning}
+102         ptr = \hyperlink{memory_8c_a9b6f9a29c91d120939f0c366cb9f4f0a}{try\_malloc} (size);                            \textcolor{comment}{// try again to find a block}
+103     \}
+104     \textcolor{keywordflow}{if} (ptr == \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL})
+105         \hyperlink{usermem_8h_ab03f640d90fbc5bcb75285d08a0f25ed}{errno} = \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3aec0aa1bb79e2e55ed6d8c165e0611eca}{ENOMEM};
+106     \textcolor{keywordflow}{return} ptr;                                             \textcolor{comment}{// return what you have found}
+107 \}
+\end{DoxyCode}
+\hypertarget{memory_8c_a79ae899c68cf906a377211d58937ee65}{\index{memory.\-c@{memory.\-c}!malloc\-\_\-init@{malloc\-\_\-init}}
+\index{malloc\-\_\-init@{malloc\-\_\-init}!memory.c@{memory.\-c}}
+\subsubsection[{malloc\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void malloc\-\_\-init (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{start}
+\end{DoxyParamCaption}
+)}}\label{memory_8c_a79ae899c68cf906a377211d58937ee65}
+
+
+Heap initialiation, called only once before to call the \hyperlink{ktools_8c_a0ddf1224851353fc92bfbff6f499fa97}{main()} fonction. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em start} & address of the first byte \\
+\hline
+\end{DoxyParams}
+
+
+References heap\-\_\-s\-::beg, Cache\-Line\-Size, cachelinesize, heap\-\_\-s\-::end, exit(), block\-\_\-info\-\_\-s\-::full, Heap, L\-I\-N\-E\-\_\-\-F\-L\-O\-O\-R, block\-\_\-info\-\_\-s\-::magic, M\-A\-G\-I\-C\-\_\-\-H\-E\-A\-P, P\-A\-G\-E\-\_\-\-S\-I\-Z\-E, sbrk(), and block\-\_\-info\-\_\-s\-::size.
+
+
+
+Referenced by \-\_\-start().
+
+
+\begin{DoxyCode}
+84 \{
+85     \hyperlink{memory_8c_a7a2da4d001f5945106528b32581206e2}{CacheLineSize} = \hyperlink{mips_2cache_8S_a2ffad5962fec472ce41e46451bcd8f02}{cachelinesize}();                        \textcolor{comment}{// need to know the
+       cache line size}
+86     \textcolor{keywordtype}{int} *end = \hyperlink{kmemory_8c_ad3736b4c8c3376c224d8a70e39b1a017}{sbrk} (4* \hyperlink{usermem_8h_a7d467c1d283fdfa1f2081ba1e0d01b6e}{PAGE\_SIZE});                         \textcolor{comment}{// try to get 4 pages (16ko)}
+87 
+88     \textcolor{keywordflow}{if} (end == (\textcolor{keywordtype}{int} *)-1) \hyperlink{klibc_8c_a55e99c539cf7723ec15e856b7e0a8cee}{exit} (2);                         \textcolor{comment}{// if impossible exit the app}
+89     \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a30840749cc5d580c1d1560051e4c8c2a}{beg} = \hyperlink{memory_8c_af1a89b64a4a03cb2d9a2d85f5fe22cc8}{LINE\_FLOOR} (beg);                            \textcolor{comment}{// address of the first BLOCK}
+90     \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a5cd7ea9b707bc85c4466b832aeb03919}{end} = \hyperlink{memory_8c_af1a89b64a4a03cb2d9a2d85f5fe22cc8}{LINE\_FLOOR} (end);                            \textcolor{comment}{// address of the boundary}
+91     \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a30840749cc5d580c1d1560051e4c8c2a}{beg}->\hyperlink{structblock__info__s_a630efa05da2102ab8ea4f41836e8fdf1}{full} = 0;                                     \textcolor{comment}{// empty at the begining}
+92     \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a30840749cc5d580c1d1560051e4c8c2a}{beg}->\hyperlink{structblock__info__s_ac16e3bd98da13d928f64af612e8f8c40}{magic} = \hyperlink{usermem_8h_a90d67f1ad6ff70aec014a689031953a2}{MAGIC\_HEAP};                           \textcolor{comment}{// to try detect Heap
+       corruption}
+93     \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a30840749cc5d580c1d1560051e4c8c2a}{beg}->\hyperlink{structblock__info__s_ac5d895bc19d09c9bb8dc9dafea66e159}{size} = \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a5cd7ea9b707bc85c4466b832aeb03919}{end} - \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a30840749cc5d580c1d1560051e4c8c2a}{beg};                   \textcolor{comment}{// size of free space}
+94     \hyperlink{memory_8c_a7a2da4d001f5945106528b32581206e2}{CacheLineSize} = \hyperlink{mips_2cache_8S_a2ffad5962fec472ce41e46451bcd8f02}{cachelinesize}();                        \textcolor{comment}{// ask the kernel for
+       cache line size}
+95 \}
+\end{DoxyCode}
+\hypertarget{memory_8c_abec89c1ec75c687671f30b1cc0875f9d}{\index{memory.\-c@{memory.\-c}!malloc\-\_\-print@{malloc\-\_\-print}}
+\index{malloc\-\_\-print@{malloc\-\_\-print}!memory.c@{memory.\-c}}
+\subsubsection[{malloc\-\_\-print}]{\setlength{\rightskip}{0pt plus 5cm}void malloc\-\_\-print (
+\begin{DoxyParamCaption}
+\item[{size\-\_\-t}]{level}
+\end{DoxyParamCaption}
+)}}\label{memory_8c_abec89c1ec75c687671f30b1cc0875f9d}
+
+
+print the heap state 
+
+
+\begin{DoxyParams}{Parameters}
+{\em level} & use\-: 0 = full/free bytes; 1 = the nb of blocks full/free per size; 2 = all details \\
+\hline
+\end{DoxyParams}
+
+
+References heap\-\_\-s\-::beg, B\-I\-N\-F\-O\-\_\-\-S\-Z, heap\-\_\-s\-::end, fprintf(), block\-\_\-info\-\_\-s\-::full, Heap, and block\-\_\-info\-\_\-s\-::size.
+
+
+\begin{DoxyCode}
+118 \{
+119     \hyperlink{structblock__info__s}{block\_info\_t} *ptr;
+120     \hyperlink{libc_8c_a4e7edf0e8df09b47566d572e19dad429}{fprintf} (0, \textcolor{stringliteral}{"------------ %p ------------\(\backslash\)n"}, \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a30840749cc5d580c1d1560051e4c8c2a}{beg});
+121     \textcolor{keywordflow}{for} (ptr = \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a30840749cc5d580c1d1560051e4c8c2a}{beg}; ptr < Heap.end; ptr += ptr->size)  \textcolor{comment}{// browse all blocks}
+122         \hyperlink{libc_8c_a4e7edf0e8df09b47566d572e19dad429}{fprintf} (0, \textcolor{stringliteral}{" %s  [ %x\(\backslash\)t- %x\(\backslash\)t] = %d\(\backslash\)n"},
+123             (ptr->\hyperlink{structblock__info__s_a630efa05da2102ab8ea4f41836e8fdf1}{full}) ? \textcolor{stringliteral}{"full"} : \textcolor{stringliteral}{"free"},                  \textcolor{comment}{// print if block is full or free}
+124             \hyperlink{memory_8c_ae4cf233b234f33932972141bf43a21ca}{BINFO\_SZ}*(\textcolor{keywordtype}{size\_t})(ptr - \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a30840749cc5d580c1d1560051e4c8c2a}{beg}),              \textcolor{comment}{// print block begin position}
+125             \hyperlink{memory_8c_ae4cf233b234f33932972141bf43a21ca}{BINFO\_SZ}*(\textcolor{keywordtype}{size\_t})((ptr + ptr->\hyperlink{structblock__info__s_ac5d895bc19d09c9bb8dc9dafea66e159}{size}) - \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a30840749cc5d580c1d1560051e4c8c2a}{beg}),\textcolor{comment}{// print block end position}
+126             \hyperlink{memory_8c_ae4cf233b234f33932972141bf43a21ca}{BINFO\_SZ}*(\textcolor{keywordtype}{size\_t})(ptr->\hyperlink{structblock__info__s_ac5d895bc19d09c9bb8dc9dafea66e159}{size}));                  \textcolor{comment}{// print block size}
+127     \hyperlink{libc_8c_a4e7edf0e8df09b47566d572e19dad429}{fprintf} (0, \textcolor{stringliteral}{"------------ %p ------------\(\backslash\)n"}, \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a5cd7ea9b707bc85c4466b832aeb03919}{end});
+128 \}
+\end{DoxyCode}
+\hypertarget{memory_8c_ae2c7c3335205e5be143a46369368f7fc}{\index{memory.\-c@{memory.\-c}!merge@{merge}}
+\index{merge@{merge}!memory.c@{memory.\-c}}
+\subsubsection[{merge}]{\setlength{\rightskip}{0pt plus 5cm}static void merge (
+\begin{DoxyParamCaption}
+\item[{{\bf block\-\_\-info\-\_\-t} $\ast$}]{ptr}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{memory_8c_ae2c7c3335205e5be143a46369368f7fc}
+
+
+References heap\-\_\-s\-::end, block\-\_\-info\-\_\-s\-::full, Heap, and block\-\_\-info\-\_\-s\-::size.
+
+
+
+Referenced by malloc().
+
+
+\begin{DoxyCode}
+65 \{
+66     \textcolor{keywordflow}{for} (; ptr != \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a5cd7ea9b707bc85c4466b832aeb03919}{end}; ptr += ptr->\hyperlink{structblock__info__s_ac5d895bc19d09c9bb8dc9dafea66e159}{size})               \textcolor{comment}{// try to merge all free blocks from
+       ptr}
+67         \textcolor{keywordflow}{if} (ptr->\hyperlink{structblock__info__s_a630efa05da2102ab8ea4f41836e8fdf1}{full} == 0)                                 \textcolor{comment}{// if current block is free}
+68             \textcolor{keywordflow}{for} (\hyperlink{structblock__info__s}{block\_info\_t} * next = ptr + ptr->\hyperlink{structblock__info__s_ac5d895bc19d09c9bb8dc9dafea66e159}{size};     \textcolor{comment}{// find next one}
+69                 ((next != \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a5cd7ea9b707bc85c4466b832aeb03919}{end}) && (next->full == 0));  \textcolor{comment}{// while not end found a free block}
+70                 next = ptr + ptr->\hyperlink{structblock__info__s_ac5d895bc19d09c9bb8dc9dafea66e159}{size})                     \textcolor{comment}{// go to next block}
+71                 ptr->\hyperlink{structblock__info__s_ac5d895bc19d09c9bb8dc9dafea66e159}{size} += next->size;                    \textcolor{comment}{// merge current block with first free}
+72 \}
+\end{DoxyCode}
+\hypertarget{memory_8c_a1be6e4aaff502b12e6bcf78b9b7d0b10}{\index{memory.\-c@{memory.\-c}!sbrk@{sbrk}}
+\index{sbrk@{sbrk}!memory.c@{memory.\-c}}
+\subsubsection[{sbrk}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ sbrk (
+\begin{DoxyParamCaption}
+\item[{int}]{increment}
+\end{DoxyParamCaption}
+)}}\label{memory_8c_a1be6e4aaff502b12e6bcf78b9b7d0b10}
+
+
+change the boundary of the heap 
+
+change the boundary of heap
+
+
+\begin{DoxyParams}{Parameters}
+{\em increment} & integer added to the current heap boundary \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+S\-U\-C\-C\-E\-S\-S or F\-A\-I\-L\-U\-R\-E 
+\end{DoxyReturn}
+
+
+References \-\_\-usermem, Cache\-Line\-Size, E\-N\-O\-M\-E\-M, errno, F\-L\-O\-O\-R, sbrk\-\_\-s, S\-U\-C\-C\-E\-S\-S, syscall\-\_\-fct, S\-Y\-S\-C\-A\-L\-L\-\_\-\-S\-B\-R\-K, \-\_\-usermem\-\_\-s\-::uheap\-\_\-beg, \-\_\-usermem\-\_\-s\-::uheap\-\_\-end, and \-\_\-usermem\-\_\-s\-::ustack\-\_\-end.
+
+
+\begin{DoxyCode}
+77 \{
+78     \textcolor{keywordtype}{void} *r = (\textcolor{keywordtype}{void}*)\hyperlink{mips_2cpu__user_8S_a2824a7b580dd3afd46068b42af360fa6}{syscall\_fct}(incr,0,0,0,\hyperlink{syscalls_8h_a9d26167e6c82729ced6b3437400fb0de}{SYSCALL\_SBRK});  \textcolor{comment}{// ask for heap boundary
+       change}
+79     \hyperlink{mips_2cpu__user_8S_a628c0458bf04213e82589f14f623999b}{sbrk\_s}();
+80     \textcolor{keywordflow}{return} r;
+81 \}
+\end{DoxyCode}
+\hypertarget{memory_8c_a9b6f9a29c91d120939f0c366cb9f4f0a}{\index{memory.\-c@{memory.\-c}!try\-\_\-malloc@{try\-\_\-malloc}}
+\index{try\-\_\-malloc@{try\-\_\-malloc}!memory.c@{memory.\-c}}
+\subsubsection[{try\-\_\-malloc}]{\setlength{\rightskip}{0pt plus 5cm}static void$\ast$ try\-\_\-malloc (
+\begin{DoxyParamCaption}
+\item[{size\-\_\-t}]{size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{memory_8c_a9b6f9a29c91d120939f0c366cb9f4f0a}
+
+
+References heap\-\_\-s\-::beg, B\-I\-N\-F\-O\-\_\-\-S\-Z, Cache\-Line\-Size, C\-E\-I\-L, heap\-\_\-s\-::end, block\-\_\-info\-\_\-s\-::full, Heap, L\-I\-N\-E\-\_\-\-C\-E\-I\-L, block\-\_\-info\-\_\-s\-::magic, M\-A\-G\-I\-C\-\_\-\-H\-E\-A\-P, N\-U\-L\-L, and block\-\_\-info\-\_\-s\-::size.
+
+
+
+Referenced by malloc().
+
+
+\begin{DoxyCode}
+39 \{
+40     size = \hyperlink{klibc_8h_afa6921cfca101af04b9dcc8d29bc7b16}{CEIL} (size+\hyperlink{memory_8c_ae4cf233b234f33932972141bf43a21ca}{BINFO\_SZ}, \hyperlink{memory_8c_a7a2da4d001f5945106528b32581206e2}{CacheLineSize});             \textcolor{comment}{// true required size
+       in bytes}
+41     size = size / \textcolor{keyword}{sizeof} (\hyperlink{memory_8c_a08a87168dbf41c274c7f5f9918c8706b}{block\_info\_t});                    \textcolor{comment}{// in the heap size is in
+       block\_info\_t}
+42     \hyperlink{structblock__info__s}{block\_info\_t} *oldnext, *newnext, *\textcolor{keyword}{new};
+43 
+44     \textcolor{keywordflow}{for} (\textcolor{keyword}{new} = \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a30840749cc5d580c1d1560051e4c8c2a}{beg};                                    \textcolor{comment}{// from the beginning of the Heap}
+45         (\textcolor{keyword}{new} < \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a5cd7ea9b707bc85c4466b832aeb03919}{end}) && (\textcolor{keyword}{new}->full||(\textcolor{keyword}{new}->size<size));  \textcolor{comment}{// while end not reached and no space}
+46         \textcolor{keyword}{new} += \textcolor{keyword}{new}->\hyperlink{structblock__info__s_ac5d895bc19d09c9bb8dc9dafea66e159}{size});                                  \textcolor{comment}{// go to next block}
+47 
+48     \textcolor{keywordflow}{if} (\textcolor{keyword}{new} >= \hyperlink{memory_8c_a58da4284214d7464432b6e2e431e02d4}{Heap}.\hyperlink{structheap__s_a5cd7ea9b707bc85c4466b832aeb03919}{end}) \textcolor{keywordflow}{return} \hyperlink{kfs_8c_a070d2ce7b6bb7e5c05602aa8c308d0c4}{NULL};                       \textcolor{comment}{// end reached without finding space}
+49 
+50     \textcolor{keyword}{new}->full = 1;                                          \textcolor{comment}{// space found, we put the block}
+51     oldnext = \textcolor{keyword}{new} + \textcolor{keyword}{new}->\hyperlink{structblock__info__s_ac5d895bc19d09c9bb8dc9dafea66e159}{size};                              \textcolor{comment}{// next block address before the cut}
+52     newnext = \hyperlink{memory_8c_a3a87b4316a18ec284c0bf42e28b80cc4}{LINE\_CEIL}(\textcolor{keyword}{new}+size);                          \textcolor{comment}{// find the new next block}
+53 
+54     \textcolor{keywordflow}{if} (newnext != oldnext) \{                               \textcolor{comment}{// if we need to cut the find block}
+55         \textcolor{keyword}{new}->size = newnext - \textcolor{keyword}{new};                          \textcolor{comment}{// new size of current block}
+56         \textcolor{keyword}{new}->\hyperlink{structblock__info__s_ac16e3bd98da13d928f64af612e8f8c40}{magic} = \hyperlink{usermem_8h_a90d67f1ad6ff70aec014a689031953a2}{MAGIC\_HEAP};                            \textcolor{comment}{// to try detect Heap corruption}
+57         newnext->\hyperlink{structblock__info__s_ac5d895bc19d09c9bb8dc9dafea66e159}{size} = oldnext - newnext;                  \textcolor{comment}{// new size of remaining space}
+58         newnext->\hyperlink{structblock__info__s_a630efa05da2102ab8ea4f41836e8fdf1}{full} = 0;                                  \textcolor{comment}{// that is free space}
+59         newnext->magic = \hyperlink{usermem_8h_a90d67f1ad6ff70aec014a689031953a2}{MAGIC\_HEAP};                        \textcolor{comment}{// to try detect Heap corruption}
+60     \}
+61     \textcolor{keywordflow}{return} (\textcolor{keywordtype}{void} *)(\textcolor{keyword}{new} + 1);                               \textcolor{comment}{// the allocated block after block\_info}
+62 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\hypertarget{memory_8c_a7a2da4d001f5945106528b32581206e2}{\index{memory.\-c@{memory.\-c}!Cache\-Line\-Size@{Cache\-Line\-Size}}
+\index{Cache\-Line\-Size@{Cache\-Line\-Size}!memory.c@{memory.\-c}}
+\subsubsection[{Cache\-Line\-Size}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t Cache\-Line\-Size\hspace{0.3cm}{\ttfamily [static]}}}\label{memory_8c_a7a2da4d001f5945106528b32581206e2}
+
+
+Referenced by malloc\-\_\-init(), and try\-\_\-malloc().
+
+\hypertarget{memory_8c_a58da4284214d7464432b6e2e431e02d4}{\index{memory.\-c@{memory.\-c}!Heap@{Heap}}
+\index{Heap@{Heap}!memory.c@{memory.\-c}}
+\subsubsection[{Heap}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf heap\-\_\-s}  Heap\hspace{0.3cm}{\ttfamily [static]}}}\label{memory_8c_a58da4284214d7464432b6e2e431e02d4}
+
+
+Referenced by malloc(), malloc\-\_\-init(), malloc\-\_\-print(), merge(), and try\-\_\-malloc().
+

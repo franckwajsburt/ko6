@@ -1,0 +1,143 @@
+\hypertarget{structicu__ops__s}{\section{icu\-\_\-ops\-\_\-s Struct Reference}
+\label{structicu__ops__s}\index{icu\-\_\-ops\-\_\-s@{icu\-\_\-ops\-\_\-s}}
+}
+
+
+Functions prototypes of the I\-C\-U device, they should be implemented by a device driver. They serve as an interface between the kernel and the driver.  
+
+
+
+
+{\ttfamily \#include $<$icu.\-h$>$}
+
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+void($\ast$ \hyperlink{structicu__ops__s_acfb85f348f0664db040ecc73ebbd5cc7}{icu\-\_\-init} )(struct \hyperlink{structicu__s}{icu\-\_\-s} $\ast$icu, unsigned address)
+\begin{DoxyCompactList}\small\item\em Generic function to initialize the I\-C\-U device. \end{DoxyCompactList}\item 
+unsigned($\ast$ \hyperlink{structicu__ops__s_a7aa5d37f9a8ef9f3e59211ff5ab213c0}{icu\-\_\-get\-\_\-highest} )(struct \hyperlink{structicu__s}{icu\-\_\-s} $\ast$icu)
+\begin{DoxyCompactList}\small\item\em Generic function that fetch the highest priority I\-R\-Q from the I\-C\-U device. \end{DoxyCompactList}\item 
+void($\ast$ \hyperlink{structicu__ops__s_a1f08d353530f63d1877f160fd70fcdfd}{icu\-\_\-set\-\_\-priority} )(struct \hyperlink{structicu__s}{icu\-\_\-s} $\ast$icu, unsigned irq, unsigned pri)
+\begin{DoxyCompactList}\small\item\em Generic function that sets the priority of a given I\-R\-Q. \end{DoxyCompactList}\item 
+void($\ast$ \hyperlink{structicu__ops__s_aec94869f891ee17f4743f46da01dcced}{icu\-\_\-acknowledge} )(struct \hyperlink{structicu__s}{icu\-\_\-s} $\ast$icu, unsigned irq)
+\begin{DoxyCompactList}\small\item\em Generic function that should aknowledge an I\-R\-Q. \end{DoxyCompactList}\item 
+void($\ast$ \hyperlink{structicu__ops__s_af63b387a2985011e4e430d568d3f0b04}{icu\-\_\-mask} )(struct \hyperlink{structicu__s}{icu\-\_\-s} $\ast$icu, unsigned irq)
+\begin{DoxyCompactList}\small\item\em Generic function that mask (disable) an I\-R\-Q. \end{DoxyCompactList}\item 
+void($\ast$ \hyperlink{structicu__ops__s_a4aee28cc809733a67481e782c1efd1fa}{icu\-\_\-unmask} )(struct \hyperlink{structicu__s}{icu\-\_\-s} $\ast$icu, unsigned irq)
+\begin{DoxyCompactList}\small\item\em Generic function that unmask (enable) an I\-R\-Q. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Functions prototypes of the I\-C\-U device, they should be implemented by a device driver. They serve as an interface between the kernel and the driver. 
+
+\subsection{Member Data Documentation}
+\hypertarget{structicu__ops__s_aec94869f891ee17f4743f46da01dcced}{\index{icu\-\_\-ops\-\_\-s@{icu\-\_\-ops\-\_\-s}!icu\-\_\-acknowledge@{icu\-\_\-acknowledge}}
+\index{icu\-\_\-acknowledge@{icu\-\_\-acknowledge}!icu_ops_s@{icu\-\_\-ops\-\_\-s}}
+\subsubsection[{icu\-\_\-acknowledge}]{\setlength{\rightskip}{0pt plus 5cm}void($\ast$ icu\-\_\-ops\-\_\-s\-::icu\-\_\-acknowledge)(struct {\bf icu\-\_\-s} $\ast$icu, unsigned irq)}}\label{structicu__ops__s_aec94869f891ee17f4743f46da01dcced}
+
+
+Generic function that should aknowledge an I\-R\-Q. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em icu} & the icu device \\
+\hline
+{\em irq} & the irq to acknowledge \\
+\hline
+\end{DoxyParams}
+
+
+Referenced by isrcall().
+
+\hypertarget{structicu__ops__s_a7aa5d37f9a8ef9f3e59211ff5ab213c0}{\index{icu\-\_\-ops\-\_\-s@{icu\-\_\-ops\-\_\-s}!icu\-\_\-get\-\_\-highest@{icu\-\_\-get\-\_\-highest}}
+\index{icu\-\_\-get\-\_\-highest@{icu\-\_\-get\-\_\-highest}!icu_ops_s@{icu\-\_\-ops\-\_\-s}}
+\subsubsection[{icu\-\_\-get\-\_\-highest}]{\setlength{\rightskip}{0pt plus 5cm}unsigned($\ast$ icu\-\_\-ops\-\_\-s\-::icu\-\_\-get\-\_\-highest)(struct {\bf icu\-\_\-s} $\ast$icu)}}\label{structicu__ops__s_a7aa5d37f9a8ef9f3e59211ff5ab213c0}
+
+
+Generic function that fetch the highest priority I\-R\-Q from the I\-C\-U device. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em icu} & the icu device \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+highest priority I\-R\-Q 
+\end{DoxyReturn}
+
+
+Referenced by isrcall().
+
+\hypertarget{structicu__ops__s_acfb85f348f0664db040ecc73ebbd5cc7}{\index{icu\-\_\-ops\-\_\-s@{icu\-\_\-ops\-\_\-s}!icu\-\_\-init@{icu\-\_\-init}}
+\index{icu\-\_\-init@{icu\-\_\-init}!icu_ops_s@{icu\-\_\-ops\-\_\-s}}
+\subsubsection[{icu\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void($\ast$ icu\-\_\-ops\-\_\-s\-::icu\-\_\-init)(struct {\bf icu\-\_\-s} $\ast$icu, unsigned address)}}\label{structicu__ops__s_acfb85f348f0664db040ecc73ebbd5cc7}
+
+
+Generic function to initialize the I\-C\-U device. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em address} & the base address of the memory-\/mapped registers \\
+\hline
+\end{DoxyParams}
+
+
+Referenced by soc\-\_\-icu\-\_\-init().
+
+\hypertarget{structicu__ops__s_af63b387a2985011e4e430d568d3f0b04}{\index{icu\-\_\-ops\-\_\-s@{icu\-\_\-ops\-\_\-s}!icu\-\_\-mask@{icu\-\_\-mask}}
+\index{icu\-\_\-mask@{icu\-\_\-mask}!icu_ops_s@{icu\-\_\-ops\-\_\-s}}
+\subsubsection[{icu\-\_\-mask}]{\setlength{\rightskip}{0pt plus 5cm}void($\ast$ icu\-\_\-ops\-\_\-s\-::icu\-\_\-mask)(struct {\bf icu\-\_\-s} $\ast$icu, unsigned irq)}}\label{structicu__ops__s_af63b387a2985011e4e430d568d3f0b04}
+
+
+Generic function that mask (disable) an I\-R\-Q. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em icu} & the icu device \\
+\hline
+{\em irq} & the irq to mask \\
+\hline
+\end{DoxyParams}
+\hypertarget{structicu__ops__s_a1f08d353530f63d1877f160fd70fcdfd}{\index{icu\-\_\-ops\-\_\-s@{icu\-\_\-ops\-\_\-s}!icu\-\_\-set\-\_\-priority@{icu\-\_\-set\-\_\-priority}}
+\index{icu\-\_\-set\-\_\-priority@{icu\-\_\-set\-\_\-priority}!icu_ops_s@{icu\-\_\-ops\-\_\-s}}
+\subsubsection[{icu\-\_\-set\-\_\-priority}]{\setlength{\rightskip}{0pt plus 5cm}void($\ast$ icu\-\_\-ops\-\_\-s\-::icu\-\_\-set\-\_\-priority)(struct {\bf icu\-\_\-s} $\ast$icu, unsigned irq, unsigned pri)}}\label{structicu__ops__s_a1f08d353530f63d1877f160fd70fcdfd}
+
+
+Generic function that sets the priority of a given I\-R\-Q. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em icu} & the icu device \\
+\hline
+{\em irq} & the irq \\
+\hline
+{\em pri} & the new priority of the I\-R\-Q \\
+\hline
+\end{DoxyParams}
+
+
+Referenced by soc\-\_\-tty\-\_\-init().
+
+\hypertarget{structicu__ops__s_a4aee28cc809733a67481e782c1efd1fa}{\index{icu\-\_\-ops\-\_\-s@{icu\-\_\-ops\-\_\-s}!icu\-\_\-unmask@{icu\-\_\-unmask}}
+\index{icu\-\_\-unmask@{icu\-\_\-unmask}!icu_ops_s@{icu\-\_\-ops\-\_\-s}}
+\subsubsection[{icu\-\_\-unmask}]{\setlength{\rightskip}{0pt plus 5cm}void($\ast$ icu\-\_\-ops\-\_\-s\-::icu\-\_\-unmask)(struct {\bf icu\-\_\-s} $\ast$icu, unsigned irq)}}\label{structicu__ops__s_a4aee28cc809733a67481e782c1efd1fa}
+
+
+Generic function that unmask (enable) an I\-R\-Q. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em icu} & the icu device \\
+\hline
+{\em irq} & the irq to unmask \\
+\hline
+\end{DoxyParams}
+
+
+Referenced by soc\-\_\-timer\-\_\-init(), and soc\-\_\-tty\-\_\-init().
+
+
+
+The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/users/enseig/franck/ko6/src/soft/hal/devices/\hyperlink{icu_8h}{icu.\-h}\end{DoxyCompactItemize}

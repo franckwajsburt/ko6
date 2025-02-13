@@ -1,0 +1,105 @@
+\hypertarget{usermem_8h}{\section{/users/enseig/franck/ko6/src/soft/common/usermem.h File Reference}
+\label{usermem_8h}\index{/users/enseig/franck/ko6/src/soft/common/usermem.\-h@{/users/enseig/franck/ko6/src/soft/common/usermem.\-h}}
+}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct__usermem__s}{\-\_\-usermem\-\_\-s}
+\begin{DoxyCompactList}\small\item\em few data about user memory usage, stucture placed at the bottom of the .data region \end{DoxyCompactList}\item 
+struct \hyperlink{struct__tls__s}{\-\_\-tls\-\_\-s}
+\begin{DoxyCompactList}\small\item\em thread local storage structure definition. There is one structure per thread placed at the beginning of each thread's user stack. For each field, a \#define allows to hide the way of these variables are built. The current structure for the current thread is pointed by \-\_\-usermem.\-tls, the kernel has to update \-\_\-usermem.\-tls field at each thread commutation T\-O\-D\-O\-: we'll have to extend the usage of T\-L\-S variables \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{usermem_8h_a7d467c1d283fdfa1f2081ba1e0d01b6e}{P\-A\-G\-E\-\_\-\-S\-I\-Z\-E}~4096
+\item 
+\#define \hyperlink{usermem_8h_ad77d03e18a9477ef16ff8c4ae3c8b43d}{U\-S\-T\-A\-C\-K\-\_\-\-S\-I\-Z\-E}~(16$\ast$\hyperlink{usermem_8h_a7d467c1d283fdfa1f2081ba1e0d01b6e}{P\-A\-G\-E\-\_\-\-S\-I\-Z\-E})
+\item 
+\#define \hyperlink{usermem_8h_a34ef3ea96595898f1452b49d29a1722a}{M\-A\-G\-I\-C\-\_\-\-S\-T\-A\-C\-K}~0x\-D\-E\-A\-D\-F00\-D
+\item 
+\#define \hyperlink{usermem_8h_a90d67f1ad6ff70aec014a689031953a2}{M\-A\-G\-I\-C\-\_\-\-H\-E\-A\-P}~0x5\-A
+\item 
+\#define \hyperlink{usermem_8h_ab03f640d90fbc5bcb75285d08a0f25ed}{errno}~(\-\_\-usermem.\-ptls-\/$>$tls\-\_\-errno)      /$\ast$ gets errno of the current running thread $\ast$/
+\item 
+\#define \hyperlink{usermem_8h_a68fb40ee7e282bc1523d39b68ef57c83}{urandseed}~(\-\_\-usermem.\-ptls-\/$>$tls\-\_\-randseed)
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{struct__usermem__s}{\-\_\-usermem\-\_\-s} \hyperlink{usermem_8h_acdf2a877f98a7b718a8457f21260f0c2}{\-\_\-usermem\-\_\-t}
+\begin{DoxyCompactList}\small\item\em few data about user memory usage, stucture placed at the bottom of the .data region \end{DoxyCompactList}\item 
+typedef struct \hyperlink{struct__tls__s}{\-\_\-tls\-\_\-s} \hyperlink{usermem_8h_a2694d17ea62fba3e63b915cca82721d7}{\-\_\-tls\-\_\-t}
+\begin{DoxyCompactList}\small\item\em thread local storage structure definition. There is one structure per thread placed at the beginning of each thread's user stack. For each field, a \#define allows to hide the way of these variables are built. The current structure for the current thread is pointed by \-\_\-usermem.\-tls, the kernel has to update \-\_\-usermem.\-tls field at each thread commutation T\-O\-D\-O\-: we'll have to extend the usage of T\-L\-S variables \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{usermem_8h_acdf2a877f98a7b718a8457f21260f0c2}{\-\_\-usermem\-\_\-t} \hyperlink{usermem_8h_af044184d28c9a8b78f17bd1d8e1059b4}{\-\_\-usermem}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{usermem_8h_ab03f640d90fbc5bcb75285d08a0f25ed}{\index{usermem.\-h@{usermem.\-h}!errno@{errno}}
+\index{errno@{errno}!usermem.h@{usermem.\-h}}
+\subsubsection[{errno}]{\setlength{\rightskip}{0pt plus 5cm}\#define errno~(\-\_\-usermem.\-ptls-\/$>$tls\-\_\-errno)      /$\ast$ gets errno of the current running thread $\ast$/}}\label{usermem_8h_ab03f640d90fbc5bcb75285d08a0f25ed}
+
+
+Referenced by malloc(), perror(), and sbrk().
+
+\hypertarget{usermem_8h_a90d67f1ad6ff70aec014a689031953a2}{\index{usermem.\-h@{usermem.\-h}!M\-A\-G\-I\-C\-\_\-\-H\-E\-A\-P@{M\-A\-G\-I\-C\-\_\-\-H\-E\-A\-P}}
+\index{M\-A\-G\-I\-C\-\_\-\-H\-E\-A\-P@{M\-A\-G\-I\-C\-\_\-\-H\-E\-A\-P}!usermem.h@{usermem.\-h}}
+\subsubsection[{M\-A\-G\-I\-C\-\_\-\-H\-E\-A\-P}]{\setlength{\rightskip}{0pt plus 5cm}\#define M\-A\-G\-I\-C\-\_\-\-H\-E\-A\-P~0x5\-A}}\label{usermem_8h_a90d67f1ad6ff70aec014a689031953a2}
+
+
+Referenced by free(), malloc\-\_\-init(), and try\-\_\-malloc().
+
+\hypertarget{usermem_8h_a34ef3ea96595898f1452b49d29a1722a}{\index{usermem.\-h@{usermem.\-h}!M\-A\-G\-I\-C\-\_\-\-S\-T\-A\-C\-K@{M\-A\-G\-I\-C\-\_\-\-S\-T\-A\-C\-K}}
+\index{M\-A\-G\-I\-C\-\_\-\-S\-T\-A\-C\-K@{M\-A\-G\-I\-C\-\_\-\-S\-T\-A\-C\-K}!usermem.h@{usermem.\-h}}
+\subsubsection[{M\-A\-G\-I\-C\-\_\-\-S\-T\-A\-C\-K}]{\setlength{\rightskip}{0pt plus 5cm}\#define M\-A\-G\-I\-C\-\_\-\-S\-T\-A\-C\-K~0x\-D\-E\-A\-D\-F00\-D}}\label{usermem_8h_a34ef3ea96595898f1452b49d29a1722a}
+
+
+Referenced by free\-\_\-ustack(), malloc\-\_\-ustack(), and thread\-\_\-create().
+
+\hypertarget{usermem_8h_a7d467c1d283fdfa1f2081ba1e0d01b6e}{\index{usermem.\-h@{usermem.\-h}!P\-A\-G\-E\-\_\-\-S\-I\-Z\-E@{P\-A\-G\-E\-\_\-\-S\-I\-Z\-E}}
+\index{P\-A\-G\-E\-\_\-\-S\-I\-Z\-E@{P\-A\-G\-E\-\_\-\-S\-I\-Z\-E}!usermem.h@{usermem.\-h}}
+\subsubsection[{P\-A\-G\-E\-\_\-\-S\-I\-Z\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-A\-G\-E\-\_\-\-S\-I\-Z\-E~4096}}\label{usermem_8h_a7d467c1d283fdfa1f2081ba1e0d01b6e}
+
+
+Referenced by kfree(), kmalloc(), malloc\-\_\-init(), memory\-\_\-init(), and thread\-\_\-create().
+
+\hypertarget{usermem_8h_a68fb40ee7e282bc1523d39b68ef57c83}{\index{usermem.\-h@{usermem.\-h}!urandseed@{urandseed}}
+\index{urandseed@{urandseed}!usermem.h@{usermem.\-h}}
+\subsubsection[{urandseed}]{\setlength{\rightskip}{0pt plus 5cm}\#define urandseed~(\-\_\-usermem.\-ptls-\/$>$tls\-\_\-randseed)}}\label{usermem_8h_a68fb40ee7e282bc1523d39b68ef57c83}
+\hypertarget{usermem_8h_ad77d03e18a9477ef16ff8c4ae3c8b43d}{\index{usermem.\-h@{usermem.\-h}!U\-S\-T\-A\-C\-K\-\_\-\-S\-I\-Z\-E@{U\-S\-T\-A\-C\-K\-\_\-\-S\-I\-Z\-E}}
+\index{U\-S\-T\-A\-C\-K\-\_\-\-S\-I\-Z\-E@{U\-S\-T\-A\-C\-K\-\_\-\-S\-I\-Z\-E}!usermem.h@{usermem.\-h}}
+\subsubsection[{U\-S\-T\-A\-C\-K\-\_\-\-S\-I\-Z\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define U\-S\-T\-A\-C\-K\-\_\-\-S\-I\-Z\-E~(16$\ast${\bf P\-A\-G\-E\-\_\-\-S\-I\-Z\-E})}}\label{usermem_8h_ad77d03e18a9477ef16ff8c4ae3c8b43d}
+
+
+Referenced by free\-\_\-ustack(), malloc\-\_\-ustack(), print\-\_\-ustack(), and thread\-\_\-create().
+
+
+
+\subsection{Typedef Documentation}
+\hypertarget{usermem_8h_a2694d17ea62fba3e63b915cca82721d7}{\index{usermem.\-h@{usermem.\-h}!\-\_\-tls\-\_\-t@{\-\_\-tls\-\_\-t}}
+\index{\-\_\-tls\-\_\-t@{\-\_\-tls\-\_\-t}!usermem.h@{usermem.\-h}}
+\subsubsection[{\-\_\-tls\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf \-\_\-tls\-\_\-s}  {\bf \-\_\-tls\-\_\-t}}}\label{usermem_8h_a2694d17ea62fba3e63b915cca82721d7}
+
+
+thread local storage structure definition. There is one structure per thread placed at the beginning of each thread's user stack. For each field, a \#define allows to hide the way of these variables are built. The current structure for the current thread is pointed by \-\_\-usermem.\-tls, the kernel has to update \-\_\-usermem.\-tls field at each thread commutation T\-O\-D\-O\-: we'll have to extend the usage of T\-L\-S variables 
+
+\hypertarget{usermem_8h_acdf2a877f98a7b718a8457f21260f0c2}{\index{usermem.\-h@{usermem.\-h}!\-\_\-usermem\-\_\-t@{\-\_\-usermem\-\_\-t}}
+\index{\-\_\-usermem\-\_\-t@{\-\_\-usermem\-\_\-t}!usermem.h@{usermem.\-h}}
+\subsubsection[{\-\_\-usermem\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf \-\_\-usermem\-\_\-s}  {\bf \-\_\-usermem\-\_\-t}}}\label{usermem_8h_acdf2a877f98a7b718a8457f21260f0c2}
+
+
+few data about user memory usage, stucture placed at the bottom of the .data region 
+
++-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---+ $|$ tls of main $|$ $|$ -\/ -\/ -\/ -\/ -\/ -\/ $|$ $<$-\/ ustack\-\_\-begin points to the first address A\-B\-O\-V\-E the first user stack $|$ user stack $|$ The last word of each stack contains also a M\-A\-G\-I\-C number $|$ thread main $|$ in order to be able to know if the stack has overflowed +-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---+ This check must be done sometimes because $|$ tls of th 1 $|$ there is not M\-M\-U to check it at each access $|$ -\/ -\/ -\/ -\/ -\/ -\/ $|$ $|$ user stack $|$ $|$ thread 1 $|$ +-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---+ $<$-\/ ustack\-\_\-end points to the last cell of the last user stack $|$/////////////$|$ then ustack\-\_\-end points inside of the last stack $|$/////////////$|$ +-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---+ $<$-\/ uheap\-\_\-end points to the very first address A\-B\-O\-V\-E the user heap $|$ $|$ uheap\-\_\-end is always inferior or equal to stack\-\_\-end $|$ user heap $|$ uheap\-\_\-end is moved with S\-Y\-S\-C\-A\-L\-L\-\_\-\-B\-R\-K $|$ $|$ +-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---+ $<$-\/ uheap\-\_\-begin points to the very first address of the user heap $|$ global vars $|$ all global variables of user application $|$ -\/ -\/ -\/ -\/ -\/ -\/ $|$ $|$ \-\_\-usermem $|$ usermem structure defined below +-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---+ 
+
+\subsection{Variable Documentation}
+\hypertarget{usermem_8h_af044184d28c9a8b78f17bd1d8e1059b4}{\index{usermem.\-h@{usermem.\-h}!\-\_\-usermem@{\-\_\-usermem}}
+\index{\-\_\-usermem@{\-\_\-usermem}!usermem.h@{usermem.\-h}}
+\subsubsection[{\-\_\-usermem}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-\_\-usermem\-\_\-t} \-\_\-usermem}}\label{usermem_8h_af044184d28c9a8b78f17bd1d8e1059b4}
+
+
+Referenced by \-\_\-start(), free\-\_\-ustack(), kinit(), malloc\-\_\-ustack(), print\-\_\-ustack(), sbrk(), sched\-\_\-switch(), and thread\-\_\-main\-\_\-load().
+

@@ -1,0 +1,48 @@
+\hypertarget{struct__tls__s}{\section{\-\_\-tls\-\_\-s Struct Reference}
+\label{struct__tls__s}\index{\-\_\-tls\-\_\-s@{\-\_\-tls\-\_\-s}}
+}
+
+
+thread local storage structure definition. There is one structure per thread placed at the beginning of each thread's user stack. For each field, a \#define allows to hide the way of these variables are built. The current structure for the current thread is pointed by \-\_\-usermem.\-tls, the kernel has to update \-\_\-usermem.\-tls field at each thread commutation T\-O\-D\-O\-: we'll have to extend the usage of T\-L\-S variables  
+
+
+
+
+{\ttfamily \#include $<$usermem.\-h$>$}
+
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{struct__tls__s_a2b0505d872f110754ab80cdfe94bf58e}{tls\-\_\-errno}
+\begin{DoxyCompactList}\small\item\em syscall error number \end{DoxyCompactList}\item 
+long long \hyperlink{struct__tls__s_ae577aa68649d5ef9a8eec1ac1c4f3c88}{tls\-\_\-randseed}
+\begin{DoxyCompactList}\small\item\em user random seed \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+thread local storage structure definition. There is one structure per thread placed at the beginning of each thread's user stack. For each field, a \#define allows to hide the way of these variables are built. The current structure for the current thread is pointed by \-\_\-usermem.\-tls, the kernel has to update \-\_\-usermem.\-tls field at each thread commutation T\-O\-D\-O\-: we'll have to extend the usage of T\-L\-S variables 
+
+\subsection{Member Data Documentation}
+\hypertarget{struct__tls__s_a2b0505d872f110754ab80cdfe94bf58e}{\index{\-\_\-tls\-\_\-s@{\-\_\-tls\-\_\-s}!tls\-\_\-errno@{tls\-\_\-errno}}
+\index{tls\-\_\-errno@{tls\-\_\-errno}!_tls_s@{\-\_\-tls\-\_\-s}}
+\subsubsection[{tls\-\_\-errno}]{\setlength{\rightskip}{0pt plus 5cm}int \-\_\-tls\-\_\-s\-::tls\-\_\-errno}}\label{struct__tls__s_a2b0505d872f110754ab80cdfe94bf58e}
+
+
+syscall error number 
+
+
+
+Referenced by sched\-\_\-dump(), thread\-\_\-create(), and thread\-\_\-errno().
+
+\hypertarget{struct__tls__s_ae577aa68649d5ef9a8eec1ac1c4f3c88}{\index{\-\_\-tls\-\_\-s@{\-\_\-tls\-\_\-s}!tls\-\_\-randseed@{tls\-\_\-randseed}}
+\index{tls\-\_\-randseed@{tls\-\_\-randseed}!_tls_s@{\-\_\-tls\-\_\-s}}
+\subsubsection[{tls\-\_\-randseed}]{\setlength{\rightskip}{0pt plus 5cm}long long \-\_\-tls\-\_\-s\-::tls\-\_\-randseed}}\label{struct__tls__s_ae577aa68649d5ef9a8eec1ac1c4f3c88}
+
+
+user random seed 
+
+
+
+The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/users/enseig/franck/ko6/src/soft/common/\hyperlink{usermem_8h}{usermem.\-h}\end{DoxyCompactItemize}

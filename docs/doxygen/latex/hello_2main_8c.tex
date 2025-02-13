@@ -1,0 +1,35 @@
+\hypertarget{hello_2main_8c}{\section{/users/enseig/franck/ko6/src/soft/uapp/hello/main.c File Reference}
+\label{hello_2main_8c}\index{/users/enseig/franck/ko6/src/soft/uapp/hello/main.\-c@{/users/enseig/franck/ko6/src/soft/uapp/hello/main.\-c}}
+}
+{\ttfamily \#include $<$libc.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{hello_2main_8c_a840291bc02cba5474a4cb46a9b9566fe}{main} (void)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{hello_2main_8c_a840291bc02cba5474a4cb46a9b9566fe}{\index{hello/main.\-c@{hello/main.\-c}!main@{main}}
+\index{main@{main}!hello/main.c@{hello/main.\-c}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{hello_2main_8c_a840291bc02cba5474a4cb46a9b9566fe}
+
+
+References fgets(), fprintf(), and strlen().
+
+
+\begin{DoxyCode}
+16 \{
+17     \textcolor{keywordtype}{char} name[64];
+18     \hyperlink{libc_8c_a4e7edf0e8df09b47566d572e19dad429}{fprintf}( 1, \textcolor{stringliteral}{"Hello world!\(\backslash\)n"});
+19     \hyperlink{libc_8c_a4e7edf0e8df09b47566d572e19dad429}{fprintf}( 1, \textcolor{stringliteral}{"What's your name? "});
+20     \hyperlink{libc_8c_ac1c7955a0be50e6485d10149c16452f0}{fgets}( name, \textcolor{keyword}{sizeof}(name), 1);
+21     name[ \hyperlink{cstd_8c_a54684bded3e61e2d78d490650f9b706a}{strlen}(name)-1 ]=0;
+22     \hyperlink{libc_8c_a4e7edf0e8df09b47566d572e19dad429}{fprintf}( 1, \textcolor{stringliteral}{"Hello %s!\(\backslash\)n"}, name);
+23     \textcolor{keywordflow}{return} 0;
+24 \}
+\end{DoxyCode}

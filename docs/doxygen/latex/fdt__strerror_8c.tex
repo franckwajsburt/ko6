@@ -1,0 +1,109 @@
+\hypertarget{fdt__strerror_8c}{\section{/users/enseig/franck/ko6/src/soft/external/libfdt/fdt\-\_\-strerror.c File Reference}
+\label{fdt__strerror_8c}\index{/users/enseig/franck/ko6/src/soft/external/libfdt/fdt\-\_\-strerror.\-c@{/users/enseig/franck/ko6/src/soft/external/libfdt/fdt\-\_\-strerror.\-c}}
+}
+{\ttfamily \#include \char`\"{}libfdt\-\_\-env.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$external/libfdt/fdt.\-h$>$}\\*
+{\ttfamily \#include $<$external/libfdt/libfdt.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}libfdt\-\_\-internal.\-h\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structfdt__errtabent}{fdt\-\_\-errtabent}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{F\-D\-T\-\_\-\-E\-R\-R\-T\-A\-B\-E\-N\-T}(val)~\mbox{[}(val)\mbox{]} = \{ .str = \#val, \}
+\item 
+\#define \hyperlink{fdt__strerror_8c_a7e7f43c63239076791b75a67ac410f40}{F\-D\-T\-\_\-\-E\-R\-R\-T\-A\-B\-S\-I\-Z\-E}~((int)(sizeof(\hyperlink{fdt__strerror_8c_a4b402a1119d89ae71122e25fa739de79}{fdt\-\_\-errtable}) / sizeof(\hyperlink{fdt__strerror_8c_a4b402a1119d89ae71122e25fa739de79}{fdt\-\_\-errtable}\mbox{[}0\mbox{]})))
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+const char $\ast$ \hyperlink{fdt__strerror_8c_a50813a1a70923f23f61c5b617bc6ed68}{fdt\-\_\-strerror} (int errval)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static struct \hyperlink{structfdt__errtabent}{fdt\-\_\-errtabent} \hyperlink{fdt__strerror_8c_a4b402a1119d89ae71122e25fa739de79}{fdt\-\_\-errtable} \mbox{[}$\,$\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{\index{fdt\-\_\-strerror.\-c@{fdt\-\_\-strerror.\-c}!F\-D\-T\-\_\-\-E\-R\-R\-T\-A\-B\-E\-N\-T@{F\-D\-T\-\_\-\-E\-R\-R\-T\-A\-B\-E\-N\-T}}
+\index{F\-D\-T\-\_\-\-E\-R\-R\-T\-A\-B\-E\-N\-T@{F\-D\-T\-\_\-\-E\-R\-R\-T\-A\-B\-E\-N\-T}!fdt_strerror.c@{fdt\-\_\-strerror.\-c}}
+\subsubsection[{F\-D\-T\-\_\-\-E\-R\-R\-T\-A\-B\-E\-N\-T}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-E\-R\-R\-T\-A\-B\-E\-N\-T(
+\begin{DoxyParamCaption}
+\item[{}]{val}
+\end{DoxyParamCaption}
+)~\mbox{[}(val)\mbox{]} = \{ .str = \#val, \}}}\label{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}
+\hypertarget{fdt__strerror_8c_a7e7f43c63239076791b75a67ac410f40}{\index{fdt\-\_\-strerror.\-c@{fdt\-\_\-strerror.\-c}!F\-D\-T\-\_\-\-E\-R\-R\-T\-A\-B\-S\-I\-Z\-E@{F\-D\-T\-\_\-\-E\-R\-R\-T\-A\-B\-S\-I\-Z\-E}}
+\index{F\-D\-T\-\_\-\-E\-R\-R\-T\-A\-B\-S\-I\-Z\-E@{F\-D\-T\-\_\-\-E\-R\-R\-T\-A\-B\-S\-I\-Z\-E}!fdt_strerror.c@{fdt\-\_\-strerror.\-c}}
+\subsubsection[{F\-D\-T\-\_\-\-E\-R\-R\-T\-A\-B\-S\-I\-Z\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-D\-T\-\_\-\-E\-R\-R\-T\-A\-B\-S\-I\-Z\-E~((int)(sizeof({\bf fdt\-\_\-errtable}) / sizeof({\bf fdt\-\_\-errtable}\mbox{[}0\mbox{]})))}}\label{fdt__strerror_8c_a7e7f43c63239076791b75a67ac410f40}
+
+
+Referenced by fdt\-\_\-strerror().
+
+
+
+\subsection{Function Documentation}
+\hypertarget{fdt__strerror_8c_a50813a1a70923f23f61c5b617bc6ed68}{\index{fdt\-\_\-strerror.\-c@{fdt\-\_\-strerror.\-c}!fdt\-\_\-strerror@{fdt\-\_\-strerror}}
+\index{fdt\-\_\-strerror@{fdt\-\_\-strerror}!fdt_strerror.c@{fdt\-\_\-strerror.\-c}}
+\subsubsection[{fdt\-\_\-strerror}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ fdt\-\_\-strerror (
+\begin{DoxyParamCaption}
+\item[{int}]{errval}
+\end{DoxyParamCaption}
+)}}\label{fdt__strerror_8c_a50813a1a70923f23f61c5b617bc6ed68}
+
+
+References F\-D\-T\-\_\-\-E\-R\-R\-T\-A\-B\-S\-I\-Z\-E, and fdt\-\_\-errtabent\-::str.
+
+
+\begin{DoxyCode}
+47 \{
+48     \textcolor{keywordflow}{if} (errval > 0)
+49         \textcolor{keywordflow}{return} \textcolor{stringliteral}{"<valid offset/length>"};
+50     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (errval == 0)
+51         \textcolor{keywordflow}{return} \textcolor{stringliteral}{"<no error>"};
+52     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (-errval < \hyperlink{fdt__strerror_8c_a7e7f43c63239076791b75a67ac410f40}{FDT\_ERRTABSIZE}) \{
+53         \textcolor{keyword}{const} \textcolor{keywordtype}{char} *s = \hyperlink{fdt__strerror_8c_a4b402a1119d89ae71122e25fa739de79}{fdt\_errtable}[-errval].\hyperlink{structfdt__errtabent_afb5741d1d343729e8d9025a7cc129315}{str};
+54 
+55         \textcolor{keywordflow}{if} (s)
+56             \textcolor{keywordflow}{return} s;
+57     \}
+58 
+59     \textcolor{keywordflow}{return} \textcolor{stringliteral}{"<unknown error>"};
+60 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\hypertarget{fdt__strerror_8c_a4b402a1119d89ae71122e25fa739de79}{\index{fdt\-\_\-strerror.\-c@{fdt\-\_\-strerror.\-c}!fdt\-\_\-errtable@{fdt\-\_\-errtable}}
+\index{fdt\-\_\-errtable@{fdt\-\_\-errtable}!fdt_strerror.c@{fdt\-\_\-strerror.\-c}}
+\subsubsection[{fdt\-\_\-errtable}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf fdt\-\_\-errtabent} fdt\-\_\-errtable\mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}}\label{fdt__strerror_8c_a4b402a1119d89ae71122e25fa739de79}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+= \{
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_a93cfa052f4b28df4bfc7d336b692fa07}{FDT\_ERR\_NOTFOUND}),
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_a26af70ef43c09fafd5eb29f10a09278a}{FDT\_ERR\_EXISTS}),
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_a149fb54f14ba915a78319a9570e4eae3}{FDT\_ERR\_NOSPACE}),
+
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_a5025b6b09a009bd2b516e6a831d7ce72}{FDT\_ERR\_BADOFFSET}),
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_a2b7c103b35891f65523585a43b92a748}{FDT\_ERR\_BADPATH}),
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_a0f264f8ba8cc4e98852c8246bc6312bc}{FDT\_ERR\_BADPHANDLE}),
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_a87f75249bba66fc5e21110e00a990a81}{FDT\_ERR\_BADSTATE}),
+
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_a2b814a0775d93b5da1442fc091e49958}{FDT\_ERR\_TRUNCATED}),
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_abb777d59bc55628f8736b2b6c799213b}{FDT\_ERR\_BADMAGIC}),
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_ad2a3b277a1e6987ead001fcd2415d88d}{FDT\_ERR\_BADVERSION}),
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_aef7e5f2183c72ef2b4698bb918d8f2f7}{FDT\_ERR\_BADSTRUCTURE}),
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_ad698818ae8340bbadf1cbbb49e4c968d}{FDT\_ERR\_BADLAYOUT}),
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_a02625761a47e8012c53fb389dd25fadd}{FDT\_ERR\_INTERNAL}),
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_ac99b64a390af02e95d9236e5c1d03780}{FDT\_ERR\_BADNCELLS}),
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_a69e818556330b83a02de930b95216aa9}{FDT\_ERR\_BADVALUE}),
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_aa276d7f3088179b283530d41750ff5e4}{FDT\_ERR\_BADOVERLAY}),
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_a7dbda231b96112ab9cd6d2eca9b42bfb}{FDT\_ERR\_NOPHANDLES}),
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_acdbe061469db63aa50b51afa59be2fcf}{FDT\_ERR\_BADFLAGS}),
+    \hyperlink{fdt__strerror_8c_a8e38c1e3f791a5a571db367b599c2862}{FDT\_ERRTABENT}(\hyperlink{libfdt_8h_a3700c1466eed663efeb8cfcfb68410e7}{FDT\_ERR\_ALIGNMENT}),
+\}
+\end{DoxyCode}

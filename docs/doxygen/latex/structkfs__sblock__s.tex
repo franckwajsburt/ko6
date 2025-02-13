@@ -1,0 +1,175 @@
+\hypertarget{structkfs__sblock__s}{\section{kfs\-\_\-sblock\-\_\-s Struct Reference}
+\label{structkfs__sblock__s}\index{kfs\-\_\-sblock\-\_\-s@{kfs\-\_\-sblock\-\_\-s}}
+}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\-\_\-t} \hyperlink{structkfs__sblock__s_a8821a5865dacd4eea0bcae64e23b3aa5}{max\-\_\-dentry}
+\begin{DoxyCompactList}\small\item\em $<$ size\-: K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-S\-B\-L\-O\-C\-K$<$$<$12 bytes \end{DoxyCompactList}\item 
+\hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\-\_\-t} \hyperlink{structkfs__sblock__s_ab9a8e05095ae32b5274f22f0c937b0bd}{cur\-\_\-dentry}
+\begin{DoxyCompactList}\small\item\em last dentry allocated/freed, all before it are occupied \end{DoxyCompactList}\item 
+\hyperlink{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}{u8\-\_\-t} \hyperlink{structkfs__sblock__s_a7aa2f7b977d0648b2cbe5b1cdb3234fd}{bmp\-\_\-dentry} \mbox{[}\hyperlink{kfs_8c_a92ab7d744c9853bdebee5c81ac2b422f}{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-D\-E\-N\-T\-R\-Y}/8\mbox{]}
+\begin{DoxyCompactList}\small\item\em bitmap of dentries \end{DoxyCompactList}\item 
+\hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\-\_\-t} \hyperlink{structkfs__sblock__s_a50bd71d628473a6b77c6b2512f6742da}{max\-\_\-inode}
+\begin{DoxyCompactList}\small\item\em total inodes number \end{DoxyCompactList}\item 
+\hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\-\_\-t} \hyperlink{structkfs__sblock__s_a299344e23b26aaf0f60f1f94a0faf966}{cur\-\_\-inode}
+\begin{DoxyCompactList}\small\item\em last inode allocated/freed, all before it are occupied \end{DoxyCompactList}\item 
+\hyperlink{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}{u8\-\_\-t} \hyperlink{structkfs__sblock__s_a4320a5d34fc85b90d0422ae8ff024d7f}{bmp\-\_\-inode} \mbox{[}\hyperlink{kfs_8c_ac084ea319e447d4af876044655fc46ec}{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-I\-N\-O\-D\-E}/8\mbox{]}
+\begin{DoxyCompactList}\small\item\em bitmap of inodes \end{DoxyCompactList}\item 
+\hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\-\_\-t} \hyperlink{structkfs__sblock__s_a5254da868c0d1d63a4aba34d19ff9b04}{max\-\_\-fmap}
+\begin{DoxyCompactList}\small\item\em total fmaps number \end{DoxyCompactList}\item 
+\hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\-\_\-t} \hyperlink{structkfs__sblock__s_acb1111b4f37733c412fb8eb4788c3c83}{cur\-\_\-fmap}
+\begin{DoxyCompactList}\small\item\em last fmap allocated/freed, all before it are occupied \end{DoxyCompactList}\item 
+\hyperlink{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}{u8\-\_\-t} \hyperlink{structkfs__sblock__s_a2f9dba6f80a4fc818bbe8ca84c2d1309}{bmp\-\_\-fmap} \mbox{[}\hyperlink{kfs_8c_a75563572783e6a8183fe1fa127b6453d}{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-F\-M\-A\-P}/8\mbox{]}
+\begin{DoxyCompactList}\small\item\em bitmap of fmaps \end{DoxyCompactList}\item 
+\hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\-\_\-t} \hyperlink{structkfs__sblock__s_a097af9f6c4329c629453634d52d2a8b0}{max\-\_\-page}
+\begin{DoxyCompactList}\small\item\em total pages number \end{DoxyCompactList}\item 
+\hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\-\_\-t} \hyperlink{structkfs__sblock__s_aa52c224196e86427970e3c4a0830190f}{cur\-\_\-page}
+\begin{DoxyCompactList}\small\item\em last page allocated/freed, all before it are occupied \end{DoxyCompactList}\item 
+\hyperlink{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}{u8\-\_\-t} \hyperlink{structkfs__sblock__s_a163e19c03f2551155f6b94c304103da3}{bmp\-\_\-page} \mbox{[}\hyperlink{kfs_8h_a7c0f2945d18d92bc9b2e754b377335b3}{K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-D\-I\-S\-K}/8\mbox{]}
+\begin{DoxyCompactList}\small\item\em bitmap of pages \end{DoxyCompactList}\item 
+\hyperlink{kfs_8c_ae081489b4906f65a3cb18e9fbe9f8d23}{u8\-\_\-t} \hyperlink{structkfs__sblock__s_acb2d63ab6c4b6bfb0bbd4273fbb3864d}{padding} \mbox{[}(\hyperlink{kfs_8h_a82f61eaff20e7015c52261a2423ab0af}{K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-S\-B\-L\-O\-C\-K}$<$$<$ 12)-\/8 $\ast$sizeof(\hyperlink{kfs_8c_a0c0a490ab7fa397be6c764a935cc5ea4}{u32\-\_\-t})-\/\hyperlink{kfs_8c_a92ab7d744c9853bdebee5c81ac2b422f}{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-D\-E\-N\-T\-R\-Y}/8-\/\hyperlink{kfs_8c_ac084ea319e447d4af876044655fc46ec}{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-I\-N\-O\-D\-E}/8-\/\hyperlink{kfs_8c_a75563572783e6a8183fe1fa127b6453d}{K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-F\-M\-A\-P}/8-\/\hyperlink{kfs_8h_a7c0f2945d18d92bc9b2e754b377335b3}{K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-D\-I\-S\-K}/8\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{structkfs__sblock__s_a7aa2f7b977d0648b2cbe5b1cdb3234fd}{\index{kfs\-\_\-sblock\-\_\-s@{kfs\-\_\-sblock\-\_\-s}!bmp\-\_\-dentry@{bmp\-\_\-dentry}}
+\index{bmp\-\_\-dentry@{bmp\-\_\-dentry}!kfs_sblock_s@{kfs\-\_\-sblock\-\_\-s}}
+\subsubsection[{bmp\-\_\-dentry}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u8\-\_\-t} kfs\-\_\-sblock\-\_\-s\-::bmp\-\_\-dentry\mbox{[}{\bf K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-D\-E\-N\-T\-R\-Y}/8\mbox{]}}}\label{structkfs__sblock__s_a7aa2f7b977d0648b2cbe5b1cdb3234fd}
+
+
+bitmap of dentries 
+
+
+
+Referenced by kfs\-\_\-alloc\-\_\-dentry(), and kfs\-\_\-free\-\_\-dentry().
+
+\hypertarget{structkfs__sblock__s_a2f9dba6f80a4fc818bbe8ca84c2d1309}{\index{kfs\-\_\-sblock\-\_\-s@{kfs\-\_\-sblock\-\_\-s}!bmp\-\_\-fmap@{bmp\-\_\-fmap}}
+\index{bmp\-\_\-fmap@{bmp\-\_\-fmap}!kfs_sblock_s@{kfs\-\_\-sblock\-\_\-s}}
+\subsubsection[{bmp\-\_\-fmap}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u8\-\_\-t} kfs\-\_\-sblock\-\_\-s\-::bmp\-\_\-fmap\mbox{[}{\bf K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-F\-M\-A\-P}/8\mbox{]}}}\label{structkfs__sblock__s_a2f9dba6f80a4fc818bbe8ca84c2d1309}
+
+
+bitmap of fmaps 
+
+
+
+Referenced by kfs\-\_\-alloc\-\_\-fmap(), and kfs\-\_\-free\-\_\-fmap().
+
+\hypertarget{structkfs__sblock__s_a4320a5d34fc85b90d0422ae8ff024d7f}{\index{kfs\-\_\-sblock\-\_\-s@{kfs\-\_\-sblock\-\_\-s}!bmp\-\_\-inode@{bmp\-\_\-inode}}
+\index{bmp\-\_\-inode@{bmp\-\_\-inode}!kfs_sblock_s@{kfs\-\_\-sblock\-\_\-s}}
+\subsubsection[{bmp\-\_\-inode}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u8\-\_\-t} kfs\-\_\-sblock\-\_\-s\-::bmp\-\_\-inode\mbox{[}{\bf K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-I\-N\-O\-D\-E}/8\mbox{]}}}\label{structkfs__sblock__s_a4320a5d34fc85b90d0422ae8ff024d7f}
+
+
+bitmap of inodes 
+
+
+
+Referenced by kfs\-\_\-alloc\-\_\-inode(), and kfs\-\_\-free\-\_\-inode().
+
+\hypertarget{structkfs__sblock__s_a163e19c03f2551155f6b94c304103da3}{\index{kfs\-\_\-sblock\-\_\-s@{kfs\-\_\-sblock\-\_\-s}!bmp\-\_\-page@{bmp\-\_\-page}}
+\index{bmp\-\_\-page@{bmp\-\_\-page}!kfs_sblock_s@{kfs\-\_\-sblock\-\_\-s}}
+\subsubsection[{bmp\-\_\-page}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u8\-\_\-t} kfs\-\_\-sblock\-\_\-s\-::bmp\-\_\-page\mbox{[}{\bf K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-D\-I\-S\-K}/8\mbox{]}}}\label{structkfs__sblock__s_a163e19c03f2551155f6b94c304103da3}
+
+
+bitmap of pages 
+
+
+
+Referenced by kfs\-\_\-alloc\-\_\-page(), and kfs\-\_\-free\-\_\-page().
+
+\hypertarget{structkfs__sblock__s_ab9a8e05095ae32b5274f22f0c937b0bd}{\index{kfs\-\_\-sblock\-\_\-s@{kfs\-\_\-sblock\-\_\-s}!cur\-\_\-dentry@{cur\-\_\-dentry}}
+\index{cur\-\_\-dentry@{cur\-\_\-dentry}!kfs_sblock_s@{kfs\-\_\-sblock\-\_\-s}}
+\subsubsection[{cur\-\_\-dentry}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u32\-\_\-t} kfs\-\_\-sblock\-\_\-s\-::cur\-\_\-dentry}}\label{structkfs__sblock__s_ab9a8e05095ae32b5274f22f0c937b0bd}
+
+
+last dentry allocated/freed, all before it are occupied 
+
+
+
+Referenced by kfs\-\_\-alloc\-\_\-dentry(), and kfs\-\_\-free\-\_\-dentry().
+
+\hypertarget{structkfs__sblock__s_acb1111b4f37733c412fb8eb4788c3c83}{\index{kfs\-\_\-sblock\-\_\-s@{kfs\-\_\-sblock\-\_\-s}!cur\-\_\-fmap@{cur\-\_\-fmap}}
+\index{cur\-\_\-fmap@{cur\-\_\-fmap}!kfs_sblock_s@{kfs\-\_\-sblock\-\_\-s}}
+\subsubsection[{cur\-\_\-fmap}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u32\-\_\-t} kfs\-\_\-sblock\-\_\-s\-::cur\-\_\-fmap}}\label{structkfs__sblock__s_acb1111b4f37733c412fb8eb4788c3c83}
+
+
+last fmap allocated/freed, all before it are occupied 
+
+
+
+Referenced by kfs\-\_\-alloc\-\_\-fmap(), and kfs\-\_\-free\-\_\-fmap().
+
+\hypertarget{structkfs__sblock__s_a299344e23b26aaf0f60f1f94a0faf966}{\index{kfs\-\_\-sblock\-\_\-s@{kfs\-\_\-sblock\-\_\-s}!cur\-\_\-inode@{cur\-\_\-inode}}
+\index{cur\-\_\-inode@{cur\-\_\-inode}!kfs_sblock_s@{kfs\-\_\-sblock\-\_\-s}}
+\subsubsection[{cur\-\_\-inode}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u32\-\_\-t} kfs\-\_\-sblock\-\_\-s\-::cur\-\_\-inode}}\label{structkfs__sblock__s_a299344e23b26aaf0f60f1f94a0faf966}
+
+
+last inode allocated/freed, all before it are occupied 
+
+
+
+Referenced by kfs\-\_\-alloc\-\_\-inode(), and kfs\-\_\-free\-\_\-inode().
+
+\hypertarget{structkfs__sblock__s_aa52c224196e86427970e3c4a0830190f}{\index{kfs\-\_\-sblock\-\_\-s@{kfs\-\_\-sblock\-\_\-s}!cur\-\_\-page@{cur\-\_\-page}}
+\index{cur\-\_\-page@{cur\-\_\-page}!kfs_sblock_s@{kfs\-\_\-sblock\-\_\-s}}
+\subsubsection[{cur\-\_\-page}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u32\-\_\-t} kfs\-\_\-sblock\-\_\-s\-::cur\-\_\-page}}\label{structkfs__sblock__s_aa52c224196e86427970e3c4a0830190f}
+
+
+last page allocated/freed, all before it are occupied 
+
+
+
+Referenced by kfs\-\_\-alloc\-\_\-page(), and kfs\-\_\-free\-\_\-page().
+
+\hypertarget{structkfs__sblock__s_a8821a5865dacd4eea0bcae64e23b3aa5}{\index{kfs\-\_\-sblock\-\_\-s@{kfs\-\_\-sblock\-\_\-s}!max\-\_\-dentry@{max\-\_\-dentry}}
+\index{max\-\_\-dentry@{max\-\_\-dentry}!kfs_sblock_s@{kfs\-\_\-sblock\-\_\-s}}
+\subsubsection[{max\-\_\-dentry}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u32\-\_\-t} kfs\-\_\-sblock\-\_\-s\-::max\-\_\-dentry}}\label{structkfs__sblock__s_a8821a5865dacd4eea0bcae64e23b3aa5}
+
+
+$<$ size\-: K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-S\-B\-L\-O\-C\-K$<$$<$12 bytes 
+
+total dentries number 
+
+Referenced by kfs\-\_\-alloc\-\_\-dentry().
+
+\hypertarget{structkfs__sblock__s_a5254da868c0d1d63a4aba34d19ff9b04}{\index{kfs\-\_\-sblock\-\_\-s@{kfs\-\_\-sblock\-\_\-s}!max\-\_\-fmap@{max\-\_\-fmap}}
+\index{max\-\_\-fmap@{max\-\_\-fmap}!kfs_sblock_s@{kfs\-\_\-sblock\-\_\-s}}
+\subsubsection[{max\-\_\-fmap}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u32\-\_\-t} kfs\-\_\-sblock\-\_\-s\-::max\-\_\-fmap}}\label{structkfs__sblock__s_a5254da868c0d1d63a4aba34d19ff9b04}
+
+
+total fmaps number 
+
+
+
+Referenced by kfs\-\_\-alloc\-\_\-fmap().
+
+\hypertarget{structkfs__sblock__s_a50bd71d628473a6b77c6b2512f6742da}{\index{kfs\-\_\-sblock\-\_\-s@{kfs\-\_\-sblock\-\_\-s}!max\-\_\-inode@{max\-\_\-inode}}
+\index{max\-\_\-inode@{max\-\_\-inode}!kfs_sblock_s@{kfs\-\_\-sblock\-\_\-s}}
+\subsubsection[{max\-\_\-inode}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u32\-\_\-t} kfs\-\_\-sblock\-\_\-s\-::max\-\_\-inode}}\label{structkfs__sblock__s_a50bd71d628473a6b77c6b2512f6742da}
+
+
+total inodes number 
+
+
+
+Referenced by kfs\-\_\-alloc\-\_\-inode().
+
+\hypertarget{structkfs__sblock__s_a097af9f6c4329c629453634d52d2a8b0}{\index{kfs\-\_\-sblock\-\_\-s@{kfs\-\_\-sblock\-\_\-s}!max\-\_\-page@{max\-\_\-page}}
+\index{max\-\_\-page@{max\-\_\-page}!kfs_sblock_s@{kfs\-\_\-sblock\-\_\-s}}
+\subsubsection[{max\-\_\-page}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u32\-\_\-t} kfs\-\_\-sblock\-\_\-s\-::max\-\_\-page}}\label{structkfs__sblock__s_a097af9f6c4329c629453634d52d2a8b0}
+
+
+total pages number 
+
+
+
+Referenced by kfs\-\_\-alloc\-\_\-page().
+
+\hypertarget{structkfs__sblock__s_acb2d63ab6c4b6bfb0bbd4273fbb3864d}{\index{kfs\-\_\-sblock\-\_\-s@{kfs\-\_\-sblock\-\_\-s}!padding@{padding}}
+\index{padding@{padding}!kfs_sblock_s@{kfs\-\_\-sblock\-\_\-s}}
+\subsubsection[{padding}]{\setlength{\rightskip}{0pt plus 5cm}{\bf u8\-\_\-t} kfs\-\_\-sblock\-\_\-s\-::padding\mbox{[}({\bf K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-S\-B\-L\-O\-C\-K}$<$$<$ 12)-\/8 $\ast$sizeof({\bf u32\-\_\-t})-\/{\bf K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-D\-E\-N\-T\-R\-Y}/8-\/{\bf K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-I\-N\-O\-D\-E}/8-\/{\bf K\-F\-S\-\_\-\-M\-A\-X\-\_\-\-F\-M\-A\-P}/8-\/{\bf K\-F\-S\-\_\-\-N\-P\-G\-\_\-\-D\-I\-S\-K}/8\mbox{]}}}\label{structkfs__sblock__s_acb2d63ab6c4b6bfb0bbd4273fbb3864d}
+
+
+The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/users/enseig/franck/ko6/src/soft/fs/kfs/\hyperlink{kfs_8c}{kfs.\-c}\end{DoxyCompactItemize}

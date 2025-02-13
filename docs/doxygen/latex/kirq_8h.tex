@@ -1,0 +1,156 @@
+\hypertarget{kirq_8h}{\section{/users/enseig/franck/ko6/src/soft/kernel/kirq.h File Reference}
+\label{kirq_8h}\index{/users/enseig/franck/ko6/src/soft/kernel/kirq.\-h@{/users/enseig/franck/ko6/src/soft/kernel/kirq.\-h}}
+}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structite__s}{ite\-\_\-s}
+\begin{DoxyCompactList}\small\item\em Interrupt Table Entry, describe what to do for a specific I\-R\-Q. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{kirq_8h_aad1c574a2e74abd097cc3e4818711325}{M\-A\-X\-\_\-\-N\-\_\-\-I\-R\-Q\-S}~1024
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef void($\ast$ \hyperlink{kirq_8h_a6c476c213249d7236d7888257e71628d}{isr\-\_\-t} )(unsigned, void $\ast$)
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{kirq_8h_a7bb6fb99500c6f10708c7653cef722e8}{register\-\_\-interrupt} (unsigned irq, \hyperlink{kirq_8h_a6c476c213249d7236d7888257e71628d}{isr\-\_\-t} handler, void $\ast$arg)
+\begin{DoxyCompactList}\small\item\em Assign an I\-S\-R (Interrupt-\/\-Service Routine) to an I\-R\-Q. \end{DoxyCompactList}\item 
+void \hyperlink{kirq_8h_aa9ad3c6e921343d32bd93189e56344ac}{route\-\_\-interrupt} (unsigned irq)
+\begin{DoxyCompactList}\small\item\em Call the I\-S\-R of a given I\-R\-Q. \end{DoxyCompactList}\item 
+void \hyperlink{kirq_8h_a24b6c39fc1dc2637e3ef54514f60ac9a}{unregister\-\_\-interrupt} (unsigned irq)
+\begin{DoxyCompactList}\small\item\em Remove the I\-S\-R linked to an I\-R\-Q. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{kirq_8h_aad1c574a2e74abd097cc3e4818711325}{\index{kirq.\-h@{kirq.\-h}!M\-A\-X\-\_\-\-N\-\_\-\-I\-R\-Q\-S@{M\-A\-X\-\_\-\-N\-\_\-\-I\-R\-Q\-S}}
+\index{M\-A\-X\-\_\-\-N\-\_\-\-I\-R\-Q\-S@{M\-A\-X\-\_\-\-N\-\_\-\-I\-R\-Q\-S}!kirq.h@{kirq.\-h}}
+\subsubsection[{M\-A\-X\-\_\-\-N\-\_\-\-I\-R\-Q\-S}]{\setlength{\rightskip}{0pt plus 5cm}\#define M\-A\-X\-\_\-\-N\-\_\-\-I\-R\-Q\-S~1024}}\label{kirq_8h_aad1c574a2e74abd097cc3e4818711325}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{kirq_8h_a6c476c213249d7236d7888257e71628d}{\index{kirq.\-h@{kirq.\-h}!isr\-\_\-t@{isr\-\_\-t}}
+\index{isr\-\_\-t@{isr\-\_\-t}!kirq.h@{kirq.\-h}}
+\subsubsection[{isr\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef void($\ast$ isr\-\_\-t)(unsigned, void $\ast$)}}\label{kirq_8h_a6c476c213249d7236d7888257e71628d}
+Interrupt table helper functions isr\-\_\-t is a type of an isr function
+
+This comment explains what is a type of function, and how to create one. If we have a function \-: R\-E\-T\-U\-R\-N\-\_\-\-T\-Y\-P\-E F\-U\-N\-C\-T\-I\-O\-N\-\_\-\-N\-A\-M\-E ( list of A\-R\-G\-\_\-\-T\-Y\-P\-E A\-R\-G\-\_\-\-N\-A\-M\-E )
+
+For example \-: int erase (double $\ast$ tab, unsigned size);
+\begin{DoxyItemize}
+\item R\-E\-T\-U\-R\-N\-\_\-\-T\-Y\-P\-E = int $\ast$ F\-U\-N\-C\-T\-I\-O\-N\-\_\-\-N\-A\-M\-E = erase
+\item A\-R\-G\-\_\-\-T\-Y\-P\-E 1 = double $\ast$ A\-R\-G\-\_\-\-T\-Y\-P\-E 2 = unsigned
+\item A\-R\-G\-\_\-\-N\-A\-M\-E 1 = tab $\ast$ A\-R\-G\-\_\-\-N\-A\-M\-E 2 = size
+\end{DoxyItemize}
+
+To create a variable named V\-F which is a pointer to a function, we must write \-: R\-E\-T\-U\-R\-N\-\_\-\-T\-Y\-P\-E ($\ast$\-V\-F) ( list of A\-R\-G\-\_\-\-T\-Y\-P\-E A\-R\-G\-\_\-\-N\-A\-M\-E ); be warned that the parentheses around $\ast$\-V\-F are mandatory, otherwise gcc recognize a simple declaration of function
+
+For example, we can write \-: int ($\ast$\-V\-F) (double $\ast$ tab, unsigned size); // declaration of V\-F V\-F = erase; // initialisation of V\-F int x = V\-F (tab, size); // this line is equivalent to int x = erase (tab, size); // this one
+
+To create a type named T\-F for the pointer to a function, we must write \-: typedef R\-E\-T\-U\-R\-N\-\_\-\-T\-Y\-P\-E ($\ast$\-T\-F) ( list of A\-R\-G\-\_\-\-T\-Y\-P\-E A\-R\-G\-\_\-\-N\-A\-M\-E ); the parentheses around $\ast$\-T\-F are also mandatory,
+
+For example, we can write \-: typedef int ($\ast$\-T\-F) (double $\ast$ tab, unsigned size); T\-F V\-F ; V\-F = erase; int x = V\-F (tab, size); int x = erase (tab, size); 
+
+\subsection{Function Documentation}
+\hypertarget{kirq_8h_a7bb6fb99500c6f10708c7653cef722e8}{\index{kirq.\-h@{kirq.\-h}!register\-\_\-interrupt@{register\-\_\-interrupt}}
+\index{register\-\_\-interrupt@{register\-\_\-interrupt}!kirq.h@{kirq.\-h}}
+\subsubsection[{register\-\_\-interrupt}]{\setlength{\rightskip}{0pt plus 5cm}void register\-\_\-interrupt (
+\begin{DoxyParamCaption}
+\item[{unsigned}]{irq, }
+\item[{{\bf isr\-\_\-t}}]{handler, }
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)}}\label{kirq_8h_a7bb6fb99500c6f10708c7653cef722e8}
+
+
+Assign an I\-S\-R (Interrupt-\/\-Service Routine) to an I\-R\-Q. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em irq} & the irq \\
+\hline
+{\em handler} & the I\-S\-R to call \\
+\hline
+{\em arg} & argument given to the I\-S\-R \\
+\hline
+\end{DoxyParams}
+
+
+References ite\-\_\-s\-::arg, ite\-\_\-s\-::handler, and Interrupt\-Vector.
+
+
+
+Referenced by soc\-\_\-timer\-\_\-init(), and soc\-\_\-tty\-\_\-init().
+
+
+\begin{DoxyCode}
+18 \{
+19     \hyperlink{kirq_8c_a3d32ff97b6058692226afceace7262a6}{InterruptVector}[irq].\hyperlink{structite__s_a1fb9e01b3558413d6d403a33c563dec2}{handler} = \hyperlink{structite__s_a1fb9e01b3558413d6d403a33c563dec2}{handler};
+20     \hyperlink{kirq_8c_a3d32ff97b6058692226afceace7262a6}{InterruptVector}[irq].\hyperlink{structite__s_ae704d1dffab809cd86efd3f6bed58db1}{arg} = \hyperlink{structite__s_ae704d1dffab809cd86efd3f6bed58db1}{arg};
+21 \}
+\end{DoxyCode}
+\hypertarget{kirq_8h_aa9ad3c6e921343d32bd93189e56344ac}{\index{kirq.\-h@{kirq.\-h}!route\-\_\-interrupt@{route\-\_\-interrupt}}
+\index{route\-\_\-interrupt@{route\-\_\-interrupt}!kirq.h@{kirq.\-h}}
+\subsubsection[{route\-\_\-interrupt}]{\setlength{\rightskip}{0pt plus 5cm}void route\-\_\-interrupt (
+\begin{DoxyParamCaption}
+\item[{unsigned}]{irq}
+\end{DoxyParamCaption}
+)}}\label{kirq_8h_aa9ad3c6e921343d32bd93189e56344ac}
+
+
+Call the I\-S\-R of a given I\-R\-Q. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em irq} & the irq \\
+\hline
+\end{DoxyParams}
+
+
+References ite\-\_\-s\-::arg, ite\-\_\-s\-::handler, and Interrupt\-Vector.
+
+
+
+Referenced by isrcall().
+
+
+\begin{DoxyCode}
+24 \{
+25     \textcolor{keyword}{struct }\hyperlink{structite__s}{ite\_s} ite = \hyperlink{kirq_8c_a3d32ff97b6058692226afceace7262a6}{InterruptVector}[irq];
+26     \textcolor{keywordflow}{if} (ite.\hyperlink{structite__s_a1fb9e01b3558413d6d403a33c563dec2}{handler})
+27         ite.\hyperlink{structite__s_a1fb9e01b3558413d6d403a33c563dec2}{handler}(irq, ite.\hyperlink{structite__s_ae704d1dffab809cd86efd3f6bed58db1}{arg});
+28 \}
+\end{DoxyCode}
+\hypertarget{kirq_8h_a24b6c39fc1dc2637e3ef54514f60ac9a}{\index{kirq.\-h@{kirq.\-h}!unregister\-\_\-interrupt@{unregister\-\_\-interrupt}}
+\index{unregister\-\_\-interrupt@{unregister\-\_\-interrupt}!kirq.h@{kirq.\-h}}
+\subsubsection[{unregister\-\_\-interrupt}]{\setlength{\rightskip}{0pt plus 5cm}void unregister\-\_\-interrupt (
+\begin{DoxyParamCaption}
+\item[{unsigned}]{irq}
+\end{DoxyParamCaption}
+)}}\label{kirq_8h_a24b6c39fc1dc2637e3ef54514f60ac9a}
+
+
+Remove the I\-S\-R linked to an I\-R\-Q. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em irq} & the irq \\
+\hline
+\end{DoxyParams}
+
+
+References ite\-\_\-s\-::arg, ite\-\_\-s\-::handler, and Interrupt\-Vector.
+
+
+\begin{DoxyCode}
+31 \{
+32     \textcolor{comment}{// TODO: register kpanic as a default isr, like the old system}
+33     \hyperlink{kirq_8c_a3d32ff97b6058692226afceace7262a6}{InterruptVector}[irq].\hyperlink{structite__s_a1fb9e01b3558413d6d403a33c563dec2}{handler} = (\hyperlink{kirq_8h_a6c476c213249d7236d7888257e71628d}{isr\_t}) 0;
+34     \hyperlink{kirq_8c_a3d32ff97b6058692226afceace7262a6}{InterruptVector}[irq].\hyperlink{structite__s_ae704d1dffab809cd86efd3f6bed58db1}{arg} = (\textcolor{keywordtype}{void}*) 0;
+35 \}
+\end{DoxyCode}

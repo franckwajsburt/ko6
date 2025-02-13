@@ -1,0 +1,74 @@
+\hypertarget{soclib-timer_8h}{\section{/users/enseig/franck/ko6/src/soft/hal/devices/timer/soclib-\/timer.h File Reference}
+\label{soclib-timer_8h}\index{/users/enseig/franck/ko6/src/soft/hal/devices/timer/soclib-\/timer.\-h@{/users/enseig/franck/ko6/src/soft/hal/devices/timer/soclib-\/timer.\-h}}
+}
+{\ttfamily \#include $<$hal/devices/timer.\-h$>$}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structsoclib__timer__regs__s}{soclib\-\_\-timer\-\_\-regs\-\_\-s}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{soclib-timer_8h_ad4d0316e8dbbe5427118ba5a8a03f12d}{soclib\-\_\-timer\-\_\-isr} (unsigned irq, struct \hyperlink{structtimer__s}{timer\-\_\-s} $\ast$timer)
+\begin{DoxyCompactList}\small\item\em I\-S\-R of the soclib timer device. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structtimer__ops__s}{timer\-\_\-ops\-\_\-s} \hyperlink{soclib-timer_8h_aa3f96a0578c32ac8fd0d3b2526182084}{Soclib\-Timer\-Ops}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{soclib-timer_8h_ad4d0316e8dbbe5427118ba5a8a03f12d}{\index{soclib-\/timer.\-h@{soclib-\/timer.\-h}!soclib\-\_\-timer\-\_\-isr@{soclib\-\_\-timer\-\_\-isr}}
+\index{soclib\-\_\-timer\-\_\-isr@{soclib\-\_\-timer\-\_\-isr}!soclib-timer.h@{soclib-\/timer.\-h}}
+\subsubsection[{soclib\-\_\-timer\-\_\-isr}]{\setlength{\rightskip}{0pt plus 5cm}void soclib\-\_\-timer\-\_\-isr (
+\begin{DoxyParamCaption}
+\item[{unsigned}]{irq, }
+\item[{struct {\bf timer\-\_\-s} $\ast$}]{timer}
+\end{DoxyParamCaption}
+)}}\label{soclib-timer_8h_ad4d0316e8dbbe5427118ba5a8a03f12d}
+
+
+I\-S\-R of the soclib timer device. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em irq} & irq linked to the I\-S\-R \\
+\hline
+{\em timer} & device linked to the I\-S\-R \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+nothing 
+\end{DoxyReturn}
+
+
+References timer\-\_\-s\-::address, timer\-\_\-event\-\_\-s\-::arg, timer\-\_\-s\-::event, timer\-\_\-event\-\_\-s\-::f, and soclib\-\_\-timer\-\_\-regs\-\_\-s\-::resetirq.
+
+
+
+Referenced by soc\-\_\-timer\-\_\-init().
+
+
+\begin{DoxyCode}
+69 \{
+70     \textcolor{keyword}{struct }\hyperlink{structsoclib__timer__regs__s}{soclib\_timer\_regs\_s} *regs = 
+71         (\textcolor{keyword}{struct }\hyperlink{structsoclib__timer__regs__s}{soclib\_timer\_regs\_s} *) timer->\hyperlink{structtimer__s_a269237a7467e8d2423d548750a772631}{address};
+72     \textcolor{comment}{/* IRQ acknoledgement to lower the interrupt signal */}
+73     regs->\hyperlink{structsoclib__timer__regs__s_a63084f461aed6b427e0fcf6028e70ce0}{resetirq} = 1;
+74     
+75     if (timer->\hyperlink{structtimer__s_ad65ea18f2fc79735a86d6ba118933f5b}{event}.\hyperlink{structtimer__event__s_a894a5ffd0c1b40b31fd3b124f22a9ffa}{f})
+76         timer->\hyperlink{structtimer__s_ad65ea18f2fc79735a86d6ba118933f5b}{event}.\hyperlink{structtimer__event__s_a894a5ffd0c1b40b31fd3b124f22a9ffa}{f}(timer->\hyperlink{structtimer__s_ad65ea18f2fc79735a86d6ba118933f5b}{event}.\hyperlink{structtimer__event__s_a0c8f6673a1d1e2ae4a8598f72a8e7576}{arg});
+77 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\hypertarget{soclib-timer_8h_aa3f96a0578c32ac8fd0d3b2526182084}{\index{soclib-\/timer.\-h@{soclib-\/timer.\-h}!Soclib\-Timer\-Ops@{Soclib\-Timer\-Ops}}
+\index{Soclib\-Timer\-Ops@{Soclib\-Timer\-Ops}!soclib-timer.h@{soclib-\/timer.\-h}}
+\subsubsection[{Soclib\-Timer\-Ops}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf timer\-\_\-ops\-\_\-s} Soclib\-Timer\-Ops}}\label{soclib-timer_8h_aa3f96a0578c32ac8fd0d3b2526182084}
+
+
+Referenced by soc\-\_\-timer\-\_\-init(), and soclib\-\_\-timer\-\_\-init().
+

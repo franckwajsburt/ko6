@@ -1,0 +1,137 @@
+\hypertarget{errno_8h}{\section{/users/enseig/franck/ko6/src/soft/common/errno.h File Reference}
+\label{errno_8h}\index{/users/enseig/franck/ko6/src/soft/common/errno.\-h@{/users/enseig/franck/ko6/src/soft/common/errno.\-h}}
+}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3}{errno\-\_\-code} \{ \\*
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3aa5571864412c8275a2e18a931fddcaa6}{F\-A\-I\-L\-U\-R\-E} = -\/1, 
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3ac7f69f7c9e5aea9b8f54cf02870e2bf8}{S\-U\-C\-C\-E\-S\-S}, 
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a755e0cbde2880a406893ad61304bac29}{E2\-B\-I\-G}, 
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a5fa7d65262e81125cecb27e80a26ce98}{E\-A\-C\-C\-E\-S}, 
+\\*
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a4bde0de54c0b708a605ed5095959c14e}{E\-A\-G\-A\-I\-N}, 
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a9e2f813a51a5763a892f4b1783778e4b}{E\-B\-U\-S\-Y}, 
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a4354eedf02712f4da46f9d2d93d0b7ba}{E\-D\-E\-A\-D\-L\-K}, 
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3af740610de680c2861ac4042ad4485d15}{E\-F\-A\-U\-L\-T}, 
+\\*
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a3d9f70d8ebd10e9d4aa420b9cb22cb53}{E\-F\-B\-I\-G}, 
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a8cc241d56d59d11ceea8efc37bec8ed4}{E\-I\-N\-T\-R}, 
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a7bfd237190819a0a272db7b0aa61d5c8}{E\-I\-N\-V\-A\-L}, 
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a6d2c32b1730ea078f2802b34b1258a4c}{E\-I\-O}, 
+\\*
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3adb0b80c8583489ffb5ea6e4851257c2d}{E\-N\-O\-B\-U\-F\-S}, 
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3ae350307a3417656c8cabc816ba8d07cd}{E\-N\-O\-D\-E\-V}, 
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3aec0aa1bb79e2e55ed6d8c165e0611eca}{E\-N\-O\-M\-E\-M}, 
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a2b5265f4c8556b15ec913f61caade1eb}{E\-N\-O\-S\-P\-C}, 
+\\*
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3abd287bcdb80bb2a0c41269b9adcb9d77}{E\-N\-O\-S\-Y\-S}, 
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3af3dc036138d242739c3dbe36c5dfa095}{E\-N\-O\-T\-T\-Y}, 
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a1c0d17ac093eff038b479dba021361bb}{E\-N\-X\-I\-O}, 
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a156dcc38d9ba0765c6150544963ed267}{E\-P\-E\-R\-M}, 
+\\*
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a3ffb99860526d55ef132365553694c3d}{E\-R\-A\-N\-G\-E}, 
+\hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a4e376a13d0c1557d399f473218915625}{E\-S\-R\-C\-H}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \hyperlink{errno_8h_a752b191220a1b00e3d70f9359a660f0f}{errno\-\_\-mess} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em errno is a thread local variable, that means it is like a global variable (thus accessible anywhere) but each thread has its own value. To do that errno is a define that is replaced by $\ast$\-\_\-\-\_\-errno\-\_\-location() \-\_\-\-\_\-errno\-\_\-location() gives an address different for each thread $\ast$\-\_\-\-\_\-errno\-\_\-location() dereferences the pointeur, i.\-e. follows the pointer and it designates what is pointed to. \#define errno $\ast$\-\_\-\-\_\-errno\-\_\-location() \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3}{\index{errno.\-h@{errno.\-h}!errno\-\_\-code@{errno\-\_\-code}}
+\index{errno\-\_\-code@{errno\-\_\-code}!errno.h@{errno.\-h}}
+\subsubsection[{errno\-\_\-code}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf errno\-\_\-code}}}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{F\-A\-I\-L\-U\-R\-E@{F\-A\-I\-L\-U\-R\-E}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!F\-A\-I\-L\-U\-R\-E@{F\-A\-I\-L\-U\-R\-E}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3aa5571864412c8275a2e18a931fddcaa6}{F\-A\-I\-L\-U\-R\-E}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3aa5571864412c8275a2e18a931fddcaa6}
+}]\index{S\-U\-C\-C\-E\-S\-S@{S\-U\-C\-C\-E\-S\-S}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!S\-U\-C\-C\-E\-S\-S@{S\-U\-C\-C\-E\-S\-S}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3ac7f69f7c9e5aea9b8f54cf02870e2bf8}{S\-U\-C\-C\-E\-S\-S}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3ac7f69f7c9e5aea9b8f54cf02870e2bf8}
+}]\index{E2\-B\-I\-G@{E2\-B\-I\-G}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E2\-B\-I\-G@{E2\-B\-I\-G}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3a755e0cbde2880a406893ad61304bac29}{E2\-B\-I\-G}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3a755e0cbde2880a406893ad61304bac29}
+}]\index{E\-A\-C\-C\-E\-S@{E\-A\-C\-C\-E\-S}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-A\-C\-C\-E\-S@{E\-A\-C\-C\-E\-S}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3a5fa7d65262e81125cecb27e80a26ce98}{E\-A\-C\-C\-E\-S}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3a5fa7d65262e81125cecb27e80a26ce98}
+}]\index{E\-A\-G\-A\-I\-N@{E\-A\-G\-A\-I\-N}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-A\-G\-A\-I\-N@{E\-A\-G\-A\-I\-N}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3a4bde0de54c0b708a605ed5095959c14e}{E\-A\-G\-A\-I\-N}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3a4bde0de54c0b708a605ed5095959c14e}
+}]\index{E\-B\-U\-S\-Y@{E\-B\-U\-S\-Y}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-B\-U\-S\-Y@{E\-B\-U\-S\-Y}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3a9e2f813a51a5763a892f4b1783778e4b}{E\-B\-U\-S\-Y}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3a9e2f813a51a5763a892f4b1783778e4b}
+}]\index{E\-D\-E\-A\-D\-L\-K@{E\-D\-E\-A\-D\-L\-K}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-D\-E\-A\-D\-L\-K@{E\-D\-E\-A\-D\-L\-K}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3a4354eedf02712f4da46f9d2d93d0b7ba}{E\-D\-E\-A\-D\-L\-K}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3a4354eedf02712f4da46f9d2d93d0b7ba}
+}]\index{E\-F\-A\-U\-L\-T@{E\-F\-A\-U\-L\-T}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-F\-A\-U\-L\-T@{E\-F\-A\-U\-L\-T}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3af740610de680c2861ac4042ad4485d15}{E\-F\-A\-U\-L\-T}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3af740610de680c2861ac4042ad4485d15}
+}]\index{E\-F\-B\-I\-G@{E\-F\-B\-I\-G}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-F\-B\-I\-G@{E\-F\-B\-I\-G}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3a3d9f70d8ebd10e9d4aa420b9cb22cb53}{E\-F\-B\-I\-G}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3a3d9f70d8ebd10e9d4aa420b9cb22cb53}
+}]\index{E\-I\-N\-T\-R@{E\-I\-N\-T\-R}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-I\-N\-T\-R@{E\-I\-N\-T\-R}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3a8cc241d56d59d11ceea8efc37bec8ed4}{E\-I\-N\-T\-R}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3a8cc241d56d59d11ceea8efc37bec8ed4}
+}]\index{E\-I\-N\-V\-A\-L@{E\-I\-N\-V\-A\-L}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-I\-N\-V\-A\-L@{E\-I\-N\-V\-A\-L}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3a7bfd237190819a0a272db7b0aa61d5c8}{E\-I\-N\-V\-A\-L}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3a7bfd237190819a0a272db7b0aa61d5c8}
+}]\index{E\-I\-O@{E\-I\-O}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-I\-O@{E\-I\-O}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3a6d2c32b1730ea078f2802b34b1258a4c}{E\-I\-O}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3a6d2c32b1730ea078f2802b34b1258a4c}
+}]\index{E\-N\-O\-B\-U\-F\-S@{E\-N\-O\-B\-U\-F\-S}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-N\-O\-B\-U\-F\-S@{E\-N\-O\-B\-U\-F\-S}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3adb0b80c8583489ffb5ea6e4851257c2d}{E\-N\-O\-B\-U\-F\-S}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3adb0b80c8583489ffb5ea6e4851257c2d}
+}]\index{E\-N\-O\-D\-E\-V@{E\-N\-O\-D\-E\-V}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-N\-O\-D\-E\-V@{E\-N\-O\-D\-E\-V}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3ae350307a3417656c8cabc816ba8d07cd}{E\-N\-O\-D\-E\-V}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3ae350307a3417656c8cabc816ba8d07cd}
+}]\index{E\-N\-O\-M\-E\-M@{E\-N\-O\-M\-E\-M}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-N\-O\-M\-E\-M@{E\-N\-O\-M\-E\-M}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3aec0aa1bb79e2e55ed6d8c165e0611eca}{E\-N\-O\-M\-E\-M}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3aec0aa1bb79e2e55ed6d8c165e0611eca}
+}]\index{E\-N\-O\-S\-P\-C@{E\-N\-O\-S\-P\-C}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-N\-O\-S\-P\-C@{E\-N\-O\-S\-P\-C}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3a2b5265f4c8556b15ec913f61caade1eb}{E\-N\-O\-S\-P\-C}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3a2b5265f4c8556b15ec913f61caade1eb}
+}]\index{E\-N\-O\-S\-Y\-S@{E\-N\-O\-S\-Y\-S}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-N\-O\-S\-Y\-S@{E\-N\-O\-S\-Y\-S}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3abd287bcdb80bb2a0c41269b9adcb9d77}{E\-N\-O\-S\-Y\-S}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3abd287bcdb80bb2a0c41269b9adcb9d77}
+}]\index{E\-N\-O\-T\-T\-Y@{E\-N\-O\-T\-T\-Y}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-N\-O\-T\-T\-Y@{E\-N\-O\-T\-T\-Y}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3af3dc036138d242739c3dbe36c5dfa095}{E\-N\-O\-T\-T\-Y}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3af3dc036138d242739c3dbe36c5dfa095}
+}]\index{E\-N\-X\-I\-O@{E\-N\-X\-I\-O}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-N\-X\-I\-O@{E\-N\-X\-I\-O}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3a1c0d17ac093eff038b479dba021361bb}{E\-N\-X\-I\-O}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3a1c0d17ac093eff038b479dba021361bb}
+}]\index{E\-P\-E\-R\-M@{E\-P\-E\-R\-M}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-P\-E\-R\-M@{E\-P\-E\-R\-M}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3a156dcc38d9ba0765c6150544963ed267}{E\-P\-E\-R\-M}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3a156dcc38d9ba0765c6150544963ed267}
+}]\index{E\-R\-A\-N\-G\-E@{E\-R\-A\-N\-G\-E}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-R\-A\-N\-G\-E@{E\-R\-A\-N\-G\-E}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3a3ffb99860526d55ef132365553694c3d}{E\-R\-A\-N\-G\-E}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3a3ffb99860526d55ef132365553694c3d}
+}]\index{E\-S\-R\-C\-H@{E\-S\-R\-C\-H}!errno.\-h@{errno.\-h}}\index{errno.\-h@{errno.\-h}!E\-S\-R\-C\-H@{E\-S\-R\-C\-H}}\item[{\em 
+\hypertarget{errno_8h_a447416ba79b4777e7accabf3a8163cb3a4e376a13d0c1557d399f473218915625}{E\-S\-R\-C\-H}\label{errno_8h_a447416ba79b4777e7accabf3a8163cb3a4e376a13d0c1557d399f473218915625}
+}]\end{description}
+\end{Desc}
+
+\begin{DoxyCode}
+32                 \{
+33     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3aa5571864412c8275a2e18a931fddcaa6}{FAILURE} = -1,
+34     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3ac7f69f7c9e5aea9b8f54cf02870e2bf8}{SUCCESS} ,
+35     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a755e0cbde2880a406893ad61304bac29}{E2BIG}   ,   \textcolor{comment}{// Argument list too long }
+36     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a5fa7d65262e81125cecb27e80a26ce98}{EACCES}  ,   \textcolor{comment}{// Permission denied }
+37     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a4bde0de54c0b708a605ed5095959c14e}{EAGAIN}  ,   \textcolor{comment}{// Resource temporarily unavailable}
+38     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a9e2f813a51a5763a892f4b1783778e4b}{EBUSY}   ,   \textcolor{comment}{// Device or resource busy}
+39     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a4354eedf02712f4da46f9d2d93d0b7ba}{EDEADLK} ,   \textcolor{comment}{// Resource deadlock avoided}
+40     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3af740610de680c2861ac4042ad4485d15}{EFAULT}  ,   \textcolor{comment}{// Bad address}
+41     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a3d9f70d8ebd10e9d4aa420b9cb22cb53}{EFBIG}   ,   \textcolor{comment}{// File too large}
+42     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a8cc241d56d59d11ceea8efc37bec8ed4}{EINTR}   ,   \textcolor{comment}{// Interrupted function call (https://man7.org/linux/man-pages/man7/signal.7.html)}
+43     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a7bfd237190819a0a272db7b0aa61d5c8}{EINVAL}  ,   \textcolor{comment}{// Invalid argument}
+44     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a6d2c32b1730ea078f2802b34b1258a4c}{EIO}     ,   \textcolor{comment}{// Input/output error}
+45     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3adb0b80c8583489ffb5ea6e4851257c2d}{ENOBUFS} ,   \textcolor{comment}{// No buffer space available}
+46     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3ae350307a3417656c8cabc816ba8d07cd}{ENODEV}  ,   \textcolor{comment}{// No such device}
+47     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3aec0aa1bb79e2e55ed6d8c165e0611eca}{ENOMEM}  ,   \textcolor{comment}{// Not enough space/cannot allocate memory}
+48     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a2b5265f4c8556b15ec913f61caade1eb}{ENOSPC}  ,   \textcolor{comment}{// No space left on device}
+49     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3abd287bcdb80bb2a0c41269b9adcb9d77}{ENOSYS}  ,   \textcolor{comment}{// Function not implemented}
+50     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3af3dc036138d242739c3dbe36c5dfa095}{ENOTTY}  ,   \textcolor{comment}{// Inappropriate I/O control operation}
+51     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a1c0d17ac093eff038b479dba021361bb}{ENXIO}   ,   \textcolor{comment}{// No such device or address}
+52     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a156dcc38d9ba0765c6150544963ed267}{EPERM}   ,   \textcolor{comment}{// Operation not permitted}
+53     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a3ffb99860526d55ef132365553694c3d}{ERANGE}  ,   \textcolor{comment}{// Result too large}
+54     \hyperlink{errno_8h_a447416ba79b4777e7accabf3a8163cb3a4e376a13d0c1557d399f473218915625}{ESRCH}       \textcolor{comment}{// No such process}
+55 \};
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\hypertarget{errno_8h_a752b191220a1b00e3d70f9359a660f0f}{\index{errno.\-h@{errno.\-h}!errno\-\_\-mess@{errno\-\_\-mess}}
+\index{errno\-\_\-mess@{errno\-\_\-mess}!errno.h@{errno.\-h}}
+\subsubsection[{errno\-\_\-mess}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ errno\-\_\-mess\mbox{[}$\,$\mbox{]}}}\label{errno_8h_a752b191220a1b00e3d70f9359a660f0f}
+
+
+errno is a thread local variable, that means it is like a global variable (thus accessible anywhere) but each thread has its own value. To do that errno is a define that is replaced by $\ast$\-\_\-\-\_\-errno\-\_\-location() \-\_\-\-\_\-errno\-\_\-location() gives an address different for each thread $\ast$\-\_\-\-\_\-errno\-\_\-location() dereferences the pointeur, i.\-e. follows the pointer and it designates what is pointed to. \#define errno $\ast$\-\_\-\-\_\-errno\-\_\-location() 
+
+errno\-\_\-mess contains the error messages for each error code this table is define in both files \hyperlink{libc_8c}{libc.\-c} and klib.\-c but should be identical 
+
+Referenced by perror(), and sched\-\_\-dump().
+

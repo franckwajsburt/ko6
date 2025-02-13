@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['s',['S',['../kthread_8c.html#af933676109efed7ab34cea71d748a517',1,'kthread.c']]],
+  ['syscall_5fbarrier_5fdestroy',['SYSCALL_BARRIER_DESTROY',['../syscalls_8h.html#a1381b417b795b6cd16ae37c078862a38',1,'syscalls.h']]],
+  ['syscall_5fbarrier_5finit',['SYSCALL_BARRIER_INIT',['../syscalls_8h.html#a026c84ef7c3e101d665208d89b369b6c',1,'syscalls.h']]],
+  ['syscall_5fbarrier_5fwait',['SYSCALL_BARRIER_WAIT',['../syscalls_8h.html#aa2c79dbb3d9d284094852336eead340a',1,'syscalls.h']]],
+  ['syscall_5fcachelinesize',['SYSCALL_CACHELINESIZE',['../syscalls_8h.html#aa01c11788b75eea69fa87959f6fac5b4',1,'syscalls.h']]],
+  ['syscall_5fclock',['SYSCALL_CLOCK',['../syscalls_8h.html#a1b284030b6f72253c3e7546fd551020f',1,'syscalls.h']]],
+  ['syscall_5fdcachebufinval',['SYSCALL_DCACHEBUFINVAL',['../syscalls_8h.html#a1fa616eba469314a5889d45524348a52',1,'syscalls.h']]],
+  ['syscall_5fdcacheinval',['SYSCALL_DCACHEINVAL',['../syscalls_8h.html#a28679dcec3d60a8716d3e2ce024dcacd',1,'syscalls.h']]],
+  ['syscall_5fdma_5fmemcpy',['SYSCALL_DMA_MEMCPY',['../syscalls_8h.html#a7d2b3d482703584b6be5cf155648344a',1,'syscalls.h']]],
+  ['syscall_5ferrno',['SYSCALL_ERRNO',['../syscalls_8h.html#a8e2d63e528dd3898c2d9f02f4a3968be',1,'syscalls.h']]],
+  ['syscall_5fexit',['SYSCALL_EXIT',['../syscalls_8h.html#a6afe19f22c590d7cced68927ad3e37b3',1,'syscalls.h']]],
+  ['syscall_5fmutex_5fdestroy',['SYSCALL_MUTEX_DESTROY',['../syscalls_8h.html#ad87d7bb44b389a78ec06709fa5fbc23a',1,'syscalls.h']]],
+  ['syscall_5fmutex_5finit',['SYSCALL_MUTEX_INIT',['../syscalls_8h.html#aa7c4dd1815b9890594a76a9c23db75e3',1,'syscalls.h']]],
+  ['syscall_5fmutex_5flock',['SYSCALL_MUTEX_LOCK',['../syscalls_8h.html#ad83026e97bed8a463c5a955867011e8d',1,'syscalls.h']]],
+  ['syscall_5fmutex_5funlock',['SYSCALL_MUTEX_UNLOCK',['../syscalls_8h.html#a71247681fc657059e83f9bcf64068fe7',1,'syscalls.h']]],
+  ['syscall_5fnr',['SYSCALL_NR',['../syscalls_8h.html#ac2c7a2e51ade374764c90e27cca50a57',1,'syscalls.h']]],
+  ['syscall_5fread',['SYSCALL_READ',['../syscalls_8h.html#ae5be81f63639b2e6928bce18ccda6acc',1,'syscalls.h']]],
+  ['syscall_5fsbrk',['SYSCALL_SBRK',['../syscalls_8h.html#a9d26167e6c82729ced6b3437400fb0de',1,'syscalls.h']]],
+  ['syscall_5fsched_5fdump',['SYSCALL_SCHED_DUMP',['../syscalls_8h.html#ac3d987610a2daf21c3e994f890feecab',1,'syscalls.h']]],
+  ['syscall_5fthread_5fcreate',['SYSCALL_THREAD_CREATE',['../syscalls_8h.html#a63de1298da2951a6a80a60ba2e81f3cc',1,'syscalls.h']]],
+  ['syscall_5fthread_5fexit',['SYSCALL_THREAD_EXIT',['../syscalls_8h.html#ab38bbbfadd5c56dcd1a4bf2f2f108f8b',1,'syscalls.h']]],
+  ['syscall_5fthread_5fjoin',['SYSCALL_THREAD_JOIN',['../syscalls_8h.html#ad4d7571cbeb659d57fd4d92ae1924082',1,'syscalls.h']]],
+  ['syscall_5fthread_5fyield',['SYSCALL_THREAD_YIELD',['../syscalls_8h.html#a26a363c5f0ee06e0eec9cc16ed64a2fd',1,'syscalls.h']]],
+  ['syscall_5fwrite',['SYSCALL_WRITE',['../syscalls_8h.html#a7bf5d5477f99d0648e55674643559070',1,'syscalls.h']]]
+];

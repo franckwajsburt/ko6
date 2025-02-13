@@ -1,0 +1,23 @@
+var searchData=
+[
+  ['nbline',['NBLINE',['../kmemory_8c.html#a85a54e9787a16befde04a79fb6b83d96',1,'kmemory.c']]],
+  ['nbstack',['NBSTACK',['../kmemory_8c.html#a87be89cfdd7a7fa303a8f146373124bc',1,'kmemory.c']]],
+  ['npgu',['NPGU',['../kfs_8c.html#af0ae18eb635e6562531a287fb89dd996',1,'kfs.c']]],
+  ['ns16550_5fenable_5fdlab',['NS16550_ENABLE_DLAB',['../ns16550_8h.html#a0eb8be372261d8637fe7c9e77fd320cf',1,'ns16550.h']]],
+  ['ns16550_5fint_5fdata_5fready',['NS16550_INT_DATA_READY',['../ns16550_8h.html#ab4e3ccd1f0f57d4389b7966c734aaefd',1,'ns16550.h']]],
+  ['ns16550_5fint_5fdma_5frx_5fend',['NS16550_INT_DMA_RX_END',['../ns16550_8h.html#afe34e12537afa07add5cfe03cc059e46',1,'ns16550.h']]],
+  ['ns16550_5fint_5fdma_5ftx_5fend',['NS16550_INT_DMA_TX_END',['../ns16550_8h.html#a0f483d2f6152c0abdb25b1fa398f6029',1,'ns16550.h']]],
+  ['ns16550_5fint_5fmodem_5fstatus',['NS16550_INT_MODEM_STATUS',['../ns16550_8h.html#a57f72ab3a33687b4159dffb48362ec74',1,'ns16550.h']]],
+  ['ns16550_5fint_5frecvl_5fstatus',['NS16550_INT_RECVL_STATUS',['../ns16550_8h.html#aa713094b2dcb81d205de12e00b097b88',1,'ns16550.h']]],
+  ['ns16550_5fint_5fthr_5fempty',['NS16550_INT_THR_EMPTY',['../ns16550_8h.html#a7ea34a8c6d702c962d5e10378a1eeaf3',1,'ns16550.h']]],
+  ['ns16550_5fparity_5feven',['NS16550_PARITY_EVEN',['../ns16550_8h.html#a1079228314b8b8ada6f5e9500de0866d',1,'ns16550.h']]],
+  ['ns16550_5fparity_5fforced_5f0',['NS16550_PARITY_FORCED_0',['../ns16550_8h.html#ac85d6240002a7ef0de29b48a1d00aef5',1,'ns16550.h']]],
+  ['ns16550_5fparity_5fforced_5f1',['NS16550_PARITY_FORCED_1',['../ns16550_8h.html#a84843285dac8ecac469790337422024a',1,'ns16550.h']]],
+  ['ns16550_5fparity_5fodd',['NS16550_PARITY_ODD',['../ns16550_8h.html#ac14b0c8543a53b7e4ea2b92b99a6d73e',1,'ns16550.h']]],
+  ['ns16550_5fstops_5fbit_5f2',['NS16550_STOPS_BIT_2',['../ns16550_8h.html#a645353dc8c5eaf136dd877e3492bd816',1,'ns16550.h']]],
+  ['ns16550_5fword_5flength_5f5',['NS16550_WORD_LENGTH_5',['../ns16550_8h.html#a19c5f125e63c06d815f4018be25fcc2c',1,'ns16550.h']]],
+  ['ns16550_5fword_5flength_5f6',['NS16550_WORD_LENGTH_6',['../ns16550_8h.html#a85776bb8b57f2f6ae3a41c43ba6f9158',1,'ns16550.h']]],
+  ['ns16550_5fword_5flength_5f7',['NS16550_WORD_LENGTH_7',['../ns16550_8h.html#ac2b5a5ec6741996c7c907d3f7de0d9c4',1,'ns16550.h']]],
+  ['ns16550_5fword_5flength_5f8',['NS16550_WORD_LENGTH_8',['../ns16550_8h.html#ae1e743308a2e2853ee1b3d04d791d18c',1,'ns16550.h']]],
+  ['null',['NULL',['../kfs_8c.html#a070d2ce7b6bb7e5c05602aa8c308d0c4',1,'kfs.c']]]
+];
