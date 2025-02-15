@@ -8,6 +8,7 @@
   *Ported KO6 to RISC-V, contributed to HAL modifications, and added Device Tree support.*
 - **Lili ZHENG** (zhengxulili[at]gmail.com)
   *kshell*	
+- **Marco Leon** (marco.leon[at]etu.sorbonne-universite.fr)
 
 ## Other Contributors (Alphabetical Order)
 - **Angie Bikou** (bikou.as[at]gmail.com)  
