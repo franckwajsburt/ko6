@@ -13,6 +13,7 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
+CPU	   ?= mips
 SOC    ?= almo1-mips#				defaut SOC name
 NTTYS  ?= 1#						default number of ttys
 NCPUS  ?= 1#						default number of CPUS

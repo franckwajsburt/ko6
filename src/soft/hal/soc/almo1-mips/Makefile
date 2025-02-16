@@ -14,6 +14,7 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
+SOC     = almo1-mips# 				soc name
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
 SRCDIR  = ../../..#					root source dir, allow us to make include via absolute path
 BLDDIR	= ../../../../../build#		build directory

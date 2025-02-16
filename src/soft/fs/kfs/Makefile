@@ -57,7 +57,7 @@ CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += -I.#						directories where include files like <file.h> are located
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
 
-HOSTCC  	= gcc#									native compiler of host computer
+HOSTCC  	= /bin/gcc#									native compiler of host computer
 HOSTCFLAGS	= -c -Wall -I. -std=c99 -O3 -g -DHOST#	compiler flag for native compiler
 
 # Rules (here they are used such as simple shell scripts)

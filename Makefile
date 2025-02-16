@@ -79,7 +79,7 @@ pdf:
 
 exec: compil
 	make -C $(SOCDIR) exec NTTYS=$(NTTYS) NCPUS=$(NCPUS) \
-		VERBOSE=$(VERBOSE) FROM=$(FROM) LAST=$(LAST)
+		VERBOSE=$(VERBOSE) FROM=$(FROM) LAST=$(LAST) APP=$(APP)
 
 debug: compil
 	make -C $(SOCDIR) debug NTTYS=$(NTTYS) NCPUS=$(NCPUS) \

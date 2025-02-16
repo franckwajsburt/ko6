@@ -13,6 +13,7 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
+SOC    ?= qemu-virt-riscv#			defaut SOC name
 NTTYS  ?= 1#						default number of ttys
 NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
