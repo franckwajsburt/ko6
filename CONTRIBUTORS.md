@@ -4,11 +4,12 @@
 - **Franck Wajsburt** - Sorbonne University (franck.wajsburt[at]lip6.fr)
 
 ## Core developers
-- **Nolan Bled** (noltheo03[at]gmail.com)
+- **Nolan Bled** (noltheo03[at]gmail.com)  
   *Ported KO6 to RISC-V, contributed to HAL modifications, and added Device Tree support.*
-- **Lili ZHENG** (zhengxulili[at]gmail.com)
+- **Lili Zheng** (zhengxulili[at]gmail.com)  
   *kshell*	
-- **Marco Leon** (marco.leon[at]etu.sorbonne-universite.fr)
+- **Marco Leon** (marco.leon[at]etu.sorbonne-universite.fr)  
+  *kshell*	
 
 ## Other Contributors (Alphabetical Order)
 - **Angie Bikou** (bikou.as[at]gmail.com)  
