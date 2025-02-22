@@ -1,0 +1,59 @@
+%{
+
+#include <stdio.h>
+#include "pars.h"
+
+%}
+
+alpha		[a-zA-Z]
+digit		[0-9]
+alnum		[a-zA-Z0-9]
+num_str		{digit}+
+env_var		\${alpha}+
+identifier	{alpha}{alnum}+
+exec_path	./({filename}/)*{filename}
+
+%%
+
+/* control flow words */
+if			return IF;
+then			return THEN;
+else			return ELSE;
+fi			return FI;
+while			return WHILE;
+do			return DO;
+done			return DONE;
+/* built-in fux */
+export			return EXPORT;
+echo			return ECHO;
+kshell			return KSHELL;
+ls			return LS;
+cd			return CD;
+cat			return CAT;
+pwd			return PWD;
+top			return TOP;
+kill			return KILL;
+kvar			return KVAR;
+su			return SU;
+standby			return STANDBY;
+resume			return RESUME;
+halt			return HALT;
+/* ... */
+{num_str}		return NUM_STR;
+{floating}		return FLOATING;
+{env_var}		return ENV_VAR;
+{identifier}		return IDENTIFIER;
+\n			return NEWLINE;
+[ \t]+			/* ignore */;
+\/\/.*			/* ignore */;
+\/\*(.*\n)*.*\*\/	/* ignore */;
+.			/* ignore */;
+
+%%
+
+int main()
+{
+	printf("lex!\n");
+	yylex();
+	return 0;
+}
