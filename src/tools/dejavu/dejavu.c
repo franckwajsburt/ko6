@@ -1,6 +1,7 @@
 #include <ht_prob.h>
 #include <ctype.h>
 
+// call back function to print the occurence number of each words
 void print_occurences (ht_t *ht, size_t pos, const char *key, void *val, void *data) 
 {
     fprintf (stderr, "%zu\t %-32s : %ld\n", pos, key, (long)val);    
@@ -20,7 +21,6 @@ int main (int argc, char * argv[])
             c=getchar());  
 
         if (c != EOF) {                                         // if there is a new word
-
             char *pw = word;                                    // get the new word
             *pw++ = tolower(c);                                 // the first char is already read
             for (c=getchar();isalnum(c)||(c=='_');c=getchar()){ // while c is alphanum or '_'
@@ -32,13 +32,12 @@ int main (int argc, char * argv[])
             if ((val = (long)ht_get (ht, word))) {              // ht_get return NULL at first
                 ht_set (ht, word, (void *)(val+1));             // if not increment the value
             } else {         
-                ht_set_grow (&ht, word, (void *)1, 10);         // 
-            }
+                ht_set_grow (&ht, word, (void *)1, 10);         // add a new word and grow the table
+            }                                                   // if there are more than 10 tries
         }
     } 
 
-    ht_foreach (ht, print_occurences, NULL);
-    ht_stat (ht);
-    
+    ht_foreach (ht, print_occurences, NULL);                    // scan the table to print the words
+    ht_stat (ht);                                               // then print the hash table stats
     return 0;
 }
