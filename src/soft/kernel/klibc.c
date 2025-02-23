@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-07-03
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  | |__ /'v'\  / /      \date       2025-02-23
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
   \file     kernel/klib.c
@@ -13,6 +13,14 @@
 #include <kernel/klibc.h>      // external function declarations
 
 #define randseed   *(thread_krandseed(ThreadCurrent))   /* Thread Local Storage for the kernel */
+
+static int Krandseed;
+
+int krand (void)                                // www.wikiwand.com/en/Linear_congruential_generator
+{
+    Krandseed = Krandseed * 1664525 + 1013904223; // Numerical Recipes
+    return (Krandseed>>1);
+}
 
 int rand (void)                                 // www.wikiwand.com/en/Linear_congruential_generator
 {

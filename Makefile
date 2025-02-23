@@ -83,7 +83,7 @@ exec: compil
 
 debug: compil
 	make -C $(SOCDIR) debug NTTYS=$(NTTYS) NCPUS=$(NCPUS) \
-		VERBOSE=$(VERBOSE) FROM=$(FROM) LAST=$(LAST)
+		VERBOSE=$(VERBOSE) FROM=$(FROM) LAST=$(LAST) APP=$(APP)
 
 doxygen:
 	cd docs; doxygen doxygen.cfg

@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2023-08-01
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  | |__ /'v'\  / /      \date       2025-02-23
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
   \file     kernel/kdev.c
@@ -54,12 +54,12 @@ struct dev_s *dev_get(enum dev_tag_e tag, unsigned no)
     return NULL;
 }
 
-void dev_free(struct dev_s *dev, unsigned dsize)
+void dev_free(struct dev_s *dev)
 {
     /**
      *  TODO: should we decrement every other device no in the last, ex: should tty 2 become tty 1
      *  if tty 0 is removed ? i don't think so but it could be interesting to think about it
      */
     list_unlink(&dev->list);
-    kfree(dev, sizeof(struct dev_s) + dsize);
+    kfree(dev);
 }

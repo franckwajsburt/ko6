@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2023-08-01
-  | / /(     )/ _ \     \copyright  2021-2025 Sorbonne University
+  | |__ /'v'\  / /      \date       2025-02-23
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
   \file     kernel/kdev.h
@@ -113,8 +113,7 @@ extern struct dev_s *dev_get(enum dev_tag_e tag, unsigned no);
 /**
  * \brief   Release a created device (kfree + list_unlink)
  * \param   dev the device to release
- * \param   dsize size of device-specific structure
 */
-extern void dev_free(struct dev_s *dev, unsigned dsize);
+extern void dev_free(struct dev_s *dev);
 
 #endif

@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 #    _     ___    __
-#   | |__ /'v'\  / /    \date        2023-08-14
-#   | / /(     )/ _ \   \copyright   2021-2023 Sorbonne University
+#   | |__ /'v'\  / /    \date        2025-02-19
+#   | / /(     )/ _ \   \copyright   2021 Sorbonne University
 #   |_\_\ \___/ \___/                https://opensource.org/licenses/MIT
 #
 # ------------------------------------------------------------------------------
@@ -31,4 +31,4 @@ export GCC=7.1.0
 export CCTOOLS=$ko6/bin/gcc.$GCC
 export PATH=$ko6/bin:$CCTOOLS/bin:$SOCLIB/utils/bin:$PATH
 export LD_LIBRARY_PATH=/usr/lib64:$CCTOOLS/lib64:$LD_LIBRARY_PATH
-# shopt -s globstar   # allow the ** symbol which replace any pathname
+shopt -s globstar   # allow the ** symbol which replace any pathname

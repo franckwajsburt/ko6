@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-07-03
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  | |__ /'v'\  / /      \date       2025-02-23
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
   \file     kernel/kmemory.h
@@ -31,9 +31,18 @@ void * kmalloc (size_t size);
 /**
  * \brief   free an allocated object with kmalloc()
  * \param   obj pointer to the allocated object
- * \param   size in bytes used for allocation
  */
-void kfree (void * obj, size_t size);
+void kfree (void * obj);
+
+/**
+ * \brief   Duplicates a string in kernel memory using the slab allocator.
+ * \param   str   The null-terminated string to duplicate.
+ * \return  A pointer to the newly allocated string, or NULL on failure.
+ *          Returns NULL if allocation fails or if `str` is NULL.
+ * \note    This function allocates memory using kmalloc() and copies the content of `str` into it.
+ *          The caller is responsible for freeing the duplicated string using `kfree()`.
+ */
+char *kstrdup(const char *str);
 
 /**
  * \brief Print data about slab allocator usage.

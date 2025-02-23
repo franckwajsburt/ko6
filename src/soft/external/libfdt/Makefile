@@ -1,7 +1,7 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date      	2023-09-03
-# | / /(     )/ _ \   	\copyright  2022-2023 Sorbonne University
+# | |__ /'v'\  / /   	\date      	2025-02-23
+# | / /(     )/ _ \   	\copyright  2022 Sorbonne University
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     external/libfdt/Makefile

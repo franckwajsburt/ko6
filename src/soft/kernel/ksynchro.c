@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-07-03
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  | |__ /'v'\  / /      \date       2025-02-23
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
   \file     kernel/ksynchro.c
@@ -49,7 +49,7 @@ int thread_mutex_destroy (thread_mutex_t * mutex)
     if (m == NULL) return EINVAL;                               // unitialized mutex
     if (m->busy) return EBUSY;                                  // try to destroy an lock mutex
     if (m->owner != ThreadCurrent) return EPERM;                // the thread does not own the mutex
-    kfree (m, sizeof (*m));
+    kfree (m);
     return SUCCESS;
 }
 
@@ -210,7 +210,7 @@ int thread_barrier_destroy (thread_barrier_t * barrier)
         spin_unlock (&b->lock);                             // release the lock
         return EBUSY;                                       // return an error
     }
-    kfree (b, sizeof (struct thread_barrier_s));            // destroys barrier & erases its memory
+    kfree (b);                                              // destroys barrier & erases its memory
 
     return SUCCESS;                                         // erasing the memory releases the lock
 }

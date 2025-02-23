@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-04-04
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  | |__ /'v'\  / /      \date       2025-02-23
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
   \file     kernel/klib.h
@@ -15,8 +15,6 @@
 
 #ifndef _KLIBC_H_
 #define _KLIBC_H_
-
-#define _KERNEL_                    // to tell, it is kernel code, usefull for debug PRINT
 
 #ifndef VERBOSE                     // if verbose mode not already defined
 #define VERBOSE 0                   // set the default value
@@ -62,6 +60,12 @@
 #define FIFO_DEPTH 20   /* maximum fifo depth */
 
 //--------------------------------------------------------------------------------------------------
+
+/**
+ * \brief     random int generator specificaly for the kernel usage
+ * \return    a random int between 0 and RAND_MAX
+ */
+extern int krand (void);
 
 /**
  * \brief     random int generator FIXME must be replaced by /dev/urandom

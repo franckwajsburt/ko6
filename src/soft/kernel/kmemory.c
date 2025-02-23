@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-07-03
+  | |__ /'v'\  / /      \date       2025-02-23
   | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
@@ -37,21 +37,21 @@
         * the desired size is one page, but there is no more free page availabble
       * The usual case is
         * calculate nbline that is the minimum number of cache lines containing the requested size
-        * get the first object of Slab[nbline] list (with list_getfirst()) and return it
-      * If there is no more free objects in Slab[nbline]
+        * nbline is actually the type of slab, and thus the slab number
+        * get the first object of Slab[slab] list (with list_getfirst()) and return it
+      * If there is no more free objects in Slab[slab]
         * call kmalloc(PAGE_SIZE) itself to get a full page*
         * split the new page into as many free object of nbline size,
-        * each piece is added to the Slab[nbline] list (with list_addlast())
-        * then get the first object of Slab[nbline] list (with list_getfirst()) and return it
+        * each piece is added to the Slab[slab] list (with list_addlast())
+        * then get the first object of Slab[slab] list (with list_getfirst()) and return it
       * The return object is cleared (with 0) to reduce the risk of fealure in case of bad reuse
 
-    void kfree (void * addr, size_t size)
+    void kfree (void * addr)
       * For these following cases, if there is a problem, it is a panic situation. That's the end.
         * the addr is not inside the kernel heap
-        * the size is too bif
       * The usual case is
-        * calculate nbline that is the minimum number of cache lines containing the requested size
-        * put the object back at the beginning of the list Slab[nbline]
+        * retreave the page number to discover the slab type thanks to the Page[] structure
+        * put the object back at the beginning of the list Slab[slab]
         * if the size is exactly one page, return kfree
         * otherwise, decrement the number of objects allocated in the current slab/page
         * if this number is 0 then unlink all objects belonging to the current slab/page
@@ -73,11 +73,10 @@ static size_t ObjectsThisSize[256];     // ObjectsThisSize[i]= allocated objets 
 typedef struct page_s {                 // page usage description
     char slab;                          // Which slab does the page belong to? (0 is for page)
     char alloc;                         // number of allocated objects is slab
-    char is_dirty:1;                    // 1 bit in 1 byte
 } page_t;
-static page_t DummyPage;                       // this variable is to never have Page undefined
-static page_t *Page = &DummyPage;              // page descriptor table Page[O] is for page kmb, and so on
-static size_t NbPages;                         // maximum number of pages
+static page_t DummyPage;                // this variable is to never have Page undefined
+static page_t *Page = &DummyPage;       // page descriptor table Page[O] is for page kmb, and so on
+static size_t NbPages;                  // maximum number of pages
 
 #define NBLINE(n) (((n)+CacheLineSize-1)/CacheLineSize)     // minimal number of lines for n bytes
 
@@ -97,7 +96,7 @@ void memory_init (void)
     for (char *p = kmb; p != kme; p += PAGE_SIZE)           // initialize the page (slab) list
         list_addlast (&Slab[0], (list_t *)p);               // pointed by Slab[0]
     Page = kmalloc (PAGE_SIZE);                             // allocate the Page decritor table
-    kmalloc_test(0,PAGE_SIZE/8);
+    // FIXME the Page table is too small, 
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -109,40 +108,41 @@ void * kmalloc (size_t size)
     PANIC_IF ((size==PAGE_SIZE) && list_isempty (&Slab[0]), // free page are listed in Slab[0]
         "No more kernel data space");                       // write a message then panic
 
-    size_t nbline = NBLINE(size);                           // required lines for size
-    size = nbline * CacheLineSize;                          // actual size asked
+    size_t slab = NBLINE(size);                             // required lines for size
+    size = slab * CacheLineSize;          ;                 // actual size asked
+    
 
-    if ((size!=PAGE_SIZE) && list_isempty (&Slab[nbline])) {// if no more object in the slab
+    if ((size!=PAGE_SIZE) && list_isempty (&Slab[slab])) {  // if no more object in the slab
         char *page = kmalloc (PAGE_SIZE);                   // ask for a free page (i.e. slab)
         size_t npage = (size_t)(page - (char *)kmb)>>12;    // relative page number from kmb
         Page[npage].alloc = 0;                              // reset the allocated counter
         for (char *p=page; p+size<=page+PAGE_SIZE; p+=size) // cut the slab into objects
-            list_addlast (&Slab[nbline], (list_t *)p);      // and chain them together
+            list_addlast (&Slab[slab], (list_t *)p);        // and chain them together
     }
-    void * res = list_getfirst (&Slab[nbline%MaxLinePage]); // res is the first object in list
+    void * res = list_getfirst (&Slab[slab%MaxLinePage]);   // res is the first object in list
     size_t npage = (size_t)(res - (void *)kmb)>>12;         // relative page number from kmb
-    ObjectsThisSize[nbline%MaxLinePage]++;                  // increment the number of objects
-    Page[npage].slab = nbline%MaxLinePage;                  // this page is used of slab of nbline
+    ObjectsThisSize [slab % MaxLinePage]++;                 // increment the number of objects
+    Page[npage].slab = slab % MaxLinePage;                  // this page is used as a slab of nbline
     Page[npage].alloc++;                                    // one more times
 
     wzero (res, size);                                      // clear allocated memory
     return res;                                             // finally returns res
 }
 
-void kfree (void * obj, size_t size)
+void kfree (void * obj)
 {
-    size_t nbline= NBLINE(size) % MaxLinePage;              // which slab to use
     size_t npage = (size_t)(obj - (void *)kmb)>>12;         // relative page number from kmb
-
-    PANIC_IF ((nbline>255)||(npage >= NbPages),             // too big or outside of the region
+    size_t slab = Page[npage].slab;                         // which slab to use
+    
+    PANIC_IF((npage >= NbPages),                            // outside of the page region
         "\ncan't free object not allocated by kmalloc()");  // write a message then panic
 
-    list_addfirst (&Slab[nbline], (list_t *)obj);           // add it to the right free list
-    ObjectsThisSize[nbline]--;                              // decr the number of obj of size nbline
-    if (size == PAGE_SIZE) return;
+    list_addfirst (&Slab[slab], (list_t *)obj);             // add it to the right free list
+    ObjectsThisSize[slab]--;                                // decr the number of obj of size slab
+    if (slab == 0) return;
     if (--Page[npage].alloc==0) {                           // splitted page and no more object left
         list_t *page = (list_t *)((size_t)obj & ~0xFFF);    // address of the page containing obj
-        list_foreach (&Slab[nbline], item) {                // browse all item in free list
+        list_foreach (&Slab[slab], item) {                  // browse all item in free list
             size_t np_item = (size_t)((char*)item-kmb)>>12; // page number Page[] table
             if (np_item == npage) {                         // if current item is in the page
                 list_unlink (item);                         // unlink it
@@ -154,16 +154,25 @@ void kfree (void * obj, size_t size)
     }
 }
 
+char * kstrdup (const char * str) 
+{
+    PANIC_IF (str==NULL,"kstrdup called with NULL pointer");// Avoid NULL input 
+    size_t len = strlen(str) + 1;                           // Include null terminator
+    char *copy = (char *) kmalloc(len);                     // Allocate memory 
+    PANIC_IF (copy==NULL,"kstrdup: out of memory");         // Check allocation failure
+    memcpy(copy, str, len);                                 // Copy the string, including '\0'
+    return copy;                                            // Return the allocated copy
+}
 //--------------------------------------------------------------------------------------------------
 
 void kmalloc_print (void)
 {
     size_t cr = 0, pr = 1;
     kprintf ("\nOpen Slab[] : Object Size ; Free Objects ; Allocated Objects\n");
-    for (size_t nbline=0 ; nbline<MaxLinePage ; nbline++) { // for all slabs
-        size_t sz = (nbline)?nbline*CacheLineSize:4096;     // size really allocated
-        size_t nf = list_nbobj (&Slab[nbline]);             // number of free obj of size nline
-        size_t na = ObjectsThisSize[nbline];                // number of allocated obj of size nline
+    for (size_t slab=0 ; slab<MaxLinePage ; slab++) {      // for all slabs
+        size_t sz = (slab) ? slab*CacheLineSize : 4096;    // size really allocated
+        size_t nf = list_nbobj (&Slab[slab]);              // number of free obj of size nline
+        size_t na = ObjectsThisSize[slab];                 // number of allocated obj of size nline
         if (nf+na) {                                        // if there is something to print
             kprintf ("|s %d\t f %d\t a %d", sz, nf, na);    // print data
             kprintf ((++cr%3)?"\t":"\t|\n");                // adds a \n all three print
@@ -196,22 +205,22 @@ void kmalloc_test (size_t turn, size_t size)
     for (int i = 0 ; i < MaxLinePage ; i++)                 // nitialize KMallocTest
         list_init (&KMallocTest[i]);                        // KMallocTest[i] -> i*cachelinesize
     while (turn--) {                                        // the number of turn is configurable
-        int sz = 1+(rand()+CacheLineSize/2) % size;         // choose a size
-        size_t nbline = NBLINE(sz);                         // required lines for size
-        nbline %= MaxLinePage;                              // if sz==PAGE_SIZE use Slab[0]
-        if (rand()%2) {                                     // alloc or free
+        int sz = 1+(krand()+CacheLineSize/2) % size;        // choose a size
+        size_t slab = NBLINE(sz);                           // required lines for size
+        slab %= MaxLinePage;                                // if sz==PAGE_SIZE use Slab[0]
+        if (krand()%2) {                                    // alloc or free
             obj = kmalloc (sz);                             // allocate a new object
-            list_addlast (&KMallocTest[nbline], obj);       // add it in allocated object
+            list_addlast (&KMallocTest[slab], obj);         // add it in allocated object
         } else {                                            // else
-            obj = list_getfirst (&KMallocTest[nbline]);     // try to get a previously allocated obj
-            if (obj) kfree (obj, nbline*CacheLineSize);     // on success, free it
+            obj = list_getfirst (&KMallocTest[slab]);       // try to get a previously allocated obj
+            if (obj) kfree (obj);                           // on success, free it
         }
     }
     kmalloc_print();                                        // Slab status after alloc/free series
     for (int i = 0 ; i < MaxLinePage ; i++) {               // for all list
         list_foreach (&KMallocTest[i], item) {              // browse allocated objects
             list_unlink (item);                             // if found it, unlinked it
-            kfree (item,i*CacheLineSize);                   // then free it
+            kfree (item);                                   // then free it
         }
     }
     kmalloc_print();                                        // Slab status after total clean od test
@@ -300,7 +309,7 @@ void test_ustack (size_t turn)
 #   define NBSTACK    10
     int * stack [NBSTACK] = {NULL};
     while (turn--) {
-        int place = (unsigned)rand() % NBSTACK;
+        int place = (unsigned)krand() % NBSTACK;
         if (stack[place])
             free_ustack (stack[place]);
         stack[place] = malloc_ustack();

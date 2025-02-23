@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-07-03
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  | |__ /'v'\  / /      \date       2025-02-23
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
   \file     kernel/kinit.c
@@ -36,8 +36,8 @@ void kinit (void *fdt)
     extern int __bss_origin;    // first int of bss section (defined in ldscript kernel.ld)
     extern int __bss_end;       // first int of above bss section (defined in ldscript kernel.ld)
     for (int *a = &__bss_origin; a != &__bss_end; *a++ = 0);
-
     memory_init();                  // memory initialisation 
+
     if (soc_init(fdt, 200000) < 0)  // soc initialisation takes the tick as argument
         goto sleep;                 // initialization failed, just sleep
 

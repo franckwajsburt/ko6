@@ -1,7 +1,7 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date      2022-07-03
-# | / /(     )/ _ \   	\copyright 2021-2022 Sorbonne University
+# | |__ /'v'\  / /   	\date      2025-02-23
+# | / /(     )/ _ \   	\copyright 2021 Sorbonne University
 # |_\_\ x___x \___/                https://opensource.org/licenses/MIT
 #
 # \file     kernel/Makefile
@@ -35,6 +35,7 @@ SRC    += $(COMDIR)/syscalls.h ksyscalls.c
 SRC    += $(COMDIR)/usermem.h $(COMDIR)/list.h
 SRC    += $(COMDIR)/errno.h $(COMDIR)/errno.c $(COMDIR)/esc_code.h
 SRC    += $(COMDIR)/cstd.c $(COMDIR)/cstd.h
+SRC    += $(COMDIR)/ht_prob.c $(COMDIR)/ht_prob.h
 SRC    += kmemory.c kmemory.h
 SRC    += klibc.c klibc.h
 SRC    += kthread.c kthread.h
@@ -67,11 +68,14 @@ CFLAGS += -fno-common#				do not use common sections for non-static vars (only b
 CFLAGS += -fno-builtin#				do not use builtin functions of gcc (such as strlen)
 CFLAGS += -fomit-frame-pointer#		only use of stack pointer ($29)
 CFLAGS += -O3#						full optimisation mode of compiler
+CFLAGS += -I.#						directories where include files like <file.h> are located
 CFLAGS += -I..#						directories where include files like <file.h> are located
+CFLAGS += -I$(COMDIR)#				directories where include files like <file.h> are located
 CFLAGS += -I$(LIBDIR)/libfdt#		include external libraries (specifically libfdt.h)
 CFLAGS += -DNTTYS=$(NTTYS)#			#define NTTYS with the number of ttys in the prototype
 CFLAGS += -DNCPUS=$(NCPUS)#			#define NCPUS with the number of cpus in the prototype
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
+CFLAGS += -D_KERNEL_#				to tell gcc we compile for ko6
 
 # Rules (here they are used such as simple shell scripts)
 # --------------------------------------------------------------------------------------------------

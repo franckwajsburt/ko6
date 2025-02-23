@@ -1,7 +1,7 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date      2023-07-11
-# | / /(     )/ _ \   	\copyright 2021-2022 Sorbonne University
+# | |__ /'v'\  / /   	\date      2025-02-23
+# | / /(     )/ _ \   	\copyright 2021 Sorbonne University
 # |_\_\ x___x \___/                https://opensource.org/licenses/MIT
 #
 # \file     hal/soc/almo1-mips/Makefile
@@ -16,9 +16,12 @@
 
 SOC     = almo1-mips# 				soc name
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-SRCDIR  = ../../..#					root source dir, allow us to make include via absolute path
-BLDDIR	= ../../../../../build#		build directory
-BINDIR 	= ../../../../../bin#		tools directory
+SRCDIR	= $(ko6)/src/soft#			root source dir, allow us to make include via absolute path
+BLDDIR	= $(ko6)/build#				build directory
+BINDIR 	= $(ko6)/bin#				tools directory
+#SRCDIR  = ../../..#					
+#BLDDIR	= ../../../../../build#		build directory
+#BINDIR	= ../../../../../bin#		tools directory
 LIBDIR	= .#						library directory (where is ldscript)
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 SOCDIR	= $(CURDIR)#				current soc hardware abstraction layer (hal) files directory
@@ -26,6 +29,8 @@ OBJDIR	= $(BLDDIR)/obj#			object files directory
 PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 BIN 	= $(BLDDIR)/kernel-$(SOC).x
 SX 		= $(SOC).x
+DLOG    = /tmp/ko6-debug.log#       debug file
+
 
 # Sources
 # --------------------------------------------------------------------------------------------------
@@ -97,9 +102,8 @@ exec: compil
 	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)
 
 debug: compil
-	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)\
-          -DEBUG $(FROM) -NCYCLES $(LAST) > $(DLOG)
-	tracelog $(SWDIR)/tags $(BLDDIR)/*.x.s $(DLOG)
+	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS) -DEBUG $(FROM) -NCYCLES $(LAST) > $(DLOG)
+	tracelog $(SRCDIR)/tags $(BLDDIR)/*.x.s $(DLOG)
 
 pdf:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
