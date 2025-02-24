@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-07-03
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  | |__ /'v'\  / /      \date       2025-02-24
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
   \file     kernel/kthread.h
@@ -53,6 +53,7 @@ extern long long thread_randseed_set (long long seed);
  */
 extern long long thread_randseed_get (void);
 
+
 //--------------------------------------------------------------------------------------------------
 // Thread & scheduler API
 //--------------------------------------------------------------------------------------------------
@@ -70,10 +71,19 @@ typedef struct thread_s * thread_t;
  */
 extern thread_t ThreadCurrent;  
 
+/**
+ * \brief   Add a thread at the end of a thread list
+ * \param   root    root of the list where the new thread must be added
+ * \param   thread  thread to add
+ */
 extern void thread_addlast (list_t * root, thread_t thread);
 
+/**
+ * \brief   Retreive the thread structure from the wait list
+ * \param   item    a pointer to the embedded list structure
+ * \return  the thread pointer which contain the item
+ */
 extern thread_t thread_item (list_t * item);
-
 
 /**
  * \brief   Displays on the console (tty0) all active threads, it is for debugging.
@@ -97,6 +107,12 @@ extern void sched_dump (void);
  * \return  0 on success, an error code on fealure
  */
 extern int thread_create (thread_t * thread, int fun, int arg, int start);
+
+/**
+ * \brief   same as thread_create but create a kernel thread
+ *          Feb, 25th: presently only used in kernel init
+ */
+extern int kthread_create (thread_t * thread, int fun, int arg, int start);
 
 /**
  * \brief   load the context of the main() thread, only used by kinit

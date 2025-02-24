@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-07-03
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  | |__ /'v'\  / /      \date       2025-02-24
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
   \file     kernel/kthread.c
@@ -271,7 +271,7 @@ static void thread_bootstrap (void)
     thread->state = TH_STATE_RUNNING;                           // the thread is now RUNNING
     thread_launch (thread->fun, thread->arg, thread->start);    // calls : start(fun,arg)
 }
-#include <common/debug_on.h>
+
 int thread_create (thread_t * thread_p, int fun, int arg, int start)
 {
     thread_t thread = kmalloc (PAGE_SIZE);                      // thread is thus always aligned
@@ -296,15 +296,52 @@ int thread_create (thread_t * thread_p, int fun, int arg, int start)
     thread->kstack[0] = MAGIC_STACK;                            // (is kstack_e) should not erased
 
     sched_insert (thread);                                      // insert new thread in scheduler
-    *thread_p = thread;
-    thread->ptls->tls_errno = SUCCESS;
-    return SUCCESS;
+    *thread_p = thread;                                         // thread_create true return
+    thread->ptls->tls_errno = SUCCESS;                          // syscall's error number
+    return SUCCESS;                                             // if we are here, that is a success
 }
+
+//--------------------------------------------------------------------------------------------------
+// kernel thread
+// Feb, 24th
+// - At first, kthread is a normal thread, but always running in kernel mode
+//--------------------------------------------------------------------------------------------------
+
+
+int kthread_create (thread_t * thread_p, int fun, int arg, int start)
+{
+    thread_t thread = kmalloc (PAGE_SIZE);                      // thread is thus always aligned
+    if (thread == NULL) return EAGAIN;                          // Not enough memory
+    thread->kstack_b = (int)thread + PAGE_SIZE - 4;             // kstack beginning (highest addr)
+    thread->ustack_b = 0;                                       // no user stack
+    thread->ustack_e = 0;                                       // no user stack
+    thread->state    = TH_STATE_READY;                          // it can be chosen by the scheduler
+    list_init (&thread->wait);                                  // initialize the waiting list
+    thread->retval   = NULL;                                    // default return value
+    thread->join     = NULL;                                    // no awaited thread
+    thread->start    = start;                                   // start() will call fun(arg)
+    thread->fun      = fun;                                     // function of the thread
+    thread->arg      = arg;                                     // argument of the thread
+    thread->ptls     = NULL;                                    // no local storage
+    kthread_context_init(thread->context,                       // table to store context
+                        thread_bootstrap,                       // thread_bootstrap() to begin
+                        thread->ptls);                          // stack pointer addr (below tls)
+    thread->krandseed  = 1;                                     // default kernel random seed
+
+    *(int*)thread->kstack_b = MAGIC_STACK;                      // should not be erased
+    thread->kstack[0] = MAGIC_STACK;                            // (is kstack_e) should not erased
+
+    sched_insert (thread);                                      // insert new thread in scheduler
+    *thread_p = thread;                                         // kthread_create true return
+    return SUCCESS;                                             // if we are here, that is a success
+}
+
+//--------------------------------------------------------------------------------------------------
 
 void thread_main_load (thread_t thread)
 {
-    _usermem.ptls = thread->ptls;
-    thread_context_load (thread->context);
+    _usermem.ptls = thread->ptls;                               // ptr current thread local storage
+    thread_context_load (thread->context);                      // load the register's context
 }
 
 /**

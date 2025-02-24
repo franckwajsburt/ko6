@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2023-07-25
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  | |__ /'v'\  / /      \date       2025-02-24
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
   \file     hal/cpu/thread.h
@@ -15,13 +15,22 @@
 //--------------------------------------------------------------------------------------------------
 
 /**
- * \brief   Initialize the thread context at the very beginning
+ * \brief   Initialize a user thread context at the very beginning
  * \param   context       thread_context table 
  * \param   bootstrap     function without any argument, used just after the 1st thread_context_load
  * \param   stack_pointer top stack pointer at the very beginning
  * \return  side effect on the given thread context table
  */
 extern void thread_context_init (int context[], void * bootstrap, void * stack_pointer);
+
+/**
+ * \brief   Initialize a kernel thread context at the very beginning
+ * \param   context       thread_context table 
+ * \param   bootstrap     function without any argument, used just after the 1st thread_context_load
+ * \param   stack_pointer top stack pointer at the very beginning
+ * \return  side effect on the given thread context table
+ */
+extern void kthread_context_init (int context[], void * bootstrap, void * stack_pointer);
 
 /**
  * \brief   kernel saves the given thread registers in the context table
