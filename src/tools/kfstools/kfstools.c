@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date        2023-04-09
-  | / /(     )/ _ \     \copyright   2023 Sorbonne University
+  | |__ /'v'\  / /      \date        2025-02-25
+  | / /(     )/ _ \     \copyright   2021 Sorbonne University
   |_\_\ x___x \___/                  https://opensource.org/licenses/MIT
 
   \file     kfstools.c
@@ -44,6 +44,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <getopt.h>
+#include <fcntl.h>
 #include <ftw.h>
 #include <sys/stat.h>
 #endif
@@ -112,7 +113,7 @@ char* kfs_absolute_pathname(int dentry)
         /* Move the path to be able to copy the current name at the beginning of the path */
         current_name_length = strlen(current_name);
         memmove(path + current_name_length, path, strlen(path));
-        strncpy(path, current_name, current_name_length);
+        strncpy(path, current_name, current_name_length+1);
 
         /* Move the path again to add '/' at the very beginning */
         memmove(path + 1, path, strlen(path));

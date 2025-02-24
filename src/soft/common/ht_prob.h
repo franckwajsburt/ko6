@@ -16,10 +16,11 @@
 #define HT_MAXTRY   10
 
 #ifdef _HOST_
-#   include <stdlib.h>
 #   include <stddef.h>
+#   include <stdlib.h>
 #   include <stdio.h>
 #   include <string.h>
+//#   include <string.h>
 #elif defined  _KERNEL_
 #   include <klibc.h>
 #else

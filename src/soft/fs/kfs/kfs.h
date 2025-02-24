@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date        2023-04-05
-  | / /(     )/ _ \     \copyright   2021-2023 Sorbonne University
+  | |__ /'v'\  / /      \date        2025-02-24
+  | / /(     )/ _ \     \copyright   2021 Sorbonne University
   |_\_\ x___x \___/                  https://opensource.org/licenses/MIT
 
   \file     kfs.h
@@ -16,7 +16,7 @@
 #define _KFS_H_
 
 #ifndef __DEPEND__
-#ifdef  HOST
+#ifdef  _HOST_
 #   include <stdlib.h>
 #   include <stdio.h>
 #   include <unistd.h>

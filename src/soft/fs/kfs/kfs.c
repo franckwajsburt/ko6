@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date        2023-04-06
-  | / /(     )/ _ \     \copyright   2021-2023 Sorbonne University
+  | |__ /'v'\  / /      \date        2025-02-24
+  | / /(     )/ _ \     \copyright   2021 Sorbonne University
   |_\_\ x___x \___/                  https://opensource.org/licenses/MIT
 
   \file     hal/almo1/kfs.c
@@ -95,7 +95,7 @@ typedef u32_t kfs_page_t[1024];         ///< atomic data segment exchanged with 
 // global data, all static, only directly accessible inside this file (outside, we need accessors)
 //--------------------------------------------------------------------------------------------------
 
-#ifdef HOST
+#ifdef _HOST_
 static kfs_mbr_t  KfsMbr;                           ///< Master Boot Record aligned on first page
 static kfs_page_t KfsVbr[KFS_NPG_VBR];              ///< Mbr and Vbr are in memory only on Linux
 #endif
@@ -123,7 +123,7 @@ static kfs_inode_t  KfsInode [KFS_MAX_INODE] = {    ///< up to MAX_INODE files
 };
 static kfs_fmap_t   KfsFmap [KFS_MAX_FMAP];         ///< up to MAX_FMAP inode extensions
 
-#ifdef HOST
+#ifdef _HOST_
 static kfs_page_t KfsDisk[KFS_NPG_DISK];            ///< the whole disk is in memory only on Linux
 #endif
 
@@ -454,7 +454,7 @@ static int kfs_read_page (int *buf, u16_t page)
         for (; a != 1024; a++, *(int *)buf++ = 0);          // fill buffer with 0
         return 0;                                           // success
     }
-#ifdef HOST
+#ifdef _HOST_
     int * ppage = (int *)KfsDisk[page];               // ppage points to the first int of page
     for (; a != 1024; a++, *buf++ = *ppage++);
     return 1;                                               // success
@@ -472,7 +472,7 @@ static int kfs_read_page (int *buf, u16_t page)
  */
 static int kfs_write_page (void *buf, int page)
 {
-#ifdef HOST
+#ifdef _HOST_
     int res = 0;                                            // return value
     int a = 0;                                              // counter of words
     int * buffer = (int *)buf;                              // cast buf to int
@@ -685,7 +685,7 @@ int kfs_tree_cb (int root, void (*callback)(int dentry, int depth, int postion))
     return 1+kfs_tree_cb_r (root, 1, callback);             // else start the recursion
 }
 
-#ifdef  HOST
+#ifdef  _HOST_
 
 #include <stdlib.h>
 #include <string.h>

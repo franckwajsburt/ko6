@@ -1,12 +1,12 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2023-08-02
-# | / /(     )/ _ \   	\copyright  2021-2023 Sorbonne University
+# | |__ /'v'\  / /   	\date       2025-02-24
+# | / /(     )/ _ \   	\copyright  2021 Sorbonne University
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     kfs/Makefile
 # \author   Franck Wajsburt
-# \brief    Makefile to produce kfs objects files and ktools application
+# \brief    Makefile to produce kfs objects files
 #
 #--------------------------------------------------------------------------------------------------
 
@@ -20,15 +20,12 @@ BINDIR	= ../../../../bin#			build directory
 SRCDIR 	= ../..#					directory of all sources
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJDIR	= $(BLDDIR)/obj#			object files directory
-KFSTDIR = $(BLDDIR)/ktools#			object files directory for ktools
 PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
-KFST	= $(BINDIR)/ktools#			ktools application
 
 # Sources
 # --------------------------------------------------------------------------------------------------
 
 SRC     = kfs.c kfs.h
-SRCKFST = $(SRC) ktools.c
 
 # Targets
 # --------------------------------------------------------------------------------------------------
@@ -36,9 +33,7 @@ SRCKFST = $(SRC) ktools.c
 SRCC    = $(filter %.c %.S,$(SRC))
 SRCKFSTC= $(filter %.c %.S,$(SRCKFST))
 OBJC    = $(subst .c,.o,$(foreach src,$(SRCC),$(notdir $(src))))
-OBJKFSTC= $(subst .c,.o,$(foreach src,$(SRCKFSTC),$(notdir $(src))))
 OBJ     = $(addprefix $(OBJDIR)/,$(OBJC))
-OBJKFST = $(addprefix $(KFSTDIR)/,$(OBJKFSTC))
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 
@@ -74,15 +69,12 @@ help:
 	@echo "        pdf     : generate $(PDF) with all source files"
 	@echo ""
 	@echo "OBJ= "$(OBJ)
-	@echo "KFST= "$(KFST)
-	@echo "OBJKFST= "$(OBJKFST)
 
 compil: depend mkdir $(OBJ) $(KFST)
 
 mkdir:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
 	test -d $(OBJDIR) || (echo "- mkdir   $(OBJDIR)" ; mkdir $(OBJDIR))
-	test -d $(KFSTDIR)|| (echo "- mkdir   $(KFSTDIR)" ; mkdir $(KFSTDIR))
 
 pdf:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
@@ -105,14 +97,6 @@ $(OBJDIR)/%.o : %.c
 	@echo "- compil  --> "$(notdir $@)
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s
-
-$(KFST) : $(OBJKFST)
-	@echo "- compil  --> "$(notdir $@)
-	$(HOSTCC) -o $@ $^
-
-$(KFSTDIR)/%.o : %.c
-	@echo "- compil  --> "$(notdir $@)
-	$(HOSTCC) -o $@ $(HOSTCFLAGS) $<
 
 # makedepend analyzes the source files to determine automatically what are the dependencies
 # of the object files on the source files (see https://linux.die.net/man/1/makedepend for details)
