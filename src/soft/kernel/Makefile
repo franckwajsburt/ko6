@@ -37,6 +37,7 @@ SRC    += $(COMDIR)/errno.h $(COMDIR)/errno.c $(COMDIR)/esc_code.h
 SRC    += $(COMDIR)/cstd.c $(COMDIR)/cstd.h
 SRC    += $(COMDIR)/ht_prob.c $(COMDIR)/ht_prob.h
 SRC    += kmemory.c kmemory.h
+SRC    += kmemory.c kmemory.h
 SRC    += klibc.c klibc.h
 SRC    += kthread.c kthread.h
 SRC    += kinit.c kdev.c kirq.c

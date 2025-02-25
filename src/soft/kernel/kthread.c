@@ -53,6 +53,8 @@ static thread_t ThreadTab[THREAD_MAX];  // simple table for the all the existing
 static int      ThreadCurrentIdx;       // index of the current running thread
 thread_t        ThreadCurrent;          // pointer to the current thread
 
+thread_t        Kthread;                // single kernel thread
+
 void thread_addlast (list_t * root, thread_t thread)
 {
     list_addlast (root, &thread->wait);
@@ -186,38 +188,48 @@ void sched_dump (void)
     for (int th = 0; th < THREAD_MAX; th++) {
         thread_t thread = ThreadTab[th];
         if (thread) {
-           kprintf (Y"----------------------------------------------------------------------- ");
-           kprintf (D"\n", thread->tid);
-           kprintf ("["D"] thread: "P,  clock (), thread);
-           kprintf ("   errmsg: "S"\n", errno_mess[/*errno+*/1]);
-           kprintf (" - state:     "S"\t", state_name[thread->state]);
-           kprintf ("   wait.next: "P"\t", thread->wait.next);
-           kprintf ("   wait.prev: "P"\n", thread->wait.prev);
-           kprintf (" - retval:    "P"\t", thread->retval);
-           kprintf ("   join:      "P"\t", thread->join);
-           //kprintf ("   errno:     "P"\n", errno);
-           kprintf ("   errno:     "P"\n", thread->ptls->tls_errno);
-           kprintf (" - start:     "P"\t", thread->start);
-           kprintf ("   function:  "P"\t", thread->fun);
-           kprintf ("   arg:       "P"\n", thread->arg);
-           kprintf (" - ustack_b:  "P" ("P")\t", thread->ustack_b, *(int*)thread->ustack_b);
-           kprintf (  " ustack_e:  "P" ("P")\n", thread->ustack_e, *(int*)thread->ustack_e);
-           kprintf (" - kstack_b:  "P" ("P")\t", thread->kstack_b, *(int*)thread->kstack_b);
-           kprintf (  " kstack_e:  "P" ("P")\n", &thread->kstack, thread->kstack[0]);
+            kprintf (Y"----------------------------------------------------------------------- ");
+            kprintf (D"\n", thread->tid);
+            kprintf ("["D"] thread: "P,  clock (), thread);
+            kprintf ("   errmsg: "S"\n", errno_mess[/*errno+*/1]);
+            kprintf (" - state:     "S"\t", state_name[thread->state]);
+            kprintf ("   wait.next: "P"\t", thread->wait.next);
+            kprintf ("   wait.prev: "P"\n", thread->wait.prev);
+            kprintf (" - retval:    "P"\t", thread->retval);
+            kprintf ("   join:      "P"\t", thread->join);
+            //kprintf ("   errno:     "P"\n", errno);
+            if (thread->ptls)
+                kprintf ("   errno:     "P"\n", thread->ptls->tls_errno);
+            else
+                kprintf ("   errno:     "P"\n", 0);
+            kprintf (" - start:     "P"\t", thread->start);
+            kprintf ("   function:  "P"\t", thread->fun);
+            kprintf ("   arg:       "P"\n", thread->arg);
+            if (thread->ustack_b)
+                kprintf (" - ustack_b:  "P" ("P")\t", thread->ustack_b, *(int*)thread->ustack_b);
+            else
+                kprintf (" - ustack_b:  "P" ("P")\t", thread->ustack_b, 0);
+            if (thread->ustack_e)
+                kprintf (  " ustack_e:  "P" ("P")\n", thread->ustack_e, *(int*)thread->ustack_e);
+            else 
+                kprintf (  " ustack_e:  "P" ("P")\n", thread->ustack_e, 0);
+            kprintf (" - kstack_b:  "P" ("P")\t", thread->kstack_b, *(int*)thread->kstack_b);
+            kprintf (  " kstack_e:  "P" ("P")\n", &thread->kstack, thread->kstack[0]);
 /*
-           kprintf (" - context:");
-           kprintf ("   S0: "P,          thread->context[TH_CONTEXT_S0]);
-           kprintf ("   S1: "P,          thread->context[TH_CONTEXT_S1]);
-           kprintf ("   S2: "P,          thread->context[TH_CONTEXT_S2]);
-           kprintf ("   S3: "P"\n\t   ", thread->context[TH_CONTEXT_S3]);
-           kprintf ("   S4: "P,          thread->context[TH_CONTEXT_S4]);
-           kprintf ("   S5: "P,          thread->context[TH_CONTEXT_S5]);
-           kprintf ("   S6: "P,          thread->context[TH_CONTEXT_S6]);
-           kprintf ("   S7: "P"\n\t   ", thread->context[TH_CONTEXT_S7]);
-           kprintf ("   S8: "P,          thread->context[TH_CONTEXT_S8]);
-           kprintf ("   SR: "P,          thread->context[TH_CONTEXT_SR]);
-           kprintf ("   RA: "P,          thread->context[TH_CONTEXT_RA]);
-           kprintf ("   SP: "P"\n",      thread->context[TH_CONTEXT_SP]);
+#include <hal/cpu/mips/context.h>          
+            kprintf (" - context:");
+            kprintf ("   S0: "P,          thread->context[TH_CONTEXT_S0]);
+            kprintf ("   S1: "P,          thread->context[TH_CONTEXT_S1]);
+            kprintf ("   S2: "P,          thread->context[TH_CONTEXT_S2]);
+            kprintf ("   S3: "P"\n\t   ", thread->context[TH_CONTEXT_S3]);
+            kprintf ("   S4: "P,          thread->context[TH_CONTEXT_S4]);
+            kprintf ("   S5: "P,          thread->context[TH_CONTEXT_S5]);
+            kprintf ("   S6: "P,          thread->context[TH_CONTEXT_S6]);
+            kprintf ("   S7: "P"\n\t   ", thread->context[TH_CONTEXT_S7]);
+            kprintf ("   S8: "P,          thread->context[TH_CONTEXT_S8]);
+            kprintf ("   SR: "P,          thread->context[TH_CONTEXT_SR]);
+            kprintf ("   RA: "P,          thread->context[TH_CONTEXT_RA]);
+            kprintf ("   SP: "P"\n",      thread->context[TH_CONTEXT_SP]);
 */
         }
     }
@@ -298,41 +310,6 @@ int thread_create (thread_t * thread_p, int fun, int arg, int start)
     sched_insert (thread);                                      // insert new thread in scheduler
     *thread_p = thread;                                         // thread_create true return
     thread->ptls->tls_errno = SUCCESS;                          // syscall's error number
-    return SUCCESS;                                             // if we are here, that is a success
-}
-
-//--------------------------------------------------------------------------------------------------
-// kernel thread
-// Feb, 24th
-// - At first, kthread is a normal thread, but always running in kernel mode
-//--------------------------------------------------------------------------------------------------
-
-
-int kthread_create (thread_t * thread_p, int fun, int arg, int start)
-{
-    thread_t thread = kmalloc (PAGE_SIZE);                      // thread is thus always aligned
-    if (thread == NULL) return EAGAIN;                          // Not enough memory
-    thread->kstack_b = (int)thread + PAGE_SIZE - 4;             // kstack beginning (highest addr)
-    thread->ustack_b = 0;                                       // no user stack
-    thread->ustack_e = 0;                                       // no user stack
-    thread->state    = TH_STATE_READY;                          // it can be chosen by the scheduler
-    list_init (&thread->wait);                                  // initialize the waiting list
-    thread->retval   = NULL;                                    // default return value
-    thread->join     = NULL;                                    // no awaited thread
-    thread->start    = start;                                   // start() will call fun(arg)
-    thread->fun      = fun;                                     // function of the thread
-    thread->arg      = arg;                                     // argument of the thread
-    thread->ptls     = NULL;                                    // no local storage
-    kthread_context_init(thread->context,                       // table to store context
-                        thread_bootstrap,                       // thread_bootstrap() to begin
-                        thread->ptls);                          // stack pointer addr (below tls)
-    thread->krandseed  = 1;                                     // default kernel random seed
-
-    *(int*)thread->kstack_b = MAGIC_STACK;                      // should not be erased
-    thread->kstack[0] = MAGIC_STACK;                            // (is kstack_e) should not erased
-
-    sched_insert (thread);                                      // insert new thread in scheduler
-    *thread_p = thread;                                         // kthread_create true return
     return SUCCESS;                                             // if we are here, that is a success
 }
 

@@ -15,9 +15,9 @@
 
 SOC    ?= almo1-mips#				defaut SOC name
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-BLDDIR	= ../../../../build#		build directory
-BINDIR	= ../../../../bin#			build directory
-SRCDIR 	= ../..#					directory of all sources
+BLDDIR	= $(ko6)/build#				build directory
+BINDIR	= $(ko6)/bin#				bin directory
+SRCDIR 	= $(ko6)/src/soft#			directory of all sources
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJDIR	= $(BLDDIR)/obj#			object files directory
 PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
@@ -31,7 +31,6 @@ SRC     = kfs.c kfs.h
 # --------------------------------------------------------------------------------------------------
 
 SRCC    = $(filter %.c %.S,$(SRC))
-SRCKFSTC= $(filter %.c %.S,$(SRCKFST))
 OBJC    = $(subst .c,.o,$(foreach src,$(SRCC),$(notdir $(src))))
 OBJ     = $(addprefix $(OBJDIR)/,$(OBJC))
 OBJDS   = $(addsuffix .s,$(OBJ))
@@ -52,9 +51,6 @@ CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += -I.#						directories where include files like <file.h> are located
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
 
-HOSTCC  	= /bin/gcc#									native compiler of host computer
-HOSTCFLAGS	= -c -Wall -I. -std=c99 -O3 -g -DHOST#	compiler flag for native compiler
-
 # Rules (here they are used such as simple shell scripts)
 # --------------------------------------------------------------------------------------------------
 
@@ -70,7 +66,7 @@ help:
 	@echo ""
 	@echo "OBJ= "$(OBJ)
 
-compil: depend mkdir $(OBJ) $(KFST)
+compil: depend mkdir $(OBJ)
 
 mkdir:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
@@ -86,7 +82,7 @@ pdf:
 
 clean:
 	@echo "- clean $(CURDIR) and related build files"
-	-rm *~ $(KFST) $(KFSTDIR)/*.o $(OBJ) $(OBJDS) $(PDF) $(PDF).log 2> /dev/null || true
+	-rm *~ $(OBJ) $(OBJDS) $(PDF) $(PDF).log 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 

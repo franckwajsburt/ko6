@@ -46,10 +46,9 @@ void kinit (void *fdt)
     // First, we have to create the thread structure for the thread main()
     //   thread_create() is the same function used to create the thread main()
     //   and to create an usual thread, here, we create the the thread main, it takes 4 args
-    //   1. The address of the thread structure,
-    //      This structure must be placed in the .data segment (user space) because there is
-    //      the stack inside but the address of the the structure must be known by the kernel.
-    //      That's why, the thread structure of main() is placed at the very beginning of .data
+    //   1. The thread structure has to be placed in the .kdata segment but the thread identifier 
+    //      has to be placed in the .data segment (user space) at a place known by the kernel.
+    //      That's why, the thread identifier of main() is placed at the very beginning of .data
     //   2. The address of the thread function (cast to int), here it should be the address of
     //      main function, but we are not able to know this address because it is in the user
     //      segment .text, thus we put 0 and it is the user function _start() which call main()
