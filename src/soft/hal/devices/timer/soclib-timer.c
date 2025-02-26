@@ -21,8 +21,7 @@
  */
 static void soclib_timer_set_tick(struct timer_s *timer, unsigned tick)
 {
-    struct soclib_timer_regs_s *regs = 
-        (struct soclib_timer_regs_s *) timer->address;
+    struct soclib_timer_regs_s *regs = (struct soclib_timer_regs_s *) timer->address;
     regs->period = tick;
 }
 
@@ -38,12 +37,11 @@ static void soclib_timer_init(struct timer_s *timer, unsigned address, unsigned 
     timer->address  = address;
     timer->ops      = &SoclibTimerOps;
 
-    struct soclib_timer_regs_s *regs = 
-        (struct soclib_timer_regs_s *) timer->address;
-    regs->resetirq = 1;                                 // to be sure there won't be a IRQ when timer start
-    soclib_timer_set_tick(timer, tick);                 // next period
+    struct soclib_timer_regs_s *regs = (struct soclib_timer_regs_s *) timer->address;
+    regs->resetirq = 1;                       // to be sure there won't be a IRQ when timer start
+    soclib_timer_set_tick(timer, tick);       // next period
 
-    regs->mode = (tick) ? 3 : 0;                        // timer ON with IRQ only if (tick != 0)
+    regs->mode = (tick) ? 3 : 0;              // timer ON with IRQ only if (tick != 0)
 }
 
 /**
@@ -69,8 +67,7 @@ void soclib_timer_isr (unsigned irq, struct timer_s *timer)
 {
     struct soclib_timer_regs_s *regs = 
         (struct soclib_timer_regs_s *) timer->address;
-    /* IRQ acknoledgement to lower the interrupt signal */
-    regs->resetirq = 1;
+    regs->resetirq = 1;                     // IRQ acknoledgement to lower the interrupt signal
     
     if (timer->event.f)
         timer->event.f(timer->event.arg);
