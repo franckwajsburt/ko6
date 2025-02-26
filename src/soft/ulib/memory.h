@@ -50,5 +50,15 @@ extern void * malloc(unsigned size);
  */
 extern void  free(void *ptr);    
 
+/**
+ * \brief   Duplicates a string in memory using the standardd allocator.
+ * \param   str   The null-terminated string to duplicate.
+ * \return  A pointer to the newly allocated string, or NULL on failure.
+ *          Returns NULL if allocation fails or if `str` is NULL.
+ * \note    This function allocates memory using malloc() and copies the content of `str` into it.
+ *          The caller is responsible for freeing the duplicated string using `free()`.
+ */
+char *strdup(const char *str);
+
 #endif//_MALLOC_H_
 

@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
   | |__ /'v'\  / /      \date       2023-07-10
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
   \file     hal/devices/chardev/ns16550.c
@@ -71,19 +71,19 @@ static void ns16550_init(struct chardev_s *cdev, unsigned address, unsigned baud
 static int ns16550_read(struct chardev_s *cdev, char *buf, unsigned count)
 {
     int res = 0;
-    int c;
+    char c;
 
     struct fifo_s *fifo = (struct fifo_s *) cdev->driver_data;
     while (count--) {
-        while (fifo_pull(fifo, &c) == FAILURE) {                // wait for a char from the keyboard
-            thread_yield();                                     // nothing then we yield the processor
-            irq_enable();                                       // get few characters if thread is alone
-            irq_disable();                                      // close enter
+        while (fifo_pull(fifo, &c) == FAILURE) {        // wait for a char from the keyboard
+            thread_yield();                             // nothing then we yield the processor
+            irq_enable();                               // get few characters if thread is alone
+            irq_disable();                              // close enter
         }
         *buf++ = c;
         res++;
     }
-    return res;                                                 // return the number of char read
+    return res;                                         // return the number of char read
 }
 
 /**

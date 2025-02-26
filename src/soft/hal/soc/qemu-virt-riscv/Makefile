@@ -1,8 +1,8 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date      2023-07-11
-# | / /(     )/ _ \   	\copyright 2021-2022 Sorbonne University
-# |_\_\ x___x \___/                https://opensource.org/licenses/MIT
+# | |__ /'v'\  / /   	\date       2023-07-11
+# | / /(     )/ _ \   	\copyright  2021-2022 Sorbonne University
+# |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     hal/soc/qemu-virt-riscv/Makefile
 # \author   Franck Wajsburt, Nolan Bled
@@ -22,8 +22,8 @@ BLDDIR	= ../../../../../build#		build directory
 LIBDIR	= .#						library directory (where is ldscript)
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 SOCDIR	= $(CURDIR)#				current soc hardware abstraction layer (hal) files directory
-OBJDIR	= $(BLDDIR)/obj#			object files directory
-PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
+OBJDIR	= $(BLDDIR)/kobj#			kernel object files directory
+PDFDIR	= $(BLDDIR)/kpdf#			kernel pdf files directory
 
 # Sources
 # --------------------------------------------------------------------------------------------------

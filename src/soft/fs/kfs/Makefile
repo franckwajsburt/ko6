@@ -19,8 +19,8 @@ BLDDIR	= $(ko6)/build#				build directory
 BINDIR	= $(ko6)/bin#				bin directory
 SRCDIR 	= $(ko6)/src/soft#			directory of all sources
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
-OBJDIR	= $(BLDDIR)/obj#			object files directory
-PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
+OBJDIR	= $(BLDDIR)/kobj#			kernel object files directory
+PDFDIR	= $(BLDDIR)/kpdf#			kernel pdf files directory
 
 # Sources
 # --------------------------------------------------------------------------------------------------

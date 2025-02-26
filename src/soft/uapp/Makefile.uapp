@@ -16,16 +16,16 @@
 
 SOC    ?= almo1-mips#				defaut SOC name
 V      ?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-BLDDIR	= ../../../../build#		build directory
-COMDIR	= ../../common#				user & kernel common files directory
-LIBDIR	= ../../ulib#				library directory (where is ldscript)
-HALDIR	= ../../hal#				hardware abstraction layer (hal) files directory
-SRCDIR  = ../..
+BLDDIR	= $(ko6)/build#				build directory
+SRCDIR	= $(ko6)/src/soft#			source directories
+COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
+LIBDIR	= $(SRCDIR)/ulib#			library directory (where is ldscript)
+HALDIR	= $(SRCDIR)/hal#			hardware abstraction layer (hal) files directory
 SOCDIR	= $(HALDIR)/$(SOC)#			current soc hardware abstraction layer (hal) files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
-OBJRDIR	= $(BLDDIR)/obj#			object files directory
+OBJRDIR	= $(BLDDIR)/uobj#			user object files directory
 OBJDIR	= $(OBJRDIR)/$(CURDIR)#		object files directory
-PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
+PDFDIR	= $(BLDDIR)/updf#			user pdf files directory
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#	the pdf file has the name of directory
 BIN     = $(BLDDIR)/$(CURDIR).x#	the binary file has the name of directory
 
@@ -38,7 +38,7 @@ LDSCRIPT= $(SRCDIR)/hal/soc/$(SOC)/user.ld#		ldscript is hal dependent
 # Targets
 # --------------------------------------------------------------------------------------------------
 
-LIB		= crt0.o libc.o pthread.o memory.o errno.o cpu_user.o
+LIB		= crt0.o libc.o pthread.o memory.o errno.o cpu_user.o ht_prob.o ctype.o
 LIB 	+= cstd.o
 
 SRCC    = $(filter %.c,$(SRC))

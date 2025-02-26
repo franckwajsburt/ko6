@@ -26,7 +26,11 @@ extern int DEBUG;
 #   define MALLOC       malloc                      // allocates in the libc's memory  allocator
 #   define STRDUP       strdup
 #   define FREE(k)      free(k)
+#ifdef _HOST_
 #   define PRINT(...)   fprintf(stderr,__VA_ARGS__) 
+#else
+#   define PRINT(...)   fprintf(0,__VA_ARGS__) 
+#endif
 #endif
 
 #define FREED           ((char *)-1)                // key used when a slot is freed 

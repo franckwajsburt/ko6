@@ -1,8 +1,8 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date      2022-07-03
-# | / /(     )/ _ \   	\copyright 2021-2022 Sorbonne University
-# |_\_\ x___x \___/                https://opensource.org/licenses/MIT
+# | |__ /'v'\  / /   	\date       2025-02-26
+# | / /(     )/ _ \   	\copyright  2021 Sorbonne University
+# |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     hal/Makefile
 # \author   Nolan Bled
@@ -22,8 +22,8 @@ HALDIR  = $(SRCDIR)/hal#			HAL directory (current)
 COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
 
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
-OBJDIR	= $(BLDDIR)/obj#			object files directory
-PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
+OBJDIR	= $(BLDDIR)/kobj#			kernel object files directory
+PDFDIR	= $(BLDDIR)/kpdf#			kernel pdf files directory
 LIBDIR  = ../../lib#				external libraries directory
 
 # Sources

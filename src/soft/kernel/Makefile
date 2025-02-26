@@ -1,8 +1,8 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date      2025-02-23
-# | / /(     )/ _ \   	\copyright 2021 Sorbonne University
-# |_\_\ x___x \___/                https://opensource.org/licenses/MIT
+# | |__ /'v'\  / /   	\date       2025-02-23
+# | / /(     )/ _ \   	\copyright  2021 Sorbonne University
+# |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     kernel/Makefile
 # \author   Franck Wajsburt
@@ -17,15 +17,14 @@ SOC    ?= almo1-mips#				defaut SOC name
 NTTYS  ?= 1#						default number of ttys
 NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-BLDDIR	= ../../../build#			build directory
-SRCDIR 	= ..#						directory of all sources
+BLDDIR	= $(ko6)/build#i		 	build directory
+SRCDIR	= $(ko6)/src/soft#			source directories
 COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
-LIBDIR	= .#						library directory (where is ldscript)
 HALDIR	= $(SRCDIR)/hal#			hardware abstraction layer (hal) files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
-OBJDIR	= $(BLDDIR)/obj#			object files directory
-PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
-LIBDIR  = ../../lib#				external libraries directory
+OBJDIR	= $(BLDDIR)/kobj#			kernel object files directory
+PDFDIR	= $(BLDDIR)/kpdf#			kernel pdf files directory
+XLIBDIR = $(ko6)/lib#				external libraries directory
 
 # Sources
 # --------------------------------------------------------------------------------------------------
@@ -35,6 +34,7 @@ SRC    += $(COMDIR)/syscalls.h ksyscalls.c
 SRC    += $(COMDIR)/usermem.h $(COMDIR)/list.h
 SRC    += $(COMDIR)/errno.h $(COMDIR)/errno.c $(COMDIR)/esc_code.h
 SRC    += $(COMDIR)/cstd.c $(COMDIR)/cstd.h
+SRC    += $(COMDIR)/ctype.c $(COMDIR)/ctype.h
 SRC    += $(COMDIR)/ht_prob.c $(COMDIR)/ht_prob.h
 SRC    += kmemory.c kmemory.h
 SRC    += kmemory.c kmemory.h
@@ -72,7 +72,7 @@ CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += -I.#						directories where include files like <file.h> are located
 CFLAGS += -I..#						directories where include files like <file.h> are located
 CFLAGS += -I$(COMDIR)#				directories where include files like <file.h> are located
-CFLAGS += -I$(LIBDIR)/libfdt#		include external libraries (specifically libfdt.h)
+CFLAGS += -I$(XLIBDIR)/libfdt#		include external libraries (specifically libfdt.h)
 CFLAGS += -DNTTYS=$(NTTYS)#			#define NTTYS with the number of ttys in the prototype
 CFLAGS += -DNCPUS=$(NCPUS)#			#define NCPUS with the number of cpus in the prototype
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>

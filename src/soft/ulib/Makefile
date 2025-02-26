@@ -1,7 +1,7 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2023-02-17
-# | / /(     )/ _ \   	\copyright  2021-2023 Sorbonne University
+# | |__ /'v'\  / /   	\date       2025-02-26
+# | / /(     )/ _ \   	\copyright  2021 Sorbonne University
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     ulib/Makefile
@@ -25,8 +25,8 @@ HALDIR	= $(SRCDIR)/hal#			hardware abstraction layer (hal) files directory
 SOCDIR	= $(HALDIR)/soc#			current soc hardware abstraction layer (hal) files directory
 CPUDIR	= $(HALDIR)/cpu#			current cpu hardware abstraction layer (hal) files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
-OBJDIR	= $(BLDDIR)/obj#			object files directory
-PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
+OBJDIR	= $(BLDDIR)/uobj#			user object files directory
+PDFDIR	= $(BLDDIR)/updf#			user pdf files directory
 
 # Sources
 # --------------------------------------------------------------------------------------------------
@@ -35,6 +35,8 @@ SRC     = $(COMDIR)/syscalls.h $(COMDIR)/list.h $(COMDIR)/usermem.h
 SRC    += $(COMDIR)/debug_on.h $(COMDIR)/debug_off.h
 SRC    += $(COMDIR)/errno.h $(COMDIR)/errno.c
 SRC    += $(COMDIR)/cstd.h $(COMDIR)/cstd.c
+SRC    += $(COMDIR)/ctype.h $(COMDIR)/ctype.c
+SRC    += $(COMDIR)/ht_prob.h $(COMDIR)/ht_prob.c
 SRC    += $(CPUDIR)/$(CPU)/cpu_user.S
 SRC    += crt0.c libc.h libc.c pthread.h pthread.c memory.h memory.c
 

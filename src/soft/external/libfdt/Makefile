@@ -1,7 +1,7 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date      	2025-02-23
-# | / /(     )/ _ \   	\copyright  2022 Sorbonne University
+# | |__ /'v'\  / /   	\date    	2025-02-23
+# | / /(     )/ _ \   	\copyright  2021 Sorbonne University
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     external/libfdt/Makefile
@@ -27,11 +27,11 @@ LIBFDT_LIB = libfdt-$(DTC_VERSION).$(SHAREDLIB_EXT)
 #--------------------------------------------------------------------------------------------------
 
 SOC    ?= almo1-mips
-SRCDIR 	= ../..#					directory of all sources
-BLDDIR	= ../../../../build#		build directory
+SRCDIR 	= $(ko6)/src/soft#			directory of all sources
+BLDDIR	= $(ko6)/build#				build directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
-OBJDIR	= $(BLDDIR)/obj#			object files directory
-PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
+OBJDIR	= $(BLDDIR)/kobj#			kernel object files directory
+PDFDIR	= $(BLDDIR)/kpdf#			kernel pdf files directory
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 
 # Objects from Makefile.libfdt

@@ -13,6 +13,9 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
+#ifndef _HT_PROBE_H_
+#define _HT_PROBE_H_
+
 #define HT_MAXTRY   10
 
 #ifdef _HOST_
@@ -20,7 +23,6 @@
 #   include <stdlib.h>
 #   include <stdio.h>
 #   include <string.h>
-//#   include <string.h>
 #elif defined  _KERNEL_
 #   include <klibc.h>
 #else
@@ -153,3 +155,5 @@ void ht_stat (ht_t *ht);
  * \return  NULL if rehashing fails, otherwise returns the new table pointer.
  */
 ht_t *ht_rehash(ht_t **pht, size_t percent);
+
+#endif

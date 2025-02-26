@@ -1,7 +1,7 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2023-02-24
-# | / /(     )/ _ \   	\copyright  2021-2023 Sorbonne University
+# | |__ /'v'\  / /   	\date       2025-02-26
+# | / /(     )/ _ \   	\copyright  2021 Sorbonne University
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     Makefile
@@ -13,11 +13,12 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
-MAKOPT ?= -s#			comment the -s to get command details
-SOC    ?= almo1-mips#	defaut SOC name
+MAKOPT ?= -s#				comment the -s to get command details
+SOC    ?= almo1-mips#		defaut SOC name
 CPU    ?= mips
-VERBOSE?= 0#			verbose mode to print INFO(), BIP(), ASSERT, VAR()
-OBJDIR	= ../build/obj
+VERBOSE?= 0#				verbose mode to print INFO(), BIP(), ASSERT, VAR()
+BLDDIR	= $(ko6)/build#		build directory
+OBJDIR	= $(BLDDIR)/kobj#	kernel object files directory
 
 # Files
 # --------------------------------------------------------------------------------------------------

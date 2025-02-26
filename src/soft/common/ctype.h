@@ -18,6 +18,11 @@
             
 \*------------------------------------------------------------------------------------------------*/
 
+#ifndef _CTYPE_H_
+#define _CTYPE_H_
+
+extern unsigned _digit[], _upper[], _lower[], _space[], _punct[], _xdigit[];
+
 #define _is(c,tbl)  ((tbl[(c)/32]  >> ((c)%32)) & 1)
 #define isdigit(c)  _is(c,_digit)
 #define isupper(c)  _is(c,_upper)
@@ -34,3 +39,5 @@
 #define isascii(c)  ((c) <= 127)
 #define toupper(c)  ((islower(c)) ? (c)-('a'-'A') : (c))
 #define tolower(c)  ((isupper(c)) ? (c)+('a'-'A') : (c))
+
+#endif

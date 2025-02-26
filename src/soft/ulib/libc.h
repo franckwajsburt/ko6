@@ -34,6 +34,8 @@
 #include <usermem.h>    // user data region usage
 #include <errno.h>      // standard error code number
 #include <esc_code.h>   // ANSI escape code
+#include <ctype.h>      // ASCII test functions
+#include <ht_prob.h>    // hash table
 
 #define RAND_MAX 32767  /* maximum random value by default, must be < 0x7FFFFFFE */
 #define PRINTF_MAX 256  /* largest printed message */
@@ -126,8 +128,9 @@ extern void srand (unsigned seed);
 int fputc (int tty, int c);
 
 /**
- * \brief     reads the next character from tty and returns it cast to an int
+ * \brief     reads the next character from tty 
  * \param     tty   tty number (between 0 and TTY_MAX-1)
+ * \return    returns it cast to an int
  */
 extern int fgetc (int tty);
 
@@ -138,6 +141,7 @@ extern int fgetc (int tty);
  * \param     s     pointer to the buffer where the characters read will be written
  * \param     size  number of places in bytes in the buffer s.
  * \param     tty   tty number (between 0 and TTY_MAX-1) should be a FILE *
+ * \return    the number of read character
  */
 extern int fgets (char *s, int size, int tty);
 

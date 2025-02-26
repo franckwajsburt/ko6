@@ -1,8 +1,8 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date      2025-02-23
-# | / /(     )/ _ \   	\copyright 2021 Sorbonne University
-# |_\_\ x___x \___/                https://opensource.org/licenses/MIT
+# | |__ /'v'\  / /   	\date       2025-02-23
+# | / /(     )/ _ \   	\copyright  2021 Sorbonne University
+# |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     hal/soc/almo1-mips/Makefile
 # \author   Franck Wajsburt, Nolan Bled
@@ -22,8 +22,8 @@ BINDIR 	= $(ko6)/bin#				tools directory
 LIBDIR	= .#						library directory (where is ldscript)
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 SOCDIR	= $(CURDIR)#				current soc hardware abstraction layer (hal) files directory
-OBJDIR	= $(BLDDIR)/obj#			object files directory
-PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
+OBJDIR	= $(BLDDIR)/kobj#			kernel object files directory
+PDFDIR	= $(BLDDIR)/kpdf#			kernel pdf files directory
 BIN 	= $(BLDDIR)/kernel-$(SOC).x
 SX 		= $(SOC).x
 DLOG    = /tmp/ko6-debug.log#       debug file
@@ -43,7 +43,7 @@ SRCC    = $(filter %.c,$(SRC))
 OBJS    = $(subst .S,.o,$(foreach src,$(SRCS),$(notdir $(src))))
 OBJC    = $(subst .c,.o,$(foreach src,$(SRCC),$(notdir $(src))))
 OBJ     = $(addprefix $(OBJDIR)/,$(OBJS) $(OBJC))
-OBJ 	+= $(OBJDIR)/cstd.o $(OBJDIR)/errno.o
+OBJ 	+= $(OBJDIR)/cstd.o $(OBJDIR)/ctype.o $(OBJDIR)/ht_prob.o $(OBJDIR)/errno.o
 OBJ 	+= $(OBJDIR)/soclib-icu.o $(OBJDIR)/soclib-dma.o
 OBJ 	+= $(OBJDIR)/soclib-timer.o $(OBJDIR)/soclib-tty.o
 OBJ 	+= $(OBJDIR)/atomic.o $(OBJDIR)/cache.o $(OBJDIR)/cpuregs.o

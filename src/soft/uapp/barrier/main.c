@@ -31,7 +31,7 @@ void * t0_fun (void * arg)
     for (int i=0;1;i++) {
         fprintf (1, "[%d] %s\n", i, a->message);
         DELAY ((a->delay) * (1 + rand()%2));
-        //thread_barrier_wait (&barrier);
+        pthread_barrier_wait (&barrier);
     };
 }
 
@@ -50,9 +50,9 @@ int main (void)
     pthread_create (&t0, NULL, t0_fun, &a1);
 
     for (int i=0;1;i++) {
-        fprintf (0, "[%d] app is alive\n", i);
+        fprintf (1, "[%d] app is alive\n", i);
         DELAY(100000);
-        //thread_barrier_wait( &barrier);
+        pthread_barrier_wait( &barrier);
     }
 
     void * trash;

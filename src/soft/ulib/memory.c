@@ -101,10 +101,20 @@ void * malloc (size_t size)
         merge (Heap.beg);                                   // merge all free blocks from beginning
         ptr = try_malloc (size);                            // try again to find a block
     }
-    if (ptr == NULL)
-        errno = ENOMEM;
+    if (ptr == NULL) errno = ENOMEM;
     return ptr;                                             // return what you have found
 }
+
+char * strdup (const char * str)
+{
+    if (str==NULL) return NULL;                             // Avoid NULL input 
+    size_t len = strlen(str) + 1;                           // Include null terminator
+    char *copy = (char *) malloc(len);                      // Allocate memory 
+    if (copy == NULL) errno = ENOMEM;
+    memcpy(copy, str, len);                                 // Copy the string, including '\0'
+    return copy;                                            // Return the allocated copy
+}
+
 
 void free (void *ptr)
 {

@@ -1,8 +1,8 @@
 #-------------------------------------------------------------------------------------------------*\
 #  _     ___    __
-# | |__ /'v'\  / /      \date		2023-02-24
-# | / /(     )/ _ \     \copyright	2021-2023 Sorbonne University
-# |_\_\ x___x \___/		https://opensource.org/licenses/MIT
+# | |__ /'v'\  / /      \date		2025-02-26
+# | / /(     )/ _ \     \copyright	2021 Sorbonne University
+# |_\_\ x___x \___/					https://opensource.org/licenses/MIT
 #
 # \file     uapp/Makefile
 # \author   Franck Wajsburt
@@ -10,7 +10,7 @@
 #
 #-------------------------------------------------------------------------------------------------*/
 
-APPS   ?= hello barrier test
+APPS   ?= hello barrier dejavu
 VERBOSE?= 0#					verbose level
 MAKOPT ?= #-s#					comment the -s to get command details
 ACTIONS = clean compil pdf#		all possible actions

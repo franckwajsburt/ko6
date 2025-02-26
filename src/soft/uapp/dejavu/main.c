@@ -1,11 +1,16 @@
-#include <ctype.h>
-#include <ht_prob.h>
+#include <libc.h>
+
+int stderr = 1;             // FIXME it should be a file descriptor, not a tty number
+int stdin = 1;              // FIXME it should be a file descriptor, not a tty number
+#define EOF '.'             // FIXME should be -1 after a ctrl-D
+#define getc fgetc(stdin)   
 
 // call back function to print the occurence number of each words
 void print_occurences (ht_t *ht, size_t pos, const char *key, void *val, void *data) 
 {
-    fprintf (stderr, "%zu\t %-32s : %ld\n", pos, key, (long)val);    
+    fprintf (stderr, "%u\t %s : %d\n", pos, key, (long)val);    
 }
+
 
 int main (int argc, char * argv[])
 {
@@ -16,14 +21,14 @@ int main (int argc, char * argv[])
     
     while (c != EOF) {                                          // while not end of stdin
 
-        for (c=getchar();                                       // skip all non-alnum or _
+        for (c=getc;                                            // skip all non-alnum or _
             !isalnum(c) && (c!= '_') && (c!=EOF);               
-            c=getchar());  
+            c=getc);  
 
         if (c != EOF) {                                         // if there is a new word
             char *pw = word;                                    // get the new word
             *pw++ = tolower(c);                                 // the first char is already read
-            for (c=getchar();isalnum(c)||(c=='_');c=getchar()){ // while c is alphanum or '_'
+            for (c=getc; isalnum(c) || (c=='_'); c=getc) {      // while c is alphanum or '_'
                 if ((pw-word) < sizeof (word)-1)                // if there is enough room
                     *pw++ = tolower(c);                         // store the char
             }
