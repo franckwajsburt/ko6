@@ -185,6 +185,7 @@ extern int fifo_push (struct fifo_s *fifo, char c);
  * \param   c       pointer on char to put the read char 
  * \return  SUCCESS or FAILURE
  */
-extern int fifo_pull (struct fifo_s *fifo, int *c);
+extern int fifo_pull (struct fifo_s *fifo, char *c);
 
+void tick_event (void);
 #endif//_KLIBC_H_

@@ -150,7 +150,7 @@ int fifo_push (struct fifo_s *fifo, char c)
     return FAILURE;
 }
 
-int fifo_pull (struct fifo_s *fifo, int *c)
+int fifo_pull (struct fifo_s *fifo, char *c)
 {
     if (fifo->pt_read != fifo->pt_write) {
         *c = fifo->data [fifo->pt_read];
@@ -158,4 +158,10 @@ int fifo_pull (struct fifo_s *fifo, int *c)
         return SUCCESS;
     }
     return FAILURE;
+}
+
+void tick_event (void)
+{
+    thread_yield();
+    kshell();
 }

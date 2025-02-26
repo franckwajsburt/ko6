@@ -38,20 +38,24 @@ static void soclib_tty_init(struct chardev_s *cdev, unsigned address, unsigned b
  */
 static int soclib_tty_read(struct chardev_s *cdev, char *buf, unsigned count)
 {
-    int res = 0;                                        // nb of read char
-    int c;                                              // char read
-
     struct fifo_s *fifo = (struct fifo_s *) cdev->driver_data;
-    while (count--) {
-        while (fifo_pull(fifo, &c) == FAILURE) {  // wait for a char from the keyboard
-            thread_yield();                                 // nothing then we yield the processor
-            irq_enable();                                   // get few characters if thread is alone
-            irq_disable();                                  // close enter
+
+    if (count) {    // blocking behavior
+        int res = 0;                                    // nb of read char
+        char c;                                         // char read
+        while (count--) {
+            while (fifo_pull(fifo, &c) == FAILURE) {    // wait for a char from the keyboard
+                thread_yield();                         // nothing then we yield the processor
+                irq_enable();                           // get few characters if thread is alone
+                irq_disable();                          // close enter
+            }
+            *buf++ = c;
+            res++;
         }
-        *buf++ = c;
-        res++;
-    }
-    return res;                                         // return the number of char read
+        return res;                                     // return the number of char read
+    }         
+    // non-blocking behavior
+    return fifo_pull(fifo, buf);                        // return SUCCESS or FAILURE
 }
 
 /**
