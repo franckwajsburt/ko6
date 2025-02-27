@@ -21,39 +21,50 @@ int  Ksh_count;
 
 char Ksh_wellcome[] = "Wellcome to the ko6's skell\n";
 char Ksh_prompt[] = "\nko6> ";
-char Ksk_delete[] = "\b \b";
-char Ksk_return[] = "\n";
-char Ksk_command[] = "command for:\n\t";
+char Ksh_delete[] = "\b \b";
+char Ksh_return[] = "\n";
+char Ksh_command[] = "command for:\n\t";
+ht_t * Ksh_ht ;
 
 
 void kshell (void) 
 {
     char c;
+    long val;
+    unsigned try;
 
     if (Ksh_start == 0) {
         tty_write (Ksh_tty, Ksh_wellcome, sizeof (Ksh_wellcome));
         tty_write (Ksh_tty, Ksh_prompt, sizeof (Ksh_prompt));
+        Ksh_ht = ht_create (126);
+        kprintf ("test %p\n", Ksh_ht);
         Ksh_start = 1;
     }
     if (tty_read (0, &c, 0) == SUCCESS) {
-        //kprintf ("<%d> ", c);
         switch (c) {
         case 127 :  
             if (Ksh_count) {
                 Ksh_count--;
-                tty_write (Ksh_tty, Ksk_delete, sizeof (Ksk_delete)); 
+                tty_write (Ksh_tty, Ksh_delete, sizeof (Ksh_delete)); 
             }
             break;
         case '\n':
             Ksh_buffer [Ksh_count] = '\0';
-            tty_write (Ksh_tty, Ksk_return, sizeof (Ksk_return)); 
-            tty_write (Ksh_tty, Ksk_command, sizeof (Ksk_command)); 
-            tty_write (Ksh_tty, Ksh_buffer, Ksh_count); 
-            Ksh_count = '\0';
+            tty_write (Ksh_tty, Ksh_return, sizeof (Ksh_return)); 
+            tty_write (Ksh_tty, Ksh_command, sizeof (Ksh_command)); 
+            if ((val = (long)ht_get (Ksh_ht, Ksh_buffer))) {        // ht_get return NULL at first
+                try = ht_set (Ksh_ht, Ksh_buffer, (void *)(++val)); // if not increment the value
+            } else {
+                try = ht_set (Ksh_ht, Ksh_buffer, (void *)1);       // set a new val
+            }
+            PANIC_IF(try == -1, "kshell hash table too small");
+            Ksh_count = 0;
+            kprintf ("> %s = %d\n", Ksh_buffer, val);
             tty_write (Ksh_tty, Ksh_prompt, sizeof (Ksh_prompt));
+            ht_stat(Ksh_ht);
             break;
         default:
-            if (Ksh_count < (sizeof (Ksh_buffer) - 1)) {
+            if (isprint(c) && (Ksh_count < (sizeof (Ksh_buffer) - 1))) {
                 Ksh_buffer [Ksh_count++] = c;
                 tty_write (Ksh_tty, &c, 1); 
             }

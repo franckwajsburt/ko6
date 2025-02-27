@@ -143,6 +143,27 @@ int strcmp (const char *s1, const char *s2)
     return c1 - c2;
 }
 
+char *itoa(char buffer[34], int val, int base) 
+{
+    if (base != 2 && base != 10 && base != 16) return NULL;
+
+    char *ptr = buffer + 33; 
+    *ptr = '\0'; 
+
+    int is_negative = (val < 0 && base == 10); 
+    if (is_negative) val = -val;
+
+    do {
+        int digit = val % base;
+        *--ptr = (digit < 10) ? digit + '0' : digit - 10 + 'A'; 
+        val /= base;
+    } while (val > 0);
+
+    if (is_negative) *--ptr = '-'; 
+
+    return ptr; 
+}
+
 int atoi (char *val)
 {
     int res = 0;

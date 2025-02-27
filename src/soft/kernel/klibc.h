@@ -16,6 +16,10 @@
 #ifndef _KLIBC_H_
 #define _KLIBC_H_
 
+#ifndef _KERNEL_
+#define _KERNEL_                    // This include are dedicated to kernel
+#endif
+
 #ifndef VERBOSE                     // if verbose mode not already defined
 #define VERBOSE 0                   // set the default value
 #endif
@@ -36,6 +40,8 @@
 #include <common/errno.h>           // standard error code number
 #include <common/syscalls.h>        // syscall's codes
 #include <common/usermem.h>         // user data region usage
+#include <common/ht_prob.h>         // hash table
+#include <common/ctype.h>           // ascii types
 
 #include <hal/devices/chardev.h>
 

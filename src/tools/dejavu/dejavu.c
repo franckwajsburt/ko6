@@ -2,9 +2,9 @@
 #include <ht_prob.h>
 
 // call back function to print the occurence number of each words
-void print_occurences (ht_t *ht, size_t pos, const char *key, void *val, void *data) 
+void print_occurences (ht_t *ht, unsigned pos, const char *key, void *val, void *data) 
 {
-    fprintf (stderr, "%zu\t %-32s : %ld\n", pos, key, (long)val);    
+    fprintf (stderr, "%u\t %-32s : %ld\n", pos, key, (long)val);    
 }
 
 int main (int argc, char * argv[])
@@ -32,7 +32,7 @@ int main (int argc, char * argv[])
             if ((val = (long)ht_get (ht, word))) {              // ht_get return NULL at first
                 ht_set (ht, word, (void *)(val+1));             // if not increment the value
             } else {         
-                ht_set_grow (&ht, word, (void *)1, 10);         // add a new word and grow the table
+                ht_set_grow (&ht, word, (void *)1, 16);         // add a new word and grow the table
             }                                                   // if there are more than 10 tries
         }
     } 

@@ -20,8 +20,8 @@ MAKOPT ?= -s --no-print-directory#	comment this line to get command details
 NTTYS  ?= 2#						default number of ttys
 NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-FROM   ?= 000000#					first cycle to trace
-LAST   ?= 2000000#					last cycle to execute
+FROM   ?= 4000000#					first cycle to trace
+LAST   ?= 6000000#					last cycle to execute
 
 # ------- Directories
 SWDIR   = src/soft#        			software directory

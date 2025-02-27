@@ -24,7 +24,7 @@
 #   include <stdio.h>
 #   include <string.h>
 #elif defined  _KERNEL_
-#   include <klibc.h>
+#   include <kernel/klibc.h>
 #else
 #   include <libc.h>
 #endif
@@ -48,7 +48,7 @@ typedef struct ht_s ht_t;
  * \note    The actual size of the table may be slightly larger than the requested size
  *          because it is adjusted to the nearest prime number for better hashing performance.
  */
-ht_t * ht_create (size_t size);
+ht_t * ht_create (unsigned size);
 
 /**
  * \brief   Retrieves the value associated with a given key in the hash table.
@@ -121,7 +121,7 @@ void * ht_del (ht_t *ht, const char *key);
  * \param   val   The value associated with the key.
  * \param   data  A user-defined pointer passed to provide context to the callback function.
  */
-typedef void (*ht_callback_t)(ht_t *ht, size_t pos, const char *key, void *val, void *data);
+typedef void (*ht_callback_t)(ht_t *ht, unsigned pos, const char *key, void *val, void *data);
 
 /**
  * \brief   Iterates over all occupied slots in the hash table and applies a callback function.
@@ -154,6 +154,6 @@ void ht_stat (ht_t *ht);
  * \param   percent Resize factor (100 = same size, 200 = double, 50 = half).
  * \return  NULL if rehashing fails, otherwise returns the new table pointer.
  */
-ht_t *ht_rehash(ht_t **pht, size_t percent);
+ht_t *ht_rehash(ht_t **pht, unsigned percent);
 
 #endif

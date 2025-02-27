@@ -139,6 +139,15 @@ extern int strcmp (const char *s1, const char *s2);
 extern int atoi (char *val);
 
 /**
+ * \brief     interger to ascii 
+ * \param     buffer  12 char to handle 32 bits
+ * \param     val     string to translate, with a decimal number
+ * \param     base    2, 10 or 16
+ * \return    the pointer of the string reprentation
+ */
+char *itoa(char buffer[34], int val, int base);
+
+/**
  * \brief     write a formated string to the str buffer
  *            this a simplified version which handles only: %c, %s, $d, %x and %p
  * \param     buffer  buffer of chars where string is formed

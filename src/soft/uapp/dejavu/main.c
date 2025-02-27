@@ -15,7 +15,7 @@ void print_occurences (ht_t *ht, size_t pos, const char *key, void *val, void *d
 int main (int argc, char * argv[])
 {
     char word[32];                                              // buffer for the word
-    char c = 0;                                                 // read character
+    char c = EOF;                                                 // read character
     long val;
     ht_t *ht = ht_create (16);
     

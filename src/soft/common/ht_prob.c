@@ -13,22 +13,24 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#include <ht_prob.h>
 
 extern int DEBUG;
 
 #ifdef _KERNEL_                                     // if it is for the kernel
+#   include <kernel/klibc.h>
 #   define MALLOC       kmalloc                     // allocates in the slab allocator
 #   define STRDUP       kstrdup                     
 #   define FREE(k)      kfree(k)
-#   define PRINT(...)   kprintf(0, __VA_ARGS__) 
+#   define PRINT(...)   kprintf(__VA_ARGS__) 
 #else                                               // if it is for the user
 #   define MALLOC       malloc                      // allocates in the libc's memory  allocator
 #   define STRDUP       strdup
 #   define FREE(k)      free(k)
 #ifdef _HOST_
+#include <ht_prob.h>
 #   define PRINT(...)   fprintf(stderr,__VA_ARGS__) 
 #else
+#   include <libc.h>
 #   define PRINT(...)   fprintf(0,__VA_ARGS__) 
 #endif
 #endif
@@ -64,9 +66,9 @@ struct ht_slot_s {
 };
 
 struct ht_s {
-    size_t size;                                    // Total number of slots in the hash table
-    size_t empty;                                   // Nb of completely empty slots (never used)
-    size_t freed;                                   // Nb of freed slots (occupied but now deleted)
+    unsigned size;                                  // Total number of slots in the hash table
+    unsigned empty;                                 // Nb of completely empty slots (never used)
+    unsigned freed;                                 // Nb of freed slots (occupied but now deleted)
     struct ht_slot_s bucket[];                      // Array of `size` slots containing key-value
 };
 
@@ -79,7 +81,7 @@ struct ht_s {
  * \param   n   A positive integer greater than 1.
  * \return  The largest prime number ≤ n, or -1 if no valid prime is found.
  */
-static int largest_prime (size_t n)
+static int largest_prime (unsigned n)
 {
     for (int i, p; n > 1; n--) {                    // Try all numbers from n down to 2
         for (p=1, i=2; i*i <= n && p; p = n % i++); // Check divisibility up to sqrt(n)
@@ -101,7 +103,7 @@ static int largest_prime (size_t n)
  *          preventing poor key distribution and clustering. If they are not coprime,
  *          some slots may never be visited, reducing the efficiency of the hash table.
  */
-static size_t hash(const char *key, int try, const ht_t *ht)
+static unsigned hash(const char *key, int try, const ht_t *ht)
 {
     unsigned long h1 = 5381;                        // DJB2: Daniel J. Bernstein version 2 (tinydns)
     unsigned long h2 = 0;                           // SDBM: Static DataBase Manager (awk)
@@ -131,7 +133,7 @@ static size_t hash(const char *key, int try, const ht_t *ht)
  * \note    This function does not modify the hash table; it only collects and prints
  *          collision statistics to assess the performance of the hashing mechanism.
  */
-static inline void ht_collision(ht_t * ht, size_t pos, const char *key, void *val, void *data)
+static inline void ht_collision(ht_t * ht, unsigned pos, const char *key, void *val, void *data)
 {
     unsigned char *tries = (unsigned char *)data;   // maximum number of collision
     FOREACH_PROBE(ht, key, try, h) {                // For each possible slot for this key
@@ -148,11 +150,11 @@ static inline void ht_collision(ht_t * ht, size_t pos, const char *key, void *va
 // public API functions
 //--------------------------------------------------------------------------------------------------
 
-ht_t * ht_create (size_t size)                      // see comment in ht_probe.h
+ht_t * ht_create (unsigned size)                    // see comment in ht_probe.h
 {
     size = largest_prime(size);                     // size must be a prime
     ht_t *ht = MALLOC (                             // allocate the hash table
-                  3 * sizeof(size_t) +              // header part
+                  3 * sizeof(unsigned) +            // header part
                   size * sizeof(struct ht_slot_s)); // bucket part
     if (ht) {                                       // if alloc is a success    
         for (int i = 0; i < size; i++) {            // for each slot
@@ -199,7 +201,7 @@ int ht_set (ht_t *ht, const char *key, void *val)// see comment in ht_probe.h
         if (current_key == FREED) {                 // if first freed slot, will be the best slot
             if (!slot) {                            // it is the fist freed slot found
                 slot = &(ht->bucket[h]);            // remember the slot
-                try_forthisslot = try;               // the number of try for this slot
+                try_forthisslot = try;              // the number of try for this slot
             }
             continue;                               // next try
         } 
@@ -240,9 +242,10 @@ int ht_set (ht_t *ht, const char *key, void *val)// see comment in ht_probe.h
 int ht_set_grow (ht_t **pht, const char *key, void *val, int maxtry)// see comment in ht_probe.h
 {
     int try;
-    while ((try = ht_set(*pht, key, val)) > maxtry){// try to set val 
-        ht_rehash (pht, 200);                       // but automatically rehash if try > maxtry
-    }
+    for (try = ht_set(*pht, key, val);              // try to set an new item
+        (try == -1) || (try > maxtry);              // if ht full or too much try
+         ht_rehash (pht, 200),                      // rehash after growing the table
+         try = ht_set(*pht, key, val));             // try again
     return try;
 }
 
@@ -266,7 +269,7 @@ void * ht_del (ht_t *ht, const char *key)           // see comment in ht_probe.h
 
 void ht_foreach(ht_t *ht, ht_callback_t callback, void * data) // see comment in ht_probe.h
 {
-    for (size_t s = ht->size, h = 0; h < s; h++) {  // for each slot
+    for (unsigned s = ht->size, h = 0; h < s; h++) {// for each slot
         char *key = ht->bucket[h].key;              // get the current key
         if (key != NULL && key != FREED) {          // if the slot is used
             void *val = ht->bucket[h].val;          // get the current val
@@ -283,9 +286,9 @@ void ht_stat(ht_t *ht)                              // see comment in ht_probe.h
         return;
     }
     for (int i=0; i < ht->size; tries[i++]=0);
-    PRINT ("hash table slots : %zu\n", ht->size);     
-    PRINT ("hash table freed : %zu\n", ht->freed);     
-    PRINT ("hash table empty : %zu\n", ht->empty);     
+    PRINT ("hash table slots : %d\n", ht->size);     
+    PRINT ("hash table freed : %d\n", ht->freed);     
+    PRINT ("hash table empty : %d\n", ht->empty);     
     ht_foreach (ht, ht_collision, (void *)tries);
     for (int i=0; i < ht->size; i++)
         if (tries[i])
@@ -302,19 +305,19 @@ void ht_stat(ht_t *ht)                              // see comment in ht_probe.h
  * \param   percent Resize factor (100 = same size, 200 = double, 50 = half).
  * \return  NULL if rehashing fails, otherwise returns the new table pointer.
  */
-ht_t *ht_rehash(ht_t **pht, size_t percent)         // see comment in ht_probe.h
+ht_t *ht_rehash(ht_t **pht, unsigned percent)       // see comment in ht_probe.h
 {
     if (!pht || !*pht || percent == 0) return NULL; // Invalid input
     ht_t *ht = *pht;                                // Dereference to get the actual table
 
-    size_t new_size = (ht->size * percent) / 100;   // Compute new size
+    unsigned new_size = (ht->size * percent) / 100; // Compute new size
     if (new_size < 2) return NULL;                  // Avoid too small tables
     new_size = largest_prime(new_size);             // Find next prime for better hash distribution
 
     ht_t *new_ht = ht_create(new_size);             // Allocate new hash table
     if (!new_ht) return NULL;                       // Allocation failure, return NULL
 
-    for (size_t i = 0; i < ht->size; i++) {         // Reinsert all valid items manually
+    for (unsigned i = 0; i < ht->size; i++) {       // Reinsert all valid items manually
         const char *key = ht->bucket[i].key;
         if (key && key != FREED) {                  // Only reinsert valid keys
             void *val = ht->bucket[i].val;
