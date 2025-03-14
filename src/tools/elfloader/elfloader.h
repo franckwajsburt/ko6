@@ -1,3 +1,15 @@
+/*------------------------------------------------------------------------------------------------*\
+   _     ___    __
+  | |__ /'v'\  / /      \date       2025-03-14
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
+  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+
+  \file     kernel/kinit.c
+  \author   Franck Wajsburt
+  \brief    section loader for an executable
+
+\*------------------------------------------------------------------------------------------------*/
+
 #ifndef _ELFLOADER_H_
 #define _ELFLOADER_H_
 

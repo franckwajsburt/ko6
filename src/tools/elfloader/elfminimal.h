@@ -1,3 +1,14 @@
+/*------------------------------------------------------------------------------------------------*\
+   _     ___    __
+  | |__ /'v'\  / /      \date       2025-03-14
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
+  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+
+  \file     kernel/kinit.c
+  \brief    extracted from elf.h (Linux)
+
+\*------------------------------------------------------------------------------------------------*/
+
 #ifndef ELF_H_MINIMAL
 #define ELF_H_MINIMAL
 
