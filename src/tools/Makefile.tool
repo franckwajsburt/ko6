@@ -69,7 +69,7 @@ pdf:
 
 clean:
 	@echo "- clean $(notdir $(BIN)) and related build files"
-	-rm *~ $(OBJ) $(OBJDS) $(BIN)* $(PDF) $(PDF).log 2> /dev/null || true
+	-rm *~ $(OBJ) $(OBJDS) *.bin $(BIN)* $(PDF) $(PDF).log 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 

@@ -21,9 +21,9 @@
  * \def DCACHE_LINE_LEN Number od Words in a data cache line
  * \def DCACHE_LINE_WAY Number od ways ( in a data cache line
  * \def DCACHE_LINE_SET Number od Words in a data cache line56
- * \def ICACHE_LINE_LEN 4
- * \def ICACHE_LINE_WAY 1
- * \def ICACHE_LINE_SET 256
+ * \def ICACHE_LINE_LEN 8
+ * \def ICACHE_LINE_WAY 4
+ * \def ICACHE_LINE_SET 512
  * \def TIMER_MAX_NR    Number of Timers
  * \def DMA_MAX_NR      Number of DMA operator
  * \def FBF_MAX_NR      Number of Frame Buffer 
@@ -35,10 +35,10 @@
 
 #define CPU_MAX_NR      8
 #define TTY_MAX_NR      4
-#define DCACHE_LINE_LEN 4
+#define DCACHE_LINE_LEN 8
 #define DCACHE_LINE_WAY 4
 #define DCACHE_LINE_SET 512
-#define ICACHE_LINE_LEN 4
+#define ICACHE_LINE_LEN 8
 #define ICACHE_LINE_WAY 4
 #define ICACHE_LINE_SET 512
 
@@ -99,18 +99,18 @@
 #define SEG_RESET_BASE  0xbfc00000
 #define SEG_RESET_SIZE  0x00001000
 #define SEG_KERNEL_BASE 0x80000000
-#define SEG_KERNEL_SIZE 0x00020000
-#define SEG_KDATA_BASE  0x80020000
-#define SEG_KDATA_SIZE  0x003E0000
+#define SEG_KERNEL_SIZE 0x00100000
+#define SEG_KDATA_BASE  0x80100000
+#define SEG_KDATA_SIZE  0x00F00000
 #define SEG_KUNC_BASE   0x81000000
 #define SEG_KUNC_SIZE   0x00020000
 
 //---------------------------------------------- USER segments
 
-#define SEG_DATA_BASE   0x7F500000
-#define SEG_DATA_SIZE   0x00B00000
-#define SEG_CODE_BASE   0x7F400000
-#define SEG_CODE_SIZE   0x00100000
+#define SEG_DATA_BASE   0x70000000
+#define SEG_DATA_SIZE   0x10000000
+#define SEG_CODE_BASE   0x60000000
+#define SEG_CODE_SIZE   0x10000000
 
 //---------------------------------------------- Devices segments
 

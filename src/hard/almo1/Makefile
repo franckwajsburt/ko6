@@ -5,10 +5,11 @@
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
-SOC     = $(notdir $(shell pwd))# 	SOC name is the name of the current directory
+CPU	   ?= mips
+SOC     = $(notdir $(shell pwd))# 	 SOC name is the name of the current directory
 BLDDIR	= ../../bin
-TARGET  = $(BLDDIR)/$(SOC).x#		name of the generated simulator
-REPOS   = $(BLDDIR)/systemcass#		soclib object files (see soclib.conf)
+TARGET  = $(BLDDIR)/$(SOC)-$(CPU).x# name of the generated simulator
+REPOS   = $(BLDDIR)/systemcass#		 soclib object files (see soclib.conf)
 
 # Rules (here they are used such as simple shell scripts)
 # --------------------------------------------------------------------------------------------------

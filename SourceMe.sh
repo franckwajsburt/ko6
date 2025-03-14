@@ -10,6 +10,7 @@
 # --------------------------------------------
 export ko6=$HOME/ko6
 export SOCLIB=/users/outil/soc/soclib
+export SOCLIB=$HOME/soc/soclib
 export ko6VER=`git show -s --format=%ci`
 
 # uncomment the good CPU and SOC

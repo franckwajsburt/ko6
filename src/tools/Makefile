@@ -10,7 +10,7 @@
 #
 #-------------------------------------------------------------------------------------------------*/
 
-APPS   ?= dejavu kfstools
+APPS   ?= dejavu kfstools elfloader
 VERBOSE?= 0#					verbose level
 MAKOPT ?= -s#					comment the -s to get command details
 ACTIONS = clean compil pdf#		all possible actions
