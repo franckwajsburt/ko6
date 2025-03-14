@@ -160,8 +160,70 @@ int fifo_pull (struct fifo_s *fifo, char *c)
     return FAILURE;
 }
 
+//--------------------------------------------------------------------------------------------------
+// kcmd 
+//--------------------------------------------------------------------------------------------------
+
+//#define KCMD // Comment that to avoid ko6 kernel command
+
+#ifndef KCMD
+#define kcmd(tty)
+#else
+void kcmd (int tty) 
+{
+    static int  start;
+
+    static char prompt[] = "\nko6> ";
+    static char delete[] = "\b \b";
+    static char cr[] = "\n";
+    static char buffer[256];
+    static int  count;
+    static ht_t * ht ;
+
+    char c;
+    long val;
+    unsigned try;
+
+    if (start == 0) {
+        tty_write (tty, prompt, sizeof (prompt));
+        ht = ht_create (128);
+        start = 1;
+    }
+    if (tty_read (0, &c, 0) == SUCCESS) {
+        switch (c) {
+        case 127 :  
+            if (count) {
+                count--;
+                tty_write (tty, delete, sizeof (delete)); 
+            }
+            break;
+        case '\n':
+            buffer [count] = '\0';
+            tty_write (tty, cr, sizeof (cr)); 
+            if ((val = (long)ht_get (ht, buffer))) {        // ht_get return NULL at first
+                try = ht_set (ht, buffer, (void *)(++val)); // if not increment the value
+            } else {
+                try = ht_set (ht, buffer, (void *)1); // set a new val
+                val = 1;
+            }
+            PANIC_IF(try == -1, "kshell hash table too small");
+            count = 0;
+            kprintf ("%s = %d", buffer, val);
+            tty_write (tty, prompt, sizeof (prompt));
+//            ht_stat(ht);
+            break;
+        default:
+            if (isprint(c) && (count < (sizeof (buffer) - 1))) {
+                buffer [count++] = c;
+                tty_write (tty, &c, 1); 
+            }
+       } 
+   } 
+}
+#endif
+
 void tick_event (void)
 {
     thread_yield();
-    kshell();
+    kcmd(0);
 }

@@ -46,7 +46,6 @@ compil: tags
 	-make -C external/libfdt $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
 	-make -C fs/kfs          $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
 	-make -C kernel          $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
-	-make -C kshell          $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
 	-make -C hal             $(MAKOPT) compil SOC=$(SOC) CPU=$(CPU) VERBOSE=$(VERBOSE)
 	-make -C ulib            $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
 	-make -C uapp            $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
@@ -59,7 +58,6 @@ pdf:
 	@-make -C external/libfdt $(MAKOPT) pdf
 	@-make -C fs/kfs  	  	 $(MAKOPT) pdf
 	@-make -C kernel 		 $(MAKOPT) pdf
-	@-make -C kshell 		 $(MAKOPT) pdf
 	@-make -C hal 			 $(MAKOPT) pdf
 	@-make -C ulib   		 $(MAKOPT) pdf
 	@-make -C uapp   		 $(MAKOPT) pdf
@@ -68,7 +66,6 @@ clean:
 	@-make -C external/libfdt $(MAKOPT) clean
 	@-make -C fs/kfs     $(MAKOPT) clean
 	@-make -C kernel 		 $(MAKOPT) clean
-	@-make -C kshell 		 $(MAKOPT) clean
 	@-make -C hal 			 $(MAKOPT) clean
 	@-make -C ulib   		 $(MAKOPT) clean
 	@-make -C uapp   		 $(MAKOPT) clean

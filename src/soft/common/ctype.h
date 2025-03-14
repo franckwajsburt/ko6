@@ -15,7 +15,8 @@
              - \f : Form Feed (FF)       [0x0C] Moves to a new page (form feed)
              - \r : Carriage Return (CR) [0x0D] Returns cursor to the beginning of the line
              - \0 : Null character (NUL) [0x00] Marks the end of a C-style string
-            
+            FIXME : could be simpler without table with comparison only
+
 \*------------------------------------------------------------------------------------------------*/
 
 #ifndef _CTYPE_H_

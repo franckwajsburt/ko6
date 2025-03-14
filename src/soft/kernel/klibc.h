@@ -59,8 +59,6 @@
 #include <kernel/ksynchro.h>        // mutex, barrier and similar functions
 #include <kernel/kdev.h>            // dynamic devices allocation
 
-#include <kshell/kshell.h>          // kernel shell
-
 #define RAND_MAX 32767  /* maximum random value by default, must be < 0x7FFFFFFE */
 #define PRINTF_MAX 256  /* largest printed message */
 #define CEIL(a,b)       ((int)(b)*(((int)(a)+(int)(b)-1)/(int)(b))) /* round up a aligned on b */
