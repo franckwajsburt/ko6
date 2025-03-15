@@ -19,6 +19,7 @@ export CPU=riscv
 export CPU=mips
 export SOC=qemu-virt-$CPU
 export SOC=almo1-$CPU
+export MKSOC=src/soft/hal/soc/$SOC/Makefile
 
 echo "  _     ___    __   "
 echo " | |__ /'v'\  / /   CPU: $CPU / SOC: $SOC"

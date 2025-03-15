@@ -123,6 +123,7 @@ clean:
 $(BIN) : $(LDSCRIPT) $(OBJ)
 	@echo "- link    --> "$(notdir $@)
 	$(LD) $(LDFLAGS) -o $@ -T $^
+	truncate -s %4096 $(BIN)
 	$(OD) -D $@ > $@.s
 
 $(OBJDIR)/%.o : %.c

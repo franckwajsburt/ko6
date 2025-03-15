@@ -58,22 +58,15 @@ void elf_close(elf_t *elf);
  * \brief Loads an ELF section's content into memory.
  *        This function loads the binary content of a previously identified ELF section
  *        into memory, making it available for further processing.
- * \param elf Pointer to an `elf_t` structure containing ELF metadata.
- * \param section_index Index of the section to load (must be less than `section_count`).
- * \return 0 on success, -1 on error (e.g., invalid section index, memory allocation failure).
- */
-int elf_load_section(elf_t *elf, int section_index);
-
-/**
- * \brief Writes a loaded ELF section to a binary file.
+ *        Then, writes a loaded ELF section to a binary file.
  *        This function saves the content of a previously loaded ELF section to a binary file,
  *        allowing it to be analyzed or extracted.
- * \param elf Pointer to an `elf_t` structure containing the loaded sections.
- * \param section_index Index of the section to write (must be less than `section_count`).
+ * \param elf Pointer to an `elf_t` structure containing ELF metadata.
+ * \param section_index Index of the section to load (must be less than `section_count`).
  * \param output_filename The name of the output file where the section will be saved.
- * \return 0 on success, -1 if an error occurs (e.g., section not loaded, write error).
+ * \return 0 on success, -1 on error (e.g., invalid section index, memory allocation failure).
  */
-int elf_dump_section(elf_t *elf, int section_index, const char *output_filename);
+int elf_load(elf_t *elf, int section_index, const char *output_filename);
 
 #endif // _ELFLOADER_H_
 

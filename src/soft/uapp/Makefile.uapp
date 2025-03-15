@@ -108,6 +108,7 @@ clean:
 $(BIN) : $(OBJ)
 	@echo "- link    --> "$(notdir $@)
 	$(LD) -o $@ $(LDFLAGS) $^
+	truncate -s %4096 $(BIN)
 	$(OD) -D $@ > $@.s
 
 $(OBJDIR)/%.o : %.c $(OBJLIB)

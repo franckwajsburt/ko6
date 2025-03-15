@@ -20,22 +20,28 @@
 #   include <stdint.h>
 #   define MALLOC(s) malloc(s)
 #   define FREE(s) free(s)
-#   define P(fmt,var) fprintf(stderr, #var" : "fmt, var);
+#   define P(fmt,var) fprintf(stderr, #var" : "fmt, var)
+#   define RETURN(e,c,m,...) if(c){fprintf(stderr,"Error "m"\n");__VA_ARGS__;return e;}
+#   define OPENR(f) open (f, O_RDONLY)
+#   define OPENW(f) open (f, O_WRONLY | O_CREAT | O_TRUNC, 0644)
+#   define PRINT(fmt,...) printf(fmt,__VA_ARGS__)
 #else
 #   define MALLOC(s) kmalloc(s)
 #   define FREE(s) kfree(s)
 #   define P(fmt,var) 
+#   define RETURN(e,c,m,...) if(c){kprintf("Error "m"\n");__VA_ARGS__;return e;}
+#   define OPENR(f) open (f)
+#   define OPENW(f)
+#   define PRINT(fmt,...)
 #endif
 
 #include <elfloader.h>
-
-#define RETURN(e,c,m,...) if(c){fprintf(stderr,"Error "m"\n");__VA_ARGS__;return e;}
 
 elf_t *elf_open (const char *filename, const char *section_names[], int section_count)
 {
     RETURN (NULL, section_count > MAX_SECTIONS, "Too many sections");
 
-    int fd = open (filename, O_RDONLY);                                     // open elf file
+    int fd = OPENR (filename);                                              // open elf file
     RETURN (NULL, fd < 0, "open");
 
     elf_t *elf = MALLOC (sizeof(elf_t));                                    // malloc elf struct
@@ -62,6 +68,7 @@ elf_t *elf_open (const char *filename, const char *section_names[], int section_
     RETURN (NULL, !section_name_table, "malloc section_name_table", FREE(elf), close(fd));
     lseek (fd, strtab.sh_offset, SEEK_SET);
     read (fd, section_name_table, strtab.sh_size);
+    PRINT ("File size : %d\n", strtab.sh_offset + strtab.sh_size);
 
     for (int i = 0; i < elf->header.e_shnum; i++) {                         // find sections
         const char *name = section_name_table + sections[i].sh_name;
@@ -112,40 +119,27 @@ void elf_close (elf_t *elf)
     FREE (elf);
 }
 
-int elf_load_section (elf_t *elf, int section_index) 
+int elf_load_section (elf_t *elf, int section_index, char * output_filename) 
 {
     RETURN (-1, section_index >= MAX_SECTIONS, "Invalid section index");
 
-    int size    = elf->sections[section_index].header.sh_size;
-    int offset  = elf->sections[section_index].header.sh_offset;
-    void *data  = MALLOC (size); 
+    int size      = elf->sections[section_index].header.sh_size;
+    int offset    = elf->sections[section_index].header.sh_offset;
+    char * name   = elf->sections[section_index].name;
+    unsigned addr = elf->sections[section_index].addr;
+    void *data    = MALLOC (size); 
     RETURN (-1, !data, "malloc data section");
 
     elf->sections[section_index].data = data; 
     lseek (elf->fd, offset, SEEK_SET);
     read (elf->fd, data, size);
 
-    return 0;
-}
-
-int elf_dump_section (elf_t *elf, int section_index, const char *output_filename) 
-{
-    RETURN (-1, section_index >= MAX_SECTIONS, "Invalid section index");
-
-    int size      = elf->sections[section_index].header.sh_size;
-    char * name   = elf->sections[section_index].name;
-    void * data   = elf->sections[section_index].data;
-    unsigned addr = elf->sections[section_index].addr;
-    RETURN (-1, !data, "not loaded section");
-
-    int out_fd = open (output_filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    int out_fd = OPENW (output_filename);
     RETURN (-1, out_fd < 0, "not loaded section");
-
     write (out_fd, data, size);
     close (out_fd);
 
-    printf ("Section %s in %s (%d bytes) addr=%08x\n", 
-            name, output_filename, size, addr);
+    PRINT ("Section %s in %s (%d bytes) addr=%08x\n", name, output_filename, size, addr);
     return 0;
 }
 
@@ -159,10 +153,10 @@ int main (int argc, char **argv)
 
     for (int i = 0; i < elf->section_count; i++) {
         char filename[32];
-        strncpy (filename, elf->sections[i].name, sizeof(filename)-1);
+        char * secname = elf->sections[i].name; 
+        strncpy (filename, secname + (*secname == '.'), sizeof(filename)-1);
         strncat (filename, ".bin", sizeof(filename)-1);
-        elf_load_section (elf, i);
-        elf_dump_section (elf, i, filename);
+        elf_load_section (elf, i, filename);
     }
 
     elf_close (elf);
