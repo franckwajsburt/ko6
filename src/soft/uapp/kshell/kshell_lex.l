@@ -1,6 +1,6 @@
 %{
 
-#include "grammar.h"
+#include "kshell_yacc.h"
 
 %}
 

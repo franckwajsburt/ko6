@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+extern int yylex();
+extern int yyerror();
+
 #ifdef KSHELL_DEBUG
 int yydebug = 1;
 #endif
@@ -105,5 +108,3 @@ int yyerror(const char * s)
 
 
 int yywrap() { return 1; }
-
-void main(void) { yyparse(); }

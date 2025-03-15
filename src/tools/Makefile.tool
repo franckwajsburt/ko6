@@ -36,6 +36,7 @@ SRCC    = $(filter %.c,$(SRC))
 # --------------------------------------------------------------------------------------------------
 
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
+CFLAGS += -Wno-unused-function#     ignore the unused warning
 CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += $(INCDIR)#				directories where include files like <file.h> are located
 CFLAGS += -DVERBOSE=$(V)#			verbose if 1, can be toggled with #include <debug_{on,off}.h> 
@@ -70,7 +71,7 @@ pdf:
 
 clean:
 	@echo "- clean $(notdir $(BIN)) and related build files"
-	-rm *~ $(OBJ) $(OBJDS) .*.bin *.bin $(BIN)* $(PDF) $(PDF).log 2> /dev/null || true
+	-rm *~ $(OBJ) $(OBJDS) .*.bin *.bin $(BIN)* $(PDF) $(PDF).log *_yacc.c *_lex.c 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 
@@ -80,6 +81,14 @@ clean:
 $(BIN) : $(SRC)
 	@echo "- compil  --> "$(notdir $@)
 	$(CC) -o $@ $(CFLAGS) $^
+
+%.c : $(SRCDIR)/%.y
+	@echo "- bison   --> "$(notdir $@)
+	$(YACC) -H $< -o $@
+
+%.c : $(SRCDIR)/%.l
+	@echo "- flex    --> "$(notdir $@)
+	$(LEX) -o $@ $<
 
 # makedepend analyzes the source files to determine automatically what are the dependencies
 # of the object files on the source files (see https://linux.die.net/man/1/makedepend for details)
