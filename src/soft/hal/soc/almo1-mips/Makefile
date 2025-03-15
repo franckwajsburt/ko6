@@ -53,6 +53,7 @@ OBJ 	+= $(OBJDIR)/threadc.o
 OBJ 	+= $(OBJDIR)/kinit.o $(OBJDIR)/klibc.o $(OBJDIR)/kmemory.o
 OBJ 	+= $(OBJDIR)/ksynchro.o $(OBJDIR)/ksyscalls.o $(OBJDIR)/kthread.o
 OBJ 	+= $(OBJDIR)/kdev.o $(OBJDIR)/kirq.o
+OBJ		+= $(OBJDIR)/kshell.o
 OBJ 	+= $(OBJDIR)/libfdt.a
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory

@@ -37,8 +37,11 @@
 #define SYSCALL_BARRIER_INIT    19
 #define SYSCALL_BARRIER_WAIT    20
 #define SYSCALL_BARRIER_DESTROY 21
+//-------------------------------------- shellsyscall
+#define SYSCALL_KSHELL          22
 //-------------------------------------- maximum number
 #define SYSCALL_NR              32
+
 
 #ifndef __DEPEND__
 #if ((SYSCALL_NR != 16) && (SYSCALL_NR != 32))

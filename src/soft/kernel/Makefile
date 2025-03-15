@@ -42,6 +42,7 @@ SRC    += klibc.c klibc.h
 SRC    += kthread.c kthread.h
 SRC    += kinit.c kdev.c kirq.c
 SRC    += ksynchro.c ksynchro.h
+SRC    += kshell.c kshell.h
 LDSCRIPT= $(SOCDIR)/kernel.ld#		ldscript is hal dependent
 
 # Targets

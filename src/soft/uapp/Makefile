@@ -10,7 +10,7 @@
 #
 #-------------------------------------------------------------------------------------------------*/
 
-APPS   ?= hello barrier dejavu
+APPS   ?= hello barrier dejavu kshell
 VERBOSE?= 0#					verbose level
 MAKOPT ?= #-s#					comment the -s to get command details
 ACTIONS = clean compil pdf#		all possible actions

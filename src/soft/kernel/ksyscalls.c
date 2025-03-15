@@ -82,4 +82,5 @@ void *SyscallVector[] = {
     [SYSCALL_BARRIER_INIT   ] = thread_barrier_init,
     [SYSCALL_BARRIER_WAIT   ] = thread_barrier_wait,
     [SYSCALL_BARRIER_DESTROY] = thread_barrier_destroy,
+    [SYSCALL_KSHELL         ] = sys_kshell,
 };

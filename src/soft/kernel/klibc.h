@@ -58,6 +58,7 @@
 #include <kernel/kthread.h>         // thread functions
 #include <kernel/ksynchro.h>        // mutex, barrier and similar functions
 #include <kernel/kdev.h>            // dynamic devices allocation
+#include <kernel/kshell.h>          // kshell syscall
 
 #define RAND_MAX 32767  /* maximum random value by default, must be < 0x7FFFFFFE */
 #define PRINTF_MAX 256  /* largest printed message */
