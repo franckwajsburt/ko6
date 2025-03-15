@@ -24,7 +24,6 @@
 typedef struct {
     int fd;                             ///< File descriptor of the opened ELF file.
     Elf32_Ehdr header;                  ///< ELF file header.
-    Elf32_Phdr *segments;               ///< Program segment table.
     int section_count;                  ///< Number of sections successfully loaded.
     struct {                            ///< Represents a loaded ELF section.
         char name[16];                  ///< Name of the ELF section.
@@ -40,6 +39,7 @@ typedef struct {
  *        metadata for the requested sections. It does not load the actual section data into memory.
  * \param filename The name of the ELF file to open.
  * \param section_names An array of section names to search for.
+ *        if NULL, open all PROGBITS and NOBITS sections
  * \param section_count The number of sections to load.
  * \return A pointer to an `elf_t` structure containing metadata for the requested sections,
  *         or `NULL` in case of an error (e.g., file not found, invalid ELF format).

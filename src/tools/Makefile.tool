@@ -52,6 +52,7 @@ help:
 	@echo "        compil  : compile all sources"
 	@echo "        clean   : clean all compiled files"
 	@echo "        pdf     : generate $(PDF) with all source files"
+	@echo "        exec    : test the program"
 	@echo ""
 
 compil: depend mkdir $(BIN)
@@ -69,7 +70,7 @@ pdf:
 
 clean:
 	@echo "- clean $(notdir $(BIN)) and related build files"
-	-rm *~ $(OBJ) $(OBJDS) *.bin $(BIN)* $(PDF) $(PDF).log 2> /dev/null || true
+	-rm *~ $(OBJ) $(OBJDS) .*.bin *.bin $(BIN)* $(PDF) $(PDF).log 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 

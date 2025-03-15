@@ -33,11 +33,12 @@ MEMORY {
 
 SECTIONS {
     .text   : {
-        *(.text)            /* all others codes */
+        *(.text*)            /* all others codes */
     } > text_region
     .data : {
         *(.usermem)         /* few addresses in user memory for the user process
-        *(.*data*)          /* initialized global variables */
+        *(.*data)          /* initialized global variables */
+        *(.rodata*)          /* initialized global variables */
         . = ALIGN(4);       /* move the filling pointer to a word aligned address */
     } > data_region
     .bss : {

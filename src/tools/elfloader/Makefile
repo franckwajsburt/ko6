@@ -7,8 +7,10 @@ include ../Makefile.tool
 exec: compil
 	@-if [[ -f $(ko6)/build/hello.x ]]; then \
 	elfloader $(ko6)/build/hello.x .text .data ;\
+	elfloader $(ko6)/build/hello.x;\
 	fi;\
 	if [[ -f $(ko6)/build/kernel-almo1-mips.x ]]; then \
 	elfloader $(ko6)/build/kernel*.x .ktext .kdata ;\
+	elfloader $(ko6)/build/kernel*.x;\
 	fi
 
