@@ -25,6 +25,7 @@ LAST   ?= 6000000#					last cycle to execute
 
 # ------- Directories
 SWDIR   = src/soft#        			software directory
+LTDIR   = src/tools#       			Linux Tools directory
 BLDDIR	= build#					build directory where all executables are created
 SOCDIR	= $(SWDIR)/hal/soc/$(SOC)#	SOC specific sources directory
 DLOG    = ~/ko6-debug.log#			debug file
@@ -73,9 +74,11 @@ help:
 
 compil:
 	make -C $(SWDIR) $(MAKOPT) MAKOPT=$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
+	make -C $(LTDIR) $(MAKOPT) MAKOPT=$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
 
 pdf:
 	make -C $(SWDIR) $(MAKOPT) pdf SOC=$(SOC)
+	make -C $(LTDIR) $(MAKOPT) pdf SOC=$(SOC)
 
 exec: compil
 	make -C $(SOCDIR) exec NTTYS=$(NTTYS) NCPUS=$(NCPUS) \
@@ -90,6 +93,7 @@ doxygen:
 
 clean:
 	make -C $(SWDIR) $(MAKOPT) MAKOPT=$(MAKOPT) clean
+	make -C $(LTDIR) $(MAKOPT) MAKOPT=$(MAKOPT) clean
 	@echo "- clean logs execution files"
 	@-killall xterm soclib-fb 2> /dev/null || true
 	@-rm -f /tmp/fbf.* $(DLOG) xterm* label*.s trace*.s 2> /dev/null || true
