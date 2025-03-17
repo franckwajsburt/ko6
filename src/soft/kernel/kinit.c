@@ -61,7 +61,7 @@ void kinit (void *fdt)
     //      when main() returns. Note, the starter of an usual thread is thread_start() (defined
     //      in thread.c) and it  will call thread_exit() when the thread returns.
 
-    thread_create ((thread_t *)&_usermem.main_thread, 0, 0, (int)_usermem.main_start);
+    thread_create ((thread_t *)&__usermem.main_thread, 0, 0, (int)__usermem.main_start);
 
     // Next, we have to load the context of main() and start it
     //   It means to initialize the stack pointer, the status register and the return address ($31)
@@ -69,7 +69,7 @@ void kinit (void *fdt)
     //   function in user mode. You can look at the comment of the bootstrap() function in
     //   kthread.c file for details.
 
-    thread_main_load (_usermem.main_thread);
+    thread_main_load (__usermem.main_thread);
 
     // We never return of thread_load() here because thread_load() change $31 to thread_bootstap()
     PANIC_IF(true,"Impossible to be here");

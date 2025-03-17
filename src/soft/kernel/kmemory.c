@@ -163,16 +163,17 @@ char * kstrdup (const char * str)
     memcpy(copy, str, len);                                 // Copy the string, including '\0'
     return copy;                                            // Return the allocated copy
 }
+
 //--------------------------------------------------------------------------------------------------
 
 void kmalloc_print (void)
 {
     size_t cr = 0, pr = 1;
     kprintf ("\nOpen Slab[] : Object Size ; Free Objects ; Allocated Objects\n");
-    for (size_t slab=0 ; slab<MaxLinePage ; slab++) {      // for all slabs
-        size_t sz = (slab) ? slab*CacheLineSize : 4096;    // size really allocated
-        size_t nf = list_nbobj (&Slab[slab]);              // number of free obj of size nline
-        size_t na = ObjectsThisSize[slab];                 // number of allocated obj of size nline
+    for (size_t slab=0 ; slab<MaxLinePage ; slab++) {       // for all slabs
+        size_t sz = (slab) ? slab*CacheLineSize : 4096;     // size really allocated
+        size_t nf = list_nbobj (&Slab[slab]);               // number of free obj of size nline
+        size_t na = ObjectsThisSize[slab];                  // number of allocated obj of size nline
         if (nf+na) {                                        // if there is something to print
             kprintf ("|s %d\t f %d\t a %d", sz, nf, na);    // print data
             kprintf ((++cr%3)?"\t":"\t|\n");                // adds a \n all three print
@@ -231,9 +232,9 @@ void kmalloc_test (size_t turn, size_t size)
 void * sbrk (int increment)
 {
     errno = SUCCESS;
-    int * a = _usermem.uheap_end + increment/sizeof(int);   // sizeof() because uheap_end is int*
+    int * a = __usermem.uheap_end + increment/sizeof(int);  // sizeof() because uheap_end is int*
     a = (int *) FLOOR (a, CacheLineSize);                   // addr 'a' could be the new uheap_end
-    if ((a<_usermem.uheap_beg)||(a>_usermem.ustack_end)){  // if it is outside the heap zone
+    if ((a<__usermem.uheap_beg)||(a>__usermem.ustack_end)){ // if it is outside the heap zone
         errno = ENOMEM;
         return (void *)-1;                                  // -1 on failure
     }
@@ -247,11 +248,11 @@ int * malloc_ustack (void)
     int * top;                                              // top will be the new stack pointer
     int * end = (int *)list_getlast (&FreeUserStack);       // get last free stack (biggest addr)
     if (end == NULL) {                                      // if there is no more free stack
-        top = _usermem.ustack_end;                          // try to get one
+        top = __usermem.ustack_end;                         // try to get one
         end = top - USTACK_SIZE/sizeof(int);                // and compute the end of the stack
-        PANIC_IF (end < _usermem.uheap_end,                 // if the stack end is in the heap
+        PANIC_IF (end < __usermem.uheap_end,                // if the stack end is in the heap
             "no more space for user stack!\n");             // it is impossible to solve that
-        _usermem.ustack_end = end;                          // expand the stacks' region
+        __usermem.ustack_end = end;                         // expand the stacks' region
     } else {
         top = end + USTACK_SIZE/sizeof(int);                // compute stack's top from stack's end
     }
@@ -276,14 +277,14 @@ void free_ustack (int * top)
     PANIC_IF (*top != MAGIC_STACK, "Corrupted top Stack");  // if no magic number then panic
     PANIC_IF (*end != MAGIC_STACK, "Corrupted end Stack");  // if no magic number then panic
 
-    if (end ==_usermem.ustack_end) {                        // if it is the lowest stack
-        _usermem.ustack_end += USTACK_SIZE/sizeof(int);     // shrink the stacks' region
+    if (end ==__usermem.ustack_end) {                       // if it is the lowest stack
+        __usermem.ustack_end += USTACK_SIZE/sizeof(int);    // shrink the stacks' region
         list_foreach (&FreeUserStack, stack) {              // foreach free stack
-            if ((int *)stack != _usermem.ustack_end)        // if it isn't the end of stack region
+            if ((int *)stack != __usermem.ustack_end)       // if it isn't the end of stack region
                 break;                                      // then stop trying to shrink
             end = (int *)list_getfirst (&FreeUserStack);    // extract the stack
             end += USTACK_SIZE/sizeof(int);                 // new end of stacks'region
-            _usermem.ustack_end = end;                      // save this new end
+            __usermem.ustack_end = end;                     // save this new end
         }
     } else                                                  // else the freed stack isn't at the end
         list_addsort (&FreeUserStack,(list_t*)end,cmp_addr);// add it in free list in order
@@ -292,12 +293,12 @@ void free_ustack (int * top)
 void print_ustack (void)
 {
     kprintf ("---------------\nNumber of stacks : %d\n",
-            ((char *)(_usermem.ustack_beg) -
-             (char *)(_usermem.ustack_end) )/USTACK_SIZE);
-    kprintf ("_usermem.ustack_beg : %p\n", _usermem.ustack_beg);
-    kprintf ("_usermem.ustack_end : %p\n", _usermem.ustack_end);
-    kprintf ("_usermem.uheap_beg  : %p\n", _usermem.uheap_beg );
-    kprintf ("_usermem.uheap_end  : %p\n", _usermem.uheap_end );
+            ((char *)(__usermem.ustack_beg) -
+             (char *)(__usermem.ustack_end) )/USTACK_SIZE);
+    kprintf ("__usermem.ustack_beg : %p\n", __usermem.ustack_beg);
+    kprintf ("__usermem.ustack_end : %p\n", __usermem.ustack_end);
+    kprintf ("__usermem.uheap_beg  : %p\n", __usermem.uheap_beg );
+    kprintf ("__usermem.uheap_end  : %p\n", __usermem.uheap_end );
     kprintf ("----\nFree stacks : \n");
     list_foreach (&FreeUserStack, item) {
         kprintf ("Address %p\n", item);

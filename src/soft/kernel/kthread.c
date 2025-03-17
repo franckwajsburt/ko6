@@ -155,7 +155,7 @@ static void sched_switch (void)
         if (thread_context_save (ThreadCurrent->context)) { // Save current context, and return 1
             ThreadCurrentIdx = th_next;                     // update ThreadCurrentIdx
             ThreadCurrent = ThreadTab[th_next];             // update ThreadCurrent
-            _usermem.ptls = ThreadCurrent->ptls;
+            __usermem.ptls = ThreadCurrent->ptls;
             thread_context_load (ThreadCurrent->context);   // load contxt, exit thread_context_save
         }                                                   // but with 0 as return value
     }
@@ -317,7 +317,7 @@ int thread_create (thread_t * thread_p, int fun, int arg, int start)
 
 void thread_main_load (thread_t thread)
 {
-    _usermem.ptls = thread->ptls;                               // ptr current thread local storage
+    __usermem.ptls = thread->ptls;                              // ptr current thread local storage
     thread_context_load (thread->context);                      // load the register's context
 }
 

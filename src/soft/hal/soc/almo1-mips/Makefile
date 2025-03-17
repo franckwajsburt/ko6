@@ -113,7 +113,7 @@ pdf:
 
 clean:
 	@echo "- clean $(SOC) and related build files"
-	-rm *~ *.dtb $(BIN) $(OBJ) $(OBJDS) $(PDF) $(PDF).log 2> /dev/null || true
+	-rm *~ segment.ld *.dtb $(BIN) $(OBJ) $(OBJDS) $(PDF) $(PDF).log 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 
@@ -122,6 +122,7 @@ clean:
 
 $(BIN) : $(LDSCRIPT) $(OBJ)
 	@echo "- link    --> "$(notdir $@)
+	sed "s/(APP)/0/" segs.ld > segment.ld
 	$(LD) $(LDFLAGS) -o $@ -T $^
 	truncate -s %4096 $(BIN)
 	$(OD) -D $@ > $@.s

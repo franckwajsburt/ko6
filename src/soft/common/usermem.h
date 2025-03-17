@@ -44,7 +44,7 @@
  * +-------------+ <- uheap_begin   points to the very first address of the user heap
  * | global vars |                  all global variables of user application
  * | - - - - - - |
- * |  _usermem   |                  usermem structure defined below 
+ * | __usermem   |                  usermem structure defined below 
  * +-------------+
  */
 typedef struct _usermem_s {
@@ -55,9 +55,9 @@ typedef struct _usermem_s {
     void (* main_start)(void);  ///< pointer to the start of main thread (see ulib/crt0.c)
     void * main_thread;         ///< address of the main thread (defined in kernel/kinit.c)
     struct _tls_s * ptls;       ///< pointer to the thread local storage of the current thread
-} _usermem_t;
+} __usermem_t;
 
-extern _usermem_t _usermem;     // user mem space struct (declared kernel.ld ; init in ulib/crt0.c)
+extern __usermem_t __usermem;   // user mem space struct (declared kernel.ld ; init in ulib/crt0.c)
 
 /**
  * \brief thread local storage structure definition.
@@ -75,8 +75,8 @@ typedef struct _tls_s {
 #ifdef _KERNEL_ /* defined at the beginning of kernel/klibc.h  */
 #   define errno    *thread_errno(ThreadCurrent)    /* gets errno from the tls of ThreadCurrent */
 #else
-#   define errno    (_usermem.ptls->tls_errno)      /* gets errno of the current running thread */
+#   define errno    (__usermem.ptls->tls_errno)     /* gets errno of the current running thread */
 #endif
-#define urandseed   (_usermem.ptls->tls_randseed)
+#define urandseed   (__usermem.ptls->tls_randseed)
 
 #endif//_USERMEM_H_

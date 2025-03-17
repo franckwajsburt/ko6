@@ -21,7 +21,7 @@ SRCDIR	= $(ko6)/src/soft#			source directories
 COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
 LIBDIR	= $(SRCDIR)/ulib#			library directory (where is ldscript)
 HALDIR	= $(SRCDIR)/hal#			hardware abstraction layer (hal) files directory
-SOCDIR	= $(HALDIR)/$(SOC)#			current soc hardware abstraction layer (hal) files directory
+SOCDIR	= $(HALDIR)/soc/$(SOC)#		current soc hardware abstraction layer (hal) files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJRDIR	= $(BLDDIR)/uobj#			user object files directory
 OBJDIR	= $(OBJRDIR)/$(CURDIR)#		object files directory
@@ -32,8 +32,9 @@ BIN     = $(BLDDIR)/$(CURDIR).x#	the binary file has the name of directory
 # Sources
 # --------------------------------------------------------------------------------------------------
 
-SRC	   ?= "source files"#						must be defined in all app Makefiles
-LDSCRIPT= $(SRCDIR)/hal/soc/$(SOC)/user.ld#		ldscript is hal dependent
+SRC	   ?= "source files"#			must be defined in all app Makefiles
+LDSCRIPT?= app.ld#					ldscript is hal dependent
+APP	   ?= 1#						by default it should be application 1
 
 # Targets
 # --------------------------------------------------------------------------------------------------
@@ -64,7 +65,7 @@ CFLAGS += -I$(LIBDIR)#				directories where include files like <file.h> are loca
 CFLAGS += -I$(HALDIR) -I$(SOCDIR)#	directories where include files like <file.h> are located
 CFLAGS += -DVERBOSE=$(V)#			verbose if 1, can be toggled with #include <debug_{on,off}.h> 
 
-LDFLAGS += -T $(LDSCRIPT) $(OBJLIB)
+LDFLAGS += -L$(SOCDIR) -T $(LDSCRIPT) $(OBJLIB)
 
 # Rules (here they are used such as simple shell scripts)
 # --------------------------------------------------------------------------------------------------
@@ -97,7 +98,7 @@ pdf:
 
 clean:
 	@echo "- clean $(notdir $(BIN)) and related build files"
-	-rm *~ $(OBJ) $(OBJDS) $(BIN)* $(PDF) $(PDF).log 2> /dev/null || true
+	-rm *~ segment.ld $(OBJ) $(OBJDS) $(BIN)* $(PDF) $(PDF).log 2> /dev/null || true
 	-rmdir $(OBJDIR) 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
@@ -107,6 +108,7 @@ clean:
 
 $(BIN) : $(OBJ)
 	@echo "- link    --> "$(notdir $@)
+	sed "s/(APP)/$(APP)/" $(SOCDIR)/segs.ld > segment.ld
 	$(LD) -o $@ $(LDFLAGS) $^
 	truncate -s %4096 $(BIN)
 	$(OD) -D $@ > $@.s
@@ -119,7 +121,7 @@ $(OBJDIR)/%.o : %.c $(OBJLIB)
 # makedepend analyzes the source files to determine automatically what are the dependencies
 # of the object files on the source files (see https://linux.die.net/man/1/makedepend for details)
 depend :
-	@echo "- makedepend for $(CURDIR)"
+	@echo "- makedepend for $(CURDIR) ($(APP))"
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRC)
 	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/$(SOCDIR)/:/:' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
