@@ -7,7 +7,7 @@
   \file     hal/almo1/segs.ld
   \author   Franck Wajsburt
   \brief    Description of the physical memory 
-            sed "s/(APP)/$APP/" segs.ld > segment.ld
+            sed "s/(APPNB)/$APPNB/" segs.ld > segment.ld
 
 \*------------------------------------------------------------------------------------------------*/
 
@@ -33,9 +33,9 @@ __data1_length  = 0x0F800000 ;                  /* data 248 MB for app1 */
 __usermem1      = __data1_origin;               /* user memory descriptor for app1 */
 __data1_end = __data1_origin + __data1_length ;	/* first addr AFTER the app1 data region */
 
-__text_origin   = __text(APP)_origin ;			/* 1st byte address of current app code region */
-__text_length   = __text(APP)_length ;			/* code for the current app */
-__data_origin   = __data(APP)_origin ;			/* 1st byte address of current app data region */
-__data_length   = __data(APP)_length ;			/* data for the current app */
-__usermem       = __usermem(APP);				/* user memory descriptor for the current app */
-__data_end      = __data(APP)_end;				/* data end for the current app */
+__text_origin   = __text(APPNB)_origin ;		/* 1st byte address of current app code region */
+__text_length   = __text(APPNB)_length ;		/* code for the current app */
+__data_origin   = __data(APPNB)_origin ;		/* 1st byte address of current app data region */
+__data_length   = __data(APPNB)_length ;		/* data for the current app */
+__usermem       = __usermem(APPNB);				/* user memory descriptor for the current app */
+__data_end      = __data(APPNB)_end;			/* data end for the current app */

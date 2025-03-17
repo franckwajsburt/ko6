@@ -34,7 +34,7 @@ BIN     = $(BLDDIR)/$(CURDIR).x#	the binary file has the name of directory
 
 SRC	   ?= "source files"#			must be defined in all app Makefiles
 LDSCRIPT?= app.ld#					ldscript is hal dependent
-APP	   ?= 1#						by default it should be application 1
+APPNB  ?= 1#						by default it should be application 1
 
 # Targets
 # --------------------------------------------------------------------------------------------------
@@ -108,7 +108,7 @@ clean:
 
 $(BIN) : $(OBJ)
 	@echo "- link    --> "$(notdir $@)
-	sed "s/(APP)/$(APP)/" $(SOCDIR)/segs.ld > segment.ld
+	sed "s/(APPNB)/$(APPNB)/" $(SOCDIR)/segs.ld > segment.ld
 	$(LD) -o $@ $(LDFLAGS) $^
 	truncate -s %4096 $(BIN)
 	$(OD) -D $@ > $@.s
@@ -121,7 +121,7 @@ $(OBJDIR)/%.o : %.c $(OBJLIB)
 # makedepend analyzes the source files to determine automatically what are the dependencies
 # of the object files on the source files (see https://linux.die.net/man/1/makedepend for details)
 depend :
-	@echo "- makedepend for $(CURDIR) ($(APP))"
+	@echo "- makedepend for $(CURDIR) ($(APPNB))"
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRC)
 	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/$(SOCDIR)/:/:' Makefile > Makefile.bak
 	mv Makefile.bak Makefile

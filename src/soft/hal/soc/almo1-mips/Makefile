@@ -122,7 +122,7 @@ clean:
 
 $(BIN) : $(LDSCRIPT) $(OBJ)
 	@echo "- link    --> "$(notdir $@)
-	sed "s/(APP)/0/" segs.ld > segment.ld
+	sed "s/(APPNB)/0/" segs.ld > segment.ld
 	$(LD) $(LDFLAGS) -o $@ -T $^
 	truncate -s %4096 $(BIN)
 	$(OD) -D $@ > $@.s
