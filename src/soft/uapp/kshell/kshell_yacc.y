@@ -19,27 +19,20 @@ int yydebug = 1;
 
 %token NEWLINE SEMICOLON
 %token IF THEN ELSE FI WHILE DO DONE
-%token BINOP
-%token BUILTIN
-%token NUM
-%token IDENTIFIER
+%token<str> BINOP
+%token<str> BUILTIN
+%token<num> NUM
+%token<str> IDENTIFIER
 
 
 %%
 
-script : no_command top_level no_command
-	| no_command
+script : maybe_separator top_level seq_separator
+	| seq_separator
+	| /* empty */
 	;
 
-top_level : top_level seq_separator command
-	| command
-	;
-
-command : stmts separator
-	| stmts
-	;
-
-stmts : stmts separator stmt
+top_level : top_level seq_separator stmt
 	| stmt
 	;
 
@@ -49,7 +42,7 @@ stmt :
 	;
 
 simple_stmt :
-	  built_in 
+	  built_in
 	| assignement
 	;
 
@@ -58,7 +51,9 @@ compound_stmt :
 	| while_bloc
 	;
 
-if_bloc : IF expr separator THEN top_level FI
+if_bloc : IF expr separator THEN top_level FI {
+		if_command($2, $3)
+	}
 	| IF expr separator THEN top_level  ELSE top_level FI
 	;
 
@@ -67,12 +62,29 @@ while_bloc : WHILE expr separator DO top_level DONE
 
 
 expr : 
-	  NUM BINOP NUM
+	  NUM BINOP NUM { 
+		printf("binop: %s\n", $2);
+		switch ($2[0]) {
+			case '+' :
+				printf("plus\n");
+				break;
+			case '*' :
+				printf("mult\n");
+				break;
+			case '/' :
+				printf("div\n");
+				break;
+			case '-' :
+				printf("menos\n");
+				break;
+			
+		}
+	  }
 	;
 
 built_in : 
-	  BUILTIN
-	| BUILTIN args
+	  BUILTIN { printf("build-in!\n"); }
+	| BUILTIN args { printf("build-in with args!\n"); }
 	;
 
 args : NUM args
@@ -80,8 +92,12 @@ args : NUM args
 	;
 
 assignement :
-	  IDENTIFIER '=' NUM
+	  IDENTIFIER '=' NUM { printf("%s = %d\n", $1, $3); }
 	| IDENTIFIER '=' expr
+	;
+
+maybe_separator : seq_separator
+	| /* empty */
 	;
 
 seq_separator :
@@ -89,13 +105,9 @@ seq_separator :
 	| seq_separator separator
 	;
 
-no_command : seq_separator
-	| /* empty */
-	;
-
 separator: 
-	  NEWLINE 
-	| SEMICOLON 
+	  NEWLINE 		{ printf("NEWLINE\n"); }
+	| SEMICOLON 	{ printf("SEMICOLON\n"); }
 	;
 
 %%
