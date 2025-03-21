@@ -66,7 +66,7 @@ int thread_mutex_destroy (thread_mutex_t * mutex)
     if (m == NULL) return EINVAL;                               // unitialized mutex
     if (m->busy) return EBUSY;                                  // try to destroy an lock mutex
     if (m->owner != ThreadCurrent) return EPERM;                // the thread does not own the mutex
-    list_unlink (&m->glist);
+    list_unlink (&m->glist);                                    // unlink from the global list
     kfree (m);
     return SUCCESS;
 }
@@ -246,7 +246,7 @@ int thread_barrier_destroy (thread_barrier_t * barrier)
         spin_unlock (&b->lock);                             // release the lock
         return EBUSY;                                       // return an error
     }
-    list_unlink (&b->glist);
+    list_unlink (&b->glist);                                // unlink from the global list
     kfree (b);                                              // destroys barrier & erases its memory
 
     return SUCCESS;                                         // erasing the memory releases the lock
