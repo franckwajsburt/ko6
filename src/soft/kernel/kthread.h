@@ -36,25 +36,6 @@
 
 
 //--------------------------------------------------------------------------------------------------
-// Thread specific variables acessor
-//--------------------------------------------------------------------------------------------------
-
-
-/**
- * \brief  set the seed for the current running thread
- * \param  seed the new seed
- * \return the new seed
- */
-extern long long thread_randseed_set (long long seed);
-
-/**
- * \brief  get the seed for the current running thread
- * \return the current seed
- */
-extern long long thread_randseed_get (void);
-
-
-//--------------------------------------------------------------------------------------------------
 // Thread & scheduler API
 //--------------------------------------------------------------------------------------------------
 
@@ -179,5 +160,33 @@ extern int * thread_errno (thread_t thread);
  * \return  an address in user space where the last syscall error is put
  */
 extern unsigned long long * thread_krandseed (thread_t thread);
+
+
+//--------------------------------------------------------------------------------------------------
+// Thread specific variables acessor
+//--------------------------------------------------------------------------------------------------
+
+
+/**
+ * \brief  set the seed for the current running thread
+ * \param  seed the new seed
+ * \return the new seed
+ */
+extern long long thread_randseed_set (long long seed);
+
+/**
+ * \brief  get the seed for the current running thread
+ * \return the current seed
+ */
+extern long long thread_randseed_get (void);
+
+
+/**
+ * \brief  get the process identifer that owns the given thread.
+ * \param  thread  given thread
+ * \return the pid
+*/
+extern int thread_pid (thread_t thread);
+
 
 #endif//_KTHREAD_H_

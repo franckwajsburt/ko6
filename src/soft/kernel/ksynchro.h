@@ -14,6 +14,16 @@
 #ifndef _KSYNC_H_
 #define _KSYNC_H_
 
+//--------------------------------------------------------------------------------------------------
+// Global function
+//--------------------------------------------------------------------------------------------------
+
+
+/**
+ * \brief   Initialize global lists, and maybe other things...
+ */
+int ksynchro_init (void);
+
 
 //--------------------------------------------------------------------------------------------------
 // Mutex API
@@ -58,6 +68,13 @@ extern int thread_mutex_lock (thread_mutex_t * mutex);
  * \return  0 on success, 1 on fealure
  */
 extern int thread_mutex_unlock (thread_mutex_t * mutex);
+
+/**
+ * \brief   delete all mutexes from a given pid
+ * \param   pid the process identifier that owns the mutexes
+ * \return  0 on success, 1 on fealure
+ */
+extern int thread_mutex_cleanup (int pid);
 
 
 //--------------------------------------------------------------------------------------------------
@@ -104,6 +121,14 @@ extern int thread_barrier_wait (thread_barrier_t * barrier);
  *                  call) by  another thread.
  */
 extern int thread_barrier_destroy (thread_barrier_t * barrier);
+
+/**
+ * \brief   delete all barriers from a given pid
+ * \param   pid the process identifier that owns the barriers
+ * \return  0 on success, 1 on fealure
+ */
+extern int thread_barrier_cleanup (int pid);
+
 
 
 #endif//_KSYNC_H_

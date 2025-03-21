@@ -14,15 +14,30 @@
 
 
 //--------------------------------------------------------------------------------------------------
-// Mutex API
+// All synchro mecanism 
 //--------------------------------------------------------------------------------------------------
 
+static list_t MutexGroot;       ///< Mutex Global Root
+static list_t BarrierGroot;     ///< Barrier Global Root
+
+int ksynchro_init (void) 
+{
+    list_init (&MutexGroot);
+    list_init (&BarrierGroot);
+    return 0;
+}
+
+//--------------------------------------------------------------------------------------------------
+// Mutex API
+//--------------------------------------------------------------------------------------------------
 
 struct thread_mutex_s {
     spinlock_t  lock;           ///< protection against parallel modifications
     unsigned    busy;           ///< 1 mutex is busy ; 0 mutex is free
     list_t      wait;           ///< list element to chain threads that are wainting for the mutex
     thread_t    owner;          ///< a thread has to be locked and unlocked by the same thread
+    list_t      glist;          ///< all mutex whatever the process it belongs are chained
+    int         pid;            ///< Process identifier owner
 };
 
 /**
@@ -32,6 +47,8 @@ int thread_mutex_init (thread_mutex_t * mutex)
 {
     thread_mutex_t m = kmalloc (sizeof (*m));                   // Get memory
     if (m == NULL) return ENOMEM;                               // malloc impossible
+    list_addlast (&MutexGroot, &m->glist);                      // add it in global mutex list
+    m->pid = thread_pid(ThreadCurrent);                         // it herits the thread's pid    
     m->lock = 0;                                                // lock to protect
     m->busy = 0;                                                // busy is free at first
     list_init (&m->wait);                                       // no waiting threads
@@ -49,6 +66,7 @@ int thread_mutex_destroy (thread_mutex_t * mutex)
     if (m == NULL) return EINVAL;                               // unitialized mutex
     if (m->busy) return EBUSY;                                  // try to destroy an lock mutex
     if (m->owner != ThreadCurrent) return EPERM;                // the thread does not own the mutex
+    list_unlink (&m->glist);
     kfree (m);
     return SUCCESS;
 }
@@ -124,6 +142,20 @@ int thread_mutex_unlock (thread_mutex_t * mutex)
     return SUCCESS;
 }
 
+/**
+ * All the mutexes are on the same list; you just need to delete those used for a specific process.
+ */
+int thread_mutex_cleanup (int pid)
+{
+    list_foreach ( &MutexGroot, mutex_item) {
+        thread_mutex_t m = list_item (mutex_item, struct thread_mutex_s, glist);
+        if (m->pid == pid) {
+            list_unlink (mutex_item);
+            kfree (m);
+        } 
+    } 
+    return 0;
+}  
 
 //--------------------------------------------------------------------------------------------------
 // Barrier API
@@ -138,6 +170,8 @@ struct thread_barrier_s {
     size_t      expected;       ///< number of expected threads
     size_t      waiting;        ///< number of threads waiting
     list_t      wait;           ///< list element to chain threads that are wainting for the mutex
+    list_t      glist;          ///< all mutex whatever the process it belongs are chained
+    int         pid;            ///< Process identifier owner
 };
 
 int thread_barrier_init (thread_barrier_t * barrier, size_t count)
@@ -149,6 +183,8 @@ int thread_barrier_init (thread_barrier_t * barrier, size_t count)
     if (b == NULL) {                                        // if we need a new barrier
         b = kmalloc (sizeof (struct thread_barrier_s));     // allocates a new barrier
         if (b == NULL) return ENOMEM;                       // test if there is enough memory
+        list_addlast (&BarrierGroot, &b->glist);            // add it in global barrrier list
+        b->pid = thread_pid(ThreadCurrent);                 // it herits the thread's pid    
         b->magic = MAGIC_BARRIER;                           // tell it is a BARRIER
         b->lock = 0;                                        // free the lock
         b->expected = count;                                // init the expected threads
@@ -210,7 +246,24 @@ int thread_barrier_destroy (thread_barrier_t * barrier)
         spin_unlock (&b->lock);                             // release the lock
         return EBUSY;                                       // return an error
     }
+    list_unlink (&b->glist);
     kfree (b);                                              // destroys barrier & erases its memory
 
     return SUCCESS;                                         // erasing the memory releases the lock
 }
+
+/**
+ * All the barriers are on the same list; you just need to delete those used for a specific process.
+ */
+int thread_barrier_cleanup (int pid)
+{
+    list_foreach ( &BarrierGroot, barrier_item) {
+        thread_barrier_t b = list_item (barrier_item, struct thread_barrier_s, glist);
+        if (b->pid == pid) {
+            list_unlink (barrier_item);
+            kfree (b);
+        } 
+    } 
+    return 0;
+}  
+

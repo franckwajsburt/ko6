@@ -31,19 +31,20 @@
  *          field of the structure because, thus is is easy to get it
  */
 struct thread_s {
-    int kstack_b;                 ///< kernel stack beginning (the highest addr, outside the stack)
-    int ustack_b;                 ///< user stack beginning (the highest address, outside the stack)
-    int ustack_e;                 ///< user stack end (thus the lowest addr)
-    list_t wait;                  ///< list element to chain threads waiting for the same resource
-    spinlock_t lock;              ///< lock to protected structure during modification
-    int state;                    ///< thread state from the scheduler point of view
-    _tls_t *ptls;                 ///< ptr to current thread local storage (see common/usermem.h)
-    void *retval;                 ///< return value
-    thread_t join;                ///< expected thread in case of thread_join()
-    int start;                    ///< pointer to the function which calls fun(arg)
-    int fun;                      ///< pointer to the thread function (cast to int)
-    int arg;                      ///< thread argument (cast to int)
-    int tid;                      ///< thread identifer MUST BE PLACED JUST BEFORE CONTEXT (trace)
+    int         kstack_b;         ///< kernel stack beginning (the highest addr, outside the stack)
+    int         ustack_b;         ///< user stack beginning (the highest address, outside the stack)
+    int         ustack_e;         ///< user stack end (thus the lowest addr)
+    list_t      wait;             ///< list element to chain threads waiting for the same resource
+    spinlock_t  lock;             ///< lock to protected structure during modification
+    int         state;            ///< thread state from the scheduler point of view
+    _tls_t *    ptls;             ///< ptr to current thread local storage (see common/usermem.h)
+    void *      retval;           ///< return value
+    thread_t    join;             ///< expected thread in case of thread_join()
+    int         start;            ///< pointer to the function which calls fun(arg)
+    int         fun;              ///< pointer to the thread function (cast to int)
+    int         arg;              ///< thread argument (cast to int)
+    int         pid;              ///< Process identifier owner
+    int         tid;              ///< thread id MUST BE PLACED JUST BEFORE CONTEXT (for tracing)
     unsigned long long krandseed; ///< each thread has its own kernel random seed, it is thread safe
     int context[TH_CONTEXT_SIZE]; ///< table to store registers when thread lose the cpu
     int kstack[1];                ///< lowest address of kernel stack of thread (with MAGIC_STACK)
@@ -52,8 +53,7 @@ struct thread_s {
 static thread_t ThreadTab[THREAD_MAX];  // simple table for the all the existing threads
 static int      ThreadCurrentIdx;       // index of the current running thread
 thread_t        ThreadCurrent;          // pointer to the current thread
-
-thread_t        Kthread;                // single kernel thread
+list_t          ThreadGroot;            // Thread Global Root
 
 void thread_addlast (list_t * root, thread_t thread)
 {
@@ -65,7 +65,11 @@ thread_t thread_item (list_t * item)
     return list_item (item, struct thread_s, wait);
 }
 
-
+int thread_pid (thread_t thread)
+{
+    return thread->pid;
+}
+    
 //--------------------------------------------------------------------------------------------------
 // Thread local storage variable access
 //--------------------------------------------------------------------------------------------------

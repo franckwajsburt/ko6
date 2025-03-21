@@ -43,6 +43,10 @@ void kinit (void *fdt)
 
     kprintf (Banner);
 
+    // initialize all synchronization mecanisms
+
+    ksynchro_init();
+
     // First, we have to create the thread structure for the thread main()
     //   thread_create() is the same function used to create the thread main()
     //   and to create an usual thread, here, we create the the thread main, it takes 4 args

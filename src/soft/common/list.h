@@ -180,7 +180,7 @@ static inline list_t * list_last (list_t * root) {
  * \param   MEMBER member name of the list item in the container TYPE
  * \return  A pointer to the container
  */
-#define list_item(ITEM,TYPE,MEMBER) ((TYPE*)((void*)ITEM-offsetof(TYPE,MEMBER)))
+#define list_item(ITEM,TYPE,MEMBER) ((TYPE*)((void*)(ITEM)-offsetof(TYPE,MEMBER)))
 
 // MODIFICATION FUNCTIONS --------------------------------------------------------------------------
 
