@@ -21,11 +21,11 @@ static void _start (void);      // very start function of the process
 
 __attribute__((section (".usermem")))
 __usermem_t __usermem = {
-    .ustack_end = &__data_end,  // at the begining there is no stack.
+    .ustack_end = &__data_end,  // at the beginning there is no stack.
     .ustack_beg = &__data_end,  // last address of the free user data region
     .uheap_beg  = &__bss_end ,  // first address of the free user data region
-    .uheap_end  = &__bss_end ,  // at the begining there is no heap.
-    .main_thread = NULL      ,  // initialized by thread_create() in kernel/kinit.c
+    .uheap_end  = &__bss_end ,  // at the beginning there is no heap.
+    .main_thread = NULL      ,  // thread pointer initialized by thread_create() in kernel/kinit.c
     .main_start  = _start       // _start function of the process
 };
 
