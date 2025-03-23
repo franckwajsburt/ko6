@@ -61,9 +61,9 @@
 
 #include <kernel/klibc.h>
 
-extern char __bss_end;                  // first char above bss section see kernel.ld (page aligned)
-extern char __kdata_end;                // first char above the kernel data region (page aligned)
-#define kmb (char*)&__bss_end           /* kernel memory begin */
+extern char __kbss_end;                 // 1st char above kbss section see kernel.ld (page aligned)
+extern char __kdata_end;                // 1st char above the kernel data region (page aligned)
+#define kmb (char*)&__kbss_end          /* kernel memory begin */
 #define kme (char*)&__kdata_end         /* kernel memory end */
 static list_t FreeUserStack;            // free stack
 static size_t CacheLineSize;            // max between 16 and the true cache line size
@@ -96,7 +96,7 @@ void memory_init (void)
     for (char *p = kmb; p != kme; p += PAGE_SIZE)           // initialize the page (slab) list
         list_addlast (&Slab[0], (list_t *)p);               // pointed by Slab[0]
     Page = kmalloc (PAGE_SIZE);                             // allocate the Page decritor table
-    // FIXME the Page table is too small, 
+    // FIXME the Page table is too small, only 8MiB
 }
 
 //--------------------------------------------------------------------------------------------------

@@ -114,6 +114,16 @@ static void sched_insert (thread_t thread_new)
 }
 
 /**
+ * \brief   unlink a thread from the scheduler
+ * \param   thread is the thread to unlink
+ * \return  nothing
+ */
+static void sched_unlink (thread_t thread)
+{
+    ThreadTab[thread->tid] = NULL;                          // just that 
+}
+
+/**
  * \brief   Gives the next ThreadCurrentIdx to execute
  *          There are two loops.
  *          at the beginning, sched_elect() goes through the scheduler's thread table ONCE
@@ -161,6 +171,7 @@ static void sched_switch (void)
             ThreadCurrent = ThreadTab[th_next];             // update ThreadCurrent
             __usermem.ptls = ThreadCurrent->ptls;
             thread_context_load (ThreadCurrent->context);   // load contxt, exit thread_context_save
+            // FIXME we'll have to destroy the old thread if it is dead
         }                                                   // but with 0 as return value
     }
     ThreadCurrent->state= TH_STATE_RUNNING;                 // the chosen one is RUNNNIG
@@ -317,6 +328,14 @@ int thread_create (thread_t * thread_p, int fun, int arg, int start)
     return SUCCESS;                                             // if we are here, that is a success
 }
 
+static void thread_destroy (thread_t thread)
+{
+    PANIC_IF (thread->state != TH_STATE_DEAD, "Attempt to destroy an non-DEAD thread %p", thread); 
+    free_ustack ((int*)thread->ustack_b);                       // free the user stack
+    sched_unlink (thread);                                      // unlink the thread from the sched
+    kfree (thread);                                             // at last free the thread struct
+}
+
 //--------------------------------------------------------------------------------------------------
 
 void thread_main_load (thread_t thread)
@@ -389,7 +408,7 @@ int thread_join (thread_t thread_expected, void **retval)
     }
     *retval = thread_expected->retval;                          // get the return value
     thread_expected->state = TH_STATE_DEAD;                     // finally, the thread is DEAD
-
+    thread_destroy (thread_expected);                           // and has to be destroyed
     return SUCCESS;
 }
 
@@ -441,3 +460,30 @@ void thread_notify (thread_t thread)
     thread->state = TH_STATE_READY;                             // (RUNNING or WAIT) to READY
     spin_unlock (&ThreadCurrent->lock);                         // !--! end of critical section
 }
+
+//--------------------------------------------------------------------------------------------------
+// process functions : concerns the whole threads of a process
+//--------------------------------------------------------------------------------------------------
+
+/**
+ * \brief   cleanup all threads of a given process
+ *          cleanup the scheduler from all threads of that process and destoy the concerned threads
+ *          The scheduler is a simple table of all the threads
+ *          To cleanup, we need to find out the process's threads and delete them
+ * \param   pid the process identifier that owns the mutexes
+ * \return  0 on success, 1 on fealure
+ */
+int process_threads_cleanup (int pid)
+{
+    int tid = 0;
+    while (tid < THREAD_MAX) {                              // scan all threads
+        thread_t thread = ThreadTab[tid];                  // get the current one
+        if (thread && (thread->pid == pid)) {               // is a thread to delete
+            thread->state = TH_STATE_DEAD;                  // it is dead
+            thread_destroy (thread);                        // thus destroy it
+        }
+    }
+    return 0;
+}
+
+

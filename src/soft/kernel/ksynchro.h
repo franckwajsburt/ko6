@@ -74,7 +74,7 @@ extern int thread_mutex_unlock (thread_mutex_t * mutex);
  * \param   pid the process identifier that owns the mutexes
  * \return  0 on success, 1 on fealure
  */
-extern int thread_mutex_cleanup (int pid);
+extern int process_mutexes_cleanup (int pid);
 
 
 //--------------------------------------------------------------------------------------------------
@@ -127,7 +127,7 @@ extern int thread_barrier_destroy (thread_barrier_t * barrier);
  * \param   pid the process identifier that owns the barriers
  * \return  0 on success, 1 on fealure
  */
-extern int thread_barrier_cleanup (int pid);
+extern int process_barriers_cleanup (int pid);
 
 
 

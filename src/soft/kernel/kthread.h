@@ -163,7 +163,7 @@ extern unsigned long long * thread_krandseed (thread_t thread);
 
 
 //--------------------------------------------------------------------------------------------------
-// Thread specific variables acessor
+// Thread specific variables accessor
 //--------------------------------------------------------------------------------------------------
 
 
@@ -188,5 +188,19 @@ extern long long thread_randseed_get (void);
 */
 extern int thread_pid (thread_t thread);
 
+
+//--------------------------------------------------------------------------------------------------
+// process functions : concerns the whole threads of a process
+//--------------------------------------------------------------------------------------------------
+
+/**
+ * \brief   cleanup all threads of a given process
+ *          cleanup the scheduler from all threads of that process and destoy the concerned threads
+ *          The scheduler is a simple table of all the threads
+ *          To cleanup, we need to find out the process's threads and delete them
+ * \param   pid the process identifier that owns the mutexes
+ * \return  0 on success, 1 on fealure
+ */
+int process_threads_cleanup (int pid);
 
 #endif//_KTHREAD_H_

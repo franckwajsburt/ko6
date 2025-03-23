@@ -32,10 +32,10 @@ EC_RESET;
 
 void kinit (void *fdt)
 {
-    // put bss sections to zero. bss contains uninitialised global variables
-    extern int __bss_origin;    // first int of bss section (defined in ldscript kernel.ld)
-    extern int __bss_end;       // first int of above bss section (defined in ldscript kernel.ld)
-    for (int *a = &__bss_origin; a != &__bss_end; *a++ = 0);
+    // put kbss sections to zero. kbss contains uninitialised global variables of the kernel
+    extern int __kbss_origin;   // first int of bss section (defined in ldscript kernel.ld)
+    extern int __kbss_end;      // first int of above bss section (defined in ldscript kernel.ld)
+    for (int *a = &__kbss_origin; a != &__kbss_end; *a++ = 0);
     memory_init();                  // memory initialisation 
 
     if (soc_init(fdt, 200000) < 0)  // soc initialisation takes the tick as argument

@@ -145,7 +145,7 @@ int thread_mutex_unlock (thread_mutex_t * mutex)
 /**
  * All the mutexes are on the same list; you just need to delete those used for a specific process.
  */
-int thread_mutex_cleanup (int pid)
+int process_mutexes_cleanup (int pid)
 {
     list_foreach ( &MutexGroot, mutex_item) {
         thread_mutex_t m = list_item (mutex_item, struct thread_mutex_s, glist);
@@ -255,7 +255,7 @@ int thread_barrier_destroy (thread_barrier_t * barrier)
 /**
  * All the barriers are on the same list; you just need to delete those used for a specific process.
  */
-int thread_barrier_cleanup (int pid)
+int process_barriers_cleanup (int pid)
 {
     list_foreach ( &BarrierGroot, barrier_item) {
         thread_barrier_t b = list_item (barrier_item, struct thread_barrier_s, glist);

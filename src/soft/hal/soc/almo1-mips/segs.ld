@@ -22,14 +22,14 @@ __kdata_end = __kdata_origin + __kdata_length ; /* first addr AFTER kernel data 
 __text0_origin  = 0x60000000 ;					/* 1st byte address of app0 code region */
 __text0_length  = 0x00100000 ;					/* code 1 MB for the app0 : kshell */
 __data0_origin  = 0x70000000 ;					/* 1st byte address of app0 data region */
-__data0_length  = 0x00800000 ;					/* data 8 MB for the app0 : kshell */
+__data0_length  = 0x08000000 ;					/* data 128 MB for the app0 : kshell */
 __usermem0      = __data0_origin;				/* user memory descriptor for app0 */
 __data0_end = __data0_origin + __data0_length ; /* first addr AFTER the app0 data region */
                                                 
 __text1_origin  = 0x60100000 ;				 	/* 1st byte address of app1 code region */
 __text1_length  = 0x0FF00000 ;                  /* code 255 MB for app1 */
-__data1_origin  = 0x70000000 ;                  /* 1st byte address of app1 data region */
-__data1_length  = 0x0F800000 ;                  /* data 248 MB for app1 */
+__data1_origin  = 0x78000000 ;                  /* 1st byte address of app1 data region */
+__data1_length  = 0x08000000 ;                  /* data 128 MB for app1 */
 __usermem1      = __data1_origin;               /* user memory descriptor for app1 */
 __data1_end = __data1_origin + __data1_length ;	/* first addr AFTER the app1 data region */
 
