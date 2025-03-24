@@ -25,9 +25,10 @@ SOCDIR	= $(HALDIR)/soc/$(SOC)#		current soc hardware abstraction layer (hal) fil
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJRDIR	= $(BLDDIR)/uobj#			user object files directory
 OBJDIR	= $(OBJRDIR)/$(CURDIR)#		object files directory
+BINDIR	= $(BLDDIR)/$(CURDIR)#		executable directory
 PDFDIR	= $(BLDDIR)/updf#			user pdf files directory
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#	the pdf file has the name of directory
-BIN     = $(BLDDIR)/$(CURDIR).x#	the binary file has the name of directory
+BIN     = $(BINDIR)/$(CURDIR).x#	the binary file has the name of directory
 
 # Sources
 # --------------------------------------------------------------------------------------------------
@@ -87,6 +88,7 @@ mkdir:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
 	test -d $(OBJRDIR) || (echo "- mkdir   $(OBJRDIR)" ; mkdir $(OBJRDIR))
 	test -d $(OBJDIR) || (echo "- mkdir   $(OBJDIR)" ; mkdir $(OBJDIR))
+	test -d $(BINDIR) || (echo "- mkdir   $(BINDIR)" ; mkdir $(BINDIR))
 
 pdf:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)

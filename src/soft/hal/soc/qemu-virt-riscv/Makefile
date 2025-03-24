@@ -1,7 +1,7 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
 # | |__ /'v'\  / /   	\date       2023-07-11
-# | / /(     )/ _ \   	\copyright  2021-2022 Sorbonne University
+# | / /(     )/ _ \   	\copyright  2021 Sorbonne University
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     hal/soc/qemu-virt-riscv/Makefile
@@ -14,11 +14,9 @@
 # --------------------------------------------------------------------------------------------------
 
 SOC    ?= qemu-virt-riscv#			defaut SOC name
-NTTYS  ?= 1#						default number of ttys
-NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-SRCDIR  = ../../..#					root source dir, allow us to make include via absolute path
-BLDDIR	= ../../../../../build#		build directory
+SRCDIR  = $(ko6)/src/soft#			root source dir, allow us to make include via absolute path
+BLDDIR	= $(ko6)/build#				build directory
 LIBDIR	= .#						library directory (where is ldscript)
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 SOCDIR	= $(CURDIR)#				current soc hardware abstraction layer (hal) files directory
@@ -147,34 +145,3 @@ depend :
 	mv Makefile.bak Makefile
 
 # --------------------------------------------------------------------------------------------------
-# DEPENDENCIES
-
-../../../../../build/obj/soc.o: ../../../hal/devices/timer/clint-timer.h
-../../../../../build/obj/soc.o: ../../../hal/devices/timer.h
-../../../../../build/obj/soc.o: ../../../hal/devices/chardev/ns16550.h
-../../../../../build/obj/soc.o: ../../../hal/devices/chardev.h
-../../../../../build/obj/soc.o: ../../../common/errno.h
-../../../../../build/obj/soc.o: ../../../common/list.h ../../../kernel/kdev.h
-../../../../../build/obj/soc.o: ../../../kernel/klibc.h
-../../../../../build/obj/soc.o: ../../../common/debug_off.h
-../../../../../build/obj/soc.o: ../../../common/debug_on.h
-../../../../../build/obj/soc.o: ../../../common/cstd.h
-../../../../../build/obj/soc.o: ../../../common/esc_code.h
-../../../../../build/obj/soc.o: ../../../common/syscalls.h
-../../../../../build/obj/soc.o: ../../../common/usermem.h
-../../../../../build/obj/soc.o: ../../../hal/cpu/atomic.h
-../../../../../build/obj/soc.o: ../../../hal/cpu/cache.h
-../../../../../build/obj/soc.o: ../../../hal/cpu/thread.h
-../../../../../build/obj/soc.o: ../../../hal/cpu/irq.h
-../../../../../build/obj/soc.o: ../../../hal/cpu/cpuregs.h
-../../../../../build/obj/soc.o: ../../../hal/cpu/kpanic.h
-../../../../../build/obj/soc.o: ../../../hal/soc/soc.h
-../../../../../build/obj/soc.o: ../../../kernel/kmemory.h
-../../../../../build/obj/soc.o: ../../../kernel/kthread.h
-../../../../../build/obj/soc.o: ../../../kernel/ksynchro.h
-../../../../../build/obj/soc.o: ../../../hal/devices/icu/plic.h
-../../../../../build/obj/soc.o: ../../../hal/devices/icu.h
-../../../../../build/obj/soc.o: ../../../kernel/kirq.h
-../../../../../build/obj/soc.o: ../../../lib/libfdt/libfdt.h
-../../../../../build/obj/soc.o: ../../../lib/libfdt/libfdt_env.h
-../../../../../build/obj/soc.o: ../../../lib/libfdt/fdt.h

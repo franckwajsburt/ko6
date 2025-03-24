@@ -16,15 +16,14 @@
 SOC    ?= almo1-mips#				defaut SOC name
 CPU    ?= mips
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-BLDDIR	= ../../../build#			build directory
-SRCDIR 	= ..#						directory of all sources
+BLDDIR	= $(ko6)/build#				build directory
+SRCDIR 	= $(ko6)/src/soft#			directory of all sources
 HALDIR  = $(SRCDIR)/hal#			HAL directory (current)
 COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
 
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJDIR	= $(BLDDIR)/kobj#			kernel object files directory
 PDFDIR	= $(BLDDIR)/kpdf#			kernel pdf files directory
-LIBDIR  = ../../lib#				external libraries directory
 
 # Sources
 # --------------------------------------------------------------------------------------------------
@@ -63,7 +62,6 @@ CFLAGS += -fno-builtin#				do not use builtin functions of gcc (such as strlen)
 CFLAGS += -fomit-frame-pointer#		only use of stack pointer ($29)
 CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += -I..#						directories where include files like <file.h> are located
-CFLAGS += -I$(LIBDIR)/libfdt#		include external libraries (specifically libfdt.h)
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
 
 # Rules (here they are used such as simple shell scripts)
@@ -88,6 +86,7 @@ mkdir:
 	test -d $(OBJDIR) || (echo "- mkdir   $(OBJDIR)" ; mkdir $(OBJDIR))
 
 pdf:
+	make -C soc/$(SOC) pdf
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
 	test -d $(PDFDIR) || (echo "- mkdir   $(PDFDIR)" ; mkdir $(PDFDIR))
 	a2ps -T4 -2 -M A4 -A fill -o - -l100 Makefile $(SRC) 2> $(PDF).log |\

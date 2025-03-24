@@ -20,8 +20,8 @@ MAKOPT ?= -s --no-print-directory#	comment this line to get command details
 NTTYS  ?= 2#						default number of ttys
 NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-FROM   ?= 4000000#					first cycle to trace
-LAST   ?= 6000000#					last cycle to execute
+FROM   ?= 0000000#					first cycle to trace
+LAST   ?= 0100000#					last cycle to execute
 
 # ------- Directories
 SWDIR   = src/soft#        			software directory
@@ -72,14 +72,19 @@ help:
 	@echo "        VERBOSE: verbose mode for (see common/debug_*.h) (default $(VERBOSE))"
 	@echo ""
 
+# First Compile all the codes of ko6: kernel and all user applications --> ko6/build
+# Then Compile all the Linux tools --> ko6/bin
 compil:
 	make -C $(SWDIR) $(MAKOPT) MAKOPT=$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
 	make -C $(LTDIR) $(MAKOPT) MAKOPT=$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
 
+# Create PDF of the sources
 pdf:
 	make -C $(SWDIR) $(MAKOPT) pdf SOC=$(SOC)
 	make -C $(LTDIR) $(MAKOPT) pdf SOC=$(SOC)
 
+# Ask to compile, then start the SoC in order to execute the kernel and the apps.
+# Since the execution method depends strongly on the SoC, the Makefile is placed in the soc dir.
 exec: compil
 	make -C $(SOCDIR) exec NTTYS=$(NTTYS) NCPUS=$(NCPUS) \
 		VERBOSE=$(VERBOSE) FROM=$(FROM) LAST=$(LAST) APP=$(APP)

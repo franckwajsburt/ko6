@@ -23,8 +23,8 @@ OBJDIR	= $(BLDDIR)/kobj#	kernel object files directory
 # Files
 # --------------------------------------------------------------------------------------------------
 
-OBJ 	= $(wildcard $(OBJDIR)/*.o)
-OBJ 	+= $(OBJDIR)/libfdt.a
+#OBJ 	= $(wildcard $(OBJDIR)/*.o)
+#OBJ 	+= $(OBJDIR)/libfdt.a
 
 # Rules (here they are used such as simple shell scripts)
 # --------------------------------------------------------------------------------------------------

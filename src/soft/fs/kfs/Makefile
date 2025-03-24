@@ -76,7 +76,7 @@ pdf:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
 	test -d $(PDFDIR) || (echo "- mkdir   $(PDFDIR)" ; mkdir $(PDFDIR))
 	a2ps -T4 -2 -M A4 -A fill -o - -l100 Makefile $(SRC) 2> $(PDF).log |\
-	ps2pdf -sPAPERSIZE=a4 - $(PDFDIR)/$(PDF);\
+	ps2pdf -sPAPERSIZE=a4 - $(PDF);\
 	echo "- create $(PDF)";\
 	sed 's/^/  - /;s/\].*/\]/' $(PDF).log
 

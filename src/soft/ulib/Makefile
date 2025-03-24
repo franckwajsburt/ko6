@@ -15,11 +15,9 @@
 
 CPU	   ?= mips
 SOC    ?= almo1-mips#				defaut SOC name
-NTTYS  ?= 1#						default number of ttys
-NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-BLDDIR	= ../../../build#			build directory
-SRCDIR 	= ..#						directory of all sources
+BLDDIR	= $(ko6)/build#				build directory
+SRCDIR 	= $(ko6)/src/soft#			directory of all sources
 COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
 HALDIR	= $(SRCDIR)/hal#			hardware abstraction layer (hal) files directory
 SOCDIR	= $(HALDIR)/soc#			current soc hardware abstraction layer (hal) files directory
@@ -90,7 +88,7 @@ pdf:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
 	test -d $(PDFDIR) || (echo "- mkdir   $(PDFDIR)" ; mkdir $(PDFDIR))
 	a2ps -T4 -2 -M A4 -A fill -o - -l100 Makefile $(SRC) 2> $(PDF).log |\
-	ps2pdf -sPAPERSIZE=a4 - $(PDFDIR)/$(PDF);\
+	ps2pdf -sPAPERSIZE=a4 - $(PDF);\
 	echo "- create $(PDF)";\
 	sed 's/^/  - /;s/\].*/\]/' $(PDF).log
 

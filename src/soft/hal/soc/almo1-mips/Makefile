@@ -11,6 +11,15 @@
 #
 #--------------------------------------------------------------------------------------------------
 
+
+# Default SoC options
+# --------------------------------------------------------------------------------------------------
+
+NTTYS  ?= 2#						default number of ttys
+NCPUS  ?= 1#						default number of CPUS
+FROM   ?= 0#						first cycle to trace
+LAST   ?= 1000000#					last cycle to execute
+
 # Parameters
 # --------------------------------------------------------------------------------------------------
 
@@ -27,7 +36,6 @@ PDFDIR	= $(BLDDIR)/kpdf#			kernel pdf files directory
 BIN 	= $(BLDDIR)/kernel-$(SOC).x
 SX 		= $(SOC).x
 DLOG    = /tmp/ko6-debug.log#       debug file
-
 
 # Sources
 # --------------------------------------------------------------------------------------------------
@@ -97,10 +105,15 @@ mkdtb:
 	dtc -I dts -O dtb -o almo1.dtb almo1.dts
 
 exec: compil
-	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS)
+	cd $(BLDDIR);\
+	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP)/$(APP).x \
+					-NTTYS $(NTTYS) -NCPUS $(NCPUS)
 
 debug: compil
-	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP).x -NTTYS $(NTTYS) -NCPUS $(NCPUS) -DEBUG $(FROM) -NCYCLES $(LAST) > $(DLOG)
+	cd $(BLDDIR);\
+	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP)/$(APP).x \
+					-NTTYS $(NTTYS) -NCPUS $(NCPUS) -DEBUG $(FROM) -NCYCLES $(LAST) > $(DLOG)
+	cd $(BLDDIR);\
 	tracelog $(SRCDIR)/tags $(BLDDIR)/*.x.s $(DLOG)
 
 pdf:
@@ -113,7 +126,8 @@ pdf:
 
 clean:
 	@echo "- clean $(SOC) and related build files"
-	-rm *~ segment.ld *.dtb $(BIN) $(OBJ) $(OBJDS) $(PDF) $(PDF).log 2> /dev/null || true
+	-rm *~ 	segment.ld *.dtb $(BIN) $(OBJ) $(OBJDS) $(PDF) $(PDF).log \
+			$(BLDDIR)/xterm* $(BLDDIR)/trace* $(BLDDIR)/label*  2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 
