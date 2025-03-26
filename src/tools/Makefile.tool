@@ -37,6 +37,7 @@ SRCC    = $(filter %.c,$(SRC))
 
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
 CFLAGS += -Wno-unused-function#     ignore the unused warning
+CFLAGS += -Wno-unused-result# 		ignore the unused result from fonction
 CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += $(INCDIR)#				directories where include files like <file.h> are located
 CFLAGS += -DVERBOSE=$(V)#			verbose if 1, can be toggled with #include <debug_{on,off}.h> 
