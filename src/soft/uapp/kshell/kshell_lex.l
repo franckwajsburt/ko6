@@ -4,7 +4,7 @@
 
 %}
 
-authorized_filename		[a-zA-Z0-9_.+-@!]
+filename	        	[a-zA-Z0-9_.+-@!]+
 alpha					[a-zA-Z]
 digit					[0-9]
 integer					{digit}+
@@ -20,27 +20,26 @@ else				return ELSE;
 while				return WHILE;
 do					return DO;
 done				return DONE;
-ls					return BUILTIN;
-cat					return BUILTIN;
-echo				return BUILTIN;
-export				return BUILTIN;
-kshell				return BUILTIN;
-cd					return BUILTIN;
-pwd					return BUILTIN;
-top					return BUILTIN;
-kill				return BUILTIN;
-kvar				return BUILTIN;
-su					return BUILTIN;
-"=="				return BINOP;
-"!="				return BINOP;
-"<="				return BINOP;
-">="				return BINOP;
-"+"					yylval.str = yytext; return BINOP;
-"-"					yylval.str = yytext; return BINOP;
-"*"					yylval.str = yytext; return BINOP;
-"\/"				yylval.str = yytext; return BINOP;
-{integer}			yylval.num = atoi(yytext); return NUM;
-{identifier}		yylval.str = strdup(yytext); return IDENTIFIER;
+ls					yylval.str = strdup(yytext); return BUILTIN;
+cat					yylval.str = strdup(yytext); return BUILTIN;
+echo				yylval.str = strdup(yytext); return BUILTIN;
+export				yylval.str = strdup(yytext); return BUILTIN;
+kshell				yylval.str = strdup(yytext); return BUILTIN;
+cd					yylval.str = strdup(yytext); return BUILTIN;
+pwd					yylval.str = strdup(yytext); return BUILTIN;
+top					yylval.str = strdup(yytext); return BUILTIN;
+kill				yylval.str = strdup(yytext); return BUILTIN;
+kvar				yylval.str = strdup(yytext); return BUILTIN;
+su					yylval.str = strdup(yytext); return BUILTIN;
+"=="				yylval.str = strdup(yytext); return BINOP;
+"!="				yylval.str = strdup(yytext); return BINOP;
+"<="				yylval.str = strdup(yytext); return BINOP;
+">="				yylval.str = strdup(yytext); return BINOP;
+"+"					yylval.str = strdup(yytext); return BINOP;
+"-"					yylval.str = strdup(yytext); return BINOP;
+"*"					yylval.str = strdup(yytext); return BINOP;
+"\/"				yylval.str = strdup(yytext); return BINOP;
+{filename}			yylval.str = strdup(yytext); return WORD;
 ";"					return SEMICOLON;
 [ \t]+				/* ignore */;
 "\n"				return NEWLINE;

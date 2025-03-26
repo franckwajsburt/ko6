@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "kshell.h"
 
 extern int yylex();
 extern int yyerror();
@@ -10,11 +11,13 @@ extern int yyerror();
 int yydebug = 1;
 #endif
 
+
 %}
 
 %union {
 	int num;
 	char * str;
+	struct wordlist * wlist;
 }
 
 %token NEWLINE SEMICOLON
@@ -23,6 +26,9 @@ int yydebug = 1;
 %token<str> BUILTIN
 %token<num> NUM
 %token<str> IDENTIFIER
+%token<str> WORD
+%type<wlist> args
+%type<wlist> built_in
 
 
 %%
@@ -42,8 +48,12 @@ stmt :
 	;
 
 simple_stmt :
-	  built_in
-	| assignement
+	  built_in {
+		printf("simple_stmt: ");
+		wordlist_print($1);
+		wordlist_destroy($1);
+	  }
+	| assignement {}
 	;
 
 compound_stmt :
@@ -52,7 +62,6 @@ compound_stmt :
 	;
 
 if_bloc : IF expr separator THEN top_level FI {
-		if_command($2, $3)
 	}
 	| IF expr separator THEN top_level  ELSE top_level FI
 	;
@@ -83,12 +92,26 @@ expr :
 	;
 
 built_in : 
-	  BUILTIN { printf("build-in!\n"); }
-	| BUILTIN args { printf("build-in with args!\n"); }
+	  BUILTIN args 
+		{
+		printf("build-in with args!\n");
+		printf("%s :> ", $1);
+		wordlist_print($2);
+		$$ = wordlist_pushfront($2, $1);
+		free($1);
+	  	}
+	| BUILTIN { printf("build-in!\n"); }
 	;
 
-args : NUM args
-	| NUM
+args : WORD args
+		{
+		$$ = wordlist_pushfront($2, $1);
+		free($1);
+		}
+	| WORD { 
+		$$ = make_wordlist($1);
+		free($1);
+		}
 	;
 
 assignement :
