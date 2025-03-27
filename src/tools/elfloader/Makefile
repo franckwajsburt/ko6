@@ -5,12 +5,12 @@ SRC 	= elfloader.c
 include ../Makefile.tool
 
 exec: compil
-	@-if [[ -f $(ko6)/build/hello.x ]]; then \
-	elfloader $(ko6)/build/hello.x .text .data ;\
-	elfloader $(ko6)/build/hello.x;\
+	@-if [[ -f $(BLDDIR)/hello.x ]]; then \
+	elfloader  $(BLDDIR)/hello.x .text .data ;\
+	elfloader  $(BLDDIR)/hello.x;\
 	fi;\
-	if [[ -f $(ko6)/build/kernel-almo1-mips.x ]]; then \
-	elfloader $(ko6)/build/kernel*.x .ktext .kdata ;\
-	elfloader $(ko6)/build/kernel*.x;\
+	if [[ -f  $(BLDDIR)/kernel-almo1-mips.x ]]; then \
+	elfloader $(BLDDIR)/kernel*.x .ktext .kdata ;\
+	elfloader $(BLDDIR)/kernel*.x;\
 	fi
 

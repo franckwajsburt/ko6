@@ -4,7 +4,7 @@
   | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
-  \file     kernel/kinit.c
+  \file     tools/elfloader.c
   \author   Franck Wajsburt
   \brief    section loader for an executable
             

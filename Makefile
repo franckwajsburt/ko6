@@ -17,7 +17,7 @@ APP    ?= hello#					app name
 
 # ------- Options
 MAKOPT ?= -s --no-print-directory#	comment this line to get command details
-NTTYS  ?= 2#						default number of ttys
+NTTYS  ?= 3#						default number of ttys
 NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
 FROM   ?= 0000000#					first cycle to trace
