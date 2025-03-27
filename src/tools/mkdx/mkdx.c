@@ -19,14 +19,14 @@
 #include <errno.h>
 #include <sys/stat.h>
 
+#define PAGE_SIZE 4096
+#define MAX_FILES 128
+
 typedef struct {
-    char     name[24];   // filename (23 bytes + '\0'
+    char     name[24];   // filename 23 bytes + '\0'
     uint32_t lba;        // logical block position
     uint32_t size;       // size if bytes
 } entry_t;
-
-#define MAX_FILES 128
-#define PAGE_SIZE 4096
 
 entry_t Dir[MAX_FILES];
 int     Nb_file = 0;

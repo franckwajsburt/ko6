@@ -21,6 +21,15 @@ PDFDIR	= $(BLDDIR)/pdf#			pdf files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#	the pdf file has the name of directory
 BIN     = $(BINDIR)/$(CURDIR)#		the binary file has the name of directory
+YACC	= bison
+LEX		= flex
+BISONVER= $(shell bison -V|head -1| cut -d" " -f4)
+ifeq ($(BISONVER),3.7.4)
+	BISONDEF = "--defines"
+else
+	BISONDEF = "-H"
+endif
+	
 
 # Sources
 # --------------------------------------------------------------------------------------------------
@@ -72,7 +81,8 @@ pdf:
 
 clean:
 	@echo "- clean $(notdir $(BIN)) and related build files"
-	-rm *~ $(OBJ) $(OBJDS) .*.bin *.bin $(BIN)* $(PDF) $(PDF).log *_yacc.c *_lex.c 2> /dev/null || true
+	-rm *~ $(OBJ) $(OBJDS) .*.bin *.bin $(BIN)* $(PDF) $(PDF).log \
+			*_yacc.c *_lex.c *_yacc.h 2> /dev/null || true
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 
@@ -85,7 +95,8 @@ $(BIN) : $(SRC)
 
 %.c : $(SRCDIR)/%.y
 	@echo "- bison   --> "$(notdir $@)
-	$(YACC) -H $< -o $@
+	echo "_$(BISONVER)_"
+	$(YACC) $(BISONDEF) $< -o $@
 
 %.c : $(SRCDIR)/%.l
 	@echo "- flex    --> "$(notdir $@)
