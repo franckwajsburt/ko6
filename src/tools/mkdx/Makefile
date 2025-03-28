@@ -6,4 +6,4 @@ EXE		= $(wildcard $(BLDDIR)/*/*.x) $(wildcard $(BLDDIR)/*.x)
 include ../Makefile.tool
 
 exec:  # compil
-	cd $(BLDDIR); mkdx dskexe.img $(EXE)
+	cd $(BLDDIR); mkdx dskexe.dx $(EXE)

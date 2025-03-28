@@ -36,6 +36,20 @@
             compatible = "soclib,tty";
         };
 
+        tty@d0200020 {
+            interrupts = <0x0c>;
+            interrupt-parent = <0x02>;
+            reg = <0xd0200020 0x10>;
+            compatible = "soclib,tty";
+        };
+
+        tty@d0200030 {
+            interrupts = <0x0d>;
+            interrupt-parent = <0x02>;
+            reg = <0xd0200030 0x10>;
+            compatible = "soclib,tty";
+        };
+
         dma@1200000 {
 			interrupts = <0x09>;
 			interrupt-parent = <0x02>;

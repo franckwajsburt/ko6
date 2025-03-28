@@ -17,11 +17,15 @@ APP    ?= hello#					app name
 
 # ------- Options
 MAKOPT ?= -s --no-print-directory#	comment this line to get command details
-NTTYS  ?= 3#						default number of ttys
+NTTYS  ?= 4#						default number of ttys
 NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
 FROM   ?= 0000000#					first cycle to trace
 LAST   ?= 0100000#					last cycle to execute
+DISK	=#							no disk --> chose this, if there is no disk
+DISK	= -BDFILE dskexe.dx# 		disk image made with mkdx
+FBF		= -FBFSIZE 128# 			Frame Buffer Size 
+FBF		= # 						no frame buffer --> chose this, if there is no frame buffer
 
 # ------- Directories
 SWDIR   = src/soft#        			software directory
@@ -86,12 +90,12 @@ pdf:
 # Ask to compile, then start the SoC in order to execute the kernel and the apps.
 # Since the execution method depends strongly on the SoC, the Makefile is placed in the soc dir.
 exec: compil
-	make -C $(SOCDIR) exec NTTYS=$(NTTYS) NCPUS=$(NCPUS) \
-		VERBOSE=$(VERBOSE) FROM=$(FROM) LAST=$(LAST) APP=$(APP)
+	make -C $(SOCDIR) exec VERBOSE=$(VERBOSE) APP=$(APP)\
+			NTTYS=$(NTTYS) NCPUS=$(NCPUS) DISK="$(DISK)" FBF="$(FBF)"
 
 debug: compil
-	make -C $(SOCDIR) debug NTTYS=$(NTTYS) NCPUS=$(NCPUS) \
-		VERBOSE=$(VERBOSE) FROM=$(FROM) LAST=$(LAST) APP=$(APP)
+	make -C $(SOCDIR) debug VERBOSE=$(VERBOSE) APP=$(APP) FROM=$(FROM) LAST=$(LAST)\
+			NTTYS=$(NTTYS) NCPUS=$(NCPUS) DISK="$(DISK)" FBF="$(FBF)"
 
 doxygen:
 	cd docs; doxygen doxygen.cfg

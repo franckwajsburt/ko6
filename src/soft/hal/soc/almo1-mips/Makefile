@@ -106,13 +106,14 @@ mkdtb:
 
 exec: compil
 	cd $(BLDDIR);\
-	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP)/$(APP).x \
-					-NTTYS $(NTTYS) -NCPUS $(NCPUS)
+	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP)/$(APP).x\
+					-NTTYS $(NTTYS) -NCPUS $(NCPUS) $(DISK) $(FBF)
 
 debug: compil
 	cd $(BLDDIR);\
-	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP)/$(APP).x \
-					-NTTYS $(NTTYS) -NCPUS $(NCPUS) -DEBUG $(FROM) -NCYCLES $(LAST) > $(DLOG)
+	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP)/$(APP).x\
+					-NTTYS $(NTTYS) -NCPUS $(NCPUS) $(DISK) $(FBF)\
+					-DEBUG $(FROM) -NCYCLES $(LAST) > $(DLOG)
 	cd $(BLDDIR);\
 	tracelog $(SRCDIR)/tags $(BLDDIR)/*.x.s $(DLOG)
 

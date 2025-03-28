@@ -19,7 +19,7 @@ int main (void)
     fprintf( 1, "What's your name? ");
     fgets( name, sizeof(name), 1);
     name[ strlen(name)-1 ]=0;
-    fprintf( 1, "Hello %s!\n", name);
-    fprintf( 1, "The end\n");
+    fprintf( 2, "Hello %s!\n", name);
+    fprintf( 3, "The end\n");
     return 0;
 }
