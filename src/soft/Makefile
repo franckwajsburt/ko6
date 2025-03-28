@@ -20,12 +20,6 @@ VERBOSE?= 0#				verbose mode to print INFO(), BIP(), ASSERT, VAR()
 BLDDIR	= $(ko6)/build#		build directory
 OBJDIR	= $(BLDDIR)/kobj#	kernel object files directory
 
-# Files
-# --------------------------------------------------------------------------------------------------
-
-#OBJ 	= $(wildcard $(OBJDIR)/*.o)
-#OBJ 	+= $(OBJDIR)/libfdt.a
-
 # Rules (here they are used such as simple shell scripts)
 # --------------------------------------------------------------------------------------------------
 
@@ -49,6 +43,7 @@ compil: tags
 	-make -C hal             $(MAKOPT) compil SOC=$(SOC) CPU=$(CPU) VERBOSE=$(VERBOSE)
 	-make -C ulib            $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
 	-make -C uapp            $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
+	mkdx $(BLDDIR)/dskexe.img $(BLDDIR)/*/*.x $(BLDDIR)/*.x 
 
 tags:
 	@echo "- Create tags for vim"

@@ -8,32 +8,20 @@
   \author   Franck Wajsburt
   \brief    section loader for an executable
             
+     ┌────────────┐      
+  ┌──┼ elf32_Ehdr │      
+  │  └────────────┘      
+  │  ┌────────────┐◄───┐ 
+  │  │    text    │    │ 
+  │  ┌────────────┐◄─┐ │ 
+  │  │    data    │  │ │ 
+  │  │            │  │ │ 
+  │  └────────────┘  │ │ 
+  └─►┌────────────┐  │ │ 
+     │ Elf32_Shdr │──┘ │ 
+     │            │────┘ 
+     └────────────┘      (draw with https://asciiflow.com)
 \*------------------------------------------------------------------------------------------------*/
-
-#ifdef _HOST_
-#   include <stdio.h>
-#   include <stdlib.h>
-#   include <fcntl.h>
-#   include <unistd.h>
-#   include <string.h>
-#   include <sys/types.h>
-#   include <stdint.h>
-#   define MALLOC(s) malloc(s)
-#   define FREE(s) free(s)
-#   define P(fmt,var) fprintf(stderr, #var" : "fmt, var)
-#   define RETURN(e,c,m,...) if(c){fprintf(stderr,"Error "m"\n");__VA_ARGS__;return e;}
-#   define OPENR(f) open (f, O_RDONLY)
-#   define OPENW(f) open (f, O_WRONLY | O_CREAT | O_TRUNC, 0644)
-#   define PRINT(fmt,...) printf(fmt,__VA_ARGS__)
-#else
-#   define MALLOC(s) kmalloc(s)
-#   define FREE(s) kfree(s)
-#   define P(fmt,var) 
-#   define RETURN(e,c,m,...) if(c){kprintf("Error "m"\n");__VA_ARGS__;return e;}
-#   define OPENR(f) open (f)
-#   define OPENW(f)
-#   define PRINT(fmt,...)
-#endif
 
 #include <elfloader.h>
 
@@ -140,25 +128,5 @@ int elf_load_section (elf_t *elf, int section_index, char * output_filename)
     close (out_fd);
 
     PRINT ("Section %s in %s (%d bytes) addr=%08x\n", name, output_filename, size, addr);
-    return 0;
-}
-
-int main (int argc, char **argv) 
-{
-    RETURN (1, argc < 2, "Usage: elf_loader <ELF file> [section...]");
-    
-    elf_t *elf = (argc == 2) ? elf_open (argv[1], (const char **)&argv[2], argc-2)
-                             : elf_open (argv[1], NULL, 0);
-    RETURN (1, !elf, "Section not found");
-
-    for (int i = 0; i < elf->section_count; i++) {
-        char filename[32];
-        char * secname = elf->sections[i].name; 
-        strncpy (filename, secname + (*secname == '.'), sizeof(filename)-1);
-        strncat (filename, ".bin", sizeof(filename)-1);
-        elf_load_section (elf, i, filename);
-    }
-
-    elf_close (elf);
     return 0;
 }

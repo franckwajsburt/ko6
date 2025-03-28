@@ -15,6 +15,31 @@
 
 #include <elfminimal.h>
 
+#ifdef _HOST_
+#   include <stdio.h>
+#   include <stdlib.h>
+#   include <fcntl.h>
+#   include <unistd.h>
+#   include <string.h>
+#   include <sys/types.h>
+#   include <stdint.h>
+#   define MALLOC(s) malloc(s)
+#   define FREE(s) free(s)
+#   define P(fmt,var) fprintf(stderr, #var" : "fmt, var)
+#   define RETURN(e,c,m,...) if(c){fprintf(stderr,"Error "m"\n");__VA_ARGS__;return e;}
+#   define OPENR(f) open (f, O_RDONLY)
+#   define OPENW(f) open (f, O_WRONLY | O_CREAT | O_TRUNC, 0644)
+#   define PRINT(fmt,...) printf(fmt,__VA_ARGS__)
+#else
+#   define MALLOC(s) kmalloc(s)
+#   define FREE(s) kfree(s)
+#   define P(fmt,var) 
+#   define RETURN(e,c,m,...) if(c){kprintf("Error "m"\n");__VA_ARGS__;return e;}
+#   define OPENR(f) open (f)
+#   define OPENW(f)
+#   define PRINT(fmt,...)
+#endif
+
 #define MAX_SECTIONS 8                  ///< Maximum number of sections that can be loaded.
 
 /**
@@ -66,7 +91,6 @@ void elf_close(elf_t *elf);
  * \param output_filename The name of the output file where the section will be saved.
  * \return 0 on success, -1 on error (e.g., invalid section index, memory allocation failure).
  */
-int elf_load(elf_t *elf, int section_index, const char *output_filename);
+int elf_load_section (elf_t *elf, int section_index, char *output_filename);
 
 #endif // _ELFLOADER_H_
-

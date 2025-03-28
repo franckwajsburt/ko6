@@ -1,7 +1,7 @@
 SRCDIR	= 
 INCDIR	= -I. -I$(SRCDIR)
 CFLAGS  = -D_HOST_ 
-SRC 	= elfloader.c
+SRC 	= elfloader.c main.c
 include ../Makefile.tool
 
 exec: compil

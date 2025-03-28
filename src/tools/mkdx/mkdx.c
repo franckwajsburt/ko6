@@ -7,7 +7,17 @@
   \file     tools/mkdx.c
   \author   Franck Wajsburt
   \brief    build a simple disk image with a single directory
-            
+
+  0   1   2   3   4   5   6   7   8   9  ... LBA (1 block = 4 kB)
+  ┌───┌───────────┌───────┌───────────────┐
+  │DIR│   app1.x  │app2.x │     app3.x    │  disk image built
+  └───└───────────└───────└───────────────┘
+      ┌─────────────┐
+  DIR:│app1.x 1 11kB│ name[24],LBA,size
+      │app2.x 4 7kB │
+      │app3.x 6 15kB│
+      │             │ 128 file descr.
+      └─────────────┘                                               draw with https://asciiflow.com
 \*------------------------------------------------------------------------------------------------*/
 
 #include <stdio.h>
@@ -47,13 +57,13 @@ void copy_file_to_disk(char *pathname, int file_index, int *current_lba)
 
     char *name;
     for (name = pathname + strlen(pathname); (name != pathname) && (*name != '/'); name--);
-    if (*name == '/') name++; 
+    if (*name == '/') name++;
 
     struct stat st;
     fstat(in_fd, &st);
 
     strncpy(Dir[file_index].name, name, 23);
-    Dir[file_index].name[23] = '\0'; 
+    Dir[file_index].name[23] = '\0';
     Dir[file_index].lba = *current_lba;
     Dir[file_index].size = st.st_size;
 
@@ -61,7 +71,7 @@ void copy_file_to_disk(char *pathname, int file_index, int *current_lba)
     int bytes_read;
     while ((bytes_read = read(in_fd, buffer, PAGE_SIZE)) > 0) {
         write(Disk_fd, buffer, bytes_read);
-        (*current_lba) += (bytes_read + PAGE_SIZE - 1) / PAGE_SIZE;  // block alignment 
+        (*current_lba) += (bytes_read + PAGE_SIZE - 1) / PAGE_SIZE;  // block alignment
     }
 
     close(in_fd);
@@ -81,7 +91,7 @@ int main(int argc, char *argv[])
         copy_file_to_disk(argv[i], Nb_file, &current_lba);
     }
 
-    lseek(Disk_fd, 0, SEEK_SET);                                    // write de directory 
+    lseek(Disk_fd, 0, SEEK_SET);                                    // write de directory
     write(Disk_fd, Dir, sizeof(Dir));
     close(Disk_fd);
 

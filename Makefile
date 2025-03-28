@@ -75,13 +75,13 @@ help:
 # First Compile all the codes of ko6: kernel and all user applications --> ko6/build
 # Then Compile all the Linux tools --> ko6/bin
 compil:
-	make -C $(SWDIR) $(MAKOPT) MAKOPT=$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
 	make -C $(LTDIR) $(MAKOPT) MAKOPT=$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
+	make -C $(SWDIR) $(MAKOPT) MAKOPT=$(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
 
 # Create PDF of the sources
 pdf:
-	make -C $(SWDIR) $(MAKOPT) pdf SOC=$(SOC)
 	make -C $(LTDIR) $(MAKOPT) pdf SOC=$(SOC)
+	make -C $(SWDIR) $(MAKOPT) pdf SOC=$(SOC)
 
 # Ask to compile, then start the SoC in order to execute the kernel and the apps.
 # Since the execution method depends strongly on the SoC, the Makefile is placed in the soc dir.
