@@ -102,7 +102,7 @@ void stmt_destroy(stmt_s *victim)
 }
 
 
-stmt_s *if_stmt_create(void)
+if_stmt_s *if_stmt_create(void)
 {
     struct if_stmt *new = malloc(sizeof(*new));
 
@@ -134,7 +134,7 @@ void if_stmt_destroy(if_stmt_s *victim)
 }
 
 
-stmt_s *while_stmt_create(void)
+while_stmt_s *while_stmt_create(void)
 {
     struct while_stmt *new = malloc(sizeof(*new));
 

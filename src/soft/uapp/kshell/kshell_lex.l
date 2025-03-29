@@ -4,7 +4,7 @@
 
 %}
 
-filename	        	[a-zA-Z0-9_.+-@!]+
+filename	        	[a-zA-Z0-9\-]+
 alpha					[a-zA-Z]
 digit					[0-9]
 integer					{digit}+
@@ -31,6 +31,8 @@ top					yylval.str = strdup(yytext); return BUILTIN;
 kill				yylval.str = strdup(yytext); return BUILTIN;
 kvar				yylval.str = strdup(yytext); return BUILTIN;
 su					yylval.str = strdup(yytext); return BUILTIN;
+"["                 return yytext[0];
+"]"                 return yytext[0];
 "=="				yylval.str = strdup(yytext); return BINOP;
 "!="				yylval.str = strdup(yytext); return BINOP;
 "<="				yylval.str = strdup(yytext); return BINOP;
@@ -39,8 +41,8 @@ su					yylval.str = strdup(yytext); return BUILTIN;
 "-"					yylval.str = strdup(yytext); return BINOP;
 "*"					yylval.str = strdup(yytext); return BINOP;
 "\/"				yylval.str = strdup(yytext); return BINOP;
-{filename}			yylval.str = strdup(yytext); return WORD;
 ";"					return SEMICOLON;
+{filename}			yylval.str = strdup(yytext); return WORD;
 [ \t]+				/* ignore */;
 "\n"				return NEWLINE;
 .					return (int) yytext[0];

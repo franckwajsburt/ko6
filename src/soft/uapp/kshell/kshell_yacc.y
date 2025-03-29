@@ -17,7 +17,8 @@ int yydebug = 1;
 %union {
 	int num;
 	char * str;
-	struct wordlist * wlist;
+	struct wordlist *wlist;
+	struct stmt *stmt;
 }
 
 %token NEWLINE SEMICOLON
@@ -29,6 +30,8 @@ int yydebug = 1;
 %token<str> WORD
 %type<wlist> args
 %type<wlist> built_in
+%type<stmt> top_level
+%type<stmt> stmt
 
 
 %%
@@ -38,20 +41,21 @@ script : maybe_separator top_level seq_separator
 	| /* empty */
 	;
 
-top_level : top_level seq_separator stmt
-	| stmt
+top_level : 
+	 top_level seq_separator stmt
+	{
+	}
+	| stmt 
+	{}
 	;
 
 stmt : 
-	  simple_stmt
+	  simple_stmt 
 	| compound_stmt
 	;
 
 simple_stmt :
 	  built_in {
-		printf("simple_stmt: ");
-		wordlist_print($1);
-		wordlist_destroy($1);
 	  }
 	| assignement {}
 	;
@@ -61,30 +65,31 @@ compound_stmt :
 	| while_bloc
 	;
 
-if_bloc : IF expr separator THEN top_level FI {
+if_bloc : IF maybe_separator expr separator THEN script FI
+	{
+		printf("if_bloc!\n");
 	}
-	| IF expr separator THEN top_level  ELSE top_level FI
+	| IF maybe_separator expr separator THEN script  ELSE script FI
 	;
 
 while_bloc : WHILE expr separator DO top_level DONE
 	;
 
-
 expr : 
-	  NUM BINOP NUM { 
-		printf("binop: %s\n", $2);
-		switch ($2[0]) {
+	'[' WORD BINOP WORD ']' { 
+		printf("binop: %s\n", $3);
+		switch ($3[0]) {
 			case '+' :
-				printf("plus\n");
+				printf("%s plus %s\n", $2, $4);
 				break;
 			case '*' :
-				printf("mult\n");
+				printf("%s mult %s\n", $2, $4);
 				break;
 			case '/' :
-				printf("div\n");
+				printf("%s div %s\n", $2, $4);
 				break;
 			case '-' :
-				printf("menos\n");
+				printf("%s menos %s\n", $2, $4);
 				break;
 			
 		}
@@ -100,7 +105,11 @@ built_in :
 		$$ = wordlist_pushfront($2, $1);
 		free($1);
 	  	}
-	| BUILTIN { printf("build-in!\n"); }
+	| BUILTIN 
+		{
+		$$ = make_wordlist($1);
+		free($1);
+		}
 	;
 
 args : WORD args

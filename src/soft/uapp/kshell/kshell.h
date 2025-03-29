@@ -216,7 +216,7 @@ void stmt_destroy(stmt_s *victim);
  * \return  A pointer to the newly generic if_stmt. NULL on error.
  * \note    if_case and else_case will be pointing to NULL
  */
-stmt_s *if_stmt_create(void);
+if_stmt_s *if_stmt_create(void);
 
 /**
  * \brief   destroy an if_stmt
@@ -234,7 +234,7 @@ void if_stmt_destroy(if_stmt_s *victim);
  * \return  A pointer to the newly generic while_stmt. NULL on error.
  * \note    condition and execute will be pointing to NULL
  */
-stmt_s *while_stmt_create(void);
+while_stmt_s *while_stmt_create(void);
 
 /**
  * \brief   destroy an while_stmt
