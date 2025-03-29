@@ -16,17 +16,16 @@
 struct timer_s;
 
 /** 
- * \brief Functions prototypes of the timer device, they should be implemented
- *        by a device driver. They serve as an interface between the kernel and
- *        the driver
+ * \brief Functions prototypes of the timer device, they should be implemented by a device driver. 
+ *        They serve as an interface between the kernel and the driver
  */
 struct timer_ops_s {
     /**
      * \brief   Generic function to initialize the timer device
-     * \param   address the base address of the memory-mapped registers
+     * \param   base the base address of the memory-mapped registers
      * \param   tick number of ticks between to timer interrupts
      */
-    void (*timer_init)(struct timer_s *timer, unsigned address, unsigned tick);
+    void (*timer_init)(struct timer_s *timer, unsigned base, unsigned tick);
 
     /**
      * \brief   Generic function that allows the kernel to set the number of ticks
@@ -54,7 +53,7 @@ struct timer_event_s {
 
 /** \brief Timer driver informations */
 struct timer_s {
-    unsigned address;               //< timer's address
+    unsigned base;                  //< timer's base address
     unsigned period;                //< number of ticks between two events
     struct timer_event_s event;     //< event triggered each nticks
     struct timer_ops_s *ops;        //< driver-specific operations

@@ -14,14 +14,14 @@
 
 /**
  * \brief   Initialize the Soclib DMA device
- * \param   dma the dma device 
- * \param   address address of the device
+ * \param   dma     The dma device 
+ * \param   base    The base address of the device
  * \return  nothing
  */
-static void soclib_dma_init(struct dma_s *dma, unsigned address)
+static void soclib_dma_init(struct dma_s *dma, unsigned base)
 {
-    dma->address    = address;
-    dma->ops        = &SoclibDMAOps;
+    dma->base    = base;
+    dma->ops     = &SoclibDMAOps;
 }
 
 /**
@@ -34,12 +34,14 @@ static void soclib_dma_init(struct dma_s *dma, unsigned address)
  */
 static void *soclib_dma_memcpy(struct dma_s *dma, int *dst, int *src, unsigned n)
 {
-    dcache_buf_invalidate(dst, n);                  // if there are lines of this buffer in the cache, forget them
+/** FIXME : Why do a flush ?
+    dcache_buf_invalidate(dst, n);              // if there are cached lines dst buffer, forget them
+**/
     volatile struct soclib_dma_regs_s *regs = 
-        (struct soclib_dma_regs_s *) dma->address;
-    regs->dest = dst;                               // destination address
-    regs->src = src;                                // source address
-    regs->len = n;                                  // at last number of byte
+        (struct soclib_dma_regs_s *) dma->base;
+    regs->dest = dst;                           // destination address
+    regs->src = src;                            // source address
+    regs->len = n;                              // at last number of byte
     while (regs->len) delay(100);
     return dst;
 }

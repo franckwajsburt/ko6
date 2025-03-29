@@ -16,16 +16,15 @@
 struct icu_s;
 
 /** 
- * \brief Functions prototypes of the ICU device, they should be implemented
- *        by a device driver. They serve as an interface between the kernel and
- *        the driver
+ * \brief Functions prototypes of the ICU device, they should be implemented by a device driver. 
+ *        They serve as an interface between the kernel and the driver.
  */
 struct icu_ops_s {
     /**
      * \brief   Generic function to initialize the ICU device
-     * \param   address the base address of the memory-mapped registers
+     * \param   base the base address of the memory-mapped registers
      */
-    void        (*icu_init)(struct icu_s *icu, unsigned address);
+    void        (*icu_init)(struct icu_s *icu, unsigned base);
 
     /**
      * \brief   Generic function that fetch the highest priority IRQ from the ICU device
@@ -66,7 +65,7 @@ struct icu_ops_s {
 
 /** \brief ICU driver informations */
 struct icu_s {
-    unsigned address;           //< ICU's address
+    unsigned base;              //< ICU's base address
     struct icu_ops_s *ops;      //< driver-specific operations
 };
 #define icu_alloc() (struct icu_s*) (dev_alloc(ICU_DEV, sizeof(struct icu_s))->data)

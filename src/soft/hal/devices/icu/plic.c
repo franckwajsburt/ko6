@@ -14,14 +14,14 @@
 
 /**
  * \brief   Initialize PLIC device
- * \param   icu icu device to initialize
- * \param   address address of the physical device
+ * \param   icu     icu device to initialize
+ * \param   base    The base address of the physical device
  * \return  nothing
  */
-static void plic_init(struct icu_s *icu, unsigned address)
+static void plic_init(struct icu_s *icu, unsigned base)
 {
-    icu->ops        = &PlicOps;
-    icu->address    = address;
+    icu->ops    = &PlicOps;
+    icu->base   = base;
 }
 
 /**
@@ -30,7 +30,7 @@ static void plic_init(struct icu_s *icu, unsigned address)
  */
 static unsigned plic_get_highest(struct icu_s *icu)
 {
-    return *(unsigned*) PLIC_MCLAIM(icu->address, cpuid());
+    return *(unsigned*) PLIC_MCLAIM(icu->base, cpuid());
 }
 
 /**
@@ -42,7 +42,7 @@ static unsigned plic_get_highest(struct icu_s *icu)
  */
 static void plic_set_priority(struct icu_s *icu, unsigned irq, unsigned pri)
 {
-    ((unsigned*)icu->address + PLIC_PRI_OFFSET)[irq] = pri;
+    ((unsigned*)icu->base + PLIC_PRI_OFFSET)[irq] = pri;
 }
 
 /**
@@ -53,7 +53,7 @@ static void plic_set_priority(struct icu_s *icu, unsigned irq, unsigned pri)
  */
 static void plic_acknowledge(struct icu_s *icu, unsigned irq)
 {
-    *(unsigned*) PLIC_MCLAIM(icu->address, cpuid()) = irq;
+    *(unsigned*) PLIC_MCLAIM(icu->base, cpuid()) = irq;
 }
 
 /**
@@ -65,7 +65,7 @@ static void plic_acknowledge(struct icu_s *icu, unsigned irq)
 static void plic_unmask(struct icu_s *icu, unsigned irq)
 {
     unsigned j = irq % 32;
-    *(unsigned*) PLIC_MENABLE(icu->address, cpuid(), irq) |= (1 << j);
+    *(unsigned*) PLIC_MENABLE(icu->base, cpuid(), irq) |= (1 << j);
 }
 
 /**
@@ -77,7 +77,7 @@ static void plic_unmask(struct icu_s *icu, unsigned irq)
 static void plic_mask(struct icu_s *icu, unsigned irq)
 {
     unsigned j = irq % 32;
-    *(unsigned*) PLIC_MENABLE(icu->address, cpuid(), irq) &= ~(1 << j);
+    *(unsigned*) PLIC_MENABLE(icu->base, cpuid(), irq) &= ~(1 << j);
 }
 
 struct icu_ops_s PlicOps = {

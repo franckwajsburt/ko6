@@ -21,23 +21,23 @@
  */
 static void soclib_timer_set_tick(struct timer_s *timer, unsigned tick)
 {
-    struct soclib_timer_regs_s *regs = (struct soclib_timer_regs_s *) timer->address;
+    struct soclib_timer_regs_s *regs = (struct soclib_timer_regs_s *) timer->base;
     regs->period = tick;
 }
 
 /**
  * \brief   soclib timer initialization 
- * \param   timer timer device to initialize
- * \param   address address of the device
- * \param   tick number of ticks between two interrupts
+ * \param   timer   timer device to initialize
+ * \param   base    The base address of the device
+ * \param   tick    number of ticks between two interrupts
  * \return  nothing
  */
-static void soclib_timer_init(struct timer_s *timer, unsigned address, unsigned tick)
+static void soclib_timer_init(struct timer_s *timer, unsigned base, unsigned tick)
 {
-    timer->address  = address;
+    timer->base  = base;
     timer->ops      = &SoclibTimerOps;
 
-    struct soclib_timer_regs_s *regs = (struct soclib_timer_regs_s *) timer->address;
+    struct soclib_timer_regs_s *regs = (struct soclib_timer_regs_s *) timer->base;
     regs->resetirq = 1;                       // to be sure there won't be a IRQ when timer start
     soclib_timer_set_tick(timer, tick);       // next period
 
@@ -66,7 +66,7 @@ struct timer_ops_s SoclibTimerOps = {
 void soclib_timer_isr (unsigned irq, struct timer_s *timer)
 {
     struct soclib_timer_regs_s *regs = 
-        (struct soclib_timer_regs_s *) timer->address;
+        (struct soclib_timer_regs_s *) timer->base;
     regs->resetirq = 1;                     // IRQ acknoledgement to lower the interrupt signal
     
     if (timer->event.f)

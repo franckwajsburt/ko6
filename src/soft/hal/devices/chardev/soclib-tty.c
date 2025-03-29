@@ -15,32 +15,35 @@
 /**
  * \brief   Init the soclib tty device
  * \param   cdev soclib device
- * \param   address the soclib tty address 
+ * \param   base the soclib tty base address 
  * \param   baudrate the soclib tty baudrate (unused for this device)
  * \return  nothing
  */
-static void soclib_tty_init(struct chardev_s *cdev, unsigned address, unsigned baudrate)
+static void soclib_tty_init(struct chardev_s *cdev, unsigned base, unsigned baudrate)
 {
-    cdev->ops        = &SoclibTTYOps;
-    cdev->address    = address;
-    cdev->baudrate   = baudrate;
+    cdev->ops       = &SoclibTTYOps;
+    cdev->base      = base;
+    cdev->baudrate  = baudrate;
 
     struct fifo_s *fifo = kmalloc(sizeof(struct fifo_s));
     cdev->driver_data = (void*) fifo;
 }
 
 /**
- * \brief   Read a buffer from the soclib tty
+ * \brief   Read a buffer from the soclib tty of try to read a single char if count==0
  * \param   cdev the chardev device corresponding to the soclib tty
  * \param   buf the buf to fill
  * \param   count number of bytes to read from the tty
- * \return  number of bytes written
+ *          it is a blocking function if count > 0 until count char is read
+ *          if count == 0, it is a non-blocking function to read a single char
+ * \return  if count > 0 then number of read bytes, else SUCCESS or FAILURE
  */
 static int soclib_tty_read(struct chardev_s *cdev, char *buf, unsigned count)
 {
     struct fifo_s *fifo = (struct fifo_s *) cdev->driver_data;
 
-    if (count) {    // blocking behavior
+    // blocking behavior
+    if (count) {
         int res = 0;                                    // nb of read char
         char c;                                         // char read
         while (count--) {
@@ -69,7 +72,7 @@ static int soclib_tty_write(struct chardev_s *cdev, char *buf, unsigned count)
 {
     int res = 0;                                        // nb of written char
     struct soclib_tty_regs_s *regs = 
-        (struct soclib_tty_regs_s *) cdev->address;     // access the registers
+        (struct soclib_tty_regs_s *) cdev->base;     // access the registers
 
     while (count--) {                                   // while there are chars
         regs->write = *buf;                             // send the char to TTY
@@ -89,7 +92,7 @@ struct chardev_ops_s SoclibTTYOps = {
 void soclib_tty_isr(unsigned irq, struct chardev_s *cdev)
 {
     struct soclib_tty_regs_s *regs = 
-        (struct soclib_tty_regs_s *) cdev->address;
+        (struct soclib_tty_regs_s *) cdev->base;
     
     struct fifo_s *fifo = (struct fifo_s *) cdev->driver_data;
     char c = regs->read;

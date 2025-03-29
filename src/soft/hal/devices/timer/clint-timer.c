@@ -21,21 +21,21 @@
 static void clint_timer_set_tick(struct timer_s *timer, unsigned tick)
 {
     // We have to options: either set mtimecmp, or reset mtime
-    *(unsigned*) (timer->address + CLINT_MTIMECMP_OFFSET) =
-        (*(unsigned*) (timer->address + CLINT_MTIME_OFFSET)) + tick;
+    *(unsigned*) (timer->base + CLINT_MTIMECMP_OFFSET) =
+        (*(unsigned*) (timer->base + CLINT_MTIME_OFFSET)) + tick;
     timer->period = tick;
 }
 
 /**
  * \brief   CLINT timer initialization 
- * \param   timer timer device to initialize
- * \param   address address of the device
- * \param   tick number of ticks between two interrupts
+ * \param   timer   timer device to initialize
+ * \param   base    The base address of the device
+ * \param   tick    number of ticks between two interrupts
  * \return  nothing
  */
-static void clint_timer_init(struct timer_s *timer, unsigned address, unsigned tick)
+static void clint_timer_init(struct timer_s *timer, unsigned base, unsigned tick)
 {
-    timer->address  = address;
+    timer->base  = base;
     timer->ops      = &ClintTimerOps;
 
     clint_timer_set_tick(timer, tick); // next period

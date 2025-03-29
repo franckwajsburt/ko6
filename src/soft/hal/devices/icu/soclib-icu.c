@@ -14,14 +14,14 @@
 
 /**
  * \brief   Initialize the soclib icu device
- * \param   icu icu device to initialize
- * \param   address address of the physical device
+ * \param   icu     icu device to initialize
+ * \param   base    base of the physical device
  * \return  nothing
  */
-static void soclib_icu_init(struct icu_s *icu, unsigned address)
+static void soclib_icu_init(struct icu_s *icu, unsigned base)
 {
-    icu->ops        = &SoclibICUOps;
-    icu->address    = address;
+    icu->ops     = &SoclibICUOps;
+    icu->base    = base;
 }
 
 /**
@@ -32,7 +32,7 @@ static void soclib_icu_init(struct icu_s *icu, unsigned address)
 static unsigned soclib_icu_get_highest(struct icu_s *icu)
 {
     struct soclib_icu_regs_s *regs =
-        (struct soclib_icu_regs_s *) icu->address;
+        (struct soclib_icu_regs_s *) icu->base;
     return regs->highest;
 }
 
@@ -57,7 +57,7 @@ static void soclib_icu_acknowledge(struct icu_s *icu, unsigned irq)
 static void soclib_icu_unmask(struct icu_s *icu, unsigned irq)
 {
     struct soclib_icu_regs_s *regs =
-        (struct soclib_icu_regs_s *) icu->address;
+        (struct soclib_icu_regs_s *) icu->base;
     regs->set = 1 << irq;
 }
 

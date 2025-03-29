@@ -21,25 +21,24 @@
 struct chardev_s;
 
 /** 
- * \brief Functions prototypes of character device, they should be implemented
- *        by a device driver. They serve as an interface between the kernel and
- *        the driver
+ * \brief Functions prototypes of character device, they should be implemented by a device driver. 
+ *        They serve as an interface between the kernel and the driver
  */
 struct chardev_ops_s {
     /**
      * \brief   Generic function that initialize the chardev device
      * \param   chardev the char device
-     * \param   address base address of the device memory-mapped registers 
+     * \param   base    base address of the device memory-mapped registers 
      * \param   baudrate the device baudrate
      */
-    void (*chardev_init)(struct chardev_s *chardev, unsigned address, unsigned baudrate);
+    void (*chardev_init)(struct chardev_s *chardev, unsigned base, unsigned baudrate);
 
     /**
      * \brief   Generic function that write to the chardev device
      * \param   chardev     the chardev device
      * \param   buf     the buffer to write to the chardev
      * \param   count   the number of bytes to write
-     * \return  number of bytes actually written
+     * \return  number onf bytes actually written
     */
     int (*chardev_write)(struct chardev_s *chardev, char *buf, unsigned count);
 
@@ -55,7 +54,7 @@ struct chardev_ops_s {
 
 /** \brief Character device informations */
 struct chardev_s {
-    unsigned address;               ///< memory-mapped register addresses
+    unsigned base;                  ///< memory-mapped register base addresses
     unsigned baudrate;              ///< chardev baudrate
     struct chardev_ops_s *ops;      ///< driver specific operations linked to the chardev
     void * driver_data;             ///< private pointer for driver specific info

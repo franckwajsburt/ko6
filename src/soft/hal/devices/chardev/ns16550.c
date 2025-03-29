@@ -20,22 +20,22 @@
  *              * Enable interrupts
  *              * Disable FIFO
  * \param   cdev the char device
- * \param   address the base NS16550 MMIO address
+ * \param   base the base NS16550 MMIO address
  * \param   baudrate the baudrate of the UART
  */
-static void ns16550_init(struct chardev_s *cdev, unsigned address, unsigned baudrate)
+static void ns16550_init(struct chardev_s *cdev, unsigned base, unsigned baudrate)
 {
-    cdev->ops        = &NS16550Ops;
-    cdev->address    = address;
-    cdev->baudrate   = baudrate;
+    cdev->ops       = &NS16550Ops;
+    cdev->base      = base;
+    cdev->baudrate  = baudrate;
     
     struct fifo_s *fifo = kmalloc(sizeof(struct fifo_s));
     cdev->driver_data = (void*) fifo;
 
     volatile struct ns16550_general_regs_s *gregs =
-        (struct ns16550_general_regs_s *) address;
+        (struct ns16550_general_regs_s *) base;
     volatile struct ns16550_dlab_regs_s *dregs =
-        (struct ns16550_dlab_regs_s *) address;
+        (struct ns16550_dlab_regs_s *) base;
 
     /* Set baudrate */
     gregs->lcr |= NS16550_ENABLE_DLAB;
@@ -97,12 +97,12 @@ static int ns16550_write(struct chardev_s *cdev, char *buf, unsigned count)
 {
     int res = 0;                                        // nb of written char
     volatile struct ns16550_general_regs_s *regs = 
-        (struct ns16550_general_regs_s *) cdev->address;// access the registers
+        (struct ns16550_general_regs_s *) cdev->base;   // access the registers
     
     while (count--) {                                   // while there are chars
         regs->hr = *buf;                                // send the char to TTY
         res++;                                          // nb of written char
-        buf++;		                                    // but is the next address in buffer
+        buf++;		                                    // but is the next base in buffer
     }
     return res;
 }
@@ -116,7 +116,7 @@ struct chardev_ops_s NS16550Ops = {
 void ns16550_isr(unsigned irq, struct chardev_s *cdev)
 {
     volatile struct ns16550_general_regs_s *regs = 
-        (struct ns16550_general_regs_s *) cdev->address;
+        (struct ns16550_general_regs_s *) cdev->base;
     
     struct fifo_s *fifo = (struct fifo_s *) cdev->driver_data;
     char c = regs->hr;

@@ -49,28 +49,28 @@
 #define PLIC_CLAIM_OFFSET       0x200004
 
 // Inspired from the xv6 macros
-#define PLIC_MENABLE(base, cpu, irq)    ((base) + \
-                                        PLIC_ENABLE_OFFSET + \
-                                        PLIC_M_CONTEXT(cpu) * 0x80 + \
-                                        (irq) / 32)
-#define PLIC_SENABLE(base, cpu, irq)    ((base) + \
-                                        PLIC_ENABLE_OFFSET + \
-                                        PLIC_S_CONTEXT(cpu) * 0x80 + \
-                                        (irq) / 32)
+#define PLIC_MENABLE(base, cpu, irq) ((base) + \
+                                     PLIC_ENABLE_OFFSET + \
+                                     PLIC_M_CONTEXT(cpu) * 0x80 + \
+                                     (irq) / 32)
+#define PLIC_SENABLE(base, cpu, irq) ((base) + \
+                                     PLIC_ENABLE_OFFSET + \
+                                     PLIC_S_CONTEXT(cpu) * 0x80 + \
+                                     (irq) / 32)
 
-#define PLIC_MPRITRESH(base, cpu)   ((base) + \
-                                    PLIC_PRI_TRESH_OFFSET + \
-                                    PLIC_M_CONTEXT(cpu) * 0x1000)
-#define PLIC_SPRITRESH(base, cpu)   ((base) + \
-                                    PLIC_PRI_TRESH_OFFSET + \
-                                    PLIC_S_CONTEXT(cpu) * 0x1000)
+#define PLIC_MPRITRESH(base, cpu)    ((base) + \
+                                     PLIC_PRI_TRESH_OFFSET + \
+                                     PLIC_M_CONTEXT(cpu) * 0x1000)
+#define PLIC_SPRITRESH(base, cpu)    ((base) + \
+                                     PLIC_PRI_TRESH_OFFSET + \
+                                     PLIC_S_CONTEXT(cpu) * 0x1000)
 
-#define PLIC_MCLAIM(base, cpu)  ((base) + \
-                                PLIC_CLAIM_OFFSET + \
-                                PLIC_M_CONTEXT(cpu) * 0x1000)
-#define PLIC_SCLAIM(base, cpu)  ((base) + \
-                                PLIC_CLAIM_OFFSET + \
-                                PLIC_S_CONTEXT(cpu) * 0x1000)
+#define PLIC_MCLAIM(base, cpu)       ((base) + \
+                                     PLIC_CLAIM_OFFSET + \
+                                     PLIC_M_CONTEXT(cpu) * 0x1000)
+#define PLIC_SCLAIM(base, cpu)       ((base) + \
+                                     PLIC_CLAIM_OFFSET + \
+                                     PLIC_S_CONTEXT(cpu) * 0x1000)
 
 extern struct icu_ops_s PlicOps;
 
