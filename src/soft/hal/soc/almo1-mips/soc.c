@@ -11,6 +11,7 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
+#include <hal/devices/blockdev/soclib-bd.h>
 #include <hal/devices/chardev/soclib-tty.h>
 #include <hal/devices/timer/soclib-timer.h>
 #include <hal/devices/icu/soclib-icu.h>
@@ -171,6 +172,38 @@ static void soc_dma_init(void *fdt)
 }
 
 /**
+ * \brief   Initialize block device described by the device tree
+ *          See the soc_ty_init function for a detailed explanation
+ * \param   fdt fdt address
+ * \return  -1 if the initialization failed, 0 if it succeeded
+ */
+static int soc_bd_init(void *fdt)
+{
+    // Fetch the ICU device
+    struct icu_s *icu = icu_get(0);
+    if (!icu)
+        return -1;
+
+    int bd_off = fdt_node_offset_by_compatible(fdt, -1, "soclib,bd");
+
+    if (bd_off == -FDT_ERR_NOTFOUND) 
+        return -1;
+
+    unsigned addr = get_base_address(fdt, bd_off);
+    unsigned irq = get_irq(fdt, bd_off);
+
+    struct blockdev_s *bd = blockdev_alloc();
+    SoclibBDOps.blockdev_init(bd, addr, LOGICAL_BLOCK_SIZE);
+
+    icu->ops->icu_unmask(icu, irq);
+    register_interrupt(irq, (isr_t) soclib_bd_isr, bd);
+
+    bd_off = fdt_node_offset_by_compatible(fdt, bd_off, "soclib,db");
+
+    return 0;
+}
+
+/**
  * \brief For the SoC almo1, IRQ n'x (that is ICU.PIN[x]) is wired to the Interrup Signal of device n'y
  *
  * There are at most 14 IRQs for almo1, but the real number depends of the prototype paramaters
@@ -203,6 +236,7 @@ int soc_init(void *fdt, int tick)
     if (soc_tty_init(fdt) < 0)
         return -1;
 
+    soc_bd_init(fdt);
     soc_dma_init(fdt);
 
     // Finish by the timer (we don't want to schedule anything until everything

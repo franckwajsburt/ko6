@@ -54,6 +54,7 @@ OBJ     = $(addprefix $(OBJDIR)/,$(OBJS) $(OBJC))
 OBJ 	+= $(OBJDIR)/cstd.o $(OBJDIR)/ctype.o $(OBJDIR)/ht_prob.o $(OBJDIR)/errno.o
 OBJ 	+= $(OBJDIR)/soclib-icu.o $(OBJDIR)/soclib-dma.o
 OBJ 	+= $(OBJDIR)/soclib-timer.o $(OBJDIR)/soclib-tty.o
+OBJ 	+= $(OBJDIR)/soclib-bd.o
 OBJ 	+= $(OBJDIR)/atomic.o $(OBJDIR)/cache.o $(OBJDIR)/cpuregs.o
 OBJ 	+= $(OBJDIR)/entry.o $(OBJDIR)/irq.o $(OBJDIR)/kpanica.o
 OBJ 	+= $(OBJDIR)/kpanica.o $(OBJDIR)/kpanicc.o $(OBJDIR)/threada.o

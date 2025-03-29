@@ -28,7 +28,8 @@ PDFDIR	= $(BLDDIR)/kpdf#			kernel pdf files directory
 # Sources
 # --------------------------------------------------------------------------------------------------
 
-SRC     = $(wildcard devices/chardev/*.c) \
+SRC     = $(wildcard devices/blockdev/*.c) \
+		  $(wildcard devices/chardev/*.c) \
 		  $(wildcard devices/dma/*.c) \
 		  $(wildcard devices/tty/*.c) \
 		  $(wildcard devices/icu/*.c) \
@@ -103,6 +104,11 @@ clean:
 
 # Rules with automatic variables to produce the executable
 # --------------------------------------------------------------------------------------------------
+
+$(OBJDIR)/%.o : $(HALDIR)/devices/blockdev/%.c
+	@echo "- compil  --> "$(notdir $@)
+	$(CC) -o $@ $(CFLAGS) $<
+	$(OD) -D $@ > $@.s
 
 $(OBJDIR)/%.o : $(HALDIR)/devices/chardev/%.c
 	@echo "- compil  --> "$(notdir $@)
