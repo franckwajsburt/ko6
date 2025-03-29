@@ -67,6 +67,7 @@
 
 /** \brief Devices Types */
 enum dev_tag_e {
+    BLOCK_DEV,
     CHAR_DEV,
     ICU_DEV,
     DMA_DEV,
