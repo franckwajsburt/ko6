@@ -84,7 +84,7 @@
 
     // Type 5 bit => 32 type possible but that's a lot, we can shrink it later
 #define FILE    (1 << 4)
-#define DIR     (0 << 4)
+#define DIR     (1 << 5)
 
     // Rights
 #define R       (1 << 1)
@@ -122,7 +122,7 @@ struct pfs{
     char flags;         /**< \var flags give a type for different usage */
     char name[39];      /**< \var name of file or directory. */
     void* data;         /**< \var data block of data if not a directory*/
-    int size;
+    int size;           /**< \var size of data */
     list_t root;        /**< \var root parent directory field */
     list_t brothers;    /**< \var brother object in the same directory */
 };
@@ -132,9 +132,20 @@ struct pfs{
  */
 struct pfs* opendir(const char *pathname);
 
+/**
+ * \brief ouvre un fichier etant donner le chemin
+ * \var flags ne sert a rien car on n'a pas de macanisme de gestion de droits
+ * \var pathname donne le chemin absolu du fichier
+ * 
+ * \remarks On a pas de working directory .
+ */
 struct pfs* pfs_open(const char *pathname, int flags);
 
-//long write(int fd, const void *buf, size_t count);
+
+/**
+ * \brief flush the buffer in the disk
+ */
+long write(int fd, const void *buf, size_t count);
 
 int readdir(unsigned int fd, unsigned int count);
 
