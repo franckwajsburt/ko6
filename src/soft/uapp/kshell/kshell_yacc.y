@@ -6,48 +6,65 @@
 
 extern int yylex();
 extern int yyerror();
+extern int yylex_destroy();
 
 #ifdef KSHELL_DEBUG
 int yydebug = 1;
 #endif
 
-
 %}
+
+%code requires { 
+	#define MAX_NAM_SZ 1023 
+}
 
 %union {
 	int num;
-	char * str;
+	char str[1024];
 	struct wordlist *wlist;
 	struct stmt *stmt;
 }
 
-%token NEWLINE SEMICOLON
-%token IF THEN ELSE FI WHILE DO DONE
-%token<str> BINOP
+%token NEWLINE SEMICOLON PIPE
+%token IF THEN ELSE FI WHILE DO DONE OBRKTS CBRKTS
+%token<str> BINOP STRING AND LAND LOR EQ NEQ LEQ GEQ NOT 
+%token<str> PLUS MINUS MULT DIV ASSING AMPERSAND
 %token<str> BUILTIN
 %token<num> NUM
 %token<str> IDENTIFIER
 %token<str> WORD
 %type<wlist> args
 %type<wlist> built_in
-%type<stmt> top_level
-%type<stmt> stmt
 
+%destructor { yylex_destroy(); } script
 
 %%
 
-script : maybe_separator top_level seq_separator
-	| seq_separator
+script : list seq_separator
+		{ printf("script!\n"); }
+	| list
 	| /* empty */
 	;
 
-top_level : 
-	 top_level seq_separator stmt
-	{
-	}
-	| stmt 
-	{}
+list:
+	  list separator top_level { printf("list -> top_level!\n"); }
+	| top_level { printf("top_level in list!\n"); }
 	;
+
+top_level:
+	  pipeline
+	| top_level AND linebreak pipeline { printf("top_level in AND PIPELINE\n"); }
+	| top_level LOR linebreak pipeline { printf("top_level in LOR PIPELINE\n"); }
+	;
+
+pipeline: 
+	  pipe_seq
+	| NOT pipe_seq
+	;
+
+pipe_seq :
+	  stmt
+	| pipe_seq PIPE seq_separator stmt
 
 stmt : 
 	  simple_stmt 
@@ -65,36 +82,32 @@ compound_stmt :
 	| while_bloc
 	;
 
-if_bloc : IF maybe_separator expr separator THEN script FI
+if_bloc : IF top_level_list THEN top_level_list FI
 	{
 		printf("if_bloc!\n");
 	}
-	| IF maybe_separator expr separator THEN script  ELSE script FI
+	| IF top_level_list THEN top_level_list  ELSE top_level_list FI
+	{
+		printf("if_else_bloc\n");
+	}
 	;
 
-while_bloc : WHILE expr separator DO top_level DONE
+while_bloc : WHILE top_level_list DO top_level_list DONE
+	;
+
+top_level_list :
+	  maybe_separator top_level maybe_separator
 	;
 
 expr : 
-	'[' WORD BINOP WORD ']' { 
+	OBRKTS WORD BINOP WORD CBRKTS { 
 		printf("binop: %s\n", $3);
-		switch ($3[0]) {
-			case '+' :
-				printf("%s plus %s\n", $2, $4);
-				break;
-			case '*' :
-				printf("%s mult %s\n", $2, $4);
-				break;
-			case '/' :
-				printf("%s div %s\n", $2, $4);
-				break;
-			case '-' :
-				printf("%s menos %s\n", $2, $4);
-				break;
-			
-		}
+		printf("%s %s %s\n", $2, $3, $4);
+
 	  }
 	;
+
+var_exp : '$' IDENTIFIER
 
 built_in : 
 	  BUILTIN args 
@@ -103,29 +116,34 @@ built_in :
 		printf("%s :> ", $1);
 		wordlist_print($2);
 		$$ = wordlist_pushfront($2, $1);
-		free($1);
 	  	}
 	| BUILTIN 
 		{
 		$$ = make_wordlist($1);
-		free($1);
 		}
 	;
 
 args : WORD args
 		{
 		$$ = wordlist_pushfront($2, $1);
-		free($1);
 		}
 	| WORD { 
 		$$ = make_wordlist($1);
-		free($1);
 		}
 	;
 
 assignement :
-	  IDENTIFIER '=' NUM { printf("%s = %d\n", $1, $3); }
+	  IDENTIFIER '=' WORD { printf("%s = %s\n", $1, $3); }
 	| IDENTIFIER '=' expr
+	;
+
+linebreak : newline_list 
+	| /* empty*/
+	;
+
+newline_list : 
+	  NEWLINE
+	| newline_list NEWLINE
 	;
 
 maybe_separator : seq_separator
@@ -138,15 +156,21 @@ seq_separator :
 	;
 
 separator: 
-	  NEWLINE 		{ printf("NEWLINE\n"); }
-	| SEMICOLON 	{ printf("SEMICOLON\n"); }
+	  NEWLINE
+	| SEMICOLON
 	;
 
 %%
 
+extern char yytext[];
+extern int column;
+extern int line;
+
 int yyerror(const char * s)
 {
-	printf("yyerror: %s\n", s);
+	fflush(stdout);
+	printf("\n%*s\n%*s\n at line %d\n", column, "^", column, s, line);
+	
 	return 1;
 }
 

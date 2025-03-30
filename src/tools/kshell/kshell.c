@@ -1,3 +1,19 @@
+/*------------------------------------------------------------------------------------------------*\
+   _     ___    __
+  | |__ /'v'\  / /      \date        2025-03-30
+  | / /(     )/ _ \     \copyright   2021 Sorbonne University
+  |_\_\ x___x \___/                  https://opensource.org/licenses/MIT
+
+  \file     /tools/kshell/kshell.c
+  \author   Marco Leon
+  \brief    a shell interpreter for ko6 based on F. Normand's previous work
+
+  State :   building
+  
+  NB :      :P
+
+
+\*------------------------------------------------------------------------------------------------*/
 #include <stdio.h>
 #include "kshell_yacc.h"
 #include "kshell.h"
@@ -39,6 +55,7 @@ void wordlist_print(struct wordlist *wordlist)
 
 struct wordlist *make_wordlist(const char * str)
 {
+    printf(":P\n");
     wordlist_s *new = wordlist_create();
 
     if (!new) {
@@ -51,7 +68,7 @@ struct wordlist *make_wordlist(const char * str)
 }
 
 
-struct wordlist *wordlist_pushfront(struct wordlist * l, char *str)
+struct wordlist *wordlist_pushfront(struct wordlist * l, const char *str)
 {
     wordlist_s *new = make_wordlist(str);
 
@@ -227,8 +244,12 @@ int stmt_set_next(stmt_s *stmt, stmt_s *nxt)
 
 
 int main(int argc, char **argv) {
-    printf("hello, kshell! :P\n");
-    yyparse();
+    printf("hello, kshell! :)\n");
+    if (!yyparse()) {
+        printf("parsed!\n");
+    } else {
+        printf("wut ?\n");
+    }
 
     return 0;
 }

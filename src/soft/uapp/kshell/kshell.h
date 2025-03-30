@@ -1,3 +1,21 @@
+/*------------------------------------------------------------------------------------------------*\
+   _     ___    __
+  | |__ /'v'\  / /      \date        2025-03-30
+  | / /(     )/ _ \     \copyright   2021 Sorbonne University
+  |_\_\ x___x \___/                  https://opensource.org/licenses/MIT
+
+  \file     /tools/kshell/kshell.h
+  \author   Marco Leon
+  \brief    here you'll find the headers and fux declarations regarding the 
+            kshell. You may see some notes, you can ignore them, they are 
+            probably lame ideas.
+
+  State :   building
+  
+  NB :      :P
+
+
+\*------------------------------------------------------------------------------------------------*/
 #ifndef KSHELL_H
 #define KSHELL_H
 /**
@@ -67,6 +85,7 @@ enum stmt_type {
     NULL_TYPE,           /*      sentinel */
     WHILE_TYPE,          /*   while block */
     IF_TYPE,             /*      if block */
+    PIPELINE_TYPE,       /*      pipeline */
     BUILT_IN_TYPE,       /*  built-in fux */
     EXEC_TYPE,           /*  exec program */
 };
@@ -187,7 +206,7 @@ struct wordlist *make_wordlist(const char *str);
  * \note    this function uses make_wordlist to create the new
  *          wordlist. If this function fails, l will be unaltered
  */
-struct wordlist *wordlist_pushfront(struct wordlist * l, char *str);
+struct wordlist *wordlist_pushfront(struct wordlist * l, const char *str);
 
 /* statement related stuff */
 
@@ -252,8 +271,9 @@ void while_stmt_destroy(while_stmt_s *victim);
  * \param   w wordlist of the simple statement
  * \param   t type of the simple statement {BUILT-IN, EXEC}
  * \return  returns 1 on success and 0 on error.
- * \note    the wordlist won't be hardcopied to simple_stmt and the memory
- *          allocated for it will be liberated by stmt_destroy()
+ * \note    the wordlist won't be hardcopied to simple_stmt. On 
+ *          the other hand, only the reference will be copied and 
+ *          the memory allocated for it will be liberated by stmt_destroy()
  */
 int stmt_set_simple(stmt_s *stmt, wordlist_s *w, enum stmt_type t);
 
@@ -262,7 +282,7 @@ int stmt_set_simple(stmt_s *stmt, wordlist_s *w, enum stmt_type t);
  * \param   t_case the true case of the new if_stmt
  * \param   f_case the false case of the new if_stmt
  * \return  1 on succeed. 0 on error
- * \note    this function will call if_stmt_create
+ * \note    this function will call if_stmt_create()
  */
 int stmt_set_if_stmt(stmt_s *stmt, expr_s *cond, stmt_s *t_case, stmt_s *f_case);
 
@@ -271,7 +291,7 @@ int stmt_set_if_stmt(stmt_s *stmt, expr_s *cond, stmt_s *t_case, stmt_s *f_case)
  * \param   cond condition
  * \param   t_case the stmt to execute if cond is true
  * \return  1 on succeed. 0 on error
- * \note    this function will call while_stmt_create
+ * \note    this function will call while_stmt_create()
  */
 int stmt_set_while_stmt(stmt_s *stmt, expr_s *cond, stmt_s *t_case);
 
