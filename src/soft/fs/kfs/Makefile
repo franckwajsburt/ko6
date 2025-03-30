@@ -1,20 +1,22 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2025-02-24
+# | |__ /'v'\  / /   	\date       2025-03-30
 # | / /(     )/ _ \   	\copyright  2021 Sorbonne University
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
-# \file     kfs/Makefile
+# \file     fs/kfs/Makefile
 # \author   Franck Wajsburt
-# \brief    Makefile to produce kfs objects files
+# \brief    Makefile for compiling kfs objects files
 #
 #--------------------------------------------------------------------------------------------------
 
-# Parameters
+# General settings, directories and tools specific to the SOC 
 # --------------------------------------------------------------------------------------------------
 
-SOC    ?= almo1-mips#				defaut SOC name
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
+
+SOC    ?= almo1-mips#				defaut SOC name
+
 BLDDIR	= $(ko6)/build#				build directory
 BINDIR	= $(ko6)/bin#				bin directory
 SRCDIR 	= $(ko6)/src/soft#			directory of all sources
@@ -22,12 +24,14 @@ CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJDIR	= $(BLDDIR)/kobj#			kernel object files directory
 PDFDIR	= $(BLDDIR)/kpdf#			kernel pdf files directory
 
-# Sources
+include $(SRCDIR)/hal/soc/$(SOC)/$(SOC).mk
+
+# Source files
 # --------------------------------------------------------------------------------------------------
 
 SRC     = kfs.c kfs.h
 
-# Targets
+# Target files defined from the source files
 # --------------------------------------------------------------------------------------------------
 
 SRCC    = $(filter %.c %.S,$(SRC))
@@ -36,10 +40,8 @@ OBJ     = $(addprefix $(OBJDIR)/,$(OBJC))
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 
-# Tools
+# Tools parameters
 # --------------------------------------------------------------------------------------------------
-
-include $(SRCDIR)/hal/soc/$(SOC)/$(SOC).mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
@@ -51,10 +53,10 @@ CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += -I.#						directories where include files like <file.h> are located
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
 
-# Rules (here they are used such as simple shell scripts)
+# Simple shell scripts
 # --------------------------------------------------------------------------------------------------
 
-.PHONY: help compil mkdir pdf clean depend
+.PHONY: help compil pdf clean _mkdir _depend
 
 help:
 	@echo ""
@@ -66,9 +68,9 @@ help:
 	@echo ""
 	@echo "OBJ= "$(OBJ)
 
-compil: depend mkdir $(OBJ)
+compil: _depend _mkdir $(OBJ)
 
-mkdir:
+_mkdir:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
 	test -d $(OBJDIR) || (echo "- mkdir   $(OBJDIR)" ; mkdir $(OBJDIR))
 
@@ -86,7 +88,7 @@ clean:
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 
-# Rules with automatic variables
+# Building rules
 # --------------------------------------------------------------------------------------------------
 
 $(OBJDIR)/%.o : %.c
@@ -96,7 +98,7 @@ $(OBJDIR)/%.o : %.c
 
 # makedepend analyzes the source files to determine automatically what are the dependencies
 # of the object files on the source files (see https://linux.die.net/man/1/makedepend for details)
-depend :
+_depend :
 	@echo "- makedepend for $(CURDIR)"
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRCKFST)
 	rm Makefile.bak

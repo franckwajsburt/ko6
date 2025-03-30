@@ -1,31 +1,33 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2025-02-26
+# | |__ /'v'\  / /   	\date       2025-03-30
 # | / /(     )/ _ \   	\copyright  2021 Sorbonne University
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     hal/Makefile
-# \author   Nolan Bled
-# \brief    Makefile to produce the hal
+# \author   Nolan Bled, Franck Wajsburt
+# \brief    Makefile to compile the SoC specific code for devices & CPU : hal
 #
 #--------------------------------------------------------------------------------------------------
 
-# Parameters
+# General settings, directories and tools specific to the SOC
 # --------------------------------------------------------------------------------------------------
 
-SOC    ?= almo1-mips#				defaut SOC name
-CPU    ?= mips
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-BLDDIR	= $(ko6)/build#				build directory
+
+SOC    ?= almo1-mips#				defaut SOC name
+
 SRCDIR 	= $(ko6)/src/soft#			directory of all sources
 HALDIR  = $(SRCDIR)/hal#			HAL directory (current)
 COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
-
+BLDDIR	= $(ko6)/build#				build directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJDIR	= $(BLDDIR)/kobj#			kernel object files directory
 PDFDIR	= $(BLDDIR)/kpdf#			kernel pdf files directory
 
-# Sources
+include $(SRCDIR)/hal/soc/$(SOC)/$(SOC).mk
+
+# Sources Files
 # --------------------------------------------------------------------------------------------------
 
 SRC     = $(wildcard devices/blockdev/*.c) \
@@ -37,7 +39,7 @@ SRC     = $(wildcard devices/blockdev/*.c) \
 		  $(wildcard cpu/$(CPU)/*.S) \
 		  $(wildcard cpu/$(CPU)/*.c) \
 
-# Targets
+# Targets files defined from the source files
 # --------------------------------------------------------------------------------------------------
 
 SRCS    = $(filter %.S,$(SRC))
@@ -50,7 +52,7 @@ OBJ 	+= $(OBJDIR)/libfdt.a
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 
-# Tools
+# Tools parameters
 # --------------------------------------------------------------------------------------------------
 
 include $(SRCDIR)/hal/soc/$(SOC)/$(SOC).mk
@@ -65,10 +67,10 @@ CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += -I..#						directories where include files like <file.h> are located
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
 
-# Rules (here they are used such as simple shell scripts)
+# Simple shell scripts
 # --------------------------------------------------------------------------------------------------
 
-.PHONY: help compil mkdir pdf clean depend
+.PHONY: help compil pdf clean _mkdir _depend
 
 help:
 	@echo ""
@@ -79,10 +81,10 @@ help:
 	@echo "        pdf     : generate $(PDF) with all source files"
 	@echo ""
 
-compil: depend mkdir $(OBJ)
+compil: _depend _mkdir $(OBJ)
 	make -C soc/$(SOC) compil
 
-mkdir:
+_mkdir:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
 	test -d $(OBJDIR) || (echo "- mkdir   $(OBJDIR)" ; mkdir $(OBJDIR))
 
@@ -102,7 +104,7 @@ clean:
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 
-# Rules with automatic variables to produce the executable
+# Building rules
 # --------------------------------------------------------------------------------------------------
 
 $(OBJDIR)/%.o : $(HALDIR)/devices/blockdev/%.c
@@ -147,7 +149,7 @@ $(OBJDIR)/%.o : $(HALDIR)/soc/$(SOC)/%.c
 
 # makedepend analyzes the source files to determine automatically what are the dependencies
 # of the object files on the source files (see https://linux.die.net/man/1/makedepend for details)
-depend :
+_depend :
 	@echo "- makedepend for $(CURDIR)"
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRCC) $(SRCS)
 	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/../common/:/:' Makefile > Makefile.bak

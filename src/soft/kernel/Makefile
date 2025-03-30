@@ -1,22 +1,22 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2025-02-23
+# | |__ /'v'\  / /   	\date       2025-03-30
 # | / /(     )/ _ \   	\copyright  2021 Sorbonne University
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     kernel/Makefile
 # \author   Franck Wajsburt
-# \brief    Makefile to produce the kernel executable: kernel.x
+# \brief    Makefile to compile the kernel object files (not the executable)
 #
 #--------------------------------------------------------------------------------------------------
 
-# Parameters
+# General settings, directories and tools specific to the SOC  
 # --------------------------------------------------------------------------------------------------
 
-SOC    ?= almo1-mips#				defaut SOC name
-NTTYS  ?= 1#						default number of ttys
-NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
+
+SOC    ?= almo1-mips#				defaut SOC name
+
 BLDDIR	= $(ko6)/build#i		 	build directory
 SRCDIR	= $(ko6)/src/soft#			source directories
 COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
@@ -26,7 +26,9 @@ OBJDIR	= $(BLDDIR)/kobj#			kernel object files directory
 PDFDIR	= $(BLDDIR)/kpdf#			kernel pdf files directory
 XLIBDIR = $(ko6)/lib#				external libraries directory
 
-# Sources
+include $(SRCDIR)/hal/soc/$(SOC)/$(SOC).mk
+
+# Sources files
 # --------------------------------------------------------------------------------------------------
 
 SRC     = $(COMDIR)/debug_on.h $(COMDIR)/debug_off.h
@@ -43,9 +45,8 @@ SRC    += kthread.c kthread.h
 SRC    += kinit.c kdev.c kirq.c
 SRC    += ksynchro.c ksynchro.h
 SRC    += kshell.c kshell.h
-LDSCRIPT= $(SOCDIR)/kernel.ld#		ldscript is hal dependent
 
-# Targets
+# Targets files defined from the source files
 # --------------------------------------------------------------------------------------------------
 
 SRCS    = $(filter %.S,$(SRC))
@@ -58,10 +59,8 @@ OBJ 	+= $(OBJDIR)/libfdt.a
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 
-# Tools
+# Tools parameters
 # --------------------------------------------------------------------------------------------------
-
-include $(SRCDIR)/hal/soc/$(SOC)/$(SOC).mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
@@ -77,10 +76,10 @@ CFLAGS += -I$(XLIBDIR)/libfdt#		include external libraries (specifically libfdt.
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
 CFLAGS += -D_KERNEL_#				to tell gcc we compile for ko6
 
-# Rules (here they are used such as simple shell scripts)
+# Simple shell scripts
 # --------------------------------------------------------------------------------------------------
 
-.PHONY: help compil mkdir pdf clean depend
+.PHONY: help compil pdf clean _mkdir _depend
 
 help:
 	@echo ""
@@ -91,9 +90,9 @@ help:
 	@echo "        pdf     : generate $(PDF) with all source files"
 	@echo ""
 
-compil: depend mkdir $(OBJ)
+compil: _depend _mkdir $(OBJ)
 
-mkdir:
+_mkdir:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
 	test -d $(OBJDIR) || (echo "- mkdir   $(OBJDIR)" ; mkdir $(OBJDIR))
 
@@ -111,7 +110,7 @@ clean:
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 
-# Rules with automatic variables to produce the executable
+# Building rules
 # --------------------------------------------------------------------------------------------------
 
 $(OBJDIR)/%.o : %.c
@@ -126,7 +125,7 @@ $(OBJDIR)/%.o : $(COMDIR)/%.c
 
 # makedepend analyzes the source files to determine automatically what are the dependencies
 # of the object files on the source files (see https://linux.die.net/man/1/makedepend for details)
-depend :
+_depend :
 	@echo "- makedepend for $(CURDIR)"
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRCC) $(SRCS)
 	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/../common/:/:' Makefile > Makefile.bak

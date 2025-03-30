@@ -5,16 +5,18 @@
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     hal/soc/qemu-virt-riscv/Makefile
-# \author   Franck Wajsburt, Nolan Bled
+# \author   Nolan Bled
 # \brief    Makefile to produce the kernel executable: kernel.x
 #
 #--------------------------------------------------------------------------------------------------
 
-# Parameters
+# General settings, directories and tools specific to the SOC 
 # --------------------------------------------------------------------------------------------------
 
-SOC    ?= qemu-virt-riscv#			defaut SOC name
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
+
+SOC    ?= qemu-virt-riscv#			defaut SOC name
+
 SRCDIR  = $(ko6)/src/soft#			root source dir, allow us to make include via absolute path
 BLDDIR	= $(ko6)/build#				build directory
 LIBDIR	= .#						library directory (where is ldscript)
@@ -23,13 +25,15 @@ SOCDIR	= $(CURDIR)#				current soc hardware abstraction layer (hal) files direct
 OBJDIR	= $(BLDDIR)/kobj#			kernel object files directory
 PDFDIR	= $(BLDDIR)/kpdf#			kernel pdf files directory
 
-# Sources
+include $(SRCDIR)/hal/soc/$(SOC)/$(SOC).mk
+
+# Sources files
 # --------------------------------------------------------------------------------------------------
 
 SRC = soc.c
 LDSCRIPT= kernel.ld#				ldscript is hal dependent
 
-# Targets
+# Targets files defined from the source files
 # --------------------------------------------------------------------------------------------------
 
 SRCS    = $(filter %.S,$(SRC))
@@ -52,10 +56,8 @@ OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 BIN     = $(BLDDIR)/kernel-$(SOC).x
 
-# Tools
+# Tools parameters
 # --------------------------------------------------------------------------------------------------
-
-include $(SRCDIR)/hal/soc/qemu-virt-riscv/qemu-virt-riscv.mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
@@ -67,10 +69,10 @@ CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += -I. -I$(SRCDIR)#			directories where include files like <file.h> are located
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
 
-# Rules (here they are used such as simple shell scripts)
+# Simple shell scripts
 # --------------------------------------------------------------------------------------------------
 
-.PHONY: help compil exec debug mkdir pdf clean depend
+.PHONY: help compil exec debug pdf clean _mkdir _depend
 
 help:
 	@echo ""
@@ -81,7 +83,7 @@ help:
 	@echo "        pdf     : generate $(PDF) with all source files"
 	@echo ""
 
-compil: depend mkdir $(BIN)
+compil: _depend _mkdir $(BIN)
 
 exec: compil
 	xterm -bg black -fg green -n ko6 -geometry 80x50 -l -lf xterm.log \
@@ -100,7 +102,7 @@ debug: compil
 						-s \
 						-S
 
-mkdir:
+_mkdir:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
 	test -d $(OBJDIR) || (echo "- mkdir   $(OBJDIR)" ; mkdir $(OBJDIR))
 
@@ -118,7 +120,7 @@ clean:
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 
-# Rules with automatic variables to produce the executable
+# Building rules
 # --------------------------------------------------------------------------------------------------
 
 $(BIN) : $(LDSCRIPT) $(OBJ)
@@ -138,7 +140,7 @@ $(OBJDIR)/%.o : cpu/%.S
 
 # makedepend analyzes the source files to determine automatically what are the dependencies
 # of the object files on the source files (see https://linux.die.net/man/1/makedepend for details)
-depend :
+_depend :
 	@echo "- makedepend for $(CURDIR)"
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRCC) $(SRCS)
 	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/obj/cpu/:/obj/:' Makefile > Makefile.bak

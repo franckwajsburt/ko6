@@ -1,16 +1,14 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2025-02-23
+# | |__ /'v'\  / /   	\date       2025-03-30
 # | / /(     )/ _ \   	\copyright  2021 Sorbonne University
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     hal/soc/almo1-mips/Makefile
 # \author   Franck Wajsburt, Nolan Bled
-# \brief    Makefile to build soc-specific files, and link every files in 
-#			the kernel
+# \brief    Makefile to compile SoC specific files, build the kernel and launch the SoC execution
 #
 #--------------------------------------------------------------------------------------------------
-
 
 # Default SoC options
 # --------------------------------------------------------------------------------------------------
@@ -20,11 +18,13 @@ NCPUS  ?= 1#						default number of CPUS
 FROM   ?= 0#						first cycle to trace
 LAST   ?= 1000000#					last cycle to execute
 
-# Parameters
+# General settings, directories and tools specific to the SOC  
 # --------------------------------------------------------------------------------------------------
 
-SOC     = almo1-mips# 				soc name
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
+
+SOC     = almo1-mips# 				soc name
+
 SRCDIR	= $(ko6)/src/soft#			root source dir, allow us to make include via absolute path
 BLDDIR	= $(ko6)/build#				build directory
 BINDIR 	= $(ko6)/bin#				tools directory
@@ -33,18 +33,21 @@ CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 SOCDIR	= $(CURDIR)#				current soc hardware abstraction layer (hal) files directory
 OBJDIR	= $(BLDDIR)/kobj#			kernel object files directory
 PDFDIR	= $(BLDDIR)/kpdf#			kernel pdf files directory
-BIN 	= $(BLDDIR)/kernel-$(SOC).x
-SX 		= $(SOC).x
+EXEC 	= $(BINDIR)/$(SOC).x#		prototype simulator
 DLOG    = /tmp/ko6-debug.log#       debug file
 
-# Sources
+include $(SRCDIR)/hal/soc/almo1-mips/almo1-mips.mk
+
+# Sources files 
 # --------------------------------------------------------------------------------------------------
 
 SRC = soc.c dtb.S
 LDSCRIPT = kernel.ld
 
-# Targets
+# Targets files defined from the source files
 # --------------------------------------------------------------------------------------------------
+
+BIN 	= $(BLDDIR)/kernel-$(SOC).x#	kernel
 
 SRCS    = $(filter %.S,$(SRC))
 SRCC    = $(filter %.c,$(SRC))
@@ -65,12 +68,10 @@ OBJ 	+= $(OBJDIR)/kdev.o $(OBJDIR)/kirq.o
 OBJ		+= $(OBJDIR)/kshell.o
 OBJ 	+= $(OBJDIR)/libfdt.a
 OBJDS   = $(addsuffix .s,$(OBJ))
-PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
+PDF 	= $(PDFDIR)/$(CURDIR).pdf#  	the pdf file has the name of directory
 
-# Tools
+# Tools parameters
 # --------------------------------------------------------------------------------------------------
-
-include $(SRCDIR)/hal/soc/almo1-mips/almo1-mips.mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
@@ -82,10 +83,10 @@ CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += -I. -I$(SRCDIR)#			directories where include files like <file.h> are located
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
 
-# Rules (here they are used such as simple shell scripts)
+# Simple shell scripts
 # --------------------------------------------------------------------------------------------------
 
-.PHONY: help compil exec debug mkdir pdf clean depend
+.PHONY: help compil exec debug pdf clean _mkdir _depend
 
 help:
 	@echo ""
@@ -96,9 +97,9 @@ help:
 	@echo "        pdf     : generate $(PDF) with all source files"
 	@echo ""
 
-compil: depend mkdir mkdtb $(OBJ) $(BIN) 
+compil: _mkdir _depend mkdtb $(OBJ) $(BIN) 
 
-mkdir:
+_mkdir:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
 	test -d $(OBJDIR) || (echo "- mkdir   $(OBJDIR)" ; mkdir $(OBJDIR))
 
@@ -107,14 +108,14 @@ mkdtb:
 
 exec: compil
 	cd $(BLDDIR);\
-	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP)/$(APP).x\
+	$(EXEC) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP)/$(APP).x\
 					-NTTYS $(NTTYS) -NCPUS $(NCPUS) $(DISK) $(FBF)
 
 debug: compil
 	cd $(BLDDIR);\
-	$(BINDIR)/$(SX) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP)/$(APP).x\
-					-NTTYS $(NTTYS) -NCPUS $(NCPUS) $(DISK) $(FBF)\
-					-DEBUG $(FROM) -NCYCLES $(LAST) > $(DLOG)
+	$(EXEC) -KERNEL $(BLDDIR)/kernel-$(SOC).x -APP $(BLDDIR)/$(APP)/$(APP).x\
+			-NTTYS $(NTTYS) -NCPUS $(NCPUS) $(DISK) $(FBF)\
+			-DEBUG $(FROM) -NCYCLES $(LAST) > $(DLOG)
 	cd $(BLDDIR);\
 	tracelog $(SRCDIR)/tags $(BLDDIR)/*.x.s $(DLOG)
 
@@ -133,7 +134,7 @@ clean:
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 
-# Rules with automatic variables to produce the executable
+# Building rules
 # --------------------------------------------------------------------------------------------------
 
 $(BIN) : $(LDSCRIPT) $(OBJ)
@@ -155,7 +156,7 @@ $(OBJDIR)/%.o : %.S
 
 # makedepend analyzes the source files to determine automatically what are the dependencies
 # of the object files on the source files (see https://linux.die.net/man/1/makedepend for details)
-depend :
+_depend :
 	@echo "- makedepend for $(CURDIR)"
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRCC) $(SRCS)
 	rm Makefile.bak

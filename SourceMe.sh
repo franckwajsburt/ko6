@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------------------
 #    _     ___    __
-#   | |__ /'v'\  / /    \date        2025-02-19
+#   | |__ /'v'\  / /    \date        2025-03-30
 #   | / /(     )/ _ \   \copyright   2021 Sorbonne University
 #   |_\_\ \___/ \___/                https://opensource.org/licenses/MIT
 #
@@ -22,7 +22,7 @@ export SOC=almo1-$CPU
 export MKSOC=src/soft/hal/soc/$SOC/Makefile
 
 echo "  _     ___    __   "
-echo " | |__ /'v'\  / /   CPU: $CPU / SOC: $SOC"
+echo " | |__ /'v'\  / /   SoC: $SOC"
 echo " | / /(     )/ _ \  edit $ko6/SourceMe.sh to change default CPU & SOC"
 echo " |_\_\ \___/ \___/  GIT: $ko6VER"
 echo ""
@@ -31,6 +31,9 @@ echo ""
 # ----------------------------------------------------------------
 export GCC=7.1.0
 export CCTOOLS=$ko6/bin/gcc.$GCC
-export PATH=$ko6/bin:$CCTOOLS/bin:$SOCLIB/utils/bin:$PATH
-export LD_LIBRARY_PATH=/usr/lib64:$CCTOOLS/lib64:$LD_LIBRARY_PATH
+case ":$PATH:" in
+  *":$ko6/bin:"*) ;;
+  *) export PATH=$ko6/bin:$CCTOOLS/bin:$SOCLIB/utils/bin:$PATH;
+     export LD_LIBRARY_PATH=/usr/lib64:$CCTOOLS/lib64:$LD_LIBRARY_PATH;;
+esac
 shopt -s globstar   # allow the ** symbol which replace any pathname

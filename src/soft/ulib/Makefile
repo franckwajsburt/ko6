@@ -1,21 +1,22 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2025-02-26
+# | |__ /'v'\  / /   	\date       2025-03-30
 # | / /(     )/ _ \   	\copyright  2021 Sorbonne University
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     ulib/Makefile
 # \author   Franck Wajsburt
-# \brief    Makefile to produce user library object file
+# \brief    Makefile for compiling user library object file
 #
 #--------------------------------------------------------------------------------------------------
 
-# Parameters
+# General settings, directories and tools specific to the SOC 
 # --------------------------------------------------------------------------------------------------
 
-CPU	   ?= mips
-SOC    ?= almo1-mips#				defaut SOC name
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
+
+SOC    ?= almo1-mips#				defaut SOC name
+
 BLDDIR	= $(ko6)/build#				build directory
 SRCDIR 	= $(ko6)/src/soft#			directory of all sources
 COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
@@ -26,7 +27,9 @@ CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJDIR	= $(BLDDIR)/uobj#			user object files directory
 PDFDIR	= $(BLDDIR)/updf#			user pdf files directory
 
-# Sources
+include $(SRCDIR)/hal/soc/$(SOC)/$(SOC).mk
+
+# Sources files
 # --------------------------------------------------------------------------------------------------
 
 SRC     = $(COMDIR)/syscalls.h $(COMDIR)/list.h $(COMDIR)/usermem.h
@@ -38,7 +41,7 @@ SRC    += $(COMDIR)/ht_prob.h $(COMDIR)/ht_prob.c
 SRC    += $(CPUDIR)/$(CPU)/cpu_user.S
 SRC    += crt0.c libc.h libc.c pthread.h pthread.c memory.h memory.c
 
-# Targets
+# Targets files defined from the source files
 # --------------------------------------------------------------------------------------------------
 
 SRCC    = $(filter %.c %.S,$(SRC))
@@ -48,10 +51,8 @@ OBJ     = $(addprefix $(OBJDIR)/,$(OBJC))
 OBJDS   = $(addsuffix .s,$(OBJ))
 PDF 	= $(PDFDIR)/$(CURDIR).pdf#  the pdf file has the name of directory
 
-# Tools
+# Tools parameters
 # --------------------------------------------------------------------------------------------------
-
-include $(SRCDIR)/hal/soc/$(SOC)/$(SOC).mk
 
 CFLAGS += -c#						stop after compilation, then produce .o
 CFLAGS += -Wall -Werror#			gives almost all C warnings and considers them to be errors
@@ -64,10 +65,10 @@ CFLAGS += -I. -I.. -I$(COMDIR)#		directories where include files like <file.h> a
 CFLAGS += -I$(CPUDIR) -I$(SOCDIR)#	directory where hal include files are located
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
 
-# Rules (here they are used such as simple shell scripts)
+# Simple shell scripts
 # --------------------------------------------------------------------------------------------------
 
-.PHONY: help compil tags pdf clean depend
+.PHONY: help compil tags pdf clean _mkdir _depend
 
 help:
 	@echo ""
@@ -78,9 +79,9 @@ help:
 	@echo "        pdf     : generate $(PDF) with all source files"
 	@echo ""
 
-compil: depend mkdir $(OBJ)
+compil: _mkdir _depend $(OBJ)
 
-mkdir:
+_mkdir:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)
 	test -d $(OBJDIR) || (echo "- mkdir   $(OBJDIR)" ; mkdir $(OBJDIR))
 
@@ -98,7 +99,7 @@ clean:
 	awk '/^# DEPENDENCIES/{stop=1}(!stop){print}' Makefile > Makefile.bak
 	mv Makefile.bak Makefile
 
-# Rules with automatic variables
+# Building rules
 # --------------------------------------------------------------------------------------------------
 
 $(OBJDIR)/%.o : %.c
@@ -118,7 +119,7 @@ $(OBJDIR)/%.o: $(CPUDIR)/$(CPU)/cpu_user.S
 
 # makedepend analyzes the source files to determine automatically what are the dependencies
 # of the object files on the source files (see https://linux.die.net/man/1/makedepend for details)
-depend :
+_depend :
 	@echo "- makedepend for $(CURDIR)"
 	makedepend -- $(CFLAGS) -- -D__DEPEND__ -s"# DEPENDENCIES" -p$(OBJDIR)/ $(SRC)
 	/usr/bin/sed '/^# DEPENDENCIES/,$$s:/../common/:/:' Makefile > Makefile.bak

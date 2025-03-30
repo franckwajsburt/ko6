@@ -1,26 +1,25 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2025-02-26
+# | |__ /'v'\  / /   	\date       2025-03-30
 # | / /(     )/ _ \   	\copyright  2021 Sorbonne University
 # |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 #
 # \file     Makefile
 # \author   Franck Wajsburt
-# \brief    General Makefile to compile all softs
+# \brief    General Makefile to compile all ko6's code : kernel; libraries and user applications
 #
 #--------------------------------------------------------------------------------------------------
 
-# Parameters
+# General settings, directories and tools specific to the SOC 
 # --------------------------------------------------------------------------------------------------
 
-MAKOPT ?= -s#				comment the -s to get command details
-SOC    ?= almo1-mips#		defaut SOC name
-CPU    ?= mips
 VERBOSE?= 0#				verbose mode to print INFO(), BIP(), ASSERT, VAR()
-BLDDIR	= $(ko6)/build#		build directory
-OBJDIR	= $(BLDDIR)/kobj#	kernel object files directory
+MAKOPT ?= -s#				comment the -s to get command details
 
-# Rules (here they are used such as simple shell scripts)
+SOC    ?= almo1-mips#		default SOC name
+BLDDIR	= $(ko6)/build#		build directory
+
+# Simple shell scripts
 # --------------------------------------------------------------------------------------------------
 
 .PHONY: help compil tags pdf clean
@@ -37,13 +36,13 @@ help:
 	@echo ""
 
 compil: tags
-	-make -C external/libfdt $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
-	-make -C fs/kfs          $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
-	-make -C kernel          $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
-	-make -C hal             $(MAKOPT) compil SOC=$(SOC) CPU=$(CPU) VERBOSE=$(VERBOSE)
-	-make -C ulib            $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
-	-make -C uapp            $(MAKOPT) compil SOC=$(SOC) VERBOSE=$(VERBOSE)
-	mkdx $(BLDDIR)/dskexe.img $(BLDDIR)/*/*.x $(BLDDIR)/*.x 
+	-make -C external/libfdt  $(MAKOPT) compil VERBOSE=$(VERBOSE) SOC=$(SOC)
+	-make -C fs/kfs           $(MAKOPT) compil VERBOSE=$(VERBOSE) SOC=$(SOC)
+	-make -C kernel           $(MAKOPT) compil VERBOSE=$(VERBOSE) SOC=$(SOC)
+	-make -C hal              $(MAKOPT) compil VERBOSE=$(VERBOSE) SOC=$(SOC)
+	-make -C ulib             $(MAKOPT) compil VERBOSE=$(VERBOSE) SOC=$(SOC)
+	-make -C uapp             $(MAKOPT) compil VERBOSE=$(VERBOSE) SOC=$(SOC)
+	-mkdx $(BLDDIR)/dskexe.dx $(BLDDIR)/*/*.x
 
 tags:
 	@echo "- Create tags for vim"
@@ -51,17 +50,17 @@ tags:
 
 pdf:
 	@-make -C external/libfdt $(MAKOPT) pdf
-	@-make -C fs/kfs  	  	 $(MAKOPT) pdf
-	@-make -C kernel 		 $(MAKOPT) pdf
-	@-make -C hal 			 $(MAKOPT) pdf
-	@-make -C ulib   		 $(MAKOPT) pdf
-	@-make -C uapp   		 $(MAKOPT) pdf
-
+	@-make -C fs/kfs  	  	  $(MAKOPT) pdf
+	@-make -C kernel 		  $(MAKOPT) pdf
+	@-make -C hal 			  $(MAKOPT) pdf
+	@-make -C ulib   		  $(MAKOPT) pdf
+	@-make -C uapp   		  $(MAKOPT) pdf
+                              
 clean:
 	@-make -C external/libfdt $(MAKOPT) clean
-	@-make -C fs/kfs     $(MAKOPT) clean
-	@-make -C kernel 		 $(MAKOPT) clean
-	@-make -C hal 			 $(MAKOPT) clean
-	@-make -C ulib   		 $(MAKOPT) clean
-	@-make -C uapp   		 $(MAKOPT) clean
+	@-make -C fs/kfs     	  $(MAKOPT) clean
+	@-make -C kernel 		  $(MAKOPT) clean
+	@-make -C hal 			  $(MAKOPT) clean
+	@-make -C ulib   		  $(MAKOPT) clean
+	@-make -C uapp   		  $(MAKOPT) clean
 	@-rm tags 2> /dev/null
