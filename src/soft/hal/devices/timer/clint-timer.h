@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2023-07-10
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  | |__ /'v'\  / /      \date       2025-03-30
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
   \file     hal/devices/timer/clint-timer.h
@@ -28,6 +28,12 @@
  */
 extern void clint_timer_isr(unsigned irq, struct timer_s *timer);
 
+/**
+ * \brief See hal/device/timer.h for the function signature
+ * timer_init      : initialize the timer device
+ * timer_set_tick  : allow the kernel to set the number of ticks
+ * timer_set_event : set the event that will be triggered after a timer
+ */
 extern struct timer_ops_s ClintTimerOps;
 
 #endif

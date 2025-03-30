@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2023-07-10
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  | |__ /'v'\  / /      \date       2025-03-30
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
   \file     hal/devices/blockdev/soclib-bd.h
@@ -46,11 +46,18 @@ struct soclib_bd_regs_s {
 /**
  * \brief   ISR of the soclib block device
  * \param   irq irq linked to the ISR 
- * \param   bd device linked to the ISR
+ * \param   bd  device linked to the ISR
  * \return  nothing
  */
 extern void soclib_bd_isr(unsigned irq, struct blockdev_s *bd);
 
+/**
+ * \brief See hal/device/blockdev.h for the function signature 
+ * .blockdev_init     : initialize
+ * .blockdev_read     : read the disk
+ * .blockdev_write    : write the disk
+ * .blockdev_setevent : define the callback function to be called at  the IRQ event
+ */
 extern struct blockdev_ops_s SoclibBDOps;
 
 #endif

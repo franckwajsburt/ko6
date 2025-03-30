@@ -13,7 +13,7 @@
 #include <hal/devices/blockdev/soclib-bd.h>
 
 /**
- * \brief   Initialize the Soclib DMA device
+ * \brief   Initialize the Soclib block device
  * \param   bdev       The block device 
  * \param   base       The base address of the device
  * \param   block_size size of a LOGICAL block chosen by ko6
@@ -69,12 +69,32 @@ static int soclib_bd_write(struct blockdev_s *bdev, void *buf, unsigned lba, uns
     return count;
 }
 
+/**
+ * \brief   Set the event that will triggered by a soclib block device interrupt
+ * \param   bdev the block device
+ * \param   f    the function corresponding to the event
+ * \param   arg  argument that will be passed to the function
+ * \return  nothing
+ */
+static void soclib_bd_set_event(struct blockdev_s *bdev, void(*f)(void *arg, int status), void *arg)
+{
+    bdev->event.f = f;
+    bdev->event.arg = arg;
+}
+
 struct blockdev_ops_s SoclibBDOps = {
     .blockdev_init = soclib_bd_init,
     .blockdev_read = soclib_bd_read,
-    .blockdev_write = soclib_bd_write
+    .blockdev_write = soclib_bd_write,
+    .blockdev_set_event = soclib_bd_set_event
 };
 
-void soclib_bd_isr(unsigned irq, struct blockdev_s *bd)
+void soclib_bd_isr(unsigned irq, struct blockdev_s *bdev)
 {
+    struct soclib_bd_regs_s *regs =
+        (struct soclib_bd_regs_s *) bdev->base;
+    int status = regs->status;          // IRQ acknoledgement to lower the interrupt signal
+
+    if (bdev->event.f)
+        bdev->event.f (bdev->event.arg, status);
 }

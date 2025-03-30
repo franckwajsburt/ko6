@@ -17,8 +17,8 @@ struct dma_ops_s;
 
 /** \brief DMA device specific information */
 struct dma_s {
-    unsigned base;          //< DMA device base address
-    struct dma_ops_s *ops;  //< driver-specific operations
+    unsigned base;          ///< DMA device base address
+    struct dma_ops_s *ops;  ///< driver-specific operations
 };
 
 /** 

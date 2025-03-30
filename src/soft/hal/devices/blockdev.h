@@ -22,12 +22,19 @@ struct blockdev_ops_s;
 
 #define LOGICAL_BLOCK_SIZE 4096
 
+/** \brief Structure describing what to do when we receive a bd interrupt */
+struct blockdev_event_s {
+    void (*f)(void *arg,int status);///< function triggered
+    void *arg;                      ///< argument passed to the function
+};
+
 /** \brief Character device informations */
 struct blockdev_s {
     unsigned base;                  ///< memory-mapped register base addresses
     unsigned blocks;                ///< Total number of available logical blocks (disk size) 
     unsigned block_size;            ///< Size (in bytes) of a logical block
     unsigned ppb;                   ///< physical blocks per logical block
+    struct blockdev_event_s event;  ///< event triggered each nticks
     struct blockdev_ops_s *ops;     ///< driver specific operations linked to the blockdev
     void * driver_data;             ///< private pointer for driver specific info
 };
@@ -52,7 +59,7 @@ struct blockdev_ops_s {
      * \param   lba     the logic block address where the data is written
      * \param   count   the number of block to write
      * \return  number of blocks actually written
-    */
+     */
     int (*blockdev_write)(struct blockdev_s *bdev, void *buf, unsigned lba, unsigned count);
 
     /**
@@ -62,8 +69,18 @@ struct blockdev_ops_s {
      * \param   lba     the logic block address where ito read the data to be written in buf
      * \param   count   the number of blocks to read
      * \return  number of blocks actually read
-    */
+     */
     int (*blockdev_read)(struct blockdev_s *bdev, void *buf, unsigned lba, unsigned count);
+
+    /**
+     * \brief   Set    the event that will triggered by a block device interrupt
+     * \param   bdev   the block device
+     * \param   f      the function corresponding to the event
+     * \param   arg    argument that will be passed to the function
+     * \param   status the block device status once the command is done
+     * \return  nothing
+     */
+    void (*blockdev_set_event)(struct blockdev_s *bdev, void(*f)(void *arg, int status), void *arg);
 };
 
 #define blockdev_alloc() (struct blockdev_s*)(dev_alloc(BLOCK_DEV, sizeof(struct blockdev_s))->data)

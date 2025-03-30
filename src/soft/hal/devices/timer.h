@@ -17,16 +17,16 @@ struct timeri_ops_s;
 
 /** \brief Structure describing what to do when we receive a timer interrupt */
 struct timer_event_s {
-    void (*f)(void *arg);           //< function triggered
-    void *arg;                      //< argument passed to the function
+    void (*f)(void *arg);           ///< function triggered
+    void *arg;                      ///< argument passed to the function
 };
 
 /** \brief Timer driver informations */
 struct timer_s {
-    unsigned base;                  //< timer's base address
-    unsigned period;                //< number of ticks between two events
-    struct timer_event_s event;     //< event triggered each nticks
-    struct timer_ops_s *ops;        //< driver-specific operations
+    unsigned base;                  ///< timer's base address
+    unsigned period;                ///< number of ticks between two events
+    struct timer_event_s event;     ///< event triggered each nticks
+    struct timer_ops_s *ops;        ///< driver-specific operations
 };
 
 /** 

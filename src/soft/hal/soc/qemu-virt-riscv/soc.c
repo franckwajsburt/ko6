@@ -71,12 +71,12 @@ static void soc_icu_init(void *fdt)
 /**
  * \brief   Initialize the TTYs present on the SOC based on the device-tree content
  *          Basically, every device initialization follow the same process:
- *          We loop on each device compatible with our drivers for this platform, by exemple soclib,tty
+ *          We loop on each device compatible with our drivers for this platform, by ex. soclib,tty
  *          For each device, we find it's base address in the reg property of the device tree node
  *          and its IRQ in the interrupts property.
  *          Once we've fetched this data, we allocate a new device (see hal/dev.h) and register it
  *          in the device list.
- *          We then setup the device with a device-specific function declared by the HAL (ex: tty_init)
+ *          We then setup the dev with a device-specific function declared by the HAL (ex: tty_init)
  *          Last thing we do is unmask the interrupt in the ICU and register the ISR for the device.
  * \param   fdt fdt address
  * \return  -1 if the initialization failed, 0 if it succeeded
@@ -187,7 +187,7 @@ void isrcall(uint32_t mcause)
     mcause &= ~(1 << 31);
     if (mcause == 7) {
         // Machine Timer interrupt
-        struct timer_s *timer = timer_get(0); // TODO: see if we should use cpuid() here instead of 0
+        struct timer_s *timer = timer_get(0); // TODO see if we should use cpuid() here instead of 0
         clint_timer_isr(0, timer);
     } else if (mcause == 11) {
         // Machine external interrupt
