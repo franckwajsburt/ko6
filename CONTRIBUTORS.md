@@ -1,21 +1,21 @@
 # Project Contributors
 
-## Creator & Maintainer
+## Author & Maintainer
 - **Franck Wajsburt** - Sorbonne University (franck.wajsburt[at]lip6.fr)
 
 ## Core developers
 - **Nolan Bled** (noltheo03[at]gmail.com)  
-  *Ported KO6 to RISC-V, contributed to HAL modifications, and added Device Tree support.*
+  *Ported KO6 to RISC-V, modified HAL, added Device Tree support.*
 - **Lili Zheng** (zhengxulili[at]gmail.com)  
-  *kshell*	
+  *Contributed kshell*	
 - **Marco Leon** (marco.leon[at]etu.sorbonne-universite.fr)  
-  *kshell*	
+  *Contributed kshell*	
 
-## Other Contributors (Alphabetical Order)
+## Additional Contributors (Alphabetical)
 - **Angie Bikou** (bikou.as[at]gmail.com)  
   *Worked on KFS (KO6 File System).*
 - **François Normand** (francois.ndlt[at]gmail.com)  
-  *Contributed ideas for the shell (no code yet).*
+  *Contributed for the shell (code will be integrated in kshell).*
 - **Lukas Zakowetz** (luka.zakowetz[at]hotmail.fr)  
   *Worked on SDL integration (no commit yet).*
 
