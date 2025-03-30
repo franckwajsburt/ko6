@@ -90,6 +90,14 @@ extern void *memchr (const void *src, int c, size_t n);
 extern void *strncpy (char *dest, char *src, unsigned n);
 
 /**
+ * \brief     duplicates the string src, included the ending byte '\0'
+ * \param     src  the source string
+ * \return    a pointer to the newly created screen
+ * \todo      implementer. We need kmalloc here
+ */
+extern char *strdup(char *src);
+
+/**
  * \brief     calculates the length of the string s, excluding the terminating null byte
  * \param     buf input string
  * \return    the number of characters
