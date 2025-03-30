@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2023-07-10
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  | |__ /'v'\  / /      \date       2025-03-30
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
   \file     hal/devices/dma.h
@@ -13,7 +13,13 @@
 #ifndef _HAL_DMA_H_
 #define _HAL_DMA_H_
 
-struct dma_s;
+struct dma_ops_s;
+
+/** \brief DMA device specific information */
+struct dma_s {
+    unsigned base;          //< DMA device base address
+    struct dma_ops_s *ops;  //< driver-specific operations
+};
 
 /** 
  * \brief Functions prototypes of the DMA device, they should be implemented by a device driver. 
@@ -39,11 +45,6 @@ struct dma_ops_s {
     void *(*dma_memcpy)(struct dma_s *dma, int *dst, int *src, unsigned n);
 };
 
-/** \brief DMA device specific information */
-struct dma_s {
-    unsigned base;          //< DMA device base address
-    struct dma_ops_s *ops;  //< driver-specific operations
-};
 #define dma_alloc() (struct dma_s*) (dev_alloc(DMA_DEV, sizeof(struct dma_s))->data)
 #define dma_get(no) (struct dma_s*) (dev_get(DMA_DEV, no)->data)
 #define dma_count() (dev_next_no(DMA_DEV) - 1)

@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2023-07-10
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
+  | |__ /'v'\  / /      \date       2025-03-30
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
   \file     hal/devices/chardev.h
@@ -18,7 +18,15 @@
 #include <kernel/kdev.h>
 #include <hal/cpu/atomic.h>
 
-struct chardev_s;
+struct chardev_ops_s;
+
+/** \brief Character device informations */
+struct chardev_s {
+    unsigned base;                  ///< memory-mapped register base addresses
+    unsigned baudrate;              ///< chardev baudrate
+    struct chardev_ops_s *ops;      ///< driver specific operations linked to the chardev
+    void * driver_data;             ///< private pointer for driver specific info
+};
 
 /** 
  * \brief Functions prototypes of character device, they should be implemented by a device driver. 
@@ -50,14 +58,6 @@ struct chardev_ops_s {
      * \return  number of bytes actually read
     */
     int (*chardev_read)(struct chardev_s *chardev, char *buf, unsigned count);
-};
-
-/** \brief Character device informations */
-struct chardev_s {
-    unsigned base;                  ///< memory-mapped register base addresses
-    unsigned baudrate;              ///< chardev baudrate
-    struct chardev_ops_s *ops;      ///< driver specific operations linked to the chardev
-    void * driver_data;             ///< private pointer for driver specific info
 };
 
 #define chardev_alloc() (struct chardev_s*) (dev_alloc(CHAR_DEV, sizeof(struct chardev_s))->data)

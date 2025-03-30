@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-03-28
+  | |__ /'v'\  / /      \date       2025-03-30
   | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
@@ -18,9 +18,19 @@
 #include <kernel/kdev.h>
 #include <hal/cpu/atomic.h>
 
+struct blockdev_ops_s;
+
 #define LOGICAL_BLOCK_SIZE 4096
 
-struct blockdev_s;
+/** \brief Character device informations */
+struct blockdev_s {
+    unsigned base;                  ///< memory-mapped register base addresses
+    unsigned blocks;                ///< Total number of available logical blocks (disk size) 
+    unsigned block_size;            ///< Size (in bytes) of a logical block
+    unsigned ppb;                   ///< physical blocks per logical block
+    struct blockdev_ops_s *ops;     ///< driver specific operations linked to the blockdev
+    void * driver_data;             ///< private pointer for driver specific info
+};
 
 /** 
  * \brief Functions prototypes of block device, they should be implemented by a device driver. 
@@ -54,16 +64,6 @@ struct blockdev_ops_s {
      * \return  number of blocks actually read
     */
     int (*blockdev_read)(struct blockdev_s *bdev, void *buf, unsigned lba, unsigned count);
-};
-
-/** \brief Character device informations */
-struct blockdev_s {
-    unsigned base;                  ///< memory-mapped register base addresses
-    unsigned blocks;                ///< Total number of available blocks (disk size) 
-    unsigned block_size;            ///< Size (in bytes) of a logical block
-    unsigned ppb;                   ///< physical blocks per logical block
-    struct blockdev_ops_s *ops;     ///< driver specific operations linked to the blockdev
-    void * driver_data;             ///< private pointer for driver specific info
 };
 
 #define blockdev_alloc() (struct blockdev_s*)(dev_alloc(BLOCK_DEV, sizeof(struct blockdev_s))->data)

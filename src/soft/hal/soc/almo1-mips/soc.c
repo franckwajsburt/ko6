@@ -9,6 +9,12 @@
   \brief    Platform initialization functions
             Initialize every platform device based on the device tree
 
+            This file is the glue between the device tree and the drivers.
+            It knows:
+            - the hardware platform,
+            - the offsets in the FDT,
+            - and it calls the right initialization functions for each driver.
+
 \*------------------------------------------------------------------------------------------------*/
 
 #include <hal/devices/blockdev/soclib-bd.h>
