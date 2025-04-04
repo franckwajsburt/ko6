@@ -1,31 +1,30 @@
 #include <libc.h>
 
-int stderr = 1;             // FIXME it should be a file descriptor, not a tty number
+int stdout = 1;             // FIXME it should be a file descriptor, not a tty number
 int stdin = 1;              // FIXME it should be a file descriptor, not a tty number
-#define EOF '.'             // FIXME should be -1 after a ctrl-D
+#define EOT 4               // FIXME should be -1 after a ctrl-D
 #define getc fgetc(stdin)   
 
 // call back function to print the occurence number of each words
-void print_occurences (ht_t *ht, size_t pos, const char *key, void *val, void *data) 
+void print_occurences (ht_t *ht, size_t pos, void *key, void *val, void *data) 
 {
-    fprintf (stderr, "%u\t %s : %d\n", pos, key, (long)val);    
+    fprintf (stdout, "%d\t %s : %d\n", pos, (char *)key, (long)val);    
 }
-
 
 int main (int argc, char * argv[])
 {
+    fprintf (stdout, "Type any words ended with <CTRL-D>\n");    
+
     char word[32];                                              // buffer for the word
-    char c = EOF;                                                 // read character
+    char c = getc;                                              // read character
     long val;
-    ht_t *ht = ht_create (16);
-    
-    while (c != EOF) {                                          // while not end of stdin
+    ht_t *ht = ht_create (16, 0);
 
-        for (c=getc;                                            // skip all non-alnum or _
-            !isalnum(c) && (c!= '_') && (c!=EOF);               
-            c=getc);  
+    while (c != EOT) {                                          // while not end of stdin
 
-        if (c != EOF) {                                         // if there is a new word
+        for (;!isalnum(c) && (c!= '_') && (c!=EOT); c=getc);    // skip all non-alnum or _      
+
+        if (c != EOT) {                                         // if there is a new word
             char *pw = word;                                    // get the new word
             *pw++ = tolower(c);                                 // the first char is already read
             for (c=getc; isalnum(c) || (c=='_'); c=getc) {      // while c is alphanum or '_'
@@ -42,6 +41,7 @@ int main (int argc, char * argv[])
         }
     } 
 
+    fprintf (stdout,"\n");
     ht_foreach (ht, print_occurences, NULL);                    // scan the table to print the words
     ht_stat (ht);                                               // then print the hash table stats
     return 0;

@@ -1,3 +1,3 @@
 APPNB	= 0
-SRC 	= main.c
+SRC 	= $(CURDIR).c
 include ../Makefile.uapp

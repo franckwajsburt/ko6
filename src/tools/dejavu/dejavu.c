@@ -2,9 +2,9 @@
 #include <ht_prob.h>
 
 // call back function to print the occurence number of each words
-void print_occurences (ht_t *ht, unsigned pos, const char *key, void *val, void *data) 
+void print_occurences (ht_t *ht, unsigned pos, void *key, void *val, void *data) 
 {
-    fprintf (stderr, "%u\t %-32s : %ld\n", pos, key, (long)val);    
+    fprintf (stderr, "%u\t %-32s : %ld\n", pos, (char *)key, (long)val);    
 }
 
 int main (int argc, char * argv[])
@@ -12,7 +12,7 @@ int main (int argc, char * argv[])
     char word[32];                                              // buffer for the word
     char c = 0;                                                 // read character
     long val;
-    ht_t *ht = ht_create (16);
+    ht_t *ht = ht_create (16,0);
     
     while (c != EOF) {                                          // while not end of stdin
 

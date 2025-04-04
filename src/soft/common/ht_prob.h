@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-02-17
+  | |__ /'v'\  / /      \date       2025-04-04
   | / /(     )/ _ \     \copyright  2025 Sorbonne University
   |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
 
@@ -10,6 +10,12 @@
             Uses double hashing (`h(k) + i * h2(k) mod N`) for collision resolution,
             ensuring better key distribution and avoiding clustering.
             Also features on-the-fly rehashing during `set` and `get` to optimize key placement.
+
+            Keys can be pointers to strings (char *) or generic pointers (void *)
+            If a key is a string, the key comparison is done with strcmp 
+            and the key is duplicated when a new entry is added. with strdup.
+            If the key is a generic pointer, the key comparison is == 
+            and there is no key duplication.
 
 \*------------------------------------------------------------------------------------------------*/
 
@@ -29,8 +35,6 @@
 #   include <libc.h>
 #endif
 
-
-typedef struct ht_s ht_t;
 /**
  * \brief   Opaque structure representing a hash table.
  *          This hash table uses open addressing with double hashing to resolve collisions.
@@ -43,12 +47,13 @@ typedef struct ht_s ht_t;
  *          The function initializes a hash table of the given size,
  *          ensuring that the table size is a prime number to optimize double hashing.
  *          All slots are initialized as empty.
- * \param   size The requested initial size of the hash table.
+ * \param   size    The requested initial size of the hash table.
+ * \param   type    0 if key are "char *" strings ; 1 if key are "void *"
  * \return  A pointer to the newly allocated hash table, or NULL if allocation fails.
  * \note    The actual size of the table may be slightly larger than the requested size
  *          because it is adjusted to the nearest prime number for better hashing performance.
  */
-ht_t * ht_create (unsigned size);
+ht_t * ht_create (unsigned size, int type);
 
 /**
  * \brief   Retrieves the value associated with a given key in the hash table.
@@ -63,7 +68,7 @@ ht_t * ht_create (unsigned size);
  *          the key to that slot. This helps reduce fragmentation and optimizes future lookups.
  *          If the key does not exist in the table, NULL is returned.
  */
-void * ht_get (ht_t *ht, const char *key);
+void * ht_get (ht_t *ht, void *key);
 
 /**
  * \brief   Inserts a key-value pair into the hash table.
@@ -81,7 +86,7 @@ void * ht_get (ht_t *ht, const char *key);
  *          Additionally, the function duplicates the key using `STRDUP()`, so the caller is 
  *          responsible for freeing the original key if needed.
  */
-int ht_set(ht_t *ht, const char *key, void *val);
+int ht_set(ht_t *ht, void *key, void *val);
 
 /**
  * \brief   Inserts a key-value pair into the hash table, automatically growing the table 
@@ -93,7 +98,7 @@ int ht_set(ht_t *ht, const char *key, void *val);
  * \return  The number of probes required before insertion succeeds.
  *          Automatically grows the table if necessary. Returns -1 if resizing fails.
  */
-int ht_set_grow(ht_t **pht, const char *key, void *val, int maxtry);
+int ht_set_grow(ht_t **pht, void *key, void *val, int maxtry);
 
 /**
  * \brief   Deletes a key from the hash table.
@@ -109,7 +114,7 @@ int ht_set_grow(ht_t **pht, const char *key, void *val, int maxtry);
  *          The function does not shrink the hash table, it only marks slots as `FREED`. 
  *          This may lead to fragmentation if too many deletions occur without insertions.
  */
-void * ht_del (ht_t *ht, const char *key);
+void * ht_del (ht_t *ht, void *key);
 
 /**
  * \brief   Function pointer type for callbacks used in `ht_foreach`.
@@ -121,7 +126,7 @@ void * ht_del (ht_t *ht, const char *key);
  * \param   val   The value associated with the key.
  * \param   data  A user-defined pointer passed to provide context to the callback function.
  */
-typedef void (*ht_callback_t)(ht_t *ht, unsigned pos, const char *key, void *val, void *data);
+typedef void (*ht_callback_t)(ht_t *ht, unsigned pos, void *key, void *val, void *data);
 
 /**
  * \brief   Iterates over all occupied slots in the hash table and applies a callback function.
@@ -136,16 +141,6 @@ typedef void (*ht_callback_t)(ht_t *ht, unsigned pos, const char *key, void *val
 void ht_foreach(ht_t *ht, ht_callback_t callback, void *data);
 
 /**
- * \brief   Displays statistics about the hash table.
- *          This function prints the total number of slots, 
- *          the number of freed slots (previously occupied but now available), 
- *          and the number of empty slots (never occupied). 
- *          It also analyzes key distribution by detecting collisions 
- * \param   ht  Pointer to the hash table.
- */
-void ht_stat (ht_t *ht);
-
-/**
  * \brief   Rehashes a hash table with a given size factor.
  *          This function resizes the hash table by a given percentage and reinserts
  *          all existing elements to optimize performance and reduce clustering.
@@ -155,5 +150,15 @@ void ht_stat (ht_t *ht);
  * \return  NULL if rehashing fails, otherwise returns the new table pointer.
  */
 ht_t *ht_rehash(ht_t **pht, unsigned percent);
+
+/**
+ * \brief   Displays statistics about the hash table.
+ *          This function prints the total number of slots, 
+ *          the number of freed slots (previously occupied but now available), 
+ *          and the number of empty slots (never occupied). 
+ *          It also analyzes key distribution by detecting collisions 
+ * \param   ht  Pointer to the hash table.
+ */
+void ht_stat (ht_t *ht);
 
 #endif
