@@ -28,7 +28,7 @@ struct blockdev_event_s {
     void *arg;                      ///< argument passed to the function
 };
 
-/** \brief Character device informations */
+/** \brief block device informations */
 struct blockdev_s {
     unsigned base;                  ///< memory-mapped register base addresses
     unsigned blocks;                ///< Total number of available logical blocks (disk size) 
