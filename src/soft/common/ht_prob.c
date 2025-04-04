@@ -204,6 +204,7 @@ int ht_set (ht_t *ht, void *key, void *val)         // see comment in ht_probe.h
 {
     struct ht_slot_s * slot = NULL;                 // will be the best slot
     int try_forthisslot = 0;
+    if (key == KEYFREED) return -2;                 // wrong key, KEYFREED is forbidden
     FOREACH_PROBE(ht, key, try, h) {                // For each possible slot for this key
         void * current_key = ht->bucket[h].key;     // get the key at position h
         if (current_key == KEYFREED) {              // if first freed slot, will be the best slot

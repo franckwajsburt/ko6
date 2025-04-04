@@ -81,6 +81,7 @@ void * ht_get (ht_t *ht, void *key);
  * \param   val  The value associated with the key.
  * \return  The number of probes required for insertion.
  *          If the table is full (no available slot), returns -1.
+ *          if the key is forbiden, return -2
  * \note    If a freed slot is found during the search, the function moves the key to that slot
  *          to optimize key placement and improve future lookups, reducing fragmentation.
  *          Additionally, the function duplicates the key using `STRDUP()`, so the caller is 
