@@ -1,8 +1,8 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2025-03-30
+# | |__ /'v'\  / /   	\date       2025-04-05
 # | / /(     )/ _ \   	\copyright  2021 Sorbonne University
-# |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+# |_\_\ x___x \___/     \licence    https://opensource.org/licenses/MIT
 #
 # \file     kernel/Makefile
 # \author   Franck Wajsburt
@@ -37,7 +37,7 @@ SRC    += $(COMDIR)/usermem.h $(COMDIR)/list.h
 SRC    += $(COMDIR)/errno.h $(COMDIR)/errno.c $(COMDIR)/esc_code.h
 SRC    += $(COMDIR)/cstd.c $(COMDIR)/cstd.h
 SRC    += $(COMDIR)/ctype.c $(COMDIR)/ctype.h
-SRC    += $(COMDIR)/ht_prob.c $(COMDIR)/ht_prob.h
+SRC    += $(COMDIR)/htopen.c $(COMDIR)/htopen.h
 SRC    += kmemory.c kmemory.h
 SRC    += kmemory.c kmemory.h
 SRC    += klibc.c klibc.h

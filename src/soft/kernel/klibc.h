@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-02-23
+  | |__ /'v'\  / /      \date       2025-04-05
   | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     kernel/klib.h
   \author   Franck Wajsburt
@@ -40,22 +40,22 @@
 #include <common/errno.h>           // standard error code number
 #include <common/syscalls.h>        // syscall's codes
 #include <common/usermem.h>         // user data region usage
-#include <common/ht_prob.h>         // hash table
+#include <common/htopen.h>          // hash table open addressing
 #include <common/ctype.h>           // ascii types
 
 #include <hal/devices/chardev.h>
 
 #include <hal/cpu/atomic.h>         // Locks
 #include <hal/cpu/cache.h>          // L1 cache function prototypes
-#include <hal/cpu/thread.h>
-#include <hal/cpu/irq.h>
+#include <hal/cpu/thread.h>         // threads context
+#include <hal/cpu/irq.h>            // 
 #include <hal/cpu/cpuregs.h>        // CPU registers manipulation function prototypes
 #include <hal/cpu/kpanic.h>
 
 #include <hal/soc/soc.h>
 
 #include <kernel/kmemory.h>         // all kernel allocators
-#include <kernel/kthread.h>         // thread functions
+#include <kernel/kthread.h>         // thread functions and scheduler
 #include <kernel/ksynchro.h>        // mutex, barrier and similar functions
 #include <kernel/kdev.h>            // dynamic devices allocation
 #include <kernel/kshell.h>          // kshell syscall
@@ -194,3 +194,9 @@ extern int fifo_pull (struct fifo_s *fifo, char *c);
 
 void tick_event (void);
 #endif//_KLIBC_H_
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/

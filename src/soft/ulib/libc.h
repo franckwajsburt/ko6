@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-07-04
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-05
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     ulib/libc.h
   \author   Franck Wajsburt
@@ -35,7 +35,7 @@
 #include <errno.h>      // standard error code number
 #include <esc_code.h>   // ANSI escape code
 #include <ctype.h>      // ASCII test functions
-#include <ht_prob.h>    // hash table
+#include <htopen.h>     // hash table open addressing
 
 #define RAND_MAX 32767  /* maximum random value by default, must be < 0x7FFFFFFE */
 #define PRINTF_MAX 256  /* largest printed message */
@@ -155,3 +155,9 @@ extern int fgets (char *s, int size, int tty);
 extern int fprintf (int tty, char *fmt, ...);
 
 #endif//_LIBC_H_
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/

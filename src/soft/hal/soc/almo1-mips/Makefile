@@ -1,8 +1,8 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2025-03-30
+# | |__ /'v'\  / /   	\date       2025-04-05
 # | / /(     )/ _ \   	\copyright  2021 Sorbonne University
-# |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+# |_\_\ x___x \___/     \licence    https://opensource.org/licenses/MIT
 #
 # \file     hal/soc/almo1-mips/Makefile
 # \author   Franck Wajsburt, Nolan Bled
@@ -54,7 +54,7 @@ SRCC    = $(filter %.c,$(SRC))
 OBJS    = $(subst .S,.o,$(foreach src,$(SRCS),$(notdir $(src))))
 OBJC    = $(subst .c,.o,$(foreach src,$(SRCC),$(notdir $(src))))
 OBJ     = $(addprefix $(OBJDIR)/,$(OBJS) $(OBJC))
-OBJ 	+= $(OBJDIR)/cstd.o $(OBJDIR)/ctype.o $(OBJDIR)/ht_prob.o $(OBJDIR)/errno.o
+OBJ 	+= $(OBJDIR)/cstd.o $(OBJDIR)/ctype.o $(OBJDIR)/htopen.o $(OBJDIR)/errno.o
 OBJ 	+= $(OBJDIR)/soclib-icu.o $(OBJDIR)/soclib-dma.o
 OBJ 	+= $(OBJDIR)/soclib-timer.o $(OBJDIR)/soclib-tty.o
 OBJ 	+= $(OBJDIR)/soclib-bd.o

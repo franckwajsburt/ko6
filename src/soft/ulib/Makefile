@@ -1,8 +1,8 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2025-03-30
+# | |__ /'v'\  / /   	\date       2025-04-05
 # | / /(     )/ _ \   	\copyright  2021 Sorbonne University
-# |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+# |_\_\ x___x \___/     \licence    https://opensource.org/licenses/MIT
 #
 # \file     ulib/Makefile
 # \author   Franck Wajsburt
@@ -37,7 +37,7 @@ SRC    += $(COMDIR)/debug_on.h $(COMDIR)/debug_off.h
 SRC    += $(COMDIR)/errno.h $(COMDIR)/errno.c
 SRC    += $(COMDIR)/cstd.h $(COMDIR)/cstd.c
 SRC    += $(COMDIR)/ctype.h $(COMDIR)/ctype.c
-SRC    += $(COMDIR)/ht_prob.h $(COMDIR)/ht_prob.c
+SRC    += $(COMDIR)/htopen.h $(COMDIR)/htopen.c
 SRC    += $(CPUDIR)/$(CPU)/cpu_user.S
 SRC    += crt0.c libc.h libc.c pthread.h pthread.c memory.h memory.c
 

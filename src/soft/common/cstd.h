@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-02-11
-  | / /(     )/ _ \     \copyright  2021-2025 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-05
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     commmon/cstd.h
   \author   Franck Wajsburt, Nolan Bled
@@ -88,14 +88,6 @@ extern void *memchr (const void *src, int c, size_t n);
  * \return    the dest buffer address
  */
 extern void *strncpy (char *dest, char *src, unsigned n);
-
-/**
- * \brief     duplicates the string src, included the ending byte '\0'
- * \param     src  the source string
- * \return    a pointer to the newly created screen
- * \todo      implementer. We need kmalloc here
- */
-extern char *strdup(char *src);
 
 /**
  * \brief     calculates the length of the string s, excluding the terminating null byte
@@ -188,3 +180,9 @@ extern int snprintf (char *buffer, unsigned size, char *fmt, ...);
 extern unsigned long strtoul(char *s, char **endptr, int base);
 
 #endif
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/

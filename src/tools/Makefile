@@ -1,8 +1,8 @@
 #-------------------------------------------------------------------------------------------------*\
 #  _     ___    __
-# | |__ /'v'\  / /      \date		2025-02-24
+# | |__ /'v'\  / /      \date		2025-04-05
 # | / /(     )/ _ \     \copyright	2021 Sorbonne University
-# |_\_\ x___x \___/		https://opensource.org/licenses/MIT
+# |_\_\ x___x \___/		\licence    https://opensource.org/licenses/MIT
 #
 # \file     Tools/Makefile
 # \author   Franck Wajsburt
@@ -10,7 +10,7 @@
 #
 #-------------------------------------------------------------------------------------------------*/
 
-APPS   ?= dejavu kfstools elfloader kshell mkdx bigtable
+APPS   ?= dejavu kfstools elfloader mkdx bigtable
 VERBOSE?= 0#					verbose level
 MAKOPT ?= -s#					comment the -s to get command details
 ACTIONS = clean compil pdf#		all possible actions

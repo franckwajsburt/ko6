@@ -1,8 +1,8 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2022-07-03
-# | / /(     )/ _ \   	\copyright  2021-2022 Sorbonne University
-# |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+# | |__ /'v'\  / /   	\date       2025-04-05
+# | / /(     )/ _ \   	\copyright  2021 Sorbonne University
+# |_\_\ x___x \___/     \licence    https://opensource.org/licenses/MIT
 #
 # \file     uapp/Makefile.uapp
 # \author   Franck Wajsburt
@@ -40,7 +40,7 @@ APPNB  ?= 1#						by default it should be application 1
 # Targets
 # --------------------------------------------------------------------------------------------------
 
-LIB		= crt0.o libc.o pthread.o memory.o errno.o cpu_user.o ht_prob.o ctype.o
+LIB		= crt0.o libc.o pthread.o memory.o errno.o cpu_user.o htopen.o ctype.o
 LIB 	+= cstd.o
 
 SRCC    = $(filter %.c,$(SRC))
