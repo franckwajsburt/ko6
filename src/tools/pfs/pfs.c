@@ -22,13 +22,24 @@
 
 #include <pfs.h>
 
-static struct pfs root = { 
+static struct pfs_s root = { 
     .flags = RWX,
     .name = "/",
     .root = {0},
     .brothers = {0},
     .data = NULL
 };
+
+static struct dirent_s root_entry = {
+    .d_name = root.name,
+    .root = &root,
+    .item = &root
+};
+
+
+static struct pfs_s *fileDesciptors[MAX_FD]={0}; // type File
+
+static struct dirent_s *dirDesciptors[MAX_DD]={&root_entry, 0}; // type DIR
 
 /* Outils Static  ------------------------------------------------------------------------------- */
 
@@ -63,20 +74,20 @@ static int next_slash(char* path, char * word){
 /**
  * print the content of the current directory
  */
-static void print_pfs(const struct pfs *dir){
+static void print_pfs(const struct pfs_s *dir){
 
     printf("'%s'\n",dir->name );
 
-    struct pfs * embedded;
+    struct pfs_s * embedded;
     list_foreach(&(dir->root), iterator){ 
-        embedded = list_item(iterator, struct pfs ,brothers);
+        embedded = list_item(iterator, struct pfs_s ,brothers);
         printf(" ├── '%s'\n",embedded->name);
     }
     
 }
 
 /** init any already allocated pfs strcutur */
-static void init_pfs( struct pfs *new ,char* name, int flags, int type){
+static void init_pfs( struct pfs_s *new ,char* name, int flags, int type){
     list_init(&new->root);
     list_init(&new->brothers);
     new->flags = flags | type;
@@ -86,15 +97,15 @@ static void init_pfs( struct pfs *new ,char* name, int flags, int type){
 }
 
 /** create pfs structure */
-static struct pfs *create_pfs(struct pfs *dir, char* name, int flags, int type){
-    struct pfs* new = (struct pfs*) malloc(sizeof(struct pfs));
+static struct pfs_s *create_pfs(struct pfs_s *dir, char* name, int flags, int type){
+    struct pfs_s* new = (struct pfs_s*) malloc(sizeof(struct pfs_s));
     init_pfs(new, name, flags, type);
     list_addnext(&(dir->root), &(new->brothers));
 
     return new;
 }
 
-static void destroy_dir(struct pfs **elem){
+static void destroy_dir(struct pfs_s **elem){
     // exception root
     if (strcmp((*elem)->name, "/") == 0 )
         return ;
@@ -108,8 +119,8 @@ static void destroy_dir(struct pfs **elem){
     *elem = NULL;
 }
 
-/** open is here to find on the linked list */
-static struct pfs* open_any( char* name ){
+/** oOpen without checkin */
+static struct pfs_s* open_any( char* name ){
     char *last_slash = name;
 
     // BAD argument value
@@ -120,7 +131,7 @@ static struct pfs* open_any( char* name ){
     if(strcmp(last_slash, "/") == 0)
         return &root;
 
-    struct pfs* embedded, *dir = &root;
+    struct pfs_s* embedded, *dir = &root;
     char next[NAME_SIZE] = "/" ;
 
     // Cas general
@@ -129,7 +140,7 @@ static struct pfs* open_any( char* name ){
         last_slash += next_slash(last_slash, next);
 
         list_foreach(&(dir->root), cur){ 
-            embedded = list_item(cur, struct pfs, brothers);
+            embedded = list_item(cur, struct pfs_s, brothers);
             if (*last_slash == 0 && strcmp(embedded->name, next)==0)
                 return embedded;
             
@@ -149,18 +160,92 @@ static struct pfs* open_any( char* name ){
 
 }
 
+int get_newFd(){
+    for(int i =0; i < MAX_FD; i++){
+        if(fileDesciptors[i] == NULL)
+            return i;
+    }
+    return -1;
+}
+
+struct pfs_s* put_Fd(int fd){
+    struct pfs_s* res = fileDesciptors[fd];
+    fileDesciptors[fd] = NULL;
+    return res;
+}
+
+int get_newDd(){
+    for(int i =0; i < MAX_FD; i++){
+        if(dirDesciptors[i] == NULL)
+            return i;
+    }
+    return -1;
+}
+
+struct dirent_s* put_Dd(int fd){
+    struct dirent_s* res = dirDesciptors[fd];
+    dirDesciptors[fd] = NULL;
+    return res;
+}
+
 
 // Fonction ----------------------------------------------------------------------------------------
 
-struct pfs* opendir_pfs(char *name){
+int open(const char* pathname, int flags){
+    return 0;
+}
+
+DIR* opendir(char *pathname){
     
-    struct pfs* embedded = open_any(name);
+    struct pfs_s* embedded = open_any(pathname);
 
     // Verifie que c'est un repertoir
-    if (embedded && embedded->flags&&DIR)
-        return embedded;
-    else
-        return NULL; // on peut etre plus flexible
+    if (embedded && embedded->flags&&DIR_T){
+        int *res = (int*)malloc(sizeof(int));
+        *res = get_newDd();
+        dirent_t* new = (dirent_t*) malloc(sizeof(dirent_t));
+        new->d_name = pathname;
+        new->root = list_item(&embedded->root, pfs_t, root);
+        new->item = new->root;
+        dirDesciptors[*res] = new;
+        return res;
+    }
+    else{
+        return NULL; 
+    }
+}
+
+void rewinddir(DIR *dirp){
+    dirDesciptors[*dirp]->item = dirDesciptors[*dirp]->root;
+}
+
+int closedir(DIR *dirp){
+    if ( dirp == 0){
+        return -1;
+    }
+
+    if(dirDesciptors[*dirp] != NULL){
+        free((dirDesciptors[*dirp]));
+        dirDesciptors[*dirp]=0;
+        return 0;
+    }
+
+    return -1;
+}
+
+struct dirent_s* readdir(DIR *dirp){
+    struct dirent_s* res = dirDesciptors[*dirp];
+
+    //return null if end of stream
+    struct pfs_s *dir = res->root;
+    struct pfs_s *cur = res->item;
+    if(&cur->brothers == &dir->root){
+        return NULL;
+    }
+
+    res->item = list_item(&cur->brothers, pfs_t, brothers);
+    return res;
+    
 }
 
 // Test --------------------------------------------------------------------------------------------
@@ -169,7 +254,7 @@ struct pfs* opendir_pfs(char *name){
 int main(int argc, char** argv){
     /** init obligatoire il faudrait peut etre une fonction */
 
-    init_pfs(&root , "/", RWX , DIR);
+    init_pfs(&root , "/", RWX , DIR_T);
     
     /** next_slash Test ========================================================================= */
     
@@ -199,12 +284,12 @@ int main(int argc, char** argv){
     // printf("\n<~/ko6/src/tools/pfs/pfs.c> Create && Open PFS Test \n");
 
     printf("\t======== Open root :   \'%s\' \n", "/");
-    struct pfs* fd = open_any("/");
+    struct pfs_s* fd = open_any("/");
     printf("\t > assert '/' == root is %s \n", &root == fd ? "OUI": "NON");
     printf("\t > fd == NULL is %s \n", NULL == fd ? "OUI": "NON");
 
     printf("\t======== Create&Open Hello:  \n");
-    struct pfs* new = create_pfs(fd, "hello",RW, DIR );
+    struct pfs_s* new = create_pfs(fd, "hello",RW, DIR_T );
     fd = open_any("/hello////");
     printf("\t > assert '/hello' == hello is %s \n", fd == new ? "OUI": "NON");
     printf("\t > fd == NULL is %s \n", NULL == fd ? "OUI": "NON");
@@ -220,15 +305,15 @@ int main(int argc, char** argv){
     printf("\t > fd == NULL is %s \n", NULL == fd ? "OUI": "NON");
 
     // on a confiance a partie de la
-    new = create_pfs(&root, "etc",RW, DIR );
-    new = create_pfs(&root, "data",RW, DIR );
-    new = create_pfs(new, "read.txt",RW, DIR );
+    new = create_pfs(&root, "etc",RW, DIR_T );
+    new = create_pfs(&root, "data",RW, DIR_T );
+    new = create_pfs(new, "read.txt",RW, DIR_T );
 
-    /** print DIR pfs =========================================================================== */
+    /** print DIR_T pfs =========================================================================== */
     printf("\n<~/ko6/src/tools/pfs/pfs.c> Print Dir\n");
     print_pfs(&root);
 
-    struct pfs* fd_tree = open_any("/data");
+    struct pfs_s* fd_tree = open_any("/data");
     printf("\t > fd == NULL is %s \n", NULL == fd_tree ? "OUI": "NON");
     print_pfs(fd_tree);
 

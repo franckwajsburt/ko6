@@ -53,7 +53,7 @@
 #   include <stdio.h>
 #   include <stdlib.h>
 #   include <stdint.h>
-#   include <fcntl.h>
+// #   include <fcntl.h>
 #   include <unistd.h>
 #   include <string.h>
 #   include <sys/types.h>
@@ -83,8 +83,8 @@
 //--------------------------------------------------------------------------------------------------
 
     // Type 5 bit => 32 type possible but that's a lot, we can shrink it later
-#define FILE    (1 << 4)
-#define DIR     (1 << 5)
+#define FILE_T    (1 << 4)
+#define DIR_T     (1 << 5)
 
     // Rights
 #define R       (1 << 1)
@@ -110,6 +110,12 @@
 #define EINVAL -1
 
 //--------------------------------------------------------------------------------------------------
+// Descriptor : {File, Dir}
+//--------------------------------------------------------------------------------------------------
+#define MAX_FD 64 //personnal choice
+#define MAX_DD 64 //TODO change give his own header file
+
+//--------------------------------------------------------------------------------------------------
 // Peudo File Systeme specification
 //--------------------------------------------------------------------------------------------------
 
@@ -118,7 +124,7 @@
  * \todo    faire une breve description Lili
  * \remarks le nom des champs est toujours sujet a debat
  */
-struct pfs{
+struct pfs_s{
     char flags;         /**< \var flags give a type for different usage */
     char name[39];      /**< \var name of file or directory. */
     void* data;         /**< \var data block of data if not a directory*/
@@ -126,29 +132,37 @@ struct pfs{
     list_t root;        /**< \var root parent directory field */
     list_t brothers;    /**< \var brother object in the same directory */
 };
+typedef struct pfs_s pfs_t;
+
+int open(const char* pathname, int flags);
+
+int close(int fd);
+
+long write(int fd, const void *buf, size_t count);
+
+long read(int fd, void *buf, size_t count);
+
+//--------------------------------------------------------------------------------------------------
+// Dirent in User Space (need to have his own header not sure)
+//--------------------------------------------------------------------------------------------------
+#define DIR int
+
+struct dirent_s {
+    char * d_name;
+    pfs_t * root; ///< pointer to the current directory
+    pfs_t * item; ///< pointer to the item in current directory
+};
+typedef struct dirent_s dirent_t;
 
 /**
  * \brief etant donner nom rend la structure qui associé pour l'accès au dossier
  */
-struct pfs* opendir(const char *pathname);
+DIR* opendir(char *pathname);
 
-/**
- * \brief ouvre un fichier etant donner le chemin
- * \var flags ne sert a rien car on n'a pas de macanisme de gestion de droits
- * \var pathname donne le chemin absolu du fichier
- * 
- * \remarks On a pas de working directory .
- */
-struct pfs* pfs_open(const char *pathname, int flags);
+int closedir(DIR* dirp);
 
+struct dirent_s* readdir(DIR* dirp);
 
-/**
- * \brief flush the buffer in the disk
- */
-long write(int fd, const void *buf, size_t count);
-
-int readdir(unsigned int fd, unsigned int count);
-
-long read(int fd, void *buf, size_t count);
+void rewinddir(DIR *dirp);
 
 #endif // _PSF_H_
