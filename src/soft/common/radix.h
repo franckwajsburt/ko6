@@ -10,7 +10,7 @@
             where:  Type        is a native C type (int, short, void *)
                     NBELEMENTS  is the number of slots
             There:  Type        void *
-                    NBELEMENTS  2**30 = 1 Giga slots
+                    NBELEMENTS  2**32 = 4 Giga slots
 
 \*------------------------------------------------------------------------------------------------*/
 
@@ -18,7 +18,6 @@
 #define _RADIX_H_
 
 #ifdef _HOST_
-#   include <stddef.h>
 #   include <stdlib.h>
 #   include <stdio.h>
 #   include <string.h>
@@ -61,7 +60,7 @@ int radix_set (radix_t *radix, unsigned index, void * val);
 /**
  * \brief   Function pointer type for callbacks used in `radix_foreach`.
  *          A callback function of this type is executed for each occupied slot in the radix tree. 
- *          It receives the slot index, the key, the associated value and a user-defined data ptr
+ *          It receives the slot index, the associated value and a user-defined data ptr
  * \param   radix Pointer to the radix tree.
  * \param   index The index of the slot in the radix tree.
  * \param   val   The value associated with the key.
@@ -74,12 +73,22 @@ typedef void (*radix_callback_t)(const radix_t *radix, unsigned index, void *val
  *          This function traverses all slots in the radix tree and calls the given callback 
  *          function on each occupied slot (i.e., slots that contain a no-NULL value). 
  *          The callback function follows the `radix_callback_t` signature (see above)
- * \param   radix     Pointer to the radix tree.
- * \param   callback  Function of type `radix_callback_t` that will be called for each valid slot.
- * \param   data      A user-defined pointer passed to the callback function for additional context.
+ * \param   radix Pointer to the radix tree.
+ * \param   fn    Function of type `radix_callback_t` that will be called for each valid slot.
+ * \param   data  A user-defined pointer passed to the callback function for additional context.
  *          The callback function is called only for valid entries (not NULL).
  */
-void radix_foreach(const radix_t *radix, radix_callback_t callback, void *data);
+void radix_foreach(const radix_t *radix, radix_callback_t fn, void *data);
+
+/**
+ * \brief   cleanup a radix tree
+ * \param   radix Pointer to the radix tree.
+ * \return  Recursively frees empty nodes in the radix tree.
+ *           1) free all allocated node whose all slots are NULL
+ *           2) set to NULL the parent pointer if the child node is freed
+ *              Also clears root_l1/l2/l3 if their respective subtrees become empty.
+ */
+void radix_cleanup(radix_t *rx);
 
 /**
  * \brief   Displays statistics about the radix tree.
@@ -87,6 +96,8 @@ void radix_foreach(const radix_t *radix, radix_callback_t callback, void *data);
  * \param   radix  Pointer to the radix tree.
  */
 void radix_stat (const radix_t *radix);
+
+extern void radix_export_dot(const radix_t *rx, const char *filename);
 
 #endif
 
