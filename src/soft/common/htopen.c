@@ -12,6 +12,8 @@
 
 #define KEYFREED ((void *)0x80000001)               ///< key used when a slot is freed 
 
+#include <htopen.h>
+
 #ifdef _KERNEL_                                     // if it is for the kernel
 #   include <kernel/klibc.h>
 #   define MALLOC       kmalloc                     // allocates in the slab allocator
@@ -23,10 +25,8 @@
 #   define STRDUP       strdup                      // allocates a new key (when it is a string)
 #   define FREE(k)      free(k)                     // free a key (when it is a string)
 #   ifdef _HOST_
-#       include <htopen.h>
 #       define PRINT(...)   fprintf(stderr,__VA_ARGS__) 
 #   else
-#       include <libc.h>
 #       define PRINT(...)   fprintf(0,__VA_ARGS__) 
 #   endif
 #endif
@@ -267,13 +267,13 @@ void * hto_del (hto_t *ht, void *key)               // see comment in htopen.h
     return NULL;                                    // key not found
 }
 
-void hto_foreach (hto_t *ht, hto_callback_t callback, void * data) // see comment in htopen.h
+void hto_foreach (hto_t *ht, hto_callback_t fn, void * data) // see comment in htopen.h
 {
     for (unsigned s = ht->size, h = 0; h < s; h++) {// for each slot
         void *key = ht->bucket[h].key;              // get the current key
         if (key != NULL && key != KEYFREED) {       // if the slot is used
             void *val = ht->bucket[h].val;          // get the current val
-            callback(ht, h, key, val, data);        // call the callback function 
+            fn(ht, h, key, val, data);              // call the callback function 
         }
     }
 }

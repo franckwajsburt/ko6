@@ -139,12 +139,12 @@ typedef void (*hto_callback_t)(hto_t *ht, unsigned pos, void *key, void *val, vo
  *          This function traverses all slots in the hash table and calls the given callback 
  *          function on each occupied slot (i.e., slots that contain a valid key). 
  *          The callback function follows the `hto_callback_t` signature (see above)
- * \param   ht        Pointer to the hash table.
- * \param   callback  Function of type `hto_callback_t` that will be called for each valid entry.
- * \param   data      A user-defined pointer passed to the callback function for additional context.
+ * \param   ht    Pointer to the hash table.
+ * \param   fn    Function of type `hto_callback_t` that will be called for each valid entry.
+ * \param   data  A user-defined pointer passed to the callback function for additional context.
  *          The callback function is called only for valid entries (empty or freed slots skippe).
  */
-void hto_foreach(hto_t *ht, hto_callback_t callback, void *data);
+void hto_foreach(hto_t *ht, hto_callback_t fn, void *data);
 
 /**
  * \brief   Rehashes a hash table with a given size factor.
