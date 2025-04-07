@@ -129,6 +129,18 @@ void * kmalloc (size_t size)
     return res;                                             // finally returns res
 }
 
+void *kcalloc(size_t n, size_t size)
+{
+    size_t total = n * size;                                // total number of char
+    unsigned *ptr = kmalloc (total);                        // try to allocate (always word-aligned)
+    PANIC_IF ( ptr == NULL,                                 // no more space
+        "%d object of %s bytes", n, size);                  // write a message then panic
+
+    for (int i = (total - 1) / 4; i >= 0; i--)              // clear the zone (the last word may be 
+        ptr[i] = 0;                                         // imcomplete, it is allocated
+    return (void *) ptr;                                    // return a void *
+}
+
 void kfree (void * obj)
 {
     size_t npage = (size_t)(obj - (void *)kmb)>>12;         // relative page number from kmb

@@ -38,11 +38,19 @@ extern void malloc_print (size_t level);
 extern void malloc_init (void *start);
 
 /**
- * \brief   Try to find a free object large enough, if none, merge free segments and try again.
+ * \brief   Try to allocate an object large enough, if none, merge free segments and try again.
  * \param   size  number of bytes asked
  * \return  A pointer of the allocated object or NULL if there is not place anymore.
  */
 extern void * malloc(unsigned size);                 
+
+/**
+ * \brief   same as malloc but allocate n * size bytes and write all the allocated zone to zero
+ * \param   n     number of objects
+ * \param   size  object size
+ * \return  A pointer of the allocated object or NULL if there is not place anymore.
+ */
+extern void * calloc(size_t n, size_t size);                 
 
 /**
  * \brief   free an allocated object with  malloc(), object is not erased.

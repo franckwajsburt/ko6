@@ -105,6 +105,16 @@ void * malloc (size_t size)
     return ptr;                                             // return what you have found
 }
 
+void *calloc(size_t n, size_t size)
+{
+    size_t total = n * size;                                // total number of char
+    unsigned *ptr = malloc (total);                         // try to allocate (always word-aligned)
+    if (!ptr) return NULL;                                  // no more space
+    for (int i = (total - 1) / 4; i >= 0; i--)              // clear the zone (the last word may be 
+        ptr[i] = 0;                                         // imcomplete, it is allocated
+    return (void *) ptr;                                    // return a void *
+}
+
 char * strdup (const char * str)
 {
     if (str==NULL) return NULL;                             // Avoid NULL input 

@@ -52,6 +52,14 @@ char *kstrdup(const char *str);
 void kmalloc_print (void);
 
 /**
+ * \brief   same as kmalloc but allocate n * size bytes and write all the allocated zone to zero
+ * \param   n     number of objects
+ * \param   size  object size
+ * \return  A pointer of the allocated object or NULL if there is not place anymore.
+ */
+extern void * kcalloc(size_t n, size_t size);                 
+
+/**
  * \brief Test Slab alocator, allocates and frees as many values as 'turn' then free all test
  * \param turn is the number of allocation or release are performed
  * \param size is the maximum objects size (from 1 to PAGE_SIZE)
