@@ -61,8 +61,9 @@
 
 #include <kernel/klibc.h>
 
-extern char __kbss_end;                 // 1st char above kbss section see kernel.ld (page aligned)
-extern char __kdata_end;                // 1st char above the kernel data region (page aligned)
+extern int __kbss_origin;               // first int of bss section (defined in ldscript kernel.ld)
+extern int __kbss_end;                  // 1st char above kbss section see kernel.ld (page aligned)
+extern int __kdata_end;                 // 1st char above the kernel data region (page aligned)
 #define kmb (char*)&__kbss_end          /* kernel memory begin */
 #define kme (char*)&__kdata_end         /* kernel memory end */
 static list_t FreeUserStack;            // free stack
@@ -82,6 +83,9 @@ static size_t NbPages;                  // maximum number of pages
 
 void memory_init (void)
 {
+    // put kbss sections to zero. kbss contains uninitialised global variables of the kernel
+    for (int *a = &__kbss_origin; a != &__kbss_end; *a++ = 0);
+
     CacheLineSize = CEIL(cachelinesize(),16);               // true line size, but expand to 16 min
     NbPages = (kme-kmb)/PAGE_SIZE;                          // maximum number of pages
     MaxLinePage = PAGE_SIZE / CacheLineSize;                // 256 when line is 16, 128 for 32, etc.

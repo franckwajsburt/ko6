@@ -32,20 +32,14 @@ EC_RESET;
 
 void kinit (void *fdt)
 {
-    // put kbss sections to zero. kbss contains uninitialised global variables of the kernel
-    extern int __kbss_origin;   // first int of bss section (defined in ldscript kernel.ld)
-    extern int __kbss_end;      // first int of above bss section (defined in ldscript kernel.ld)
-    for (int *a = &__kbss_origin; a != &__kbss_end; *a++ = 0);
-    memory_init();                  // memory initialisation 
+    memory_init ();                 // memory initialisation 
 
     if (soc_init(fdt, 200000) < 0)  // soc initialisation takes the tick as argument
         goto sleep;                 // initialization failed, just sleep
 
-    kprintf (Banner);
+    kprintf (Banner);               // see above ko6 banner
 
-    // initialize all synchronization mecanisms
-
-    ksynchro_init();
+    ksynchro_init ();               // initialize all synchronization mecanisms
 
     // First, we have to create the thread structure for the thread main()
     //   thread_create() is the same function used to create the thread main()

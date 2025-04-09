@@ -39,7 +39,7 @@ SECTIONS {
     .kbss : {
         __kbss_origin = .;  /* first byte of uninitialized global variables */
         *(.*bss*)           /* uninitialized global variables */
-        . = ALIGN(4);       /* move the filling pointer to a word aligned address */
+        . = ALIGN(4096);    /* move the filling pointer to a word aligned address */
         __kbss_end = .;     /* first byte after the bss section */
     } > kdata_region
 }

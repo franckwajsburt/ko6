@@ -66,6 +66,8 @@
 #define FLOOR(a,b)      ((int)(b)*((int)(a)/(int)(b)))              /* round down a aligned on b */
 #define FIFO_DEPTH 20   /* maximum fifo depth */
 
+#define V(fmt,v) kprintf("%s : "fmt, #v, (v))
+
 //--------------------------------------------------------------------------------------------------
 
 /**
