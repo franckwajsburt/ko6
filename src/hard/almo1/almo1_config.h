@@ -101,8 +101,8 @@
 #define SEG_KERNEL_BASE 0x80000000
 #define SEG_KERNEL_SIZE 0x00100000
 #define SEG_KDATA_BASE  0x80100000
-#define SEG_KDATA_SIZE  0x00F00000
-#define SEG_KUNC_BASE   0x81000000
+#define SEG_KDATA_SIZE  0x0FF00000
+#define SEG_KUNC_BASE   0x90000000
 #define SEG_KUNC_SIZE   0x00020000
 
 //---------------------------------------------- USER segments

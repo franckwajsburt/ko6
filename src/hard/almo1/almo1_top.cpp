@@ -91,7 +91,7 @@ int _main(int argc, char *argv[])
     bool    wrong_option    = false;
 
     std::cerr << "**********************" << std::endl;
-    std::cerr << "* almo1 202109071854 *" << std::endl;
+    std::cerr << "* almo1 202504091558 *" << std::endl;
     std::cerr << "**********************" << std::endl;
 
 if (argc > 1)

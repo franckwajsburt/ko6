@@ -7,7 +7,7 @@
 
 CPU	   ?= mips
 SOC     = $(notdir $(shell pwd))# 	 SOC name is the name of the current directory
-BLDDIR	= ../../bin
+BLDDIR	= ../../../bin
 TARGET  = $(BLDDIR)/$(SOC)-$(CPU).x# name of the generated simulator
 REPOS   = $(BLDDIR)/systemcass#		 soclib object files (see soclib.conf)
 

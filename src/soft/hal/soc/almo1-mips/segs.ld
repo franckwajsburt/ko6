@@ -16,7 +16,7 @@ __boot_length   = 0x00001000 ;					/* boot region size */
 __ktext_origin  = 0x80000000 ;					/* first byte address of kernel code region */
 __ktext_length  = 0x00100000 ;					
 __kdata_origin  = 0x80100000 ;					/* first byte address of kernel data region */
-__kdata_length  = 0x00800000 ;					
+__kdata_length  = 0x0FF00000 ;					
 __kdata_end = __kdata_origin + __kdata_length ; /* first addr AFTER kernel data region */
                                                 
 __text0_origin  = 0x60000000 ;					/* 1st byte address of app0 code region */
