@@ -32,9 +32,9 @@ EC_RESET;
 
 void kinit (void *fdt)
 {
-    memory_init ();                 // memory initialisation 
+    memory_init ();                 // memory initialisation, do it first because used by soc_init()
 
-    if (soc_init(fdt, 200000) < 0)  // soc initialisation takes the tick as argument
+    if (soc_init(fdt, 200000) < 0)  // soc initialisation takes the tick as argument:w
         goto sleep;                 // initialization failed, just sleep
 
     kprintf (Banner);               // see above ko6 banner
@@ -66,6 +66,9 @@ void kinit (void *fdt)
     //   And, as it it is the first load, jr $31 will go to thread_bootstrap which go to _start()
     //   function in user mode. You can look at the comment of the bootstrap() function in
     //   kthread.c file for details.
+
+    kmalloc_stat ();
+    kmalloc_test (100, 2048);
 
     thread_main_load (__usermem.main_thread);
 

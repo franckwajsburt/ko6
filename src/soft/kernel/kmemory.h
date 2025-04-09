@@ -49,7 +49,7 @@ char *kstrdup(const char *str);
  *        - for each open slab, tells the object size and how many free and allocated objects
  *        - for each page used, tells to which stab it belongs and how many objects are allocated in
  */
-void kmalloc_print (void);
+void kmalloc_stat (void);
 
 /**
  * \brief   same as kmalloc but allocate n * size bytes and write all the allocated zone to zero
