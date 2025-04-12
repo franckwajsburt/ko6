@@ -23,38 +23,64 @@ int yydebug = 1;
 	char str[1024];
 	struct wordlist *wlist;
 	struct stmt *stmt;
+	struct expr *expr;
 }
 
-%token NEWLINE SEMICOLON PIPE
-%token IF THEN ELSE FI WHILE DO DONE OBRKTS CBRKTS
-%token<str> BINOP STRING AND LAND LOR EQ NEQ LEQ GEQ NOT 
-%token<str> PLUS MINUS MULT DIV ASSING AMPERSAND
+%token NEWLINE SEMICOLON PIPE AMPERSAND
+%token IF THEN ELSE FI WHILE DO DONE
+%token OBRKT CBRKT OPAR CPAR
+%token PLUS MINUS MULT DIV
+%token LT GT LEQ GEQ EQ NEQ
+%token LAND LOR NOT ASSIGN
+%token<str> STRING
 %token<str> BUILTIN
 %token<num> NUM
 %token<str> IDENTIFIER
 %token<str> WORD
+%type<stmt> simple_stmt compound_stmt stmt top_level
+%type<stmt> top_level_list
 %type<wlist> args
 %type<wlist> built_in
+%type<expr> factor mult_expr add_expr bool_expr expr rel_expr arithmetic_expansion
+
 
 %destructor { yylex_destroy(); } script
 
 %%
 
 script : list seq_separator
-		{ printf("script!\n"); }
+	  {
+		printf("script!\n");
+	  }
 	| list
+	  {
+		printf("list list list\n");
+	  } 
 	| /* empty */
 	;
 
 list:
-	  list separator top_level { printf("list -> top_level!\n"); }
-	| top_level { printf("top_level in list!\n"); }
+	  list separator top_level 
+	  {
+		printf("list -> top_level!\n");
+	  }
+	| top_level
+	  { 
+		printf("top_level in list!\n");
+		stmt_print($1);
+	  }
 	;
 
 top_level:
 	  pipeline
-	| top_level AND linebreak pipeline { printf("top_level in AND PIPELINE\n"); }
-	| top_level LOR linebreak pipeline { printf("top_level in LOR PIPELINE\n"); }
+	| top_level LAND linebreak pipeline
+	  {
+		printf("top_level in AND PIPELINE\n");
+	  }
+	| top_level LOR linebreak pipeline 
+	  {
+		printf("top_level in LOR PIPELINE\n");
+	  }
 	;
 
 pipeline: 
@@ -67,14 +93,31 @@ pipe_seq :
 	| pipe_seq PIPE seq_separator stmt
 
 stmt : 
-	  simple_stmt 
+	  simple_stmt
+	   {
+		$$ = $1;
+	   }
 	| compound_stmt
+	  {
+
+	  }
 	;
 
 simple_stmt :
-	  built_in {
+	  built_in
+	  {
+		$$ = stmt_create();
+		int i = stmt_set_simple($$, $1, BUILT_IN_TYPE);
+		printf("i: %d\n", i);
 	  }
-	| assignement {}
+	| assignement
+	  {
+	  }
+	| arithmetic_expansion
+	  {
+		$$ = stmt_create();
+		stmt_set_expr($$, $1);
+	  }
 	;
 
 compound_stmt :
@@ -83,27 +126,151 @@ compound_stmt :
 	;
 
 if_bloc : IF top_level_list THEN top_level_list FI
-	{
-		printf("if_bloc!\n");
-	}
-	| IF top_level_list THEN top_level_list  ELSE top_level_list FI
-	{
+	  {
+	  }
+	| IF top_level_list THEN top_level_list ELSE top_level_list FI
+	  {
 		printf("if_else_bloc\n");
-	}
+	  }
 	;
 
 while_bloc : WHILE top_level_list DO top_level_list DONE
 	;
 
 top_level_list :
-	  maybe_separator top_level maybe_separator
+	  top_level_list top_level separator
+	| maybe_separator top_level separator
 	;
 
-expr : 
-	OBRKTS WORD BINOP WORD CBRKTS { 
-		printf("binop: %s\n", $3);
-		printf("%s %s %s\n", $2, $3, $4);
+arithmetic_expansion : 
+	OBRKT expr CBRKT
+	  { 
+		$$ = $2;
+	  }
+	;
 
+expr :
+	  IDENTIFIER ASSIGN expr
+	  {
+		$$ = expr_create();
+		expr_s *id_expr = expr_create();
+		expr_set_var(id_expr, $1);
+		expr_set_op($$, ASSIGN_OP, id_expr, $3);
+	  }
+	| bool_expr
+	  {
+		$$ = $1;
+	  }
+	;
+
+bool_expr :
+	  bool_expr LOR rel_expr
+	  {
+		$$ = expr_create();
+		expr_set_op($$, OR_OP, $1, $3);
+	  }
+	| bool_expr LAND rel_expr
+	  {
+		$$ = expr_create();
+		expr_set_op($$, AND_OP, $1, $3);
+	  }
+	| NOT rel_expr
+	  {
+		$$ = expr_create();
+		expr_set_op($$, NOT_OP, $2, NULL);
+	  }
+	| rel_expr
+	  {
+		$$ = $1;
+	  }
+	;
+
+rel_expr :
+	  add_expr LT add_expr
+	  {
+		$$ = expr_create();
+		expr_set_op($$, LT_OP, $1, $3);
+	  }
+	| add_expr GT add_expr
+	  {
+		$$ = expr_create();
+		expr_set_op($$, GT_OP, $1, $3);
+	  }
+	| add_expr LEQ add_expr
+	  {
+		$$ = expr_create();
+		expr_set_op($$, LEQ_OP, $1, $3);
+	  }
+	| add_expr GEQ add_expr
+	  {
+		$$ = expr_create();
+		expr_set_op($$, GEQ_OP, $1, $3);
+	  }
+	| add_expr EQ add_expr
+	  {
+		$$ = expr_create();
+		expr_set_op($$, EQ_OP, $1, $3);
+	  }
+	| add_expr NEQ add_expr
+	  {
+		$$ = expr_create();
+		expr_set_op($$, EQ_OP, $1, $3);
+	  }
+	| add_expr
+	  {
+		$$ = $1;
+	  }
+	;
+
+add_expr :
+	  add_expr PLUS mult_expr
+	  {
+		$$ = expr_create();
+		expr_set_op($$, PLUS_OP, $1, $3);
+	  }
+	| add_expr MINUS mult_expr
+	  {
+		$$ = expr_create();
+		expr_set_op($$, MINUS_OP, $1, $3);
+	  }
+	| mult_expr
+	  {
+		$$ = $1;
+	  }
+	;
+
+mult_expr :
+	  mult_expr MULT factor
+	  {
+		$$ = expr_create();
+		expr_set_op($$, MULT_OP, $1, $3);
+	  }
+	| mult_expr DIV factor
+	  {
+		$$ = expr_create();
+		expr_set_op($$, DIV_OP, $1, $3);
+	  }
+	| factor
+	  {
+		$$ = $1;
+	  }
+	;
+
+factor :
+	  NUM
+	  {
+		printf("num: %d\n", $1);
+		$$ = expr_create();
+		expr_set_int($$, $1);
+	  }
+	| IDENTIFIER
+	  {
+		$$ = expr_create();
+		expr_set_var($$, $1);
+	  }
+	| OPAR expr CPAR
+	  {
+		$$ = $2;
 	  }
 	;
 
@@ -111,30 +278,34 @@ var_exp : '$' IDENTIFIER
 
 built_in : 
 	  BUILTIN args 
-		{
-		printf("build-in with args!\n");
-		printf("%s :> ", $1);
-		wordlist_print($2);
+	  {
 		$$ = wordlist_pushfront($2, $1);
-	  	}
+	  }
 	| BUILTIN 
-		{
+	  {
 		$$ = make_wordlist($1);
-		}
+	  }
 	;
 
 args : WORD args
-		{
+	  {
 		$$ = wordlist_pushfront($2, $1);
-		}
-	| WORD { 
+	  }
+	| WORD
+	  { 
 		$$ = make_wordlist($1);
-		}
+	  }
 	;
 
 assignement :
-	  IDENTIFIER '=' WORD { printf("%s = %s\n", $1, $3); }
-	| IDENTIFIER '=' expr
+	  IDENTIFIER '=' WORD
+	  {
+		printf("%s = %s\n", $1, $3);
+	  }
+	| IDENTIFIER '=' arithmetic_expansion
+	  {
+		printf("%s = arithmexp\n", $1);
+	  }
 	;
 
 linebreak : newline_list 
@@ -169,7 +340,7 @@ extern int line;
 int yyerror(const char * s)
 {
 	fflush(stdout);
-	printf("\n%*s\n%*s\n at line %d\n", column, "^", column, s, line);
+	printf("\n%*s\n%*s at line %d\n", column, "^", column, s, line);
 	
 	return 1;
 }

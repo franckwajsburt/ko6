@@ -82,42 +82,78 @@ struct wordlist {
 };
 
 enum stmt_type {
-    NULL_TYPE,           /*      sentinel */
-    WHILE_TYPE,          /*   while block */
-    IF_TYPE,             /*      if block */
-    PIPELINE_TYPE,       /*      pipeline */
-    BUILT_IN_TYPE,       /*  built-in fux */
-    EXEC_TYPE,           /*  exec program */
+    NULL_TYPE,          /*      sentinel */
+    WHILE_TYPE,         /*   while block */
+    IF_TYPE,            /*      if block */
+    PIPELINE_TYPE,      /*      pipeline */
+    BUILT_IN_TYPE,      /*  built-in fux */
+    EXEC_TYPE,          /*  exec program */
+    EXPR_TYPE           /*    expression */
 };
 
 /* struct for a generic statement */
 struct stmt {
     enum stmt_type t; /* simple or compound ? */
+
     union {
         /* compound stmts */
         struct if_stmt *if_stmt;
         struct while_stmt *while_stmt;
+        struct expr *expr;
         /* simple stmts */
         struct wordlist *simple_stmt;
     } stmt;
+
     struct stmt *nxt;
 };
+
+
+
+enum expr_type {
+    NULL_EXPR,
+    AND_OP,
+    OR_OP,
+
+    PLUS_OP,
+    MINUS_OP,
+    MULT_OP,
+    DIV_OP,
+
+    EQ_OP,
+    NEQ_OP,
+
+    /* unary operators */
+    ASSIGN_OP,
+
+    LT_OP,
+    GT_OP,
+    LEQ_OP,
+    GEQ_OP,
+
+    NOT_OP,
+
+    /* data types */
+    INT_EXPR,
+    WORD_EXPR,
+    STMT_EXPR,
+};
+
+
 
 /**
  * this is a binary expression
  * maybe it's a good idea to 
  * handle this as a bintree...
- * depending on the type, we 
- * could decide which branch of 
- * the bintree it's gonna be 
- * executed first
- * 
- * maybe i won't use this
  * */ 
 struct expr {
-    char type;          /* the operation + * - && ... */
-    struct expr *lexpr;
-    struct expr *rexpr;
+    enum expr_type t;       /*   the operation + * - && ... */
+
+    union {                 /*           value of this node */
+        int v;              /*                        value */
+        char *word;         /*                     variable */
+        struct stmt *stmt;  /*     statement maybe not used */ 
+        struct expr *e[2];  /* expression at left and right */
+    } v;
 };
 
 /**
@@ -133,9 +169,8 @@ struct expr {
   * \brief if statement structure
   */
 struct if_stmt {
-    struct expr *condition;    /* condition */
-    struct stmt *true_case;    /* true branch */
-    struct stmt *false_case;   /* false branch */
+    struct stmt *condition;    /*                   condition */
+    struct stmt *branch[2];    /* true(1) and false(0) branch */
 };
 
 /**
@@ -143,8 +178,8 @@ struct if_stmt {
  * 
  */
 struct while_stmt {
-    struct expr *condition;     /* condition */
-    struct stmt *execute;       /* execute */
+    struct stmt *condition;     /* condition */
+    struct stmt *execute;       /*   execute */
 };
 
 
@@ -156,6 +191,94 @@ typedef struct if_stmt if_stmt_s;
 typedef struct while_stmt while_stmt_s;
 typedef struct expr expr_s;
 
+typedef enum expr_type expr_type_e;
+typedef enum stmt_type stmt_type_e;
+
+/* execution */
+
+int execute_stmt(stmt_s *stmt);
+int execute_while_stmt(while_stmt_s *wstmt);
+int execute_if_stmt(if_stmt_s *istmt);
+int execute_built_in(stmt_s *bstmt);
+int execute_cmd(stmt_s *cstmt);
+
+/* expr outils */
+
+/**
+ * \brief   create a struct expression
+ * \return  the pointer to the newly 
+ *          struct expr. NULL on error
+ * \note    the type is set to NULL_EXPR. 
+ *          this function call malloc and 
+ *          the memory must be freed with
+ *          `expr_destroy()`
+ */
+struct expr *expr_create(void);
+
+/**
+ * \brief   destroy a struct expr
+ * \param   victim the pointer to the struct
+ *          expr.
+ * \note    this function frees the 
+ *          memory allocated for a struct 
+ *          expr and the included structures 
+ *          and may call the methods to 
+ *          destroy wordlist and stmts
+ */
+void expr_destroy(expr_s *victim);
+
+/**
+ * \brief   set expression as operation
+ * \param   expr the expr_s to set
+ * \param   op the operation
+ * \param   l left operand as expr_s
+ * \param   r right operand as expr_s
+ * \return  1 on success. 0 on failure.
+ * \note    in the case of unary operations
+ *          the left operand must be set
+ * 
+ */
+int expr_set_op(expr_s *expr, expr_type_e op, expr_s *l, expr_s *r);
+
+/**
+ * \brief   set expr_s as variable
+ * \param   expr the expr_s
+ * \param   w the name of the variable as a wordlist
+ * \return  1 on success. 0 on failure
+ * \note    this function will use w and will not 
+ *          create a copy. w will be freed on the call 
+ *          to `expr_destroy()`
+ */
+int expr_set_var(expr_s *expr, char *w);
+
+/**
+ * \brief   set expr_s as integer
+ * \param   expr the expr_s
+ * \param   v the int
+ * \return  1 on success. 0 on failure
+ */
+int expr_set_int(expr_s *expr, int v);
+
+/**
+ * \brief   set expr_s as a stmt
+ * \param   expr the expr_s
+ * \param   stmt the stmt
+ * \return  1 on success. 0 on failure
+ * \note    stmt will be freed on the call 
+ *          to `expr_destroy()`.
+ */
+int expr_set_stmt(expr_s *expr, stmt_s *stmt);
+
+/**
+ * \brief prints an expression structure
+ */
+void expr_print(expr_s *expr);
+
+/**
+ * \brief   this function evaluates an expression
+ */
+char *eval_expr(expr_s *expr);
+int eval_expr_int(expr_s *expr);
 
 /* wordlist outils */
 
@@ -267,7 +390,16 @@ while_stmt_s *while_stmt_create(void);
 void while_stmt_destroy(while_stmt_s *victim);
 
 /**
+ * \brief   set up a stmt to hold an expression
+ * \param   stmt the stmt
+ * \param   expr the expression
+ * \return  1 on success 0 on error
+ */
+int stmt_set_expr(stmt_s *stmt, expr_s *expr);
+
+/**
  * \brief   set up a stmt to hold a simple statement
+ * \param   stmt the stmt
  * \param   w wordlist of the simple statement
  * \param   t type of the simple statement {BUILT-IN, EXEC}
  * \return  returns 1 on success and 0 on error.
@@ -284,7 +416,7 @@ int stmt_set_simple(stmt_s *stmt, wordlist_s *w, enum stmt_type t);
  * \return  1 on succeed. 0 on error
  * \note    this function will call if_stmt_create()
  */
-int stmt_set_if_stmt(stmt_s *stmt, expr_s *cond, stmt_s *t_case, stmt_s *f_case);
+int stmt_set_if_stmt(stmt_s *stmt, stmt_s *cond, stmt_s *t_case, stmt_s *f_case);
 
 /**
  * \brief   this functions set the stmt to hold a while_stmt in stmt lol
@@ -293,7 +425,7 @@ int stmt_set_if_stmt(stmt_s *stmt, expr_s *cond, stmt_s *t_case, stmt_s *f_case)
  * \return  1 on succeed. 0 on error
  * \note    this function will call while_stmt_create()
  */
-int stmt_set_while_stmt(stmt_s *stmt, expr_s *cond, stmt_s *t_case);
+int stmt_set_while_stmt(stmt_s *stmt, stmt_s *cond, stmt_s *t_case);
 
 /**
  * \brief   sets the next statement to be executed
@@ -303,5 +435,39 @@ int stmt_set_while_stmt(stmt_s *stmt, expr_s *cond, stmt_s *t_case);
  * \note    
  */
 int stmt_set_next(stmt_s *stmt, stmt_s *nxt);
+
+
+/**
+ * \brief   print some stmt info
+ * \param   stmt 
+ */
+void stmt_print(stmt_s *stmt);
+
+/* booling :P mdr lol */
+/**
+ * \brief   this function transforms an integer into 
+ *          boolean values as the shell interprets them
+ *          0     -> true
+ *          not 0 -> false
+ * \param   v int or char
+ * \return  int value corresponding to the value
+ * \note    
+ */
+int i2kbool(int v);
+
+/**
+ * \brief   this function transforms an integer representing 
+ *          a kshell boolean into an integer representing a 
+ *          a c bool
+ *          0     -> true
+ *          not 0 -> false
+ * \param   v int or char
+ * \return  int value corresponding to the value
+ * \note    
+ */
+int kbool2i(int v);
+
+
+
 
 #endif
