@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-02-23
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-12
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     kernel/kmemory.h
   \author   Franck Wajsburt
@@ -15,8 +15,62 @@
 
 #include <common/usermem.h>
 
+//--------------------------------------------------------------------------------------------------
+
 /**
- * \brief   initialize all the kernel memory allocators
+ * \brief Mark the given page as dirty / locked / valid.
+ * \param page Pointer to the page buffer.
+ */
+void page_set_valid (void *page);
+void page_set_locked (void *page);
+void page_set_dirty (void *page);
+
+/**
+ * \brief Clear the dirty / locked / valid flag of the given page.
+ * \param page Pointer to the page buffer.
+ */
+void page_clear_valid (void *page);
+void page_clear_locked (void *page);
+void page_clear_dirty (void *page);
+
+/**
+ * \brief Test if the given page is dirty / locked / valid.
+ * \param page Pointer to the page buffer.
+ * \return 1 if the page has the correct flag, 0 otherwise.
+ */
+int page_is_valid(void *page);
+int page_is_locked(void *page);
+int page_is_dirty(void *page);
+
+/**
+ * \brief Increment/Decrement/Get the reference count of the given page.
+ * \param page Pointer to the page buffer.
+ */
+void page_inc_refcount(void *page);
+void page_dec_refcount(void *page);
+int  page_get_refcount(void *page);
+
+/**
+ * \brief Set the Logical Block Address (BDEV,LBA) associated with this page.
+ * \param page Pointer to the page buffer.
+ * \param bdev Block device to associate.
+ * \param lba Logical Block Address ioto associate.
+ */
+void page_set_lba(void *page, unsigned bdev, unsigned lba);
+
+/**
+ * \brief Get the Logical Block Address (BDEV,LBA) associated with this page.
+ * \param page Pointer to the page buffer.
+ * \param bdev address of Block device identifier used
+ * \param lba address of Logical Block Address used
+ * \return bdev and lba are copied at the address given
+ */
+void page_get_lba(void *page, unsigned *bdev, unsigned *lba);
+
+//--------------------------------------------------------------------------------------------------
+
+/**
+ * \brief   initialize all memory allocators
  */
 void memory_init (void);
 
@@ -29,12 +83,6 @@ void memory_init (void);
 void * kmalloc (size_t size);
 
 /**
- * \brief   free an allocated object with kmalloc()
- * \param   obj pointer to the allocated object
- */
-void kfree (void * obj);
-
-/**
  * \brief   Duplicates a string in kernel memory using the slab allocator.
  * \param   str   The null-terminated string to duplicate.
  * \return  A pointer to the newly allocated string, or NULL on failure.
@@ -45,13 +93,6 @@ void kfree (void * obj);
 char *kstrdup(const char *str);
 
 /**
- * \brief Print data about slab allocator usage.
- *        - for each open slab, tells the object size and how many free and allocated objects
- *        - for each page used, tells to which stab it belongs and how many objects are allocated in
- */
-void kmalloc_stat (void);
-
-/**
  * \brief   same as kmalloc but allocate n * size bytes and write all the allocated zone to zero
  * \param   n     number of objects
  * \param   size  object size
@@ -60,11 +101,28 @@ void kmalloc_stat (void);
 extern void * kcalloc(size_t n, size_t size);                 
 
 /**
+ * \brief   free an allocated object with kmalloc()
+ * \param   obj pointer to the allocated object
+ */
+void kfree (void * obj);
+
+//--------------------------------------------------------------------------------------------------
+
+/**
+ * \brief Print data about slab allocator usage.
+ *        - for each open slab, tells the object size and how many free and allocated objects
+ *        - for each page used, tells to which stab it belongs and how many objects are allocated in
+ */
+void kmalloc_stat (void);
+
+/**
  * \brief Test Slab alocator, allocates and frees as many values as 'turn' then free all test
  * \param turn is the number of allocation or release are performed
  * \param size is the maximum objects size (from 1 to PAGE_SIZE)
  */
 void kmalloc_test (size_t turn, size_t size);
+
+//--------------------------------------------------------------------------------------------------
 
 /**
  * \brief   allocate a new user stack
@@ -85,6 +143,8 @@ void free_ustack (int * stack);
 void print_ustack (void);
 void test_ustack (size_t turn);
 
+//--------------------------------------------------------------------------------------------------
+
 /**
  * \brief   change the boundary of the heap
  * \param   increment integer added to the current heap boundary
@@ -92,4 +152,13 @@ void test_ustack (size_t turn);
  */
 void * sbrk (int increment);
 
+//--------------------------------------------------------------------------------------------------
+
+
 #endif//_ALLOC_H_
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/
