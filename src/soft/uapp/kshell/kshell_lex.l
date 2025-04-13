@@ -10,7 +10,8 @@ filename			[a-zA-Z0-9\-@!_]+
 alpha				[a-zA-Z]
 digit				[0-9]
 integer				{digit}+
-identifier			{alpha}[a-zA-Z0-9]*
+identifier			{alpha}[a-zA-Z0-9_]*
+assignment_word                 {identifier}=[^[:space:]]+
 
 %%
 
@@ -54,10 +55,10 @@ su				count(); strncpy(yylval.str, yytext, MAX_NAM_SZ); return BUILTIN;
 "|"				count(); return PIPE;
 "="				count(); return ASSIGN;
 ";"				count(); return SEMICOLON;
-\"(\\.|[^\\"])*\"   		count(); strncpy(yylval.str, yytext, MAX_NAM_SZ); return STRING;
-{filename}			count(); strncpy(yylval.str, yytext, MAX_NAM_SZ); return WORD;
-{identifier}			count(); strncpy(yylval.str, yytext, MAX_NAM_SZ); return IDENTIFIER;
+{assignment_word}               count(); strncpy(yylval.str, yytext, MAX_NAM_SZ); return ASSIGNMENT_WORD;
 {integer}			count(); yylval.num = atoi(yytext); return NUM;
+{identifier}			count(); strncpy(yylval.str, yytext, MAX_NAM_SZ); return IDENTIFIER;
+{filename}			count(); strncpy(yylval.str, yytext, MAX_NAM_SZ); return WORD;
 [ \t]+				count(); /* ignore */;
 "\n"				count(); return NEWLINE;
 .				return (int) yytext[0];

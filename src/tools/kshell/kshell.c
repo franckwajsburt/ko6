@@ -109,12 +109,12 @@ int expr_set_op(expr_s *expr, expr_type_e op, expr_s *l, expr_s *r)
     return 1;
 }
 
-int expr_set_var(expr_s *expr, char *w)
+int expr_set_var(expr_s *expr, const char *w)
 {
     if (!expr || !w) return 0;
 
     expr->t = WORD_EXPR;
-    expr->v.word = w;
+    expr->v.word = strdup(w);
 
     return 1;
 }
@@ -196,7 +196,7 @@ void expr_print_(expr_s *expr, struct q_t *q)
             printf("PLUS\n");
             break;
         case MINUS_OP:
-            printf("MINMUS\n");
+            printf("MINUS\n");
             break;
         case MULT_OP:
             printf("MULT\n");
@@ -245,7 +245,7 @@ void expr_print_(expr_s *expr, struct q_t *q)
             if (q->b[i]) printf(" \u2502");
             else printf("   ");
         
-        printf("\u251c");
+        printf(" \u251c");
         q_push(q, 1);
         expr_print_(expr->v.e[0], q);
         q_pop(q);
@@ -254,7 +254,7 @@ void expr_print_(expr_s *expr, struct q_t *q)
             if (q->b[i]) printf(" \u2502");
             else printf("   ");
         
-        printf("\u2514");
+        printf(" \u2514");
         q_push(q, 0);
         expr_print_(expr->v.e[1], q);
         q_pop(q);
@@ -321,7 +321,6 @@ void wordlist_print(struct wordlist *wordlist)
 
 struct wordlist *make_wordlist(const char * str)
 {
-    printf(":P\n");
     wordlist_s *new = wordlist_create();
 
     if (!new) {
@@ -369,6 +368,7 @@ void stmt_destroy(stmt_s *victim)
     switch (victim->t) {
         case EXEC_TYPE:
         case BUILT_IN_TYPE :
+        case ENV_ASSIGN_TYPE :
             wordlist_destroy(victim->stmt.simple_stmt);
             break;
         case WHILE_TYPE :
@@ -376,6 +376,9 @@ void stmt_destroy(stmt_s *victim)
             break;
         case IF_TYPE :
             if_stmt_destroy(victim->stmt.if_stmt);
+            break;
+        case EXPR_TYPE:
+            expr_destroy(victim->stmt.expr);
             break;
         default: /* NULL_TYPE ? */
             break;
@@ -484,6 +487,7 @@ int stmt_set_if_stmt(stmt_s *stmt, stmt_s *cond, stmt_s *t_case, stmt_s *f_case)
     new->branch[1] = t_case;
     new->branch[0] = f_case;
     stmt->stmt.if_stmt = new;
+    stmt->t = IF_TYPE;
 
     return 1;
 }
@@ -497,6 +501,7 @@ int stmt_set_while_stmt(stmt_s *stmt, stmt_s *cond, stmt_s *t_case)
     new->condition = cond;
     new->execute = t_case;
     stmt->stmt.while_stmt = new;
+    stmt->t = WHILE_TYPE;
 
     return 1;
 }
@@ -523,26 +528,46 @@ void stmt_print(stmt_s *stmt)
 
     switch (stmt->t) {
         case BUILT_IN_TYPE:
-            printf("\tt -> built-in\n");
+            printf("built-in: ");
+            wordlist_print(stmt->stmt.simple_stmt);
             break;
         case WHILE_TYPE:
-            printf("\t -> while\n");
+            printf("while\n");
             break;
         case EXPR_TYPE:
-            printf("\t -> expression\n");
+            printf("expr: ");
+            expr_print(stmt->stmt.expr);
             break;
         case IF_TYPE:
-            printf("\t -> if\n");
+            printf("if\ncond:\n");
+            stmt_print(stmt->stmt.if_stmt->condition);
+            printf("true: ");
+            stmt_print(stmt->stmt.if_stmt->branch[1]);
+            if (stmt->stmt.if_stmt->branch[0]) {
+                printf("else: ");
+                stmt_print(stmt->stmt.if_stmt->branch[0]);
+            }
             break;
         case PIPELINE_TYPE:
             printf("\t -> pipeline\n");
             break;
         case EXEC_TYPE:
-            printf("\t -> exec\n");
+            printf("exec: ");
+            wordlist_print(stmt->stmt.simple_stmt);
+            break;
+        case ENV_ASSIGN_TYPE:
+            printf("env assignmt: ");
+            wordlist_print(stmt->stmt.simple_stmt);
             break;
         default:
             printf("fck you\n");
     }
+
+    if (stmt->nxt) {
+        printf("nxt: ");
+        stmt_print(stmt->nxt);
+    }
+    printf("end!\n");
 }
 
 

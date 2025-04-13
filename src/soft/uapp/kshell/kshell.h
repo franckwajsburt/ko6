@@ -82,13 +82,14 @@ struct wordlist {
 };
 
 enum stmt_type {
-    NULL_TYPE,          /*      sentinel */
-    WHILE_TYPE,         /*   while block */
-    IF_TYPE,            /*      if block */
-    PIPELINE_TYPE,      /*      pipeline */
-    BUILT_IN_TYPE,      /*  built-in fux */
-    EXEC_TYPE,          /*  exec program */
-    EXPR_TYPE           /*    expression */
+    NULL_TYPE,          /*           sentinel */
+    WHILE_TYPE,         /*        while block */
+    IF_TYPE,            /*           if block */
+    PIPELINE_TYPE,      /*           pipeline */
+    BUILT_IN_TYPE,      /*       built-in fux */
+    EXEC_TYPE,          /*       exec program */
+    EXPR_TYPE,          /*         expression */
+    ENV_ASSIGN_TYPE     /* env var assignment */
 };
 
 /* struct for a generic statement */
@@ -245,11 +246,11 @@ int expr_set_op(expr_s *expr, expr_type_e op, expr_s *l, expr_s *r);
  * \param   expr the expr_s
  * \param   w the name of the variable as a wordlist
  * \return  1 on success. 0 on failure
- * \note    this function will use w and will not 
- *          create a copy. w will be freed on the call 
+ * \note    this function will create a copy of w 
+ *          which will be freed on the call 
  *          to `expr_destroy()`
  */
-int expr_set_var(expr_s *expr, char *w);
+int expr_set_var(expr_s *expr, const char *w);
 
 /**
  * \brief   set expr_s as integer
@@ -331,6 +332,7 @@ struct wordlist *make_wordlist(const char *str);
  */
 struct wordlist *wordlist_pushfront(struct wordlist * l, const char *str);
 
+
 /* statement related stuff */
 
 /**
@@ -401,7 +403,7 @@ int stmt_set_expr(stmt_s *stmt, expr_s *expr);
  * \brief   set up a stmt to hold a simple statement
  * \param   stmt the stmt
  * \param   w wordlist of the simple statement
- * \param   t type of the simple statement {BUILT-IN, EXEC}
+ * \param   t type of the simple statement {BUILT-IN, EXEC, ENV}
  * \return  returns 1 on success and 0 on error.
  * \note    the wordlist won't be hardcopied to simple_stmt. On 
  *          the other hand, only the reference will be copied and 
@@ -428,7 +430,7 @@ int stmt_set_if_stmt(stmt_s *stmt, stmt_s *cond, stmt_s *t_case, stmt_s *f_case)
 int stmt_set_while_stmt(stmt_s *stmt, stmt_s *cond, stmt_s *t_case);
 
 /**
- * \brief   sets the next statement to be executed
+ * \brief   sets the statement to be executed after another
  * \param   stmt a statement
  * \param   nxt the next statement
  * \return  1 on succeed. 0 on error
