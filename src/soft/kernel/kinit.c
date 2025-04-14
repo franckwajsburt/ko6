@@ -32,7 +32,8 @@ EC_RESET;
 
 void kinit (void *fdt)
 {
-    memory_init ();                 // memory initialisation, do it first because used by soc_init()
+    kmemkernel_init ();             // memory initialisation, do it first because used by soc_init()
+    kmemuser_init ();               // memory initialisation, do it first because used by soc_init()
 
     if (soc_init(fdt, 200000) < 0)  // soc initialisation takes the tick as argument:w
         goto sleep;                 // initialization failed, just sleep
@@ -67,8 +68,9 @@ void kinit (void *fdt)
     //   function in user mode. You can look at the comment of the bootstrap() function in
     //   kthread.c file for details.
 
-    kmalloc_stat ();
-    kmalloc_test (100, 2048);
+//  kmalloc_stat ();
+//  kmalloc_test (100, 2048);
+//  test_ustack (10);
 
     thread_main_load (__usermem.main_thread);
 

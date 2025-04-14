@@ -4,13 +4,13 @@
   | / /(     )/ _ \     \copyright  2025 Sorbonne University
   |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
-  \file     kernel/kmemory.c
+  \file     kernel/kmemkernel.c
   \author   Franck Wajsburt
-  \brief    kernel allocators and user memory management
+  \brief    kernel allocators 
 
-  This file contains 2 allocators :
+  This file contains the kernel memory management
+  * The physical page management
   * Slab allocator dedicated to the use of the kernel for all its objects
-  * User stack allocator, only used for user threads stack (allocated by thread_create_kernel())
 
   Slab allocator
 
@@ -76,6 +76,7 @@ static size_t NbPages;                  // Total number of pages in kernel memor
 #define NBLINE(n) (((n)+CacheLineSize-1)/CacheLineSize) // minimal number of lines for n bytes
 #define SEGFAULT(addr) (((char *)(addr) < kmb)||((char *)(addr) >= kme))
 #define PAGEINDEX(page) (size_t)(((char *)(page)-(char *)kmb)>>12;
+#define PAGE(page) ((((char*)(page) - kmb)>>12)%NbPages)
 
 // Variables for kernel memory allocator -----------------------------------------------------------
 
@@ -100,16 +101,19 @@ typedef union {                         // page usage description
         unsigned bdev:4;                // to have several disks 
         unsigned refcount:8;            // the same block can be open several times
         unsigned reserved:16;           // not used yet
-        unsigned lba;                   // where is the page on disk
+        unsigned lba;                   // Logic Block Address (where the page is on disk)
     } block;
 } page_t;
-static page_t Page[DATARAMSIZE>>12];    // DATARAMSIZE / 4kB (size = ((256<<20)>>12)<<3 = 512 kB
 
+static page_t Page[DATARAMSIZE>>12];    // DATARAMSIZE / 4kB (size = ((256<<20)>>12)<<3 = 512 kB
 
 static list_t Slab[256];                // free lists, Slab[i]-> i*CacheLineSize, Slab[0]-> pages
 static size_t ObjectsThisSize[256];     // ObjectsThisSize[i]= allocated objets of i*CacheLineSize
 
-#define PAGE(page) ((((char*)(page) - kmb)>>12)%NbPages)
+
+//--------------------------------------------------------------------------------------------------
+// Page descriptor accessor functions
+//--------------------------------------------------------------------------------------------------
 
 void page_set_valid (void *page)    { Page[PAGE(page)].block.valid  = 1; }
 void page_set_locked (void *page)   { Page[PAGE(page)].block.locked = 1; }
@@ -148,10 +152,10 @@ void page_get_lba(void *page, unsigned *bdev, unsigned *lba) {
 }
 
 //--------------------------------------------------------------------------------------------------
+// Slab allocator
+//--------------------------------------------------------------------------------------------------
 
-void usermem_init(void);                // FIXME should be in another file kusermem.c
-
-void memory_init (void)
+void kmemkernel_init (void)
 {
     // put kbss sections to zero. kbss contains uninitialised global variables of the kernel
     for (int *a = &__kbss_origin; a != &__kbss_end; *a++ = 0);
@@ -159,8 +163,6 @@ void memory_init (void)
     CacheLineSize = CEIL(cachelinesize(),16);               // true line size, but expand to 16 min
     NbPages = (kme-kmb)/PAGE_SIZE;                          // maximum number of pages
     MaxLineSlab = PAGE_SIZE / CacheLineSize;                // 256 when line is 16, 128 for 32, etc.
-
-    usermem_init();
 
     for (int i = 0 ; i < MaxLineSlab ; i++)                 // initialize each list is Slab table
         list_init (&Slab[i]);                               // Slab[i] -> i*cachelinesize objects
@@ -268,6 +270,7 @@ void kmalloc_stat (void)
 }
 
 static list_t KMallocTest[256];         // free lists, Slab[i]-> i*CacheLineSize, Slab[0]-> pages
+
 void kmalloc_test (size_t turn, size_t size)
 {
     list_t *obj;                                            // object allocated or freed
@@ -296,111 +299,6 @@ void kmalloc_test (size_t turn, size_t size)
         }
     }
     kmalloc_stat ();                                        // Slab status after total clean od test
-}
-
-
-//--------------------------------------------------------------------------------------------------
-// shlould be in kusermem.c
-//--------------------------------------------------------------------------------------------------
-
-static list_t FreeUserStack;            // free stack
-
-void usermem_init() 
-{
-    list_init (&FreeUserStack);                             // initialize the free user stack list
-}
-
-int * malloc_ustack (void)
-{
-    int * top;                                              // top will be the new stack pointer
-    int * end = (int *)list_getlast (&FreeUserStack);       // get last free stack (biggest addr)
-    if (end == NULL) {                                      // if there is no more free stack
-        top = __usermem.ustack_end;                         // try to get one
-        end = top - USTACK_SIZE/sizeof(int);                // and compute the end of the stack
-        PANIC_IF (end < __usermem.uheap_end,                // if the stack end is in the heap
-            "no more space for user stack!\n");             // it is impossible to solve that
-        __usermem.ustack_end = end;                         // expand the stacks' region
-    } else {
-        top = end + USTACK_SIZE/sizeof(int);                // compute stack's top from stack's end
-    }
-    top--;                                                  // get a word to put MAGIC
-    *top = *end = MAGIC_STACK;                              // to be able to check free
-    return top;                                             // finally return the top
-}
-
-/**
- * \brief   compare two item address, used by list_addsort in free_ustack()
- * \param   curr    is the current item in the list
- * \param   new     is the new item to insert
- * \return  a positive if current > new
- */
-
-static int cmp_addr (list_t * curr, list_t * new) {
-    return (int)(curr - new);
-}
-
-void free_ustack (int * top)
-{
-    int * end = 1 + top - USTACK_SIZE/sizeof(int);          // last int of ustack (+1 because MAGIC)
-    PANIC_IF (*top != MAGIC_STACK, "Corrupted top Stack");  // if no magic number then panic
-    PANIC_IF (*end != MAGIC_STACK, "Corrupted end Stack");  // if no magic number then panic
-
-    if (end ==__usermem.ustack_end) {                       // if it is the lowest stack
-        __usermem.ustack_end += USTACK_SIZE/sizeof(int);    // shrink the stacks' region
-        list_foreach (&FreeUserStack, stack) {              // foreach free stack
-            if ((int *)stack != __usermem.ustack_end)       // if it isn't the end of stack region
-                break;                                      // then stop trying to shrink
-            end = (int *)list_getfirst (&FreeUserStack);    // extract the stack
-            end += USTACK_SIZE/sizeof(int);                 // new end of stacks'region
-            __usermem.ustack_end = end;                     // save this new end
-        }
-    } else                                                  // else the freed stack isn't at the end
-        list_addsort (&FreeUserStack,(list_t*)end,cmp_addr);// add it in free list in order
-}
-
-void print_ustack (void)
-{
-    kprintf ("---------------\nNumber of stacks : %d\n",
-            ((char *)(__usermem.ustack_beg) -
-             (char *)(__usermem.ustack_end) )/USTACK_SIZE);
-    kprintf ("__usermem.ustack_beg : %p\n", __usermem.ustack_beg);
-    kprintf ("__usermem.ustack_end : %p\n", __usermem.ustack_end);
-    kprintf ("__usermem.uheap_beg  : %p\n", __usermem.uheap_beg );
-    kprintf ("__usermem.uheap_end  : %p\n", __usermem.uheap_end );
-    kprintf ("----\nFree stacks : \n");
-    list_foreach (&FreeUserStack, item) {
-        kprintf ("Address %p\n", item);
-    }
-}
-
-void test_ustack (size_t turn)
-{
-#   define NBSTACK    10
-    int * stack [NBSTACK] = {NULL};
-    while (turn--) {
-        int place = (unsigned)krand() % NBSTACK;
-        if (stack[place])
-            free_ustack (stack[place]);
-        stack[place] = malloc_ustack();
-    }
-    for (int place = 0; place < NBSTACK; place++)
-        if (stack[place])
-            free_ustack (stack[place]);
-    print_ustack();
-}
-
-//--------------------------------------------------------------------------------------------------
-
-void * sbrk (int increment)
-{
-    errno = SUCCESS;
-    int * a = __usermem.uheap_end + increment/sizeof(int);  // sizeof() because uheap_end is int*
-    a = (int *) FLOOR (a, CacheLineSize);                   // addr 'a' could be the new uheap_end
-    if ((a<__usermem.uheap_beg)||(a>__usermem.ustack_end)){ // if it is outside the heap zone
-        errno = ENOMEM;
-        return (void *)-1;                                  // -1 on failure
-    }
-    return a;                                               // else return a;
 }
 
 /*------------------------------------------------------------------------------------------------*\

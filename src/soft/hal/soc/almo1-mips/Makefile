@@ -62,7 +62,8 @@ OBJ 	+= $(OBJDIR)/atomic.o $(OBJDIR)/cache.o $(OBJDIR)/cpuregs.o
 OBJ 	+= $(OBJDIR)/entry.o $(OBJDIR)/irq.o $(OBJDIR)/kpanica.o
 OBJ 	+= $(OBJDIR)/kpanica.o $(OBJDIR)/kpanicc.o $(OBJDIR)/threada.o
 OBJ 	+= $(OBJDIR)/threadc.o
-OBJ 	+= $(OBJDIR)/kinit.o $(OBJDIR)/klibc.o $(OBJDIR)/kmemory.o
+OBJ 	+= $(OBJDIR)/kinit.o $(OBJDIR)/klibc.o 
+OBJ		+= $(OBJDIR)/kmemkernel.o $(OBJDIR)/kmemuser.o
 OBJ 	+= $(OBJDIR)/ksynchro.o $(OBJDIR)/ksyscalls.o $(OBJDIR)/kthread.o
 OBJ 	+= $(OBJDIR)/kdev.o $(OBJDIR)/kirq.o
 OBJ		+= $(OBJDIR)/kshell.o
@@ -117,7 +118,7 @@ debug: compil
 			-NTTYS $(NTTYS) -NCPUS $(NCPUS) $(DISK) $(FBF)\
 			-DEBUG $(FROM) -NCYCLES $(LAST) > $(DLOG)
 	cd $(BLDDIR);\
-	tracelog $(SRCDIR)/tags $(BLDDIR)/*.x.s $(DLOG)
+	tracelog $(SRCDIR)/tags $(BLDDIR)/$(APP)/*.x.s $(BLDDIR)/*.x.s $(DLOG)
 
 pdf:
 	test -d $(BLDDIR) || mkdir $(BLDDIR)

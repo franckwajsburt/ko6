@@ -54,7 +54,8 @@
 
 #include <hal/soc/soc.h>
 
-#include <kernel/kmemory.h>         // all kernel allocators
+#include <kernel/kmemkernel.h>      // kernel allocators
+#include <kernel/kmemuser.h>        // kernel part of user allocators 
 #include <kernel/kthread.h>         // thread functions and scheduler
 #include <kernel/ksynchro.h>        // mutex, barrier and similar functions
 #include <kernel/kdev.h>            // dynamic devices allocation

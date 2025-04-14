@@ -1,20 +1,20 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-12
+  | |__ /'v'\  / /      \date       2025-04-13
   | / /(     )/ _ \     \copyright  2025 Sorbonne University
   |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
-  \file     kernel/kmemory.h
+  \file     kernel/kmemkernel.h
   \author   Franck Wajsburt
-  \brief    kernel allocators and user memory management API
+  \brief    kernel allocators 
 
 \*------------------------------------------------------------------------------------------------*/
 
-#ifndef _ALLOC_H_
-#define _ALLOC_H_
+#ifndef _KMEMKERNEL_H_
+#define _KMEMKERNEL_H_
 
-#include <common/usermem.h>
-
+//--------------------------------------------------------------------------------------------------
+// Page descriptor accessors
 //--------------------------------------------------------------------------------------------------
 
 /**
@@ -70,15 +70,16 @@ void page_get_lba(void *page, unsigned *bdev, unsigned *lba);
 //--------------------------------------------------------------------------------------------------
 
 /**
- * \brief   initialize all memory allocators
+ * \brief   initialize kernem memory allocators
  */
-void memory_init (void);
+void kmemkernel_init (void);
 
 /**
  * \brief   allocate an object in the kernel address space
  * \param   size in bytes (must be at most a PAGE SIZE)
  * \return  a pointer to an object with at least "size" byte size
  *          It is rounded up to a whole number of cache lines.
+ *          The segment allocated is cleared because this is safer
  */
 void * kmalloc (size_t size);
 
@@ -122,40 +123,7 @@ void kmalloc_stat (void);
  */
 void kmalloc_test (size_t turn, size_t size);
 
-//--------------------------------------------------------------------------------------------------
-
-/**
- * \brief   allocate a new user stack
- * \return  a pointer to an empty stack (of STACK_SIZE bytes)
- *          The pointer is just above the new stack
- */
-int * malloc_ustack (void);
-
-/**
- * \brief   free a use stack
- * \param   stack is a pointer returned by kmalloc_ustack
- */
-void free_ustack (int * stack);
-
-/**
- * \brief   print ustack state
- */
-void print_ustack (void);
-void test_ustack (size_t turn);
-
-//--------------------------------------------------------------------------------------------------
-
-/**
- * \brief   change the boundary of the heap
- * \param   increment integer added to the current heap boundary
- * \return  SUCCESS or FAILURE
- */
-void * sbrk (int increment);
-
-//--------------------------------------------------------------------------------------------------
-
-
-#endif//_ALLOC_H_
+#endif//_KMEMKERNEL_H_
 
 /*------------------------------------------------------------------------------------------------*\
    Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
