@@ -14,11 +14,6 @@
 #define _MALLOC_H_
 
 /**
- * TODO: ask about this
-*/
-extern void sbrk_s(void);
-
-/**
  * \brief   change the boundary of heap
  * \param   increment is the signed number of bytes , which will be aligned on a cache line 
  * \return  new end address of the heap, (increment=0) gives the current one, returns -1 on failure

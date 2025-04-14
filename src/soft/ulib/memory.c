@@ -76,7 +76,6 @@ static void merge (block_info_t * ptr)
 void * sbrk (int incr)
 {
     void *r = (void*)syscall_fct(incr,0,0,0,SYSCALL_SBRK);  // ask for heap boundary change
-    sbrk_s();
     return r;
 }
 
