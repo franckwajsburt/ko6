@@ -13,6 +13,7 @@
 # ------- chose SOC & default APP
 SOC    ?= almo1-mips#				defaut SOC name
 SOC    ?= qemu-virt-riscv#			defaut SOC name
+CPU	   ?= mips#						default CPU
 APP    ?= hello#					app name
 
 # ------- Options
@@ -20,8 +21,8 @@ MAKOPT ?= -s --no-print-directory#	comment this line to get command details
 NTTYS  ?= 4#						default number of ttys
 NCPUS  ?= 1#						default number of CPUS
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
-FROM   ?= 0000000#					first cycle to trace
-LAST   ?= 0100000#					last cycle to execute
+FROM   ?= 02000000#					first cycle to trace
+LAST   ?= 03000000#					last cycle to execute
 DISK	=#							no disk --> chose this, if there is no disk
 DISK	= -BDFILE dskexe.dx# 		disk image made with mkdx
 FBF		= -FBFSIZE 128# 			Frame Buffer Size 
@@ -34,15 +35,8 @@ BLDDIR	= build#					build directory where all executables are created
 SOCDIR	= $(SWDIR)/hal/soc/$(SOC)#	SOC specific sources directory
 DLOG    = ~/ko6-debug.log#			debug file
 
-# ------- find apps and CPU
+# ------- find apps
 APPS	= $(shell ls -l src/soft/uapp | grep "^d" | awk '{print $$NF}')
-CPU		= CPU-unknown
-ifeq ($(SOC),almo1-mips)
-CPU		= mips
-endif
-ifeq ($(SOC),qemu-virt-riscv)
-CPU		= riscv
-endif
 
 # Rules (here they are used such as simple shell scripts)
 # --------------------------------------------------------------------------------------------------

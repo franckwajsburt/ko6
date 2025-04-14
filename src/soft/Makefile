@@ -25,7 +25,7 @@ BLDDIR	= $(ko6)/build#		build directory
 .PHONY: help compil tags pdf clean
 
 help:
-	@echo ""
+	@echo "$(CPU) $(SOC)"
 	@echo "Usage: make <Target>"
 	@echo ""
 	@echo "    Target "
@@ -46,7 +46,7 @@ compil: tags
 
 tags:
 	@echo "- Create tags for vim"
-	@find . -name *.[chS] | xargs ctags 
+	@find . -name *.[chS] | grep -v riscv | xargs ctags 
 
 pdf:
 	@-make -C external/libfdt $(MAKOPT) pdf

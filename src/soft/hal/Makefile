@@ -16,6 +16,7 @@
 VERBOSE?= 0#						verbose mode to print INFO(), BIP(), ASSERT, VAR()
 
 SOC    ?= almo1-mips#				defaut SOC name
+CPU	   ?= mips#						defaut CPU
 
 SRCDIR 	= $(ko6)/src/soft#			directory of all sources
 HALDIR  = $(SRCDIR)/hal#			HAL directory (current)
