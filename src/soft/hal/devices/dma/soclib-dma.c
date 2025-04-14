@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2023-07-10
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-14
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     hal/devices/dma/soclib-dma.h
   \author   Franck Wajsburt, Nolan Bled
@@ -11,6 +11,20 @@
 \*------------------------------------------------------------------------------------------------*/
 
 #include <hal/devices/dma/soclib-dma.h>
+#include <kernel/klibc.h>
+
+/**
+ * Soclib device registers
+ */
+
+struct soclib_dma_regs_s {
+    void * src;         ///< dma's destination buffer address
+    void * dest;        ///< dma's source buffer address
+    int len;            ///< number of bytes to move
+    int reset;          ///< IRQ acknowledgement
+    int irq_enable;     ///< IRQ mask
+    int unused[3];      ///< unused addresses
+};
 
 /**
  * \brief   Initialize the Soclib DMA device
@@ -34,9 +48,7 @@ static void soclib_dma_init(struct dma_s *dma, unsigned base)
  */
 static void *soclib_dma_memcpy(struct dma_s *dma, int *dst, int *src, unsigned n)
 {
-/** FIXME : Why do a flush ?
-    dcache_buf_invalidate(dst, n);              // if there are cached lines dst buffer, forget them
-**/
+    dcache_buf_invalidate(dst, n);              // cached lines of dst buffer are obsolet
     volatile struct soclib_dma_regs_s *regs = 
         (struct soclib_dma_regs_s *) dma->base;
     regs->dest = dst;                           // destination address
@@ -50,3 +62,9 @@ struct dma_ops_s SoclibDMAOps = {
     .dma_init = soclib_dma_init,
     .dma_memcpy = soclib_dma_memcpy
 };
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/

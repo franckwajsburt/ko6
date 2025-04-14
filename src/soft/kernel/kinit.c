@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-02-23
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-14
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     kernel/kinit.c
   \author   Franck Wajsburt
@@ -30,19 +30,19 @@ EC_WHITE
 "  |_\\_\\"EC_CYAN  X___X    EC_WHITE"\\___/\n\n"
 EC_RESET;
 
+#define TICK    200000
+
 void kinit (void *fdt)
 {
-    kmemkernel_init ();             // memory initialisation, do it first because used by soc_init()
-    kmemuser_init ();               // memory initialisation, do it first because used by soc_init()
+    // Hardware and structure inialization
 
-    if (soc_init(fdt, 200000) < 0)  // soc initialisation takes the tick as argument:w
-        goto sleep;                 // initialization failed, just sleep
+    kmemkernel_init ();                         // kernel mem initialization, do it before soc_init
+    PANIC_IF (soc_init (fdt, TICK) < 0, "SoC initialization failed");
+    kmemuser_init ();                           // user memory initialization 
+    kprintf (Banner);                           // see above ko6 banner
+    ksynchro_init ();                           // initialize all synchronization mecanisms
 
-    kprintf (Banner);               // see above ko6 banner
-
-    ksynchro_init ();               // initialize all synchronization mecanisms
-
-    // First, we have to create the thread structure for the thread main()
+    // Then, create the thread structure for the thread main()
     //   thread_create() is the same function used to create the thread main()
     //   and to create an usual thread, here, we create the the thread main, it takes 4 args
     //   1. The thread structure has to be placed in the .kdata segment but the thread identifier 
@@ -68,16 +68,26 @@ void kinit (void *fdt)
     //   function in user mode. You can look at the comment of the bootstrap() function in
     //   kthread.c file for details.
 
-//  kmalloc_stat ();
-//  kmalloc_test (100, 2048);
-//  test_ustack (10);
+#   ifdef BENCH_ALLOC
+    kmalloc_stat ();
+    kmalloc_test (100, 2048);
+    test_ustack (10);
+#   endif
+
+    // Finally, load the main user programm
+    // We never return of thread_load() here because thread_load() change $31 to thread_bootstap()
 
     thread_main_load (__usermem.main_thread);
-
-    // We never return of thread_load() here because thread_load() change $31 to thread_bootstap()
     PANIC_IF(true,"Impossible to be here");
-
-    // In case anything goes wrong during initialization
-sleep:
-    while (1) ;
 }
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/

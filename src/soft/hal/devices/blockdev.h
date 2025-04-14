@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-03-30
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-14
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     hal/devices/blockdev.h
   \author   Franck Wajsburt
@@ -12,11 +12,6 @@
 
 #ifndef _HAL_BLOCKDEV_H_
 #define _HAL_BLOCKDEV_H_
-
-#include <common/errno.h>
-#include <common/list.h>
-#include <kernel/kdev.h>
-#include <hal/cpu/atomic.h>
 
 struct blockdev_ops_s;
 
@@ -88,3 +83,9 @@ struct blockdev_ops_s {
 #define blockdev_count() (dev_next_no(BLOCK_DEV) - 1)
 
 #endif
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/

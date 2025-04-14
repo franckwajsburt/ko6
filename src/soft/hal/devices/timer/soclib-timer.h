@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-03-30
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-14
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     hal/devices/timer/soclib-timer.h
   \author   Franck Wajsburt, Nolan Bled
@@ -14,13 +14,6 @@
 #define _SOCLIB_TIMER_H_
 
 #include <hal/devices/timer.h>
-
-struct soclib_timer_regs_s {
-    int value;          ///< timer's counter : +1 each cycle, can be written
-    int mode;           ///< timer's mode : bit 0 = ON/OFF ; bit 1 = IRQ enable
-    int period;         ///< timer's period between two IRQ
-    int resetirq;       ///< address to acknowledge the timer's IRQ
-};
 
 /**
  * \brief   ISR of the soclib timer device
@@ -39,3 +32,9 @@ extern void soclib_timer_isr(unsigned irq, struct timer_s *timer);
 extern struct timer_ops_s SoclibTimerOps;
 
 #endif
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/

@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-03-30
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-14
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     hal/devices/chardev/soclib-tty.h
   \author   Franck Wajsburt, Nolan Bled
@@ -14,16 +14,6 @@
 #define _SOCLIB_TTY_H_
 
 #include <hal/devices/chardev.h>
-#include <hal/cpu/irq.h>
-#include <kernel/kthread.h>
-#include <kernel/klibc.h>
-
-struct soclib_tty_regs_s {
-    int write;          ///< output to terminal
-    int status;         ///< != 0 if something waiting in read register
-    int read;           ///< input from keyboard
-    int unused;         ///< no yet used
-};
 
 /**
  * \brief   ISR for the soclib tty device
@@ -43,3 +33,9 @@ extern void soclib_tty_isr(unsigned irq, struct chardev_s *cdev);
 extern struct chardev_ops_s SoclibTTYOps;
 
 #endif
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/

@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-02-24
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-14
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     kernel/kthread.h
   \author   Franck Wajsburt
@@ -14,6 +14,7 @@
 #ifndef _KTHREAD_H_
 #define _KTHREAD_H_
 
+#include <common/list.h>
 
 //--------------------------------------------------------------------------------------------------
 // Maximum number of thread it can be changed
@@ -180,7 +181,6 @@ extern long long thread_randseed_set (long long seed);
  */
 extern long long thread_randseed_get (void);
 
-
 /**
  * \brief  get the process identifer that owns the given thread.
  * \param  thread  given thread
@@ -204,3 +204,9 @@ extern int thread_pid (thread_t thread);
 int process_threads_cleanup (int pid);
 
 #endif//_KTHREAD_H_
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/

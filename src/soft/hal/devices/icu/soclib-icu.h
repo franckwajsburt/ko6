@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-03-30
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-14
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     hal/devices/icu/soclib-icu.h
   \author   Franck Wajsburt, Nolan Bled
@@ -14,15 +14,6 @@
 #define _SOCLIB_ICU_H_
 
 #include <hal/devices/icu.h>
-
-struct soclib_icu_regs_s {
-    int state;          ///< state of all IRQ signals
-    int mask;           ///< IRQ mask to chose what we need for this ICU
-    int set;            ///< IRQ set   --> enable specific IRQs for this ICU
-    int clear;          ///< IRQ clear --> disable specific IRQs for this ICU
-    int highest;        ///< highest pritority IRQ number for this ICU
-    int unused[3];      ///< 3 register addresses are not used
-};
 
 /**
  * \brief See hal/device/icu.h for the function signature
@@ -36,3 +27,9 @@ struct soclib_icu_regs_s {
 extern struct icu_ops_s SoclibICUOps;
 
 #endif
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/
