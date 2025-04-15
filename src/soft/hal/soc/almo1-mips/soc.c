@@ -210,22 +210,22 @@ static int soc_bd_init(void *fdt)
 }
 
 /**
- * \brief For the SoC almo1, IRQ n'x (that is ICU.PIN[x]) is wired to the Interrup Signal of device n'y
+ * \brief For the SoC almo1, IRQ n'x (that is ICU.PIN[x]) is wired to the IRQ Signal of device n'y
+ *        There are at most 14 IRQs for almo1, but the real number depends of the SoC paramaters
+ *        There are as many timers as CPU, thus NCPUS timers
+ *        There are Nicus ttys
+ *        There are also a DMA to perfom memcpy and optionnal Block Device (hard drive)
+ *        
+ *        Device IRQs are wired as following:
+ *        * ICU.PIN [0]  : timer 0
+ *             '     '        '        depending on NCPUS (0 to 7)
+ *        * ICU.PIN [7]  : timer 7
+ *        * ICU.PIN [8]  : bd          Bloc Device (Hard Drive)
+ *        * ICU.PIN [9]  : dma         Direct Memory Access (Hard memcpy)
+ *        * ICU.PIN [10] : TTY0        TTY n'0
+ *             '     '      '          depending on NTTYS (0 to 3)
+ *        * ICU.PIN [13] : TTY3
  *
- * There are at most 14 IRQs for almo1, but the real number depends of the prototype paramaters
- * There are as many timers as CPU, thus NCPUS timers
- * There are Nicus ttys
- * There are also a DMA to perfom memcpy and optionnal Block Device (hard drive)
- *
- * Device IRQs are wired as following:
- * * ICU.PIN [0]  : timer 0
- *      "     "        "        depending on NCPUS (0 to 7)
- * * ICU.PIN [7]  : timer 7
- * * ICU.PIN [8]  : bd          Bloc Device (Hard Drive)
- * * ICU.PIN [9]  : dma         Direct Memory Access (Hard memcpy)
- * * ICU.PIN [10] : TTY0        TTY n'0
- *      "     "      "          depending on NTTYS (0 to 3)
- * * ICU.PIN [13] : TTY3
  * \param   tick    number of ticks between two timer interrupts
  * \return  -1 if the initialization failed, 0 if it succeeded
  */

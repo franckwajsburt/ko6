@@ -17,6 +17,8 @@
 
 /**
  * \brief   ISR of the soclib timer device
+ *          This function is used by iunction soc_timer_init() in hal/soc/almo1-mips/soc.c
+ *          More specifically by register_interrupt() to fill the InterruptVector[] in kernel/kirq.c
  * \param   irq irq linked to the ISR 
  * \param   timer device linked to the ISR
  * \return  nothing

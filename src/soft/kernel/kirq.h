@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2023-08-07
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-15
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     kernel/kirq.h
   \author   Franck Wajsburt, Nolan Bled
@@ -20,7 +20,9 @@
  */
 
 /**
- * isr_t is a type of an isr function
+ * \brief isr_t is a type of an isr function
+ * \param irq   is the irq number for the ICU, not really useful, but sometimes for debug
+ * \param dev   pointer to the device structure
  *
  * This comment explains what is a type of function, and how to create one.
  * If we have a function : RETURN_TYPE FUNCTION_NAME ( list of ARG_TYPE ARG_NAME )
@@ -52,7 +54,7 @@
  *    int x = VF (tab, size);
  *    int x = erase (tab, size);
  */
-typedef  void (*isr_t) (unsigned, void*);
+typedef  void (*isr_t) (unsigned irq, void *dev);
 
 /** \brief Interrupt Table Entry, describe what to do for a specific IRQ */
 struct ite_s {
@@ -83,3 +85,9 @@ extern void route_interrupt(unsigned irq);
 extern void unregister_interrupt(unsigned irq);
 
 #endif
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/

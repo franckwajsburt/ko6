@@ -17,7 +17,9 @@
 
 /**
  * \brief   ISR for the soclib tty device
-            The only interrupt handled is the one raised when a char is received by the tty device
+ *          The only interrupt handled is the one raised when a char is received by the tty device
+ *          This function is used by iunction soc_tty_init() in hal/soc/almo1-mips/soc.c
+ *          More specifically by register_interrupt() to fill the InterruptVector[] in kernel/kirq.c
  * \param   irq the irq linked to this isr 
  * \param   cdev the device linked to this isr
  * \return  nothing
