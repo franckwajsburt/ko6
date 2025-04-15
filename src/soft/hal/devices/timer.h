@@ -22,12 +22,12 @@ struct timer_event_s {
 };
 
 /** \brief Timer driver informations */
-struct timer_s {
+typedef struct timer_s {
     unsigned base;                  ///< timer's base address
     unsigned period;                ///< number of ticks between two events
     struct timer_event_s event;     ///< event triggered each nticks
     struct timer_ops_s *ops;        ///< driver-specific operations
-};
+} timer_t;
 
 /** 
  * \brief Functions prototypes of the timer device, they should be implemented by a device driver. 
@@ -39,7 +39,7 @@ struct timer_ops_s {
      * \param   base the base address of the memory-mapped registers
      * \param   tick number of ticks between to timer interrupts
      */
-    void (*timer_init)(struct timer_s *timer, unsigned base, unsigned tick);
+    void (*timer_init)(timer_t *timer, unsigned base, unsigned tick);
 
     /**
      * \brief   Generic function that allows the kernel to set the number of ticks
@@ -47,7 +47,7 @@ struct timer_ops_s {
      * \param   timer the timer device
      * \param   tick  the number of ticks
     */
-    void (*timer_set_tick)(struct timer_s *timer, unsigned tick);
+    void (*timer_set_tick)(timer_t *timer, unsigned tick);
 
     /**
      * \brief   Generic function that sets the event that will be triggered after a timer
@@ -56,11 +56,11 @@ struct timer_ops_s {
      * \param   f       the function to be called
      * \param   arg     the arg passed to the function
     */
-    void (*timer_set_event)(struct timer_s *timer, void (*f)(void *arg), void *arg);
+    void (*timer_set_event)(timer_t *timer, void (*f)(void *arg), void *arg);
 };
 
-#define timer_alloc() (struct timer_s*) (dev_alloc(TIMER_DEV, sizeof(struct timer_s))->data)
-#define timer_get(no) (struct timer_s*) (dev_get(TIMER_DEV, no)->data)
+#define timer_alloc() (timer_t *)(dev_alloc(TIMER_DEV, sizeof(timer_t))->data)
+#define timer_get(no) (timer_t *)(dev_get(TIMER_DEV, no)->data)
 #define timer_count() (dev_next_no(TIMER_DEV) - 1)
 
 #endif

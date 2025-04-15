@@ -16,12 +16,12 @@
 struct chardev_ops_s;
 
 /** \brief Character device informations */
-struct chardev_s {
+typedef struct chardev_s {
     unsigned base;                  ///< memory-mapped register base addresses
     unsigned baudrate;              ///< chardev baudrate
     struct chardev_ops_s *ops;      ///< driver specific operations linked to the chardev
     void * driver_data;             ///< private pointer for driver specific info
-};
+} chardev_t;
 
 /** 
  * \brief Functions prototypes of character device, they should be implemented by a device driver. 
@@ -34,7 +34,7 @@ struct chardev_ops_s {
      * \param   base    base address of the device memory-mapped registers 
      * \param   baudrate the device baudrate
      */
-    void (*chardev_init)(struct chardev_s *chardev, unsigned base, unsigned baudrate);
+    void (*chardev_init)(chardev_t *chardev, unsigned base, unsigned baudrate);
 
     /**
      * \brief   Generic function that write to the chardev device
@@ -43,7 +43,7 @@ struct chardev_ops_s {
      * \param   count   the number of bytes to write
      * \return  number onf bytes actually written
     */
-    int (*chardev_write)(struct chardev_s *chardev, char *buf, unsigned count);
+    int (*chardev_write)(chardev_t *chardev, char *buf, unsigned count);
 
     /**
      * \brief   Generic function that reads from the chardev device
@@ -52,11 +52,11 @@ struct chardev_ops_s {
      * \param   count   the number of bytes that should be written into the buffer
      * \return  number of bytes actually read
     */
-    int (*chardev_read)(struct chardev_s *chardev, char *buf, unsigned count);
+    int (*chardev_read)(chardev_t *chardev, char *buf, unsigned count);
 };
 
-#define chardev_alloc() (struct chardev_s*) (dev_alloc(CHAR_DEV, sizeof(struct chardev_s))->data)
-#define chardev_get(no) (struct chardev_s*) (dev_get(CHAR_DEV, no)->data)
+#define chardev_alloc() (chardev_t *)(dev_alloc(CHAR_DEV, sizeof(chardev_t))->data)
+#define chardev_get(no) (chardev_t *)(dev_get(CHAR_DEV, no)->data)
 #define chardev_count() (dev_next_no(CHAR_DEV) - 1)
 
 #endif

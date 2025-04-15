@@ -24,7 +24,7 @@ struct blockdev_event_s {
 };
 
 /** \brief block device informations */
-struct blockdev_s {
+typedef struct blockdev_s {
     unsigned base;                  ///< memory-mapped register base addresses
     unsigned blocks;                ///< Total number of available logical blocks (disk size) 
     unsigned block_size;            ///< Size (in bytes) of a logical block
@@ -32,7 +32,7 @@ struct blockdev_s {
     struct blockdev_event_s event;  ///< event triggered each nticks
     struct blockdev_ops_s *ops;     ///< driver specific operations linked to the blockdev
     void * driver_data;             ///< private pointer for driver specific info
-};
+} blockdev_t;
 
 /** 
  * \brief Functions prototypes of block device, they should be implemented by a device driver. 
@@ -45,7 +45,7 @@ struct blockdev_ops_s {
      * \param   base        base address of the device memory-mapped registers
      * \param   block_size  size of a logic block chosen by ko6
      */
-    void (*blockdev_init)(struct blockdev_s *bdev, unsigned base, unsigned block_size);
+    void (*blockdev_init)(blockdev_t *bdev, unsigned base, unsigned block_size);
 
     /**
      * \brief   Generic function that write to the block device
@@ -55,7 +55,7 @@ struct blockdev_ops_s {
      * \param   count   the number of block to write
      * \return  number of blocks actually written
      */
-    int (*blockdev_write)(struct blockdev_s *bdev, void *buf, unsigned lba, unsigned count);
+    int (*blockdev_write)(blockdev_t *bdev, void *buf, unsigned lba, unsigned count);
 
     /**
      * \brief   Generic function that reads from the blockdev device
@@ -65,7 +65,7 @@ struct blockdev_ops_s {
      * \param   count   the number of blocks to read
      * \return  number of blocks actually read
      */
-    int (*blockdev_read)(struct blockdev_s *bdev, void *buf, unsigned lba, unsigned count);
+    int (*blockdev_read)(blockdev_t *bdev, void *buf, unsigned lba, unsigned count);
 
     /**
      * \brief   Set    the event that will triggered by a block device interrupt
@@ -75,11 +75,11 @@ struct blockdev_ops_s {
      * \param   status the block device status once the command is done
      * \return  nothing
      */
-    void (*blockdev_set_event)(struct blockdev_s *bdev, void(*f)(void *arg, int status), void *arg);
+    void (*blockdev_set_event)(blockdev_t *bdev, void(*f)(void *arg, int status), void *arg);
 };
 
-#define blockdev_alloc() (struct blockdev_s*)(dev_alloc(BLOCK_DEV, sizeof(struct blockdev_s))->data)
-#define blockdev_get(no) (struct blockdev_s*)(dev_get(BLOCK_DEV, no)->data)
+#define blockdev_alloc() (blockdev_t *)(dev_alloc(BLOCK_DEV, sizeof(blockdev_t))->data)
+#define blockdev_get(no) (blockdev_t *)(dev_get(BLOCK_DEV, no)->data)
 #define blockdev_count() (dev_next_no(BLOCK_DEV) - 1)
 
 #endif

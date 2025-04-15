@@ -18,10 +18,10 @@ struct dma_ops_s;
 /** 
  * \brief DMA device specific information 
  */
-struct dma_s {
+typedef struct dma_s {
     unsigned base;          ///< DMA device base address
     struct dma_ops_s *ops;  ///< driver-specific operations
-};
+} dma_t;
 
 /** 
  * \brief Functions prototypes of the DMA device, they should be implemented by a device driver. 
@@ -33,22 +33,21 @@ struct dma_ops_s {
      * \param dma   the dma device
      * \param base  the base address of the memory-mapped registers
      */
-    void (*dma_init)(struct dma_s *dma, unsigned base);
+    void (*dma_init)(dma_t *dma, unsigned base);
 
     /**
-     * \brief Generic function that copy a buffer from a memory location to another using
-     *        a DMA device
+     * \brief Generic function that copy a buffer from a ocation to another using a DMA device
      * \param   dma the DMA device
      * \param   dst destination buffer
      * \param   src source buffer
      * \param   n   number of bytes to write
      * \return  destination buffer address
     */
-    void *(*dma_memcpy)(struct dma_s *dma, int *dst, int *src, unsigned n);
+    void *(*dma_memcpy)(dma_t *dma, int *dst, int *src, unsigned n);
 };
 
-#define dma_alloc() (struct dma_s*) (dev_alloc(DMA_DEV, sizeof(struct dma_s))->data)
-#define dma_get(no) (struct dma_s*) (dev_get(DMA_DEV, no)->data)
+#define dma_alloc() (dma_t *)(dev_alloc(DMA_DEV, sizeof(dma_t))->data)
+#define dma_get(no) (dma_t *)(dev_get(DMA_DEV, no)->data)
 #define dma_count() (dev_next_no(DMA_DEV) - 1)
 
 #endif
