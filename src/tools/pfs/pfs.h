@@ -42,7 +42,9 @@
            ││ │ NULL     │                                 ││                                      
            ││ └──────────┘                                 ││                                      
            │└──────────────────────────────────────────────┘│                                      
-           └────────────────────────────────────────────────┘                                      
+           └────────────────────────────────────────────────┘     
+           
+    \remarks it's ok if it don't define everything, the worse is to have incompatible function.
                                                                                                    
 \*------------------------------------------------------------------------------------------------*/
 
@@ -54,6 +56,7 @@
 #   include <stdlib.h>
 #   include <stdint.h>
 // #   include <fcntl.h>
+#   include <stddef.h> 
 #   include <unistd.h>
 #   include <string.h>
 #   include <sys/types.h>
@@ -73,7 +76,8 @@
 #   define OPENR(f) open (f)
 #   define OPENW(f)
 #   define PRINT(fmt,...)
-#   include <common/cstd.h>    
+#   include <common/cstd.h>
+#   include <common/usermem.h>    
 #endif
 
 #include <common/list.h>
@@ -85,6 +89,7 @@
     // Type 5 bit => 32 type possible but that's a lot, we can shrink it later
 #define FILE_T    (1 << 4)
 #define DIR_T     (1 << 5)
+#define EXEC_T    (1 << 6)
 
     // Rights
 #define R       (1 << 1)
@@ -96,13 +101,15 @@
 //--------------------------------------------------------------------------------------------------
 // DATA Info (not stored it will be well known)
 //--------------------------------------------------------------------------------------------------
-#define DATA_SIZE 512
+#define DATA_SIZE 4096
 #define DATA_TYPE char*
 
 //--------------------------------------------------------------------------------------------------
 // NAME Specification (39 octet)
 //--------------------------------------------------------------------------------------------------
 #define NAME_SIZE 39
+#define PATH_MAX 4096
+#define PAGE_SIZE 4096
 
 //--------------------------------------------------------------------------------------------------
 // ERROR VALUE (need to use import => erase it after complition problem sloved)
@@ -138,9 +145,9 @@ int open(const char* pathname, int flags);
 
 int close(int fd);
 
-long write(int fd, const void *buf, size_t count);
+int _write(int fd, const void *buf, int count);
 
-long read(int fd, void *buf, size_t count);
+int _read(int fd, void *buf, int count);
 
 //--------------------------------------------------------------------------------------------------
 // Dirent in User Space (need to have his own header not sure)
@@ -148,7 +155,7 @@ long read(int fd, void *buf, size_t count);
 #define DIR int
 
 struct dirent_s {
-    char * d_name;
+    char  d_name[PATH_MAX]; 
     pfs_t * root; ///< pointer to the current directory
     pfs_t * item; ///< pointer to the item in current directory
 };

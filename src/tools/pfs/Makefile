@@ -19,22 +19,3 @@ exec: compil
 	pfs
 
 	
-# DEPENDENCIES
-
-/home/zheng/ko6/build/kobj/pfs.o: ./pfs.h /usr/include/stdio.h
-/home/zheng/ko6/build/kobj/pfs.o: /usr/include/stdlib.h /usr/include/stdint.h
-/home/zheng/ko6/build/kobj/pfs.o: /usr/include/fcntl.h
-/home/zheng/ko6/build/kobj/pfs.o: /usr/include/features.h
-/home/zheng/ko6/build/kobj/pfs.o: /usr/include/features-time64.h
-/home/zheng/ko6/build/kobj/pfs.o: /usr/include/stdc-predef.h
-/home/zheng/ko6/build/kobj/pfs.o: /usr/include/unistd.h /usr/include/string.h
-/home/zheng/ko6/build/kobj/pfs.o: /usr/include/strings.h
-/home/zheng/ko6/build/kobj/pfs.o: /home/zheng/ko6/src/soft/common/list.h
-/home/zheng/ko6/build/kobj/pfs.o: /usr/include/stdio.h /usr/include/stdlib.h
-/home/zheng/ko6/build/kobj/pfs.o: /usr/include/stdint.h /usr/include/fcntl.h
-/home/zheng/ko6/build/kobj/pfs.o: /usr/include/features.h
-/home/zheng/ko6/build/kobj/pfs.o: /usr/include/features-time64.h
-/home/zheng/ko6/build/kobj/pfs.o: /usr/include/stdc-predef.h
-/home/zheng/ko6/build/kobj/pfs.o: /usr/include/unistd.h /usr/include/string.h
-/home/zheng/ko6/build/kobj/pfs.o: /usr/include/strings.h
-/home/zheng/ko6/build/kobj/pfs.o: /home/zheng/ko6/src/soft/common/list.h
