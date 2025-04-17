@@ -68,7 +68,7 @@ void kinit (void *fdt)
     //   function in user mode. You can look at the comment of the bootstrap() function in
     //   kthread.c file for details.
 
-#   ifdef BENCH_ALLOC
+#   ifdef 0
     kmalloc_stat ();
     kmalloc_test (100, 2048);
     test_ustack (10);

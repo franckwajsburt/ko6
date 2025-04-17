@@ -81,6 +81,7 @@ static size_t NbPages;                  // Total number of pages in kernel memor
 // Variables for kernel memory allocator -----------------------------------------------------------
 
 enum {
+    PAGE_FREE,
     PAGE_SLAB,
     PAGE_BLOCK
 };
@@ -88,19 +89,19 @@ enum {
 typedef union {                         // page usage description
     unsigned long long raw;             // 64 bits 
     struct {
-        unsigned type:1;                // type of page SLAB
-        unsigned reserved:15;           // not used yet
+        unsigned type:2;                // type of page SLAB
+        unsigned reserved:14;           // not used yet
         unsigned lines:8;               // object size in number of cache lines 
         unsigned nbused:8;              // number of used objects is this slab
     } slab;
     struct {
-        unsigned type:1;                // type of page BLOCK
+        unsigned type:2;                // type of page BLOCK
+        unsigned bdev:4;                // to have several disks 
         unsigned dirty:1;               // dirty  --> must be written on disk
         unsigned locked:1;              // locked --> once read, must remains on memory
         unsigned valid:1;               // valid  --> data can be read or write
-        unsigned bdev:4;                // to have several disks 
+        unsigned reserved:15;           // not used yet
         unsigned refcount:8;            // the same block can be open several times
-        unsigned reserved:16;           // not used yet
         unsigned lba;                   // Logic Block Address (where the page is on disk)
     } block;
 } page_t;
@@ -115,6 +116,9 @@ static size_t ObjectsThisSize[256];     // ObjectsThisSize[i]= allocated objets 
 // Page descriptor accessor functions
 //--------------------------------------------------------------------------------------------------
 
+void page_set_free (void *page)     { Page[PAGE(page)].block.type   = PAGE_FREE;  }
+void page_set_block (void *page)    { Page[PAGE(page)].block.type   = PAGE_BLOCK; }
+void page_set_slab (void *page)     { Page[PAGE(page)].block.type   = PAGE_SLAB;  }
 void page_set_valid (void *page)    { Page[PAGE(page)].block.valid  = 1; }
 void page_set_locked (void *page)   { Page[PAGE(page)].block.locked = 1; }
 void page_set_dirty (void *page)    { Page[PAGE(page)].block.dirty  = 1; }
@@ -123,6 +127,9 @@ void page_clear_valid (void *page)  { Page[PAGE(page)].block.valid  = 0; }
 void page_clear_locked (void *page) { Page[PAGE(page)].block.locked = 0; }
 void page_clear_dirty (void *page)  { Page[PAGE(page)].block.dirty  = 0; }
 
+int  page_is_free (void *page)      { return Page[PAGE(page)].block.type == PAGE_FREE;  }
+int  page_is_block (void *page)     { return Page[PAGE(page)].block.type == PAGE_BLOCK; }
+int  page_is_slab (void *page)      { return Page[PAGE(page)].block.type == PAGE_SLAB;  }
 int  page_is_valid (void *page)     { return Page[PAGE(page)].block.valid;  }
 int  page_is_locked (void *page)    { return Page[PAGE(page)].block.locked; }
 int  page_is_dirty (void *page)     { return Page[PAGE(page)].block.dirty;  }
@@ -166,8 +173,10 @@ void kmemkernel_init (void)
 
     for (int i = 0 ; i < MaxLineSlab ; i++)                 // initialize each list is Slab table
         list_init (&Slab[i]);                               // Slab[i] -> i*cachelinesize objects
-    for (char *p = kmb; p != kme; p += PAGE_SIZE)           // initialize the page (slab) list
+    for (char *p = kmb; p != kme; p += PAGE_SIZE) {         // initialize the page (slab) list
         list_addlast (&Slab[0], (list_t *)p);               // pointed by Slab[0]
+        Page[PAGE(p)].slab.type = PAGE_FREE;                // this page is free
+    }
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -185,6 +194,7 @@ void * kmalloc (size_t size)
     if ((size!=PAGE_SIZE) && list_isempty (&Slab[lines])) { // if no more object in the slab
         char *page = kmalloc (PAGE_SIZE);                   // ask for a free page (i.e. slab)
         Page[PAGE(page)].slab.nbused = 0;                   // reset the allocated counter
+        Page[PAGE(page)].slab.type = PAGE_SLAB;             // page used as a slab
         for (char *p=page; p+size<=page+PAGE_SIZE; p+=size) // cut the slab into objects
             list_addlast (&Slab[lines], (list_t *)p);       // and chain them together
     }
@@ -206,19 +216,26 @@ void kfree (void * obj)
 {
     PANIC_IF (SEGFAULT(obj),                                // outside of the page region
         "\ncan't free object not allocated by kmalloc()");  // write a message then panic
-    unsigned npage = PAGE(obj);
-    size_t lines = Page[npage].slab.lines;                  // which slab to use
+    unsigned pageidx = PAGE(obj);                           // pageidx is the page where the obj is
+    size_t lines = Page[pageidx].slab.lines;                // which slab to use
+    PANIC_IF ( Page[pageidx].slab.type == PAGE_FREE,        // attempt to free obj in a free page
+        "\ndouble free of %p\n", obj);
+    
     list_addfirst (&Slab[lines], (list_t *)obj);            // add it to the right free list
     ObjectsThisSize[lines]--;                               // decr the number of obj of size lines
-    if (lines == 0) return;
-    if (--Page[npage].slab.nbused==0) {                     // splitted page and no more object left
+    if (lines == 0) {                                       // obj is a page 
+        Page[pageidx].slab.type = PAGE_FREE;                // return to free type
+        return;
+    }
+    if (--Page[pageidx].slab.nbused == 0) {                 // if no more object left is this slab
         list_t *page = (list_t *)((size_t)obj & ~0xFFF);    // address of the page containing obj
         list_foreach (&Slab[lines], item) {                 // browse all item in free list
-            if (PAGE(item) == npage) {                      // if current item is in the page
+            if (PAGE(item) == pageidx) {                    // if current item is in the page
                 list_unlink (item);                         // unlink it
             }
         }
-        Page[npage].slab.lines = 0;                         // since the page is empty, thus lines 0
+        Page[pageidx].slab.type = PAGE_FREE;                // return to free type
+        Page[pageidx].slab.lines = 0;                       // since the page is empty, thus lines 0
         list_addfirst (&Slab[0], (list_t *)page);           // add the free page in slab[O]
         ObjectsThisSize[0]--;                               // decr the number of pages used
     }

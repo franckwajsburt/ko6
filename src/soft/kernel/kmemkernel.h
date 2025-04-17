@@ -18,9 +18,12 @@
 //--------------------------------------------------------------------------------------------------
 
 /**
- * \brief Mark the given page as dirty / locked / valid.
+ * \brief Set the page type or Mark the given page as dirty / locked / valid.
  * \param page Pointer to the page buffer.
  */
+void page_set_free (void *page);
+void page_set_block (void *page);
+void page_set_slab (void *page);
 void page_set_valid (void *page);
 void page_set_locked (void *page);
 void page_set_dirty (void *page);
@@ -34,10 +37,13 @@ void page_clear_locked (void *page);
 void page_clear_dirty (void *page);
 
 /**
- * \brief Test if the given page is dirty / locked / valid.
+ * \brief Test the given page type of if it is dirty / locked / valid.
  * \param page Pointer to the page buffer.
  * \return 1 if the page has the correct flag, 0 otherwise.
  */
+int page_is_free (void *page);
+int page_is_block (void *page);
+int page_is_slab (void *page);
 int page_is_valid(void *page);
 int page_is_locked(void *page);
 int page_is_dirty(void *page);
