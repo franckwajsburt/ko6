@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-13
+  | |__ /'v'\  / /      \date       2025-04-17
   | / /(     )/ _ \     \copyright  2025 Sorbonne University
   |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
@@ -44,17 +44,18 @@ void page_clear_dirty (void *page);
 int page_is_free (void *page);
 int page_is_block (void *page);
 int page_is_slab (void *page);
-int page_is_valid(void *page);
-int page_is_locked(void *page);
-int page_is_dirty(void *page);
+int page_is_valid (void *page);
+int page_is_locked (void *page);
+int page_is_dirty (void *page);
 
 /**
  * \brief Increment/Decrement/Get the reference count of the given page.
  * \param page Pointer to the page buffer.
+ * \return the new refcount value
  */
-void page_inc_refcount(void *page);
-void page_dec_refcount(void *page);
-int  page_get_refcount(void *page);
+int page_inc_refcount (void *page);
+int page_dec_refcount (void *page);
+int page_get_refcount (void *page);
 
 /**
  * \brief Set the Logical Block Address (BDEV,LBA) associated with this page.
@@ -62,7 +63,7 @@ int  page_get_refcount(void *page);
  * \param bdev Block device to associate.
  * \param lba Logical Block Address ioto associate.
  */
-void page_set_lba(void *page, unsigned bdev, unsigned lba);
+void page_set_lba (void *page, unsigned bdev, unsigned lba);
 
 /**
  * \brief Get the Logical Block Address (BDEV,LBA) associated with this page.
@@ -71,7 +72,7 @@ void page_set_lba(void *page, unsigned bdev, unsigned lba);
  * \param lba address of Logical Block Address used
  * \return bdev and lba are copied at the address given
  */
-void page_get_lba(void *page, unsigned *bdev, unsigned *lba);
+void page_get_lba (void *page, unsigned *bdev, unsigned *lba);
 
 //--------------------------------------------------------------------------------------------------
 
@@ -94,10 +95,10 @@ void * kmalloc (size_t size);
  * \param   str   The null-terminated string to duplicate.
  * \return  A pointer to the newly allocated string, or NULL on failure.
  *          Returns NULL if allocation fails or if `str` is NULL.
- * \note    This function allocates memory using kmalloc() and copies the content of `str` into it.
- *          The caller is responsible for freeing the duplicated string using `kfree()`.
+ * \note    This function allocates memory using kmalloc () and copies the content of `str` into it.
+ *          The caller is responsible for freeing the duplicated string using `kfree ()`.
  */
-char *kstrdup(const char *str);
+char *kstrdup (const char *str);
 
 /**
  * \brief   same as kmalloc but allocate n * size bytes and write all the allocated zone to zero
@@ -105,10 +106,10 @@ char *kstrdup(const char *str);
  * \param   size  object size
  * \return  A pointer of the allocated object or NULL if there is not place anymore.
  */
-extern void * kcalloc(size_t n, size_t size);                 
+extern void * kcalloc (size_t n, size_t size);                 
 
 /**
- * \brief   free an allocated object with kmalloc()
+ * \brief   free an allocated object with kmalloc ()
  * \param   obj pointer to the allocated object
  */
 void kfree (void * obj);

@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-13
+  | |__ /'v'\  / /      \date       2025-04-17
   | / /(     )/ _ \     \copyright  2025 Sorbonne University
   |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
@@ -81,7 +81,7 @@ static size_t NbPages;                  // Total number of pages in kernel memor
 // Variables for kernel memory allocator -----------------------------------------------------------
 
 enum {
-    PAGE_FREE,
+    PAGE_FREE,                          // 0, also used to init all page descripttor.
     PAGE_SLAB,
     PAGE_BLOCK
 };
@@ -136,16 +136,18 @@ int  page_is_dirty (void *page)     { return Page[PAGE(page)].block.dirty;  }
 
 int  page_get_refcount (void *page) { return Page[PAGE(page)].block.refcount; }
 
-void page_inc_refcount (void *page) {
+int page_inc_refcount (void *page) 
+{
     int refcount = Page[PAGE(page)].block.refcount;
     PANIC_IF (refcount == 255, "Too much page references: %p\n", page);
-    Page[PAGE(page)].block.refcount = refcount+1;
+    return Page[PAGE(page)].block.refcount = refcount+1;
 }
 
-void page_dec_refcount (void *page) {
+int page_dec_refcount (void *page) 
+{
     int refcount = Page[PAGE(page)].block.refcount;
     PANIC_IF (refcount == 0, "Page reference is already 0: %p\n", page);
-    Page[PAGE(page)].block.refcount = refcount-1;
+    return Page[PAGE(page)].block.refcount = refcount-1;
 }
 
 void page_set_lba(void *page, unsigned bdev, unsigned lba) {
@@ -175,7 +177,7 @@ void kmemkernel_init (void)
         list_init (&Slab[i]);                               // Slab[i] -> i*cachelinesize objects
     for (char *p = kmb; p != kme; p += PAGE_SIZE) {         // initialize the page (slab) list
         list_addlast (&Slab[0], (list_t *)p);               // pointed by Slab[0]
-        Page[PAGE(p)].slab.type = PAGE_FREE;                // this page is free
+        Page[PAGE(p)].raw = PAGE_FREE;                      // this page is free
     }
 }
 
@@ -215,16 +217,16 @@ void *kcalloc(size_t n, size_t size)
 void kfree (void * obj)
 {
     PANIC_IF (SEGFAULT(obj),                                // outside of the page region
-        "\ncan't free object not allocated by kmalloc()");  // write a message then panic
+        "\nkfree: object not allocated by kmalloc()");      // write a message then panic
     unsigned pageidx = PAGE(obj);                           // pageidx is the page where the obj is
     size_t lines = Page[pageidx].slab.lines;                // which slab to use
     PANIC_IF ( Page[pageidx].slab.type == PAGE_FREE,        // attempt to free obj in a free page
-        "\ndouble free of %p\n", obj);
+        "\nkfree: double free of %p\n", obj);
     
     list_addfirst (&Slab[lines], (list_t *)obj);            // add it to the right free list
     ObjectsThisSize[lines]--;                               // decr the number of obj of size lines
     if (lines == 0) {                                       // obj is a page 
-        Page[pageidx].slab.type = PAGE_FREE;                // return to free type
+        Page[pageidx].raw = PAGE_FREE;                      // return to free type
         return;
     }
     if (--Page[pageidx].slab.nbused == 0) {                 // if no more object left is this slab
@@ -234,7 +236,7 @@ void kfree (void * obj)
                 list_unlink (item);                         // unlink it
             }
         }
-        Page[pageidx].slab.type = PAGE_FREE;                // return to free type
+        Page[pageidx].raw = PAGE_FREE;                      // return to free type
         Page[pageidx].slab.lines = 0;                       // since the page is empty, thus lines 0
         list_addfirst (&Slab[0], (list_t *)page);           // add the free page in slab[O]
         ObjectsThisSize[0]--;                               // decr the number of pages used
@@ -256,7 +258,7 @@ char * kstrdup (const char * str)
 void kmalloc_stat (void)
 {
     size_t cr = 0, pr = 1;
-    kprintf ("\nTotal Kernel Memory Size : %d pages = %d.%d MBytes\n", \
+    kprintf ("\nTotal Kernel Memory Size : %d pages = %d.%d MBytes\n", 
             NbPages, NbPages/256, NbPages%256);
     kprintf ("\nObjects distribution in all slabs \n");
     kprintf ("\n(s) Object Size ; (f) Free Objects ; (a) Allocated Objects\n");
