@@ -2,13 +2,19 @@
 + [x] arithmetic-boolean expansion
 + [x] line/column counter
 + [ ] built-ins
-    + [ ] cat
-    + [ ] echo
     + [ ] export
-    + [ ] kshell
+    + [ ] unset
     + [ ] cd
+    + [ ] ls
+    + [ ] echo
     + [ ] pwd
+    + [ ] cat
     + [ ] top
     + [ ] kill
     + [ ] kvar
     + [ ] su
+    + [ ] kshell
++ [ ] syscalls
+    + [ ] chdir
+    + [ ] getcwd
+    + [ ] snprintf & svprintf (edit)
