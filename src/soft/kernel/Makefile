@@ -40,6 +40,7 @@ SRC    += $(COMDIR)/ctype.c $(COMDIR)/ctype.h
 SRC    += $(COMDIR)/htopen.c $(COMDIR)/htopen.h
 SRC    += kmemkernel.c kmemkernel.h
 SRC    += kmemuser.c kmemuser.h
+SRC    += kblockio.c kblockio.h
 SRC    += klibc.c klibc.h
 SRC    += kthread.c kthread.h
 SRC    += kinit.c kdev.c kirq.c
