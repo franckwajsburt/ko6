@@ -107,7 +107,7 @@
 //--------------------------------------------------------------------------------------------------
 // NAME Specification (39 octet)
 //--------------------------------------------------------------------------------------------------
-#define NAME_SIZE 39
+#define NAME_SIZE 35
 #define PATH_MAX 4096
 #define PAGE_SIZE 4096
 
@@ -133,11 +133,13 @@
  */
 struct pfs_s{
     char flags;         /**< \var flags give a type for different usage */
-    char name[39];      /**< \var name of file or directory. */
+    char name[NAME_SIZE];      /**< \var name of file or directory. */
     void* data;         /**< \var data block of data if not a directory*/
     int size;           /**< \var size of data */
     list_t root;        /**< \var root parent directory field */
     list_t brothers;    /**< \var brother object in the same directory */
+    struct pfs_s * parent;
+    
 };
 typedef struct pfs_s pfs_t;
 
