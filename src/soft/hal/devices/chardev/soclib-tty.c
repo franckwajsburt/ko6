@@ -51,6 +51,7 @@ static void soclib_tty_init(struct chardev_s *cdev, unsigned base, unsigned baud
  *          it is a blocking function if count > 0 until count char is read
  *          if count == 0, it is a non-blocking function to read a single char
  * \return  if count > 0 then number of read bytes, else SUCCESS or FAILURE
+ * FIXME    FIFO is not is the right place, it must be in the upper layer!
  */
 static int soclib_tty_read(struct chardev_s *cdev, char *buf, unsigned count)
 {
