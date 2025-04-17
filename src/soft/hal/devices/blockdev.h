@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-14
+  | |__ /'v'\  / /      \date       2025-04-17
   | / /(     )/ _ \     \copyright  2025 Sorbonne University
   |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
@@ -50,22 +50,22 @@ struct blockdev_ops_s {
     /**
      * \brief   Generic function that write to the block device
      * \param   bdev    the blockdev device
-     * \param   buf     the buffer where to read the data to be written to the block device
      * \param   lba     the logic block address where the data is written
+     * \param   buf     the buffer where to read the data to be written to the block device
      * \param   count   the number of block to write
-     * \return  number of blocks actually written
+     * \return  0 on success, -EINVAL if invalid arguments
      */
-    int (*blockdev_write)(blockdev_t *bdev, void *buf, unsigned lba, unsigned count);
+    int (*blockdev_write)(blockdev_t *bdev, unsigned lba, void *buf, unsigned count);
 
     /**
      * \brief   Generic function that reads from the blockdev device
      * \param   bdev    the blockdev device
-     * \param   buf     the buffer where the data is written
      * \param   lba     the logic block address where ito read the data to be written in buf
+     * \param   buf     the buffer where the data is written
      * \param   count   the number of blocks to read
-     * \return  number of blocks actually read
+     * \return  0 on success, -EINVAL if invalid arguments
      */
-    int (*blockdev_read)(blockdev_t *bdev, void *buf, unsigned lba, unsigned count);
+    int (*blockdev_read)(blockdev_t *bdev, unsigned lba, void *buf, unsigned count);
 
     /**
      * \brief   Set    the event that will triggered by a block device interrupt

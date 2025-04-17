@@ -66,13 +66,14 @@ static void soclib_bd_init(struct blockdev_s *bdev, unsigned base, unsigned bloc
 /**
  * \brief   read logical blocks
  * \param   bdev    the blockdev device
- * \param   buf     the buffer where to read the data to be written to the block device
  * \param   lba     the logical block address where the data is written
+ * \param   buf     the buffer where to read the data to be written to the block device
  * \param   count   the number of logical block to move
- * \return  number of blocks actually read from the disk
+ * \return  0 on success, -EINVAL if invalid arguments
  */
-static int soclib_bd_read(struct blockdev_s *bdev, void *buf, unsigned lba, unsigned count)
+static int soclib_bd_read(struct blockdev_s *bdev, unsigned lba, void *buf, unsigned count)
 {
+    if (!buf || !bdev || ((lba+count) >= bdev->blocks)) return -EINVAL; // wrong parameters
     volatile struct soclib_bd_regs_s *regs = 
         (struct soclib_bd_regs_s *) bdev->base;
     regs->buffer = buf;                         // destination address in memory
@@ -80,26 +81,35 @@ static int soclib_bd_read(struct blockdev_s *bdev, void *buf, unsigned lba, unsi
     regs->count = count * bdev->ppb;            // number of physical blocks to move
     regs->op = BD_READ;                         // at last command, the transfer is starting
     dcache_buf_invalidate(buf, count);          // if there are cached lines dst buffer, forget them
-    return count;
+// FIXME this part is temporaty
+    while (regs->count) delay(100);
+    if (regs->status != BD_READ_SUCCESS) return -EIO; 
+// ---------------------------
+    return 0;
 }
 
 /**
  * \brief   write logical blocks
  * \param   bdev    the blockdev device
- * \param   buf     the buffer where to write the data to be read from the block device
  * \param   lba     the logical block address where the data is read
+ * \param   buf     the buffer where to write the data to be read from the block device
  * \param   count   the number of logical blocks to move
- * \return  number of blocks actually written to the disk
+ * \return  0 on success, -EINVAL if invalid arguments
  */
-static int soclib_bd_write(struct blockdev_s *bdev, void *buf, unsigned lba, unsigned count)
+static int soclib_bd_write(struct blockdev_s *bdev, unsigned lba, void *buf, unsigned count)
 {
+    if (!buf || !bdev || ((lba+count) >= bdev->blocks)) return -EINVAL; // wrong parameters
     volatile struct soclib_bd_regs_s *regs = 
         (struct soclib_bd_regs_s *) bdev->base;
     regs->buffer = buf;                         // source address in memory
     regs->pba = lba * bdev->ppb;                // destination address in disk (physical block addr)
     regs->count = count * bdev->ppb;            // number of physical blocks to move
     regs->op = BD_WRITE;                        // at last command, the transfer is starting
-    return count;
+// FIXME this part is temporaty
+    while (regs->count) delay(100);
+    if (regs->status != BD_WRITE_SUCCESS) return -EIO; 
+// ---------------------------
+    return 0;
 }
 
 /**
