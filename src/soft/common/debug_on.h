@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-07-02
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-18
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     common/debug_on.h
   \author   Franck Wajsburt
@@ -35,7 +35,7 @@
 #ifdef _KERNEL_
 #define PANIC_IF(cond,fmt,arg...) if (cond) {kprintf(_FMT_("PANIC",fmt,#cond),##arg);kpanic();}
 #else
-#define PANIC_IF(cond,fmt,arg...) if (cond) {fprintf(0,_FMT_("PANIC",fmt,#cond),##arg);kpanic();}
+#define PANIC_IF(cond,fmt,arg...) if (cond) {fprintf(0,_FMT_("PANIC",fmt,#cond),##arg);exit(1);}
 #endif//_KERNEL_
 
 #endif//_DEBUG_
@@ -98,3 +98,9 @@
 #else
 #define ASSERT(cond,fmt,arg...) if (!(cond)) fprintf(0,_FMT_("ASSERT",fmt,#cond),##arg)
 #endif//_KERNEL_
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/
