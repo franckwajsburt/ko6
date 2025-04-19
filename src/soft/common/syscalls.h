@@ -18,27 +18,28 @@
 #define SYSCALL_READ            1
 #define SYSCALL_WRITE           2
 #define SYSCALL_CLOCK           3
-#define SYSCALL_DMA_MEMCPY      4
-#define SYSCALL_CACHELINESIZE   5
-#define SYSCALL_DCACHEBUFINVAL  6
-#define SYSCALL_DCACHEINVAL     7
-#define SYSCALL_SBRK            8
-#define SYSCALL_ERRNO           9
+#define SYSCALL_CPUID           4
+#define SYSCALL_DMA_MEMCPY      5
+#define SYSCALL_CACHELINESIZE   6
+#define SYSCALL_DCACHEBUFINVAL  7
+#define SYSCALL_DCACHEINVAL     8
+#define SYSCALL_SBRK            9
+#define SYSCALL_ERRNO           10
 //-------------------------------------- used in ulib/thread.c
-#define SYSCALL_THREAD_CREATE   10
-#define SYSCALL_THREAD_YIELD    11
-#define SYSCALL_THREAD_EXIT     12
-#define SYSCALL_SCHED_DUMP      13
-#define SYSCALL_THREAD_JOIN     14
-#define SYSCALL_MUTEX_INIT      15
-#define SYSCALL_MUTEX_LOCK      16
-#define SYSCALL_MUTEX_UNLOCK    17
-#define SYSCALL_MUTEX_DESTROY   18
-#define SYSCALL_BARRIER_INIT    19
-#define SYSCALL_BARRIER_WAIT    20
-#define SYSCALL_BARRIER_DESTROY 21
+#define SYSCALL_THREAD_CREATE   11
+#define SYSCALL_THREAD_YIELD    12
+#define SYSCALL_THREAD_EXIT     13
+#define SYSCALL_SCHED_DUMP      14
+#define SYSCALL_THREAD_JOIN     15
+#define SYSCALL_MUTEX_INIT      16
+#define SYSCALL_MUTEX_LOCK      17
+#define SYSCALL_MUTEX_UNLOCK    18
+#define SYSCALL_MUTEX_DESTROY   19
+#define SYSCALL_BARRIER_INIT    20
+#define SYSCALL_BARRIER_WAIT    21
+#define SYSCALL_BARRIER_DESTROY 22
 //-------------------------------------- shellsyscall
-#define SYSCALL_KSHELL          22
+#define SYSCALL_KSHELL          23
 //-------------------------------------- maximum number
 #define SYSCALL_NR              32
 
