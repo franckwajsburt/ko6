@@ -39,6 +39,7 @@
 #include <common/esc_code.h>        // ANSI escape code
 #include <common/errno.h>           // standard error code number
 #include <common/syscalls.h>        // syscall's codes
+#include <common/kshell_syscalls.h> // kshell syscall's codes
 #include <common/usermem.h>         // user data region usage
 #include <common/htopen.h>          // hash table open addressing
 #include <common/ctype.h>           // ascii types
