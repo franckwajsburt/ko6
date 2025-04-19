@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-07-04
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-18
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     ulib/libc.c
   \author   Franck Wajsburt
@@ -47,6 +47,11 @@ int write(int fd, void *buf, int count)
 unsigned clock (void)
 {
     return syscall_fct (0, 0, 0, 0, SYSCALL_CLOCK);
+}
+
+unsigned cpuid (void)
+{
+    return syscall_fct (0, 0, 0, 0, SYSCALL_CPUID);
 }
 
 void dcache_buf_inval (void *buf, size_t size)
@@ -145,3 +150,9 @@ int fprintf(int tty, char *fmt, ...)
     va_end(ap);
     return res;
 }
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/

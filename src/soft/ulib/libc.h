@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-05
+  | |__ /'v'\  / /      \date       2025-04-18
   | / /(     )/ _ \     \copyright  2025 Sorbonne University
   |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
@@ -30,6 +30,7 @@
 #include <cstd.h>       // generic C functions
 #include <list.h>       // generic list management
 #include <syscalls.h>   // kernel services
+#include <kshell_syscalls.h>   // kshell services
 #include <memory.h>     // user allocator
 #include <usermem.h>    // user data region usage
 #include <errno.h>      // standard error code number
@@ -80,6 +81,12 @@ extern int read(int fd, void *buf, int count);
  * \return    on success, the number of written char, else -1
  */
 extern int write(int fd, void *buf, int count);
+
+/**
+ * \brief     cpu number
+ * \return    the cpu number
+ */
+extern unsigned cpuid (void);
 
 /**
  * \brief     clock cycle counter
