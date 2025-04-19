@@ -20,14 +20,17 @@
 #   define STRDUP       kstrdup                     // allocates a new key (when it is a string)
 #   define FREE(k)      kfree(k)                    // free a key (when it is a string)
 #   define PRINT(...)   kprintf(__VA_ARGS__) 
+#   define MALLOC_P(l)  
 #else                                               // if it is for the user
 #   define MALLOC       malloc                      // allocates in the libc's memory  allocator
 #   define STRDUP       strdup                      // allocates a new key (when it is a string)
 #   define FREE(k)      free(k)                     // free a key (when it is a string)
 #   ifdef _HOST_
 #       define PRINT(...)   fprintf(stderr,__VA_ARGS__) 
+#       define MALLOC_P(l)
 #   else
 #       define PRINT(...)   fprintf(0,__VA_ARGS__) 
+#       define MALLOC_P(l)  malloc_print(l)
 #   endif
 #endif
 
@@ -45,9 +48,9 @@
  *          The variables `try` and `h` are internally declared and usable in the loop.
  */
 #define FOREACH_PROBE(ht, key, try, h) \
-    for (int try = 0, size = (ht)->size, h = hash(ht, (key), try); \
+    for (int try = 0, size = (ht)->size, h = hash (ht, (key), try); \
          try < size; \
-         h = hash(ht, key, ++try))
+         h = hash (ht, key, ++try))
 
 //--------------------------------------------------------------------------------------------------
 // opaque hash table structure
@@ -79,7 +82,7 @@ struct hto_s {
 static int largest_prime (unsigned n)
 {
     for (int i, p; n > 1; n--) {                    // Try all numbers from n down to 2
-        for (p=1, i=2; i*i <= n && p; p = n % i++); // Check divisibility up to sqrt(n)
+        for (p=1, i=2; i*i <= n && p; p = n % i++); // Check divisibility up to sqrt (n)
         if (p) return n;                            // If p is still 1, n is prime, return it
     }
     return -1;                                      // Should never happen unless n = 1
@@ -140,7 +143,7 @@ static unsigned keycmp (const hto_t *ht, void *k1, void *k2)
  */
 static void * keydup (const hto_t *ht, void *k)
 {
-    return (ht->type) ? k : STRDUP (k);  
+    return (ht->type) ? k : STRDUP(k);  
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -149,11 +152,11 @@ static void * keydup (const hto_t *ht, void *k)
 
 hto_t * hto_create (unsigned size, int type)        // see comment in htopen.h
 {
-    size = largest_prime(size);                     // size must be a prime
-    hto_t *ht = MALLOC (                            // allocate the hash table
-                  3 * sizeof(unsigned) +            // header part
-                  3 * sizeof(void *) +              // header part
-                  size * sizeof(struct hto_slot_s));// bucket part
+    size = largest_prime (size);                     // size must be a prime
+    hto_t *ht = MALLOC(                            // allocate the hash table
+                  3 * sizeof (unsigned) +            // header part
+                  3 * sizeof (void *) +              // header part
+                  size * sizeof (struct hto_slot_s));// bucket part
     if (ht) {                                       // if alloc is a success    
         for (int i = 0; i < size; i++) {            // for each slot
             ht->bucket[i].key = NULL;               // erase all
@@ -196,7 +199,7 @@ int hto_set (hto_t *ht, void *key, void *val)       // see comment in htopen.h
     struct hto_slot_s * slot = NULL;                // will be the best slot
     int try_forthisslot = 0;
     if (key == KEYFREED) return -2;                 // wrong key, KEYFREED is forbidden
-    FOREACH_PROBE(ht, key, try, h) {                // For each possible slot for this key
+    FOREACH_PROBE(ht, key, try, h) {               // For each possible slot for this key
         void * current_key = ht->bucket[h].key;     // get the key at position h
         if (current_key == KEYFREED) {              // if first freed slot, will be the best slot
             if (!slot) {                            // it is the fist freed slot found
@@ -213,7 +216,7 @@ int hto_set (hto_t *ht, void *key, void *val)       // see comment in htopen.h
                 try = try_forthisslot;              // redefine the try counter
                 ht->freed--;                        // reused slot, thus one less freed slot
             }
-            slot->key = keydup(ht, key);            // we need to allocate the new key
+            slot->key = keydup (ht, key);            // we need to allocate the new key
             slot->val = val;                        // then attach the new val 
             return try;                             // return the number of try
         }
@@ -232,7 +235,7 @@ int hto_set (hto_t *ht, void *key, void *val)       // see comment in htopen.h
     // the key is not in the hash table
     if (slot) {                                     // there is at least one freed slot
         ht->freed--;                                // reuse the slot 
-        slot->key = keydup(ht, key);                // we need to allocate the new key
+        slot->key = keydup (ht, key);               // we need to allocate the new key
         slot->val = val;                            // then attach the new val 
         return try_forthisslot;                     // return the number of try for this slot
     }
@@ -242,10 +245,10 @@ int hto_set (hto_t *ht, void *key, void *val)       // see comment in htopen.h
 int hto_set_grow (hto_t **pht, void *key, void *val, int maxtry)// see comment in htopen.h
 {
     int try;
-    for (try = hto_set(*pht, key, val);             // try to set an new item
+    for (try = hto_set (*pht, key, val);             // try to set an new item
         (try == -1) || (try > maxtry);              // if ht full or too much try
          hto_rehash (pht, 200),                     // rehash after growing the table
-         try = hto_set(*pht, key, val));            // try again
+         try = hto_set (*pht, key, val));            // try again
     return try;
 }
 
@@ -273,7 +276,7 @@ void hto_foreach (hto_t *ht, hto_callback_t fn, void * data) // see comment in h
         void *key = ht->bucket[h].key;              // get the current key
         if (key != NULL && key != KEYFREED) {       // if the slot is used
             void *val = ht->bucket[h].val;          // get the current val
-            fn(ht, h, key, val, data);              // call the callback function 
+            fn (ht, h, key, val, data);              // call the callback function 
         }
     }
 }
@@ -294,16 +297,16 @@ hto_t *hto_rehash (hto_t **pht, unsigned percent)   // see comment in htopen.h
 
     unsigned new_size = (ht->size * percent) / 100; // Compute new size
     if (new_size < 2) return NULL;                  // Avoid too small tables
-    new_size = largest_prime(new_size);             // Find next prime for better hash distribution
+    new_size = largest_prime (new_size);             // Find next prime for better hash distribution
 
-    hto_t *new_ht = hto_create(new_size, ht->type); // Allocate new hash table
+    hto_t *new_ht = hto_create (new_size, ht->type); // Allocate new hash table
     if (!new_ht) return NULL;                       // Allocation failure, return NULL
 
     for (unsigned i = 0; i < ht->size; i++) {       // Reinsert all valid items manually
         void *key = ht->bucket[i].key;
         if (key && key != KEYFREED) {               // Only reinsert valid keys
             void *val = ht->bucket[i].val;
-            hto_set(new_ht, key, val);
+            hto_set (new_ht, key, val);
         }
     }
 
@@ -318,7 +321,7 @@ hto_t *hto_rehash (hto_t **pht, unsigned percent)   // see comment in htopen.h
 
 /**
  * \brief   Callback function to analyze key collisions in the hash table.
- *          This function is used as a callback for `hto_foreach()` in `hto_stat()` (see below).
+ *          This function is used as a callback for `hto_foreach ()` in `hto_stat ()` (see below).
  *          It searches for a given key in the hash table and records the number of probes 
  *          (`try` attempts) required to locate it. This helps evaluate the efficiency 
  *          of the hashing function and the collision resolution strategy.
@@ -345,28 +348,27 @@ static inline void hto_collision (hto_t * ht, unsigned pos, void *key, void *val
 
 void hto_stat (hto_t *ht)                     // see comment in htopen.h
 {
-    unsigned int *tries = MALLOC(ht->size);
+    unsigned *tries = MALLOC(ht->size*sizeof(unsigned));
     unsigned nbkeys = ht->size - ht->freed - ht->empty;
     unsigned nbkeys_here = 0;
     
     if (tries == NULL) {
-        PRINT ("Impossible to allocate tries table\n");
+        PRINT("Impossible to allocate tries table\n");
         return;
     }
     for (int i=0; i < ht->size; tries[i++]=0);
-    PRINT ("nb keys + filled : %d --> %d%%\n", nbkeys, nbkeys*100/ht->size);     
-    PRINT ("hash table slots : %d\n", ht->size);     
-    PRINT ("hash table freed : %d\n", ht->freed);     
-    PRINT ("hash table empty : %d\n", ht->empty);     
+    PRINT("nb keys + filled : %d --> %d%%\n", nbkeys, nbkeys*100/ht->size);     
+    PRINT("hash table slots : %d\n", ht->size);     
+    PRINT("hash table freed : %d\n", ht->freed);     
+    PRINT("hash table empty : %d\n", ht->empty);     
     hto_foreach (ht, hto_collision, (void *)tries);
     for (int i=0; i < ht->size; i++) {
         nbkeys_here += tries[i];
         if (tries[i]) {
-            PRINT ("tries[%d]\t= %d (%d%% --> %d%%)\n", 
+            PRINT("tries[%d]\t= %d (%d%% --> %d%%)\n", 
                 i, tries[i], tries[i]*100/nbkeys, nbkeys_here*100/nbkeys);
         }
     }
-    FREE(tries);
 }
 
 /*------------------------------------------------------------------------------------------------*\
