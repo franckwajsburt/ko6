@@ -1,10 +1,10 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-07-03
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-18
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
-  \file     kernel/ksyscall.h
+  \file     kernel/ksyscall.c
   \author   Franck Wajsburt
   \brief    definition of the syscall vector and some functions, 
             the other syscalls are in more specific files (kthread.c, ksynchro.c, etc.).
@@ -64,6 +64,7 @@ void *SyscallVector[] = {
     [SYSCALL_READ           ] = tty_read,
     [SYSCALL_WRITE          ] = tty_write,
     [SYSCALL_CLOCK          ] = clock,
+    [SYSCALL_CPUID          ] = cpuid,
     [SYSCALL_DMA_MEMCPY     ] = dma_memcpy_user,
     [SYSCALL_CACHELINESIZE  ] = cachelinesize,
     [SYSCALL_DCACHEBUFINVAL ] = dcache_buf_inval_user,
@@ -84,3 +85,9 @@ void *SyscallVector[] = {
     [SYSCALL_BARRIER_DESTROY] = thread_barrier_destroy,
     [SYSCALL_KSHELL         ] = sys_kshell,
 };
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/

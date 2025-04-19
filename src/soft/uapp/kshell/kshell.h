@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date        2025-03-30
-  | / /(     )/ _ \     \copyright   2021 Sorbonne University
-  |_\_\ x___x \___/                  https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-18
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     /tools/kshell/kshell.h
   \author   Marco Leon
@@ -14,10 +14,11 @@
   
   NB :      :P
 
-
 \*------------------------------------------------------------------------------------------------*/
-#ifndef KSHELL_H
-#define KSHELL_H
+
+#ifndef _KSHELL_H_
+#define _KSHELL_H_
+
 /**
  * You're gonna need a returning value
  * convention
@@ -32,8 +33,6 @@
  * basic idea remains. So, if you feel stuck, take 
  * a look to Normand's code.
  */
-
-
 
  #ifdef _HOST_
  #   include <stdio.h>
@@ -469,7 +468,10 @@ int i2kbool(int v);
  */
 int kbool2i(int v);
 
-
-
-
 #endif
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/

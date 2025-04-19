@@ -1,5 +1,5 @@
 APPNB	= 0
-SRC 	= main.c
+SRC 	= kshell.c
 YSRC    = parser.y
 FSRC	= parser.l 
 
