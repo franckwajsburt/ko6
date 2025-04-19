@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-07-04
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-19
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     ulib/memory.c
   \author   Franck Wajsburt
@@ -40,10 +40,9 @@ static void* try_malloc (size_t size)
     size = CEIL (size+BINFO_SZ, CacheLineSize);             // true required size in bytes
     size = size / sizeof (block_info_t);                    // in the heap size is in block_info_t
     block_info_t *oldnext, *newnext, *new;
-
     for (new = Heap.beg;                                    // from the beginning of the Heap
         (new < Heap.end) && (new->full||(new->size<size));  // while end not reached and no space
-        new += new->size);                                  // go to next block
+        new += new->size) {}
 
     if (new >= Heap.end) return NULL;                       // end reached without finding space
 
@@ -116,7 +115,7 @@ void *calloc(size_t n, size_t size)
 
 char * strdup (const char * str)
 {
-    if (str==NULL) return NULL;                             // Avoid NULL input 
+    if (str == NULL) return NULL;                           // Avoid NULL input 
     size_t len = strlen(str) + 1;                           // Include null terminator
     char *copy = (char *) malloc(len);                      // Allocate memory 
     if (copy == NULL) errno = ENOMEM;
@@ -133,15 +132,24 @@ void free (void *ptr)
     info->full = 0;                                         // erase the full flag
 }
 
-void malloc_print (size_t level)
+void malloc_print (int level)
 {
     block_info_t *ptr;
     fprintf (0, "------------ %p ------------\n", Heap.beg);
-    for (ptr = Heap.beg; ptr < Heap.end; ptr += ptr->size)  // browse all blocks
-        fprintf (0, " %s  [ %x\t- %x\t] = %d\n",
+    for (ptr = Heap.beg; ptr < Heap.end; ptr += ptr->size){ // browse all blocks
+        fprintf (0, " %p %d %s  [ %x\t- %x\t] = %d\n",
+            ptr, ptr->magic,
             (ptr->full) ? "full" : "free",                  // print if block is full or free
             BINFO_SZ*(size_t)(ptr - Heap.beg),              // print block begin position
             BINFO_SZ*(size_t)((ptr + ptr->size) - Heap.beg),// print block end position
             BINFO_SZ*(size_t)(ptr->size));                  // print block size
+        while (ptr->size == 0);
+    }
     fprintf (0, "------------ %p ------------\n", Heap.end);
 }
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/

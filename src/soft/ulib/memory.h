@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-07-04
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-19
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     ulib/memory.h
   \author   Franck Wajsburt
@@ -24,7 +24,7 @@ extern void * sbrk (int increment);
  * \brief   print the heap state 
  * \param   level use: 0 = full/free bytes; 1 = the nb of blocks full/free per size; 2 = all details
  */
-extern void malloc_print (size_t level);
+extern void malloc_print (int level);
 
 /**
  * \brief   Heap initialiation, called only once before to call the main() fonction
@@ -65,3 +65,8 @@ char *strdup(const char *str);
 
 #endif//_MALLOC_H_
 
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/
