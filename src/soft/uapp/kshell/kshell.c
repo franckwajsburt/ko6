@@ -30,7 +30,6 @@ int split(char *str, char *tokens[], int maxtoken) {
 void exec (char * buffer)
 {
     char *tokens[16];
-    kshell_args_t args;
     int count = split (buffer, tokens, sizeof (tokens)/sizeof(char*));
 
     if (strcmp (tokens[0], "open") == 0) {
@@ -38,10 +37,12 @@ void exec (char * buffer)
             fprintf (1, "usage: open pathname flags\n");
             return;
         }
+        kshell_args_t args;
         args.a_open.path = tokens[1];
         args.a_open.flags = atoi(tokens[2]);
         syscall_fct (KSHELL_OPEN, (unsigned)&args, 0, 0, SYSCALL_KSHELL);
-        fprintf (1, "open result: %d\n", args.a_open.resfd);
+        int fd = args.a_open.resfd;
+        fprintf (1, "open result: %d %x\n", fd, O_FILE[fd]);
     }
 }
 
@@ -105,8 +106,6 @@ int main ()
 {
     fprintf (1, "hello, friend\n");
     while (1) kcmd (1);
-    syscall_fct (KSHELL_OPEN, (unsigned) NULL, 0, 0, SYSCALL_KSHELL);
-
     return 0;
 }
 

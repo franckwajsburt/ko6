@@ -43,8 +43,11 @@ int sys_kshell (kshell_syscall_t service, kshell_args_t *args)
     kprintf ("kshell %s\t:\n", syscall_name[service]);
     switch (service) {
     case KSHELL_OPEN:                                       // open file or directory
-        P("open: path %s flag %d\n", args->a_open.path, args->a_open.flags);
-        args->a_open.resfd = 42;
+        P("%s: path %s flag %d\n", 
+            syscall_name[service], args->a_open.path, args->a_open.flags);
+        args->a_open.resfd = 3;
+        pvfs_init();
+        O_FILE[3] = kmalloc(128);
     break;
     case KSHELL_READ:                                       // read file
     break;

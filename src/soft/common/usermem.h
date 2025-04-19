@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-07-02
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-19
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     common/usermem.h
   \author   Franck Wajsburt
@@ -16,10 +16,11 @@
 #ifndef _USERMEM_H_
 #define _USERMEM_H_
 
-#define PAGE_SIZE       4096            // page size, can't be changed
-#define USTACK_SIZE     (16*PAGE_SIZE)  // thread stack size (all thread have the same size)
-#define MAGIC_STACK     0xDEADF00D      // used to tag user stack (to check corruption)
-#define MAGIC_HEAP      0x5A            // used to tag user heap block (to check corruption)
+#define PAGE_SIZE       4096            ///< page size, can't be changed
+#define USTACK_SIZE     (16*PAGE_SIZE)  ///< thread stack size (all thread have the same size)
+#define MAGIC_STACK     0xDEADF00D      ///< used to tag user stack (to check corruption)
+#define MAGIC_HEAP      0x5A            ///< used to tag user heap block (to check corruption)
+#define MAX_O_FILE      64              ///< file descriptor of the open files
 
 /**
  * \brief few data about user memory usage, stucture placed at the bottom of the .data region
@@ -55,6 +56,7 @@ typedef struct _usermem_s {
     void (* main_start)(void);  ///< pointer to the start of main thread (see ulib/crt0.c)
     void * main_thread;         ///< address of the main thread (defined in kernel/kinit.c)
     struct _tls_s * ptls;       ///< pointer to the thread local storage of the current thread
+    struct file_s *o_file[MAX_O_FILE];     ///< open files; 
 } __usermem_t;
 
 extern __usermem_t __usermem;   // user mem space struct (declared kernel.ld ; init in ulib/crt0.c)
@@ -75,3 +77,9 @@ typedef struct _tls_s {
 #define urandseed   (__usermem.ptls->tls_randseed)
 
 #endif//_USERMEM_H_
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/

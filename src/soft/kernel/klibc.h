@@ -44,6 +44,8 @@
 #include <common/htopen.h>          // hash table open addressing
 #include <common/ctype.h>           // ascii types
 
+#include <fs/pvfs.h>                // pseudo vitual file system
+
 #include <hal/devices/chardev.h>
 
 #include <hal/cpu/atomic.h>         // Locks
@@ -61,6 +63,7 @@
 #include <kernel/ksynchro.h>        // mutex, barrier and similar functions
 #include <kernel/kdev.h>            // dynamic devices allocation
 #include <kernel/kshell.h>          // kshell syscall
+#include <kernel/kblockio.h>        // block device's request queue and buffer cache
 
 #define RAND_MAX 32767  /* maximum random value by default, must be < 0x7FFFFFFE */
 #define PRINTF_MAX 256  /* largest printed message */
@@ -69,6 +72,8 @@
 #define FIFO_DEPTH 20   /* maximum fifo depth */
 
 #define V(fmt,v) kprintf("%s : "fmt, #v, (v))
+
+#define O_FILE          __usermem.o_file
 
 //--------------------------------------------------------------------------------------------------
 

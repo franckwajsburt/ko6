@@ -20,6 +20,7 @@ SOC    ?= almo1-mips#				defaut SOC name
 BLDDIR	= $(ko6)/build#i		 	build directory
 SRCDIR	= $(ko6)/src/soft#			source directories
 COMDIR	= $(SRCDIR)/common#			user & kernel common files directory
+FSDIR	= $(SRCDIR)/fs#				virtual file system
 HALDIR	= $(SRCDIR)/hal#			hardware abstraction layer (hal) files directory
 CURDIR 	= $(notdir $(shell pwd))#	name of curent directory
 OBJDIR	= $(BLDDIR)/kobj#			kernel object files directory
@@ -38,6 +39,7 @@ SRC    += $(COMDIR)/errno.h $(COMDIR)/errno.c $(COMDIR)/esc_code.h
 SRC    += $(COMDIR)/cstd.c $(COMDIR)/cstd.h
 SRC    += $(COMDIR)/ctype.c $(COMDIR)/ctype.h
 SRC    += $(COMDIR)/htopen.c $(COMDIR)/htopen.h
+SRC    += $(FSDIR)/pvfs.c $(FSDIR)/pvfs.h
 SRC    += kmemkernel.c kmemkernel.h
 SRC    += kmemuser.c kmemuser.h
 SRC    += kblockio.c kblockio.h
@@ -120,6 +122,11 @@ $(OBJDIR)/%.o : %.c
 	$(OD) -D $@ > $@.s
 
 $(OBJDIR)/%.o : $(COMDIR)/%.c
+	@echo "- compil  --> "$(notdir $@)
+	$(CC) -o $@ $(CFLAGS) $<
+	$(OD) -D $@ > $@.s
+
+$(OBJDIR)/%.o : $(FSDIR)/%.c
 	@echo "- compil  --> "$(notdir $@)
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s

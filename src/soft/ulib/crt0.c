@@ -33,6 +33,7 @@ void _start (void)
 {
     int res;
 //    urandseed = 1;
+//
     for (int *a = &__bss_origin; a != &__bss_end; *a++ = 0);
     malloc_init (__usermem.uheap_beg);
     res = main ();

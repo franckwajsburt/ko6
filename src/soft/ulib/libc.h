@@ -45,6 +45,8 @@
 
 #define EXIT(n)         *(char*)(0xFFFF0000+0x##n*16)=0 /* cause a panic with BAR = 0xFFFF-n-0 */
 
+#define O_FILE          __usermem.o_file
+
 /**
  * \brief   finds the error message corresponding to the current value of the global variable 
  *          errno and writes it, followed by a newline (errno is thread safe)
