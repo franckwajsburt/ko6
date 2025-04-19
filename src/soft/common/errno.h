@@ -1,10 +1,10 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-07-02
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-18
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
-  \file     commmon/errno.h
+  \file     common/errno.h
   \author   Franck Wajsburt
   \brief    Standard error numbers (https://man7.org/linux/man-pages/man3/errno.3.html)
 
@@ -20,8 +20,13 @@
  *          __errno_location() gives an address different for each thread
  *          *__errno_location() dereferences the pointeur,  i.e. follows the pointer
  *          and it designates what is pointed to.
-#define errno       *__errno_location()
  */
+
+#ifdef _KERNEL_     /* _KERNEL_ is defined at the beginning of kernel/klibc.h  */
+#   define errno    *thread_errno(ThreadCurrent)    /* gets errno from the tls of ThreadCurrent */
+#else
+#   define errno    (__usermem.ptls->tls_errno)     /* gets errno of the current running thread */
+#endif
 
 /**
  * errno_mess contains the error messages for each error code
@@ -42,12 +47,18 @@ enum errno_code {
     EINTR   ,   // Interrupted function call (https://man7.org/linux/man-pages/man7/signal.7.html)
     EINVAL  ,   // Invalid argument
     EIO     ,   // Input/output error
+    EBADF   ,   // Bad file descriptor
+    EISDIR  ,   // operation forbidden on a directory
+    EEXIST  ,   // file/directory already exist
     ENOBUFS ,   // No buffer space available
     ENODEV  ,   // No such device
     ENOMEM  ,   // Not enough space/cannot allocate memory
     ENOSPC  ,   // No space left on device
     ENOSYS  ,   // Function not implemented
     ENOTTY  ,   // Inappropriate I/O control operation
+    ENOTDIR ,   // file is not a directory
+    ENOENT  ,   // file/directory not found
+    ENOEXEC ,   // not an executable
     ENXIO   ,   // No such device or address
     EPERM   ,   // Operation not permitted
     ERANGE  ,   // Result too large
@@ -55,3 +66,9 @@ enum errno_code {
 };
 
 #endif//_ERRNO_H_
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/
