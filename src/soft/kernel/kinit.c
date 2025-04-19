@@ -74,6 +74,8 @@ void kinit (void *fdt)
     test_ustack (10);
 #   endif
 
+   // blockio_init ();
+    
     // Finally, load the main user programm
     // We never return of thread_load() here because thread_load() change $31 to thread_bootstap()
 
@@ -81,11 +83,6 @@ void kinit (void *fdt)
     PANIC_IF(true,"Impossible to be here");
 }
 
-/*------------------------------------------------------------------------------------------------*\
-   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
-   vim: set ts=4 sw=4 sts=4 et tw=100:
-   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
-\*------------------------------------------------------------------------------------------------*/
 /*------------------------------------------------------------------------------------------------*\
    Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
    vim: set ts=4 sw=4 sts=4 et tw=100:

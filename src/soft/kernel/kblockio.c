@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-17
+  | |__ /'v'\  / /      \date       2025-04-19
   | / /(     )/ _ \     \copyright  2025 Sorbonne University
   |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
@@ -26,8 +26,10 @@ void *blockio_get (unsigned bdev, unsigned lba)
     page_inc_refcount (page);
     page_set_valid (page);
 
+    kprintf("avant blockdev_read\n");
     if (dev->ops->blockdev_read (dev, lba, page, 1) != 0) {
         kfree (page);
+        kprintf("blockdev_read return NULL\n");
         return NULL;
     }
     return page;
@@ -64,6 +66,26 @@ int blockio_sync (void *page)
     return err;
 }
 
+typedef struct { 
+    char     name[24];   // filename 23 bytes + '\0' 
+    unsigned lba;        // logical block position 
+    unsigned size;       // size if bytes 
+} entry_t; 
+
+void blockio_init (void)
+{
+    blockdev_t *dev = blockdev_get (0);
+    kprintf ("base address      %p\n", dev->base);
+    kprintf ("number of blocks  %d\n", dev->blocks);
+    kprintf ("block size        %d\n", dev->block_size);
+    kprintf ("phys bl per block %d\n", dev->ppb);
+    kprintf ("event             %p\n", dev->event);
+        
+    entry_t *dir = blockio_get (0, 0);
+    for (int e=0 ; e < 128 && dir[e].name; e++) {
+        kprintf ("%d\ts\t%s\n", dir[e].lba, dir[e].size, dir[e].name);
+    }
+}
 /*------------------------------------------------------------------------------------------------*\
    Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
    vim: set ts=4 sw=4 sts=4 et tw=100:

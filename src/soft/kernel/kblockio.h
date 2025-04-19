@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-17
+  | |__ /'v'\  / /      \date       2025-04-19
   | / /(     )/ _ \     \copyright  2025 Sorbonne University
   |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
@@ -75,6 +75,11 @@ int blockio_sync(void *page);
  * \brief Write back all dirty blocks in the cache.
  */
 void blockio_flush(void);
+
+/**
+ * \brief initialize the blockio layer for all block devices
+ */
+void blockio_init(void);
 
 #endif//_KBLOCKIO_H_
 
