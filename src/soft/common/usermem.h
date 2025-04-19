@@ -72,11 +72,6 @@ typedef struct _tls_s {
     long long   tls_randseed;   ///< user random seed
 } _tls_t;
 
-#ifdef _KERNEL_ /* defined at the beginning of kernel/klibc.h  */
-#   define errno    *thread_errno(ThreadCurrent)    /* gets errno from the tls of ThreadCurrent */
-#else
-#   define errno    (__usermem.ptls->tls_errno)     /* gets errno of the current running thread */
-#endif
 #define urandseed   (__usermem.ptls->tls_randseed)
 
 #endif//_USERMEM_H_
