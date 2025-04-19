@@ -37,7 +37,6 @@ void * t0_fun (void * arg)
 
 int main (void)
 {
-
     pthread_barrier_init (&barrier, NULL, 3);
 
     a0.delay = 100000;
