@@ -1,16 +1,28 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2023-07-03
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-20
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     commmon/cstd.c
   \author   Franck Wajsburt, Nolan Bled
-  \brief    Standard C functions
+  \brief    Standard C functions without syscalls, thus usable by the kernel and user applications.
 
 \*------------------------------------------------------------------------------------------------*/
 
 #include <common/cstd.h>
+#include <common/esc_code.h>
+
+#define Y       EC_BOLD EC_WHITE"'"EC_YELLOW"v"EC_WHITE"'"EC_RESET EC_CYAN
+#define X       EC_ORANGE"x"EC_CYAN
+#define X___X   " " X "___" X " "
+char Banner_ko6[] =          // banner's text defined on several lines
+EC_WHITE
+"   _   "  EC_CYAN"  ___  "  EC_WHITE"  __ \n"
+"  | |__"  EC_CYAN" /"Y"\\ " EC_WHITE" / /    (c) 2021 Sorbonne University\n"
+"  | / /"  EC_CYAN"(     )"  EC_WHITE"/ _ \\   https://opensource.org/licenses/MIT\n"
+"  |_\\_\\"EC_CYAN  X___X    EC_WHITE"\\___/   " KO6VER "\n\n"
+EC_RESET;
 
 void wzero (void *addr, size_t n)
 {

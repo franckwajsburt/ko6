@@ -30,6 +30,8 @@
 #define false   0
 #define true    (!false)
 
+extern char Banner_ko6[];    ///< ko6 banner on 4 lines
+  
 /**
  * \brief     set every byte in a buffer to a same value
  * \param     s buffer address

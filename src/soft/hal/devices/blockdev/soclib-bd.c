@@ -71,9 +71,16 @@ static void soclib_bd_init(struct blockdev_s *bdev, unsigned base, unsigned bloc
  * \param   count   the number of logical block to move
  * \return  0 on success, -EINVAL if invalid arguments
  */
+#include <common/debug_on.h>
+
 static int soclib_bd_read(struct blockdev_s *bdev, unsigned lba, void *buf, unsigned count)
 {
-    if (!buf || !bdev || ((lba+count) >= bdev->blocks)) return -EINVAL; // wrong parameters
+    if (!buf || !bdev || ((lba+count) >= bdev->blocks)) 
+        return errno = -EINVAL; // wrong parameters
+VAR(%p\n,bdev);
+VAR(%p\n,lba);
+VAR(%p\n,buf);
+VAR(%p\n,count);
     volatile struct soclib_bd_regs_s *regs = 
         (struct soclib_bd_regs_s *) bdev->base;
     regs->buffer = buf;                         // destination address in memory
@@ -81,9 +88,12 @@ static int soclib_bd_read(struct blockdev_s *bdev, unsigned lba, void *buf, unsi
     regs->count = count * bdev->ppb;            // number of physical blocks to move
     regs->op = BD_READ;                         // at last command, the transfer is starting
     dcache_buf_invalidate(buf, count);          // if there are cached lines dst buffer, forget them
+VAR(%p\n,regs);
+VAR(%p\n,bdev->ppb);
 // FIXME this part is temporaty
-    while (regs->count) delay(100);
-    if (regs->status != BD_READ_SUCCESS) return -EIO; 
+    while (regs->status == BD_BUSY) delay(100);
+    if (regs->status != BD_READ_SUCCESS) 
+        return errno = -EIO; 
 // ---------------------------
     return 0;
 }

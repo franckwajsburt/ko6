@@ -1,8 +1,8 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __  
-# | |__ /'v'\  / /       \date        2023-01-18
-# | / /(     )/ _ \      \copyright   2021-2023 Sorbonne University 
-# |_\_\ x___x \___/                   https://opensource.org/licenses/MIT
+# | |__ /'v'\  / /   	\date    	2025-04-20
+# | / /(     )/ _ \   	\copyright  2021 Sorbonne University
+# |_\_\ x___x \___/     \licence    https://opensource.org/licenses/MIT
 # 
 #---------------------------------------------------------------------------------------------------
 
@@ -27,6 +27,7 @@ CFLAGS += -G0#                        do not use global data pointer ($28)
 CFLAGS += -O3#                        full optimisation mode of compiler
 CFLAGS += -I.#                        directories where include files like <file.h> are located
 CFLAGS += -DNTTYS=$(NTTYS)#           #define NTTYS with the number of ttys in the prototype
+CFLAGS += -DKO6VER=$(KO6VER)#         last commit
 	     
 FROM   ?= 0#                          first cycles to trace
 NCYC   ?= 10000#                      number of cycles to execute in debug mode

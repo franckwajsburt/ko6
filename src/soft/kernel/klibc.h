@@ -34,9 +34,9 @@
 #include <stddef.h>     // gcc's builtin include with NULL, size_t, (https://bit.ly/3lBw3p6)
 #endif//__DEPEND__
 
+#include <common/esc_code.h>        // ANSI escape code
 #include <common/cstd.h>            // generic C functions
 #include <common/list.h>            // generic list management
-#include <common/esc_code.h>        // ANSI escape code
 #include <common/errno.h>           // standard error code number
 #include <common/syscalls.h>        // syscall's codes
 #include <common/kshell_syscalls.h> // kshell syscall's codes
@@ -66,7 +66,7 @@
 #include <kernel/kblockio.h>        // block device's request queue and buffer cache
 
 #define RAND_MAX 32767  /* maximum random value by default, must be < 0x7FFFFFFE */
-#define PRINTF_MAX 256  /* largest printed message */
+#define PRINTF_MAX 1024 /* largest printed message */
 #define CEIL(a,b)       ((int)(b)*(((int)(a)+(int)(b)-1)/(int)(b))) /* round up a aligned on b */
 #define FLOOR(a,b)      ((int)(b)*((int)(a)/(int)(b)))              /* round down a aligned on b */
 #define FIFO_DEPTH 20   /* maximum fifo depth */

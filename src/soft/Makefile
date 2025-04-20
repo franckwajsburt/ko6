@@ -1,8 +1,8 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2025-03-30
+# | |__ /'v'\  / /   	\date       2025-04-20
 # | / /(     )/ _ \   	\copyright  2021 Sorbonne University
-# |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+# |_\_\ x___x \___/     \licence    https://opensource.org/licenses/MIT
 #
 # \file     Makefile
 # \author   Franck Wajsburt

@@ -1,6 +1,6 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2025-04-05
+# | |__ /'v'\  / /   	\date       2025-04-20
 # | / /(     )/ _ \   	\copyright  2021 Sorbonne University
 # |_\_\ x___x \___/     \licence    https://opensource.org/licenses/MIT
 #
@@ -78,6 +78,7 @@ CFLAGS += -I$(COMDIR)#				directories where include files like <file.h> are loca
 CFLAGS += -I$(XLIBDIR)/libfdt#		include external libraries (specifically libfdt.h)
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
 CFLAGS += -D_KERNEL_#				to tell gcc we compile for ko6
+CFLAGS += -DKO6VER="\"$(KO6VER)\""# last commit
 
 # Simple shell scripts
 # --------------------------------------------------------------------------------------------------

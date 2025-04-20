@@ -1,8 +1,8 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2025-03-30
+# | |__ /'v'\  / /   	\date       2025-04-20
 # | / /(     )/ _ \   	\copyright  2021 Sorbonne University
-# |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+# |_\_\ x___x \___/     \licence    https://opensource.org/licenses/MIT
 #
 # \file     fs/kfs/Makefile
 # \author   Franck Wajsburt
@@ -52,6 +52,7 @@ CFLAGS += -fomit-frame-pointer#		only use of stack pointer ($29)
 CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += -I.#						directories where include files like <file.h> are located
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
+CFLAGS += -DKO6VER="\"$(KO6VER)\""# last commit
 
 # Simple shell scripts
 # --------------------------------------------------------------------------------------------------

@@ -1,8 +1,8 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date    	2025-03-30
+# | |__ /'v'\  / /   	\date    	2025-04-20
 # | / /(     )/ _ \   	\copyright  2021 Sorbonne University
-# |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+# |_\_\ x___x \___/     \licence    https://opensource.org/licenses/MIT
 #
 # \file     external/libfdt/Makefile
 # \author   Nolan Bled
@@ -57,6 +57,7 @@ CFLAGS += -fomit-frame-pointer#			only use of stack pointer ($29)
 CFLAGS += -O3#							full optimisation mode of compiler
 CFLAGS += -I.
 CFLAGS += -I$(SRCDIR)
+CFLAGS += -DKO6VER="\"$(KO6VER)\""#     last commit
 
 # Simple shell scripts
 # --------------------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2025-04-05
+# | |__ /'v'\  / /   	\date       2025-04-20
 # | / /(     )/ _ \   	\copyright  2021 Sorbonne University
 # |_\_\ x___x \___/     \licence    https://opensource.org/licenses/MIT
 #
@@ -64,6 +64,7 @@ CFLAGS += -O3#						full optimisation mode of compiler
 CFLAGS += -I. -I.. -I$(COMDIR)#		directories where include files like <file.h> are located
 CFLAGS += -I$(CPUDIR) -I$(SOCDIR)#	directory where hal include files are located
 CFLAGS += -DVERBOSE=$(VERBOSE)#		verbose if 1, can be toggled with #include <debug_{on,off}.h>
+CFLAGS += -DKO6VER="\"$(KO6VER)\""# last commit
 
 # Simple shell scripts
 # --------------------------------------------------------------------------------------------------

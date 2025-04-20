@@ -27,6 +27,7 @@
 #include <stdarg.h>     // gcc's builtin include to use variadic function (https://bit.ly/3hLXjyC)
 #include <stddef.h>     // gcc's builtin include with NULL, size_t, (https://bit.ly/3lBw3p6)
 #endif
+#include <esc_code.h>   // ANSI escape code
 #include <cstd.h>       // generic C functions
 #include <list.h>       // generic list management
 #include <syscalls.h>   // kernel services
@@ -34,12 +35,11 @@
 #include <memory.h>     // user allocator
 #include <usermem.h>    // user data region usage
 #include <errno.h>      // standard error code number
-#include <esc_code.h>   // ANSI escape code
 #include <ctype.h>      // ASCII test functions
 #include <htopen.h>     // hash table open addressing
 
 #define RAND_MAX 32767  /* maximum random value by default, must be < 0x7FFFFFFE */
-#define PRINTF_MAX 256  /* largest printed message */
+#define PRINTF_MAX 1024 /* largest printed message */
 #define CEIL(a,b)       ((int)(b)*(((int)(a)+(int)(b)-1)/(int)(b))) /* round up a aligned on b */
 #define FLOOR(a,b)      ((int)(b)*((int)(a)/(int)(b)))              /* round down a aligned on b */
 

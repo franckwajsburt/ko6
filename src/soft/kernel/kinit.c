@@ -19,17 +19,6 @@
 
 #include <kernel/klibc.h>
 
-#define Y       EC_BOLD EC_WHITE"'"EC_YELLOW"v"EC_WHITE"'"EC_RESET EC_CYAN
-#define X       EC_ORANGE"x"EC_CYAN
-#define X___X   " " X "___" X " "
-static char Banner[] =          // banner's text defined on several lines
-EC_WHITE
-"   _   "  EC_CYAN"  ___  "  EC_WHITE"  __ \n"
-"  | |__"  EC_CYAN" /"Y"\\ " EC_WHITE" / / \n"
-"  | / /"  EC_CYAN"(     )"  EC_WHITE"/ _ \\\n"
-"  |_\\_\\"EC_CYAN  X___X    EC_WHITE"\\___/\n\n"
-EC_RESET;
-
 #define TICK    200000
 
 void kinit (void *fdt)
@@ -39,7 +28,7 @@ void kinit (void *fdt)
     kmemkernel_init ();                         // kernel mem initialization, do it before soc_init
     PANIC_IF (soc_init (fdt, TICK) < 0, "SoC initialization failed");
     kmemuser_init ();                           // user memory initialization 
-    kprintf (Banner);                           // see above ko6 banner
+    kprintf (Banner_ko6);                       // ko6 banner
     ksynchro_init ();                           // initialize all synchronization mecanisms
 
     // Then, create the thread structure for the thread main()
@@ -74,7 +63,7 @@ void kinit (void *fdt)
     test_ustack (10);
 #   endif
 
-   // blockio_init ();
+    //blockio_init ();
     
     // Finally, load the main user programm
     // We never return of thread_load() here because thread_load() change $31 to thread_bootstap()
