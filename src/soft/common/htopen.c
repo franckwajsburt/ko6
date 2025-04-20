@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-05
+  | |__ /'v'\  / /      \date       2025-04-20
   | / /(     )/ _ \     \copyright  2025 Sorbonne University
   |_\_\ x___x \___/     \lience     https://opensource.org/licenses/MIT
 
@@ -167,6 +167,20 @@ hto_t * hto_create (unsigned size, int type)        // see comment in htopen.h
         ht->type = type&1;                          // even keys are char*; odd  keys are void*
     }
     return ht;                                      // return a real pointer or NULL
+}
+
+void hto_destroy( hto_t *ht, void (*freekeyfn)(void *), void (*freevalfn)(void *))
+{
+    for (unsigned s = ht->size, h = 0; h < s; h++) {// for each slot
+        void *key = ht->bucket[h].key;              // get the current key
+        if (key != NULL && key != KEYFREED) {       // if the slot is used
+            if (freekeyfn)                          // if there is something to do
+                freekeyfn (ht->bucket[h].key);      // free the key
+            if (freevalfn)                          // if there is something to do
+                freevalfn (ht->bucket[h].val);      // free the val     
+        }
+    }
+    FREE (ht);
 }
 
 void * hto_get (hto_t *ht, void *key)               // see comment in htopen.h
@@ -369,6 +383,7 @@ void hto_stat (hto_t *ht)                     // see comment in htopen.h
                 i, tries[i], tries[i]*100/nbkeys, nbkeys_here*100/nbkeys);
         }
     }
+    FREE (tries);
 }
 
 /*------------------------------------------------------------------------------------------------*\

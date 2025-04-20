@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-05
+  | |__ /'v'\  / /      \date       2025-04-20
   | / /(     )/ _ \     \copyright  2025 Sorbonne University
   |_\_\ x___x \___/     \licence    https://opensource.org/licenses/MIT
 
@@ -59,6 +59,18 @@ typedef struct hto_s hto_t;
  *          because it is adjusted to the nearest prime number for better hashing performance.
  */
 hto_t * hto_create (unsigned size, int type);
+
+/**
+ * \brief   destroy a hash table and all its content
+ *          This function traverses all slots in the hash table and calls the given callback 
+ *          functions on each occupied slot (i.e., slots that contain a valid key). 
+ *          The callback functions free each key and its value
+ *          At last all the hash table is freed
+ * \param   ht        Pointer to the hash table.
+ * \param   freekeyfn Function called for each valid key.
+ * \param   freevalfn Function called for each valid val.
+ */
+void hto_destroy( hto_t *ht, void (*freekeyfn)(void *), void (*freevalfn)(void *));
 
 /**
  * \brief   Retrieves the value associated with a given key in the hash table.

@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-05
+  | |__ /'v'\  / /      \date       2025-04-20
   | / /(     )/ _ \     \copyright  2025 Sorbonne University
   |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
@@ -30,7 +30,14 @@ int main (int argc, char * argv[])
     char word[32];                                              // buffer for the word
     char c = getc;                                              // read character
     long val;
+
+    fprintf (0, "Avant création du dictionnaire\n");
+    malloc_print(2);
+
     hto_t *ht = hto_create (16, 0);
+
+    fprintf (0, "\nAprès création du dictionnaire\n");
+    malloc_print(2);
 
     while (c != EOT) {                                          // while not end of stdin
 
@@ -54,8 +61,21 @@ int main (int argc, char * argv[])
     } 
 
     fprintf (stdout,"\n");
+
+    fprintf (0, "\nAprès remplissage du dictionnaire\n");
+    malloc_print(2);
+
     hto_foreach (ht, print_occurences, NULL);                   // scan the table to print the words
     hto_stat (ht);                                              // then print the hash table stats
+
+    fprintf (0, "\nAprès stat du dictionnaire\n");
+    malloc_print(2);
+
+    hto_destroy (ht, free, NULL);
+
+    fprintf (0, "\nAprès destruction du dictionnaire\n");
+    malloc_print(2);
+
     return 0;
 }
 
