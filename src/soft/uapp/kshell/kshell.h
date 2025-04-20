@@ -61,6 +61,8 @@
  #   include <common/cstd.h>    
  #endif
 
+ #include <htopen.h>
+
 /**
  * linked list to handle words
  * words should be separated by
@@ -183,6 +185,18 @@ struct while_stmt {
 };
 
 
+/* env variables */
+
+struct varenv {
+    char * v;          /*      value */
+    int attr;          /* attributes */
+};
+
+#define ATTR_EXPORTED 0x1
+
+#define KSHELL_TEST_ATTR(attr, mask) (attr)&(mask)
+
+
 /* typedefs */
 
 typedef struct wordlist wordlist_s;
@@ -193,6 +207,8 @@ typedef struct expr expr_s;
 
 typedef enum expr_type expr_type_e;
 typedef enum stmt_type stmt_type_e;
+
+typedef struct varenv varenv_s;
 
 /* execution */
 
@@ -216,7 +232,7 @@ int execute_cmd(stmt_s *cstmt);
 struct expr *expr_create(void);
 
 /**
- * \brief   destroy a struct expr
+ * \brief   destroys a struct expr
  * \param   victim the pointer to the struct
  *          expr.
  * \note    this function frees the 
@@ -270,7 +286,7 @@ int expr_set_int(expr_s *expr, int v);
 int expr_set_stmt(expr_s *expr, stmt_s *stmt);
 
 /**
- * \brief prints an expression structure
+ * \brief   prints an expression structure
  */
 void expr_print(expr_s *expr);
 
@@ -278,6 +294,7 @@ void expr_print(expr_s *expr);
  * \brief   this function evaluates an expression
  */
 char *eval_expr(expr_s *expr);
+
 int eval_expr_int(expr_s *expr);
 
 /* wordlist outils */
@@ -467,6 +484,54 @@ int i2kbool(int v);
  * \note    
  */
 int kbool2i(int v);
+
+/* env variable stuff */
+
+/**
+ * \brief   allocates memory for a 
+ *          varenv structure
+ */
+struct varenv *varenv_create(void);
+
+/**
+ * \brief   destroys a struct varenv
+ * \param   victim victim to destroy
+ */
+void varenv_destroy(struct varenv *victim);
+
+/**
+ * \brief   set the value of the var
+ * \param   var the initialized env var
+ * \param   v the string to be stored than var
+ * \return  1 on succed, 0 on error.
+ * \note    the attribute of the structure 
+ *          will be UPDATED with the new v. The 
+ *          previous attribute will be freed.
+ */
+int varenv_value_set(struct varenv *var, const char * v);
+
+/**
+ * \brief   sets the attributes of the var given a mask
+ * \param   var the initialized env var
+ * \param   mask the attributes. must be set 
+ *          using the macros
+ * \return  1 on succed, 0 on error.
+ */
+int varenv_attr_set(struct varenv *var, int mask);
+
+/**
+ * \brief   unsets the attributes of the var given a mask
+ * \param   var the initialized env var
+ * \param   mask the attributes. must be unset 
+ *          using the macros.
+ * \return  1 on succed, 0 on error.
+ */
+int varenv_attr_unset(struct varenv *var, int mask);
+
+int kshell_record_varenv(hto_t *ht, const char *n, const char *v, int flags);
+
+void kshell_print_env(hto_t *ht);
+int kshell_unset_varenv(hto_t *ht, const char *name);
 
 #endif
 
