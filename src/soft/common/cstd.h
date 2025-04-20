@@ -131,6 +131,19 @@ extern char *strrchr (const char *s, int c);
 extern int strcmp (const char *s1, const char *s2);
 
 /**
+ * \brief     Split a string into tokens.
+ * \param     str       Input string to split (will be modified).
+ * \param     delim     String containing delimiter characters, e.g. " \t,)(".
+ * \param     tokens    Array of pointers to store extracted tokens.
+ * \param     maxtoken  Maximum number of tokens to extract (size of tokens[] array).
+ * \return    The number of tokens extracted.
+ * \note      This function modifies the input string by replacing delimiter
+ *            characters with null terminators ('\0'). Each token in the tokens
+ *            array points to a segment within the original string.
+ */
+extern int strsplit(char *str, const char *delim, char *tokens[], int maxtoken);
+
+/**
  * \brief     ascii to integer
  *            the number can be negative, the space at beginning are ignored
  * \param     val   string to translate, with a decimal number

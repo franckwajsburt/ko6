@@ -143,6 +143,21 @@ int strcmp (const char *s1, const char *s2)
     return c1 - c2;
 }
 
+int strsplit(char *str, const char *delim, char *tokens[], int maxtoken)
+{
+    int count = 0;
+    while (*str && strchr (delim, *str)) str++;
+    while (*str && (count < maxtoken)) {
+        tokens[count++] = str;
+        while (*str && !strchr (delim, *str)) str++;
+        if (*str != '\0') {
+            *str++ = '\0';
+            while (strchr (delim, *str)) str++;
+        }
+    }
+    return count;
+}
+
 char *itoa(char buffer[34], int val, int base) 
 {
     if (base != 2 && base != 10 && base != 16) return NULL;
