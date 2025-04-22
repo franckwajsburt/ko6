@@ -66,7 +66,7 @@
 #include <kernel/kblockio.h>        // block device's request queue and buffer cache
 
 #define RAND_MAX 32767  /* maximum random value by default, must be < 0x7FFFFFFE */
-#define PRINTF_MAX 1024 /* largest printed message */
+#define PRINTF_MAX 512  /* largest printed message */
 #define CEIL(a,b)       ((int)(b)*(((int)(a)+(int)(b)-1)/(int)(b))) /* round up a aligned on b */
 #define FLOOR(a,b)      ((int)(b)*((int)(a)/(int)(b)))              /* round down a aligned on b */
 #define FIFO_DEPTH 20   /* maximum fifo depth */

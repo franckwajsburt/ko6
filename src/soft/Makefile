@@ -1,6 +1,6 @@
 #---------------------------------------------------------------------------------------------------
 #  _     ___    __
-# | |__ /'v'\  / /   	\date       2025-04-20
+# | |__ /'v'\  / /   	\date       2025-04-22
 # | / /(     )/ _ \   	\copyright  2021 Sorbonne University
 # |_\_\ x___x \___/     \licence    https://opensource.org/licenses/MIT
 #
@@ -46,7 +46,7 @@ compil: tags
 
 tags:
 	@echo "- Create tags for vim"
-	@find . -name *.[chS] | grep -v riscv | xargs ctags 
+	@find . -name *.[chS] | grep -v riscv | grep -v debug_off | xargs ctags 
 
 pdf:
 	@-make -C external/libfdt $(MAKOPT) pdf

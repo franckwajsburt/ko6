@@ -44,7 +44,7 @@ void delay (unsigned nbcycles)
 
 int kprintf(char *fmt, ...)
 {
-    char buffer[PRINTF_MAX];
+    static char buffer[PRINTF_MAX];
     va_list ap;
     va_start (ap, fmt);
     int res = vsnprintf(buffer, sizeof(buffer), fmt, ap);

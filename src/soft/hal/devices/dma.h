@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-14
+  | |__ /'v'\  / /      \date       2025-04-21
   | / /(     )/ _ \     \copyright  2025 Sorbonne University
   |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
@@ -29,26 +29,34 @@ typedef struct dma_s {
  */
 struct dma_ops_s {
     /**
-     * \brief Generic function that initialize a DMA device
-     * \param dma   the dma device
-     * \param base  the base address of the memory-mapped registers
+     * \brief   Generic function that initialize a DMA device
+     * \param   dma   the dma device
+     * \param   base  the base address of the memory-mapped registers
+     * \note    almo1-mips : soclib_dma_init
      */
     void (*dma_init)(dma_t *dma, unsigned base);
 
     /**
-     * \brief Generic function that copy a buffer from a ocation to another using a DMA device
-     * \param   dma the DMA device
-     * \param   dst destination buffer
-     * \param   src source buffer
-     * \param   n   number of bytes to write
+     * \brief   Generic function that copy a buffer from a ocation to another using a DMA device
+     * \param   dma   the DMA device
+     * \param   dst   destination buffer
+     * \param   src   source buffer
+     * \param   n     number of bytes to write
      * \return  destination buffer address
+     * \note    almo1-mips : soclib_dma_memcpy
     */
     void *(*dma_memcpy)(dma_t *dma, int *dst, int *src, unsigned n);
 };
 
+//--------------------------------------------------------------------------------------------------
+// dma_alloc() is used once by soc_init/soc_dma_init to add a new device in the device tree
+// dma_count() returns the number of dmas in the current SoC
+// dma_get(no) returns the dma device structure from its instance number
+//--------------------------------------------------------------------------------------------------
+
 #define dma_alloc() (dma_t *)(dev_alloc(DMA_DEV, sizeof(dma_t))->data)
-#define dma_get(no) (dma_t *)(dev_get(DMA_DEV, no)->data)
 #define dma_count() (dev_next_no(DMA_DEV) - 1)
+#define dma_get(no) (dma_t *)(dev_get(DMA_DEV, no)->data)
 
 #endif
 

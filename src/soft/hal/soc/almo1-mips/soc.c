@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
   | |__ /'v'\  / /      \date       2025-04-14
-  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  | / /(     )/ _ \     \copyright  2021 Sorbonne University
   |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     hal/soc/almo1-mips/soc.c
@@ -38,10 +38,10 @@
  * \param   offset offset of the node in the FDT
  * \return  the address contained by the reg property
  */
-static unsigned get_base_address(void *fdt, int offset)
+static unsigned get_base_address (void *fdt, int offset)
 {
-    return fdt32_to_cpu(
-        *(unsigned *) fdt_getprop(fdt, offset, "reg", NULL));
+    return fdt32_to_cpu (
+        *(unsigned *) fdt_getprop (fdt, offset, "reg", NULL));
 }
 
 /**
@@ -51,10 +51,10 @@ static unsigned get_base_address(void *fdt, int offset)
  * \param   offset offset of the node in the FDT
  * \return  the IRQ contained by the interrupts property
  */
-static unsigned get_irq(void *fdt, int offset)
+static unsigned get_irq (void *fdt, int offset)
 {
-    return fdt32_to_cpu(
-        *(unsigned *) fdt_getprop(fdt, offset, "interrupts", NULL));
+    return fdt32_to_cpu (
+        *(unsigned *) fdt_getprop (fdt, offset, "interrupts", NULL));
 }
 
 /**
@@ -63,16 +63,16 @@ static unsigned get_irq(void *fdt, int offset)
  * \param   fdt fdt address
  * \return  nothing
  */
-static void soc_icu_init(void *fdt)
+static void soc_icu_init (void *fdt)
 {
-    int icu_off = fdt_node_offset_by_compatible(fdt, -1, "soclib,icu");
+    int icu_off = fdt_node_offset_by_compatible (fdt, -1, "soclib,icu");
     while (icu_off != -FDT_ERR_NOTFOUND) {
-        unsigned addr = get_base_address(fdt, icu_off);
+        unsigned addr = get_base_address (fdt, icu_off);
 
-        struct icu_s *icu = icu_alloc();
-        SoclibICUOps.icu_init(icu, addr);
+        struct icu_s *icu = icu_alloc ();
+        SoclibICUOps.icu_init (icu, addr);
 
-        icu_off = fdt_node_offset_by_compatible(fdt, icu_off, "soclib,icu");
+        icu_off = fdt_node_offset_by_compatible (fdt, icu_off, "soclib,icu");
     }
 }
 
@@ -82,41 +82,41 @@ static void soc_icu_init(void *fdt)
  *          We loop on each device compatible with our drivers for this platform, e.g. soclib,tty
  *          For each device, we find it's base address in the reg property of the device tree node
  *          and its IRQ in the interrupts property.
- *          Once we've fetched this data, we allocate a new device (see hal/dev.h) and register it
- *          in the device list.
+ *          Once we've fetched this data, we allocate a new device (see kernel/kdev.h) 
+ *          and register it in the device list.
  *          We then setup the dev with a device-specific function declared by the HAL (ex: tty_init)
  *          Last thing we do is unmask the interrupt in the ICU and register the ISR for the device.
  * \param   fdt fdt address
  * \return  -1 if the initialization failed, 0 if it succeeded
  */
-static int soc_tty_init(void *fdt)
+static int soc_tty_init (void *fdt)
 {
     // Fetch the ICU device
-    struct icu_s *icu = icu_get(0);
+    struct icu_s *icu = icu_get (0);
     // Check that the ICU has already been initialized
     if (!icu)
         return -1;
 
     // Find the first TTY device
-    int tty_off = fdt_node_offset_by_compatible(fdt, -1, "soclib,tty");
+    int tty_off = fdt_node_offset_by_compatible (fdt, -1, "soclib,tty");
 
     // Loop until we can't find any more compatible ttys in the device tree
     while (tty_off != -FDT_ERR_NOTFOUND) {
         // Fetch the necessary properties from the device tree
-        unsigned addr = get_base_address(fdt, tty_off);
-        unsigned irq = get_irq(fdt, tty_off);
+        unsigned addr = get_base_address (fdt, tty_off);
+        unsigned irq = get_irq (fdt, tty_off);
 
         // Allocate the structure and add it in the global device list
-        struct chardev_s *tty = chardev_alloc();
+        struct chardev_s *tty = chardev_alloc ();
         // Initialize the device
-        SoclibTTYOps.chardev_init(tty, addr, 0);
+        SoclibTTYOps.chardev_init (tty, addr, 0);
         // Unmask the interrupt
-        icu->ops->icu_unmask(icu, irq);
+        icu->ops->icu_unmask (icu, irq);
         // Register the corresponding ISR
-        register_interrupt(irq, (isr_t) soclib_tty_isr, tty);
+        register_interrupt (irq, (isr_t) soclib_tty_isr, tty);
 
         // Find the next compatible tty
-        tty_off = fdt_node_offset_by_compatible(fdt, tty_off, "soclib,tty");
+        tty_off = fdt_node_offset_by_compatible (fdt, tty_off, "soclib,tty");
     }
 
     return 0;
@@ -129,29 +129,29 @@ static int soc_tty_init(void *fdt)
  * \param   tick number of ticks between two timer interrupts
  * \return  -1 if the initialization failed, 0 if it succeeded
  */
-static int soc_timer_init(void *fdt, unsigned tick)
+static int soc_timer_init (void *fdt, unsigned tick)
 {
     // Fetch the ICU device
-    struct icu_s *icu = icu_get(0);
+    struct icu_s *icu = icu_get (0);
     if (!icu)
         return -1;
 
-    int timer_off = fdt_node_offset_by_compatible(fdt, -1, "soclib,timer");
+    int timer_off = fdt_node_offset_by_compatible (fdt, -1, "soclib,timer");
 
     while (timer_off != -FDT_ERR_NOTFOUND) {
-        unsigned addr = get_base_address(fdt, timer_off);
-        unsigned irq = get_irq(fdt, timer_off);
+        unsigned addr = get_base_address (fdt, timer_off);
+        unsigned irq = get_irq (fdt, timer_off);
 
-        struct timer_s *timer = timer_alloc();
-        SoclibTimerOps.timer_init(timer, addr, tick);
-        timer->ops->timer_set_event(timer,
+        struct timer_s *timer = timer_alloc ();
+        SoclibTimerOps.timer_init (timer, addr, tick);
+        timer->ops->timer_set_event (timer,
             (void (*)(void *)) tick_event, (void *) 0);
         //  (void (*)(void *)) thread_yield, (void *) 0);
 
-        icu->ops->icu_unmask(icu, irq);
-        register_interrupt(irq, (isr_t) soclib_timer_isr, timer);
+        icu->ops->icu_unmask (icu, irq);
+        register_interrupt (irq, (isr_t) soclib_timer_isr, timer);
 
-        timer_off = fdt_node_offset_by_compatible(fdt, timer_off, "soclib,timer");
+        timer_off = fdt_node_offset_by_compatible (fdt, timer_off, "soclib,timer");
     }
 
     return 0;
@@ -163,48 +163,48 @@ static int soc_timer_init(void *fdt, unsigned tick)
  * \param   fdt fdt address
  * \return  nothing
  */
-static void soc_dma_init(void *fdt)
+static void soc_dma_init (void *fdt)
 {
     // TODO: handle DMA interrupts
-    int dma_off = fdt_node_offset_by_compatible(fdt, -1, "soclib,dma");
+    int dma_off = fdt_node_offset_by_compatible (fdt, -1, "soclib,dma");
     while (dma_off != -FDT_ERR_NOTFOUND) {
-        unsigned addr = get_base_address(fdt, dma_off);
+        unsigned addr = get_base_address (fdt, dma_off);
 
-        struct dma_s *dma = dma_alloc();
-        SoclibDMAOps.dma_init(dma, addr);
+        struct dma_s *dma = dma_alloc ();
+        SoclibDMAOps.dma_init (dma, addr);
 
-        dma_off = fdt_node_offset_by_compatible(fdt, dma_off, "soclib,dma");
+        dma_off = fdt_node_offset_by_compatible (fdt, dma_off, "soclib,dma");
     }
 }
 
 /**
  * \brief   Initialize block device described by the device tree
- *          See the soc_ty_init function for a detailed explanation
+ *          See the soc_tty_init function for a detailed explanation
  * \param   fdt fdt address
  * \return  -1 if the initialization failed, 0 if it succeeded
  */
-static int soc_bd_init(void *fdt)
+static int soc_bd_init (void *fdt)
 {
     // Fetch the ICU device
-    struct icu_s *icu = icu_get(0);
+    struct icu_s *icu = icu_get (0);
     if (!icu)
         return -1;
 
-    int bd_off = fdt_node_offset_by_compatible(fdt, -1, "soclib,bd");
+    int bd_off = fdt_node_offset_by_compatible (fdt, -1, "soclib,bd");
 
     if (bd_off == -FDT_ERR_NOTFOUND) 
         return -1;
 
-    unsigned addr = get_base_address(fdt, bd_off);
-    unsigned irq = get_irq(fdt, bd_off);
+    unsigned addr = get_base_address (fdt, bd_off);
+    unsigned irq = get_irq (fdt, bd_off);
 
-    struct blockdev_s *bd = blockdev_alloc();
-    SoclibBDOps.blockdev_init(bd, addr, LOGICAL_BLOCK_SIZE);
+    struct blockdev_s *bd = blockdev_alloc ();
+    SoclibBDOps.blockdev_init (bd, addr, LOGICAL_BLOCK_SIZE);
 
-    icu->ops->icu_unmask(icu, irq);
-    register_interrupt(irq, (isr_t) soclib_bd_isr, bd);
+    icu->ops->icu_unmask (icu, irq);
+    register_interrupt (irq, (isr_t) soclib_bd_isr, bd);
 
-    bd_off = fdt_node_offset_by_compatible(fdt, bd_off, "soclib,db");
+    bd_off = fdt_node_offset_by_compatible (fdt, bd_off, "soclib,db");
 
     return 0;
 }
@@ -229,25 +229,25 @@ static int soc_bd_init(void *fdt)
  * \param   tick    number of ticks between two timer interrupts
  * \return  -1 if the initialization failed, 0 if it succeeded
  */
-int soc_init(void *fdt, int tick)
+int soc_init (void *fdt, int tick)
 {
-    if (fdt_magic(fdt) != 0xd00dfeed)
+    if (fdt_magic (fdt) != 0xd00dfeed)
         return -1;
 
     // We MUST initialize the ICU first since every other device
     // initialization will rely on it for its interrupts
-    soc_icu_init(fdt);
+    soc_icu_init (fdt);
 
     // Initialize TTY early so we can debug as soon as possible
-    if (soc_tty_init(fdt) < 0)
+    if (soc_tty_init (fdt) < 0)
         return -1;
 
-    soc_bd_init(fdt);
-    soc_dma_init(fdt);
+    soc_bd_init (fdt);
+    soc_dma_init (fdt);
 
     // Finish by the timer (we don't want to schedule anything until everything
     // is initialized)
-    if (soc_timer_init(fdt, tick) < 0)
+    if (soc_timer_init (fdt, tick) < 0)
         return -1;
 
     return 0;
@@ -260,11 +260,11 @@ int soc_init(void *fdt, int tick)
  *          and to launch the right ISR of the right device instance by using IRQVector tables.
  * TODO: maybe this should also be a "standard" function, declared in a HAL file
  */
-void isrcall()
+void isrcall ()
 {
-    struct icu_s *icu = icu_get(cpuid());           // get the ICU which has dev.no == cpuid()
-    int irq = icu->ops->icu_get_highest(icu);       // IRQ nb with the highest prio
-    route_interrupt(irq);                           // launch the ISR for the bound device
+    struct icu_s *icu = icu_get (cpuid());           // get the ICU which has dev.no == cpuid()
+    int irq = icu->ops->icu_get_highest (icu);       // IRQ nb with the highest prio
+    route_interrupt (irq);                           // launch the ISR for the bound device
 }
 
 /*------------------------------------------------------------------------------------------------*\

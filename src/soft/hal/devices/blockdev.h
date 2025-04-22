@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-17
+  | |__ /'v'\  / /      \date       2025-04-21
   | / /(     )/ _ \     \copyright  2025 Sorbonne University
   |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
@@ -19,7 +19,7 @@ struct blockdev_ops_s;
 
 /** \brief Structure describing what to do when we receive a bd interrupt */
 struct blockdev_event_s {
-    void (*f)(void *arg,int status);///< function triggered
+    void (*fn)(void *arg,int status);///< function triggered
     void *arg;                      ///< argument passed to the function
 };
 
@@ -44,6 +44,7 @@ struct blockdev_ops_s {
      * \param   bdev        the block device
      * \param   base        base address of the device memory-mapped registers
      * \param   block_size  size of a logic block chosen by ko6
+     * \note    almo1-mips : soclib_bd_init
      */
     void (*blockdev_init)(blockdev_t *bdev, unsigned base, unsigned block_size);
 
@@ -54,16 +55,19 @@ struct blockdev_ops_s {
      * \param   buf     the buffer where to read the data to be written to the block device
      * \param   count   the number of block to write
      * \return  0 on success, -EINVAL if invalid arguments
+     * \note    almo1-mips : soclib_bd_write
      */
     int (*blockdev_write)(blockdev_t *bdev, unsigned lba, void *buf, unsigned count);
 
     /**
-     * \brief   Generic function that reads from the blockdev device
+     * \brief   Generic function that reads from the blockdev device 
+     *          almo1-mips : soclib_bd_read
      * \param   bdev    the blockdev device
      * \param   lba     the logic block address where ito read the data to be written in buf
      * \param   buf     the buffer where the data is written
      * \param   count   the number of blocks to read
      * \return  0 on success, -EINVAL if invalid arguments
+     * \note    almo1-mips : soclib_bd_read
      */
     int (*blockdev_read)(blockdev_t *bdev, unsigned lba, void *buf, unsigned count);
 
@@ -73,14 +77,20 @@ struct blockdev_ops_s {
      * \param   f      the function corresponding to the event
      * \param   arg    argument that will be passed to the function
      * \param   status the block device status once the command is done
-     * \return  nothing
+     * \note    almo1-mips : soclib_bd_event
      */
     void (*blockdev_set_event)(blockdev_t *bdev, void(*f)(void *arg, int status), void *arg);
 };
 
+//--------------------------------------------------------------------------------------------------
+// blockdev_alloc() is used once by soc_init/soc_bd_init to add a new device in the device tree
+// blockdev_count() returns the number of blockdevs in the current SoC
+// blockdev_get(no) returns the blockdev device structure from its instance number
+//--------------------------------------------------------------------------------------------------
+
 #define blockdev_alloc() (blockdev_t *)(dev_alloc(BLOCK_DEV, sizeof(blockdev_t))->data)
-#define blockdev_get(no) (blockdev_t *)(dev_get(BLOCK_DEV, no)->data)
 #define blockdev_count() (dev_next_no(BLOCK_DEV) - 1)
+#define blockdev_get(no) (blockdev_t *)(dev_get(BLOCK_DEV, no)->data)
 
 #endif
 

@@ -16,20 +16,27 @@
 void *blockio_get (unsigned bdev, unsigned lba) 
 {
     blockdev_t *dev = blockdev_get (bdev);
+
+#if 0
+VAR(%p\t\n,dev->base);
+VAR(%d\t\n,dev->blocks);
+VAR(%d\n,dev->block_size);
+VAR(%d\t\n,dev->ppb);
+VAR(%p\n,dev->event.fn);
+VAR(%p\n,dev->event.arg);
+#endif
+        
     if (!dev || !dev->ops || !dev->ops->blockdev_read) return NULL;
 
     void *page = kmalloc (PAGE_SIZE);
     if (!page) return NULL;
-
     page_set_lba (page, bdev, lba);
     page_set_block (page);
     page_inc_refcount (page);
     page_set_valid (page);
 
-    kprintf("avant blockdev_read\n");
-    if (dev->ops->blockdev_read (dev, lba, page, 1) != 0) {
+    if (dev->ops->blockdev_read (dev, lba, page, 1) != 0) { 
         kfree (page);
-        kprintf("blockdev_read return NULL\n");
         return NULL;
     }
     return page;
@@ -74,16 +81,10 @@ typedef struct {
 
 void blockio_init (void)
 {
-    blockdev_t *dev = blockdev_get (0);
-    kprintf ("base address      %p\n", dev->base);
-    kprintf ("number of blocks  %d\n", dev->blocks);
-    kprintf ("block size        %d\n", dev->block_size);
-    kprintf ("phys bl per block %d\n", dev->ppb);
-    kprintf ("event             %p\n", dev->event);
-        
     entry_t *dir = blockio_get (0, 0);
     for (int e=0 ; e < 128 && dir[e].name; e++) {
-        kprintf ("%d\ts\t%s\n", dir[e].lba, dir[e].size, dir[e].name);
+        if (dir[e].name[0])
+            kprintf ("   [%d]\t(%d)\t%s\n", dir[e].lba, dir[e].size, dir[e].name);
     }
 }
 /*------------------------------------------------------------------------------------------------*\

@@ -63,7 +63,7 @@ void kinit (void *fdt)
     test_ustack (10);
 #   endif
 
-    //blockio_init ();
+    blockio_init ();
     
     // Finally, load the main user programm
     // We never return of thread_load() here because thread_load() change $31 to thread_bootstap()

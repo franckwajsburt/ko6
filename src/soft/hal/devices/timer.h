@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-14
+  | |__ /'v'\  / /      \date       2025-04-21
   | / /(     )/ _ \     \copyright  2025 Sorbonne University
   |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
@@ -38,6 +38,7 @@ struct timer_ops_s {
      * \brief   Generic function to initialize the timer device
      * \param   base the base address of the memory-mapped registers
      * \param   tick number of ticks between to timer interrupts
+     * \note    almo1-mips : soclib_timer_init
      */
     void (*timer_init)(timer_t *timer, unsigned base, unsigned tick);
 
@@ -46,6 +47,7 @@ struct timer_ops_s {
      *          after which we want an interrupt
      * \param   timer the timer device
      * \param   tick  the number of ticks
+     * \note    almo1-mips : soclib_timer_set_tick
     */
     void (*timer_set_tick)(timer_t *timer, unsigned tick);
 
@@ -55,13 +57,20 @@ struct timer_ops_s {
      * \param   timer   the timer device
      * \param   f       the function to be called
      * \param   arg     the arg passed to the function
+     * \note    almo1-mips : soclib_timer_set_event
     */
     void (*timer_set_event)(timer_t *timer, void (*f)(void *arg), void *arg);
 };
 
+//--------------------------------------------------------------------------------------------------
+// timer_alloc() is used once by soc_init/soc_timer_init to add a new device in the device tree
+// timer_count() returns the number of timers in the current SoC
+// timer_get(no) returns the timer device structure from its instance number
+//--------------------------------------------------------------------------------------------------
+
 #define timer_alloc() (timer_t *)(dev_alloc(TIMER_DEV, sizeof(timer_t))->data)
-#define timer_get(no) (timer_t *)(dev_get(TIMER_DEV, no)->data)
 #define timer_count() (dev_next_no(TIMER_DEV) - 1)
+#define timer_get(no) (timer_t *)(dev_get(TIMER_DEV, no)->data)
 
 #endif
 

@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-03-28
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date       2025-04-21
+  | / /(     )/ _ \     \copyright  2025 Sorbonne University
+  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
   \file     kernel/kdev.c
   \author   Nolan Bled
@@ -29,10 +29,10 @@ unsigned dev_next_no(enum dev_tag_e tag)
 
 struct dev_s *dev_alloc(enum dev_tag_e tag, unsigned dsize)
 {
-    struct dev_s *dev = kmalloc(sizeof(struct dev_s) + dsize);  // Allocate enough space for 
-                                                                // device metadata (tag, no, list)
-                                                                // and device-specific data 
-                                                                // (ops,...)
+    /**
+     * Allocate enough space for device metadata (tag, no, list) and device-specific data (ops,...)
+     */
+    struct dev_s *dev = kmalloc(sizeof(struct dev_s) + dsize);  
     dev->tag = tag;
     dev->no = dev_next_no(tag);
     list_addlast(&DevList, &dev->list);
@@ -43,9 +43,10 @@ struct dev_s *dev_get(enum dev_tag_e tag, unsigned no)
 {
     /**
      * Loop through the list until we find the corresponding entry
-     * We could gain some performance by having device-specific linked list
-     * but I can't think of a way to do it easily & in a simple manner
-    */
+     * FIXME We could gain some performance by 
+     * - having device-specific linked list but I can't think of a way to do it in a simple manner
+     * - using a hash table indexed with a key formed with [no<<3+tag]
+     */
     list_foreach(&DevList, item) {
         struct dev_s *dev = list_item(item, struct dev_s, list);
         if (dev->tag == tag && dev->no == no)
@@ -57,9 +58,15 @@ struct dev_s *dev_get(enum dev_tag_e tag, unsigned no)
 void dev_free(struct dev_s *dev)
 {
     /**
-     *  TODO: should we decrement every other device no in the last, ex: should tty 2 become tty 1
+     *  FIXME: should we decrement every other device no in the last, ex: should tty 2 become tty 1
      *  if tty 0 is removed ? i don't think so but it could be interesting to think about it
      */
     list_unlink(&dev->list);
     kfree(dev);
 }
+
+/*------------------------------------------------------------------------------------------------*\
+   Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
+   vim: set ts=4 sw=4 sts=4 et tw=100:
+   -*- mode: c; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil; fill-column: 100 -*-
+\*------------------------------------------------------------------------------------------------*/

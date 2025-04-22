@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-14
+  | |__ /'v'\  / /      \date       2025-04-21
   | / /(     )/ _ \     \copyright  2025 Sorbonne University
   |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
 
@@ -33,6 +33,7 @@ struct chardev_ops_s {
      * \param   chardev the char device
      * \param   base    base address of the device memory-mapped registers 
      * \param   baudrate the device baudrate
+     * \note    almo1-mips : soclib_tty_init
      */
     void (*chardev_init)(chardev_t *chardev, unsigned base, unsigned baudrate);
 
@@ -42,6 +43,7 @@ struct chardev_ops_s {
      * \param   buf     the buffer to write to the chardev
      * \param   count   the number of bytes to write
      * \return  number onf bytes actually written
+     * \note    almo1-mips : soclib_tty_write
     */
     int (*chardev_write)(chardev_t *chardev, char *buf, unsigned count);
 
@@ -51,13 +53,20 @@ struct chardev_ops_s {
      * \param   buf     the buffer that will receive the data from the chardev
      * \param   count   the number of bytes that should be written into the buffer
      * \return  number of bytes actually read
+     * \note    almo1-mips : soclib_tty_read
     */
     int (*chardev_read)(chardev_t *chardev, char *buf, unsigned count);
 };
 
+//--------------------------------------------------------------------------------------------------
+// chardev_alloc() is used once by soc_init/soc_tty_init to add a new device in the device tree
+// chardev_count() returns the number of chardevs in the current SoC
+// chardev_get(no) returns the chardev device structure from its instance number
+//--------------------------------------------------------------------------------------------------
+
 #define chardev_alloc() (chardev_t *)(dev_alloc(CHAR_DEV, sizeof(chardev_t))->data)
-#define chardev_get(no) (chardev_t *)(dev_get(CHAR_DEV, no)->data)
 #define chardev_count() (dev_next_no(CHAR_DEV) - 1)
+#define chardev_get(no) (chardev_t *)(dev_get(CHAR_DEV, no)->data)
 
 #endif
 
