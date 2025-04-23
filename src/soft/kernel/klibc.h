@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-14
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     kernel/klib.h
   \author   Franck Wajsburt
@@ -54,6 +54,14 @@
 #include <hal/cpu/irq.h>            // 
 #include <hal/cpu/cpuregs.h>        // CPU registers manipulation function prototypes
 #include <hal/cpu/kpanic.h>
+
+#include <hal/devices/blockdev.h>   // block devices
+#include <hal/devices/chardev.h>    // char devices 
+#include <hal/devices/dma.h>        // direct memory access
+#include <hal/devices/icu.h>        // interrupt component unit
+#include <hal/devices/timer.h>      // timers
+#include <kernel/kirq.h>            // irq registering
+#include <kernel/kdev.h>            // generic devive management
 
 #include <hal/soc/soc.h>
 

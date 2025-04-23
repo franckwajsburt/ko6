@@ -1,18 +1,18 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-05
-  | / /(     )/ _ \     \copyright  2025 Sorbonne University
-  |_\_\ x___x \___/     \licence    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-05
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     common/radix.c
   \author   Franck Wajsburt
   \brief    A radix tree one-dimensional table : void * radix[0x100000000]
 
     API
-        radix <-- radix_create()        : create the table, i.e. the radix tree
-        radix_get(radix, index)         : get the value from radix[index]
-        radix_set(radix, index, val)    : set radix[index] with val
-        radix_destroy(radix)            : free all the radix, but not the stored values
+        radix <-- radix_create ()        : create the table, i.e. the radix tree
+        radix_get (radix, index)         : get the value from radix[index]
+        radix_set (radix, index, val)    : set radix[index] with val
+        radix_destroy (radix)            : free all the radix, but not the stored values
 
     index is 32 bits, split into 4 levels of 8 bits: index=L0.L1.L2.L3 (where L0 is MSB, L3 is LSB)
     It is thus a 4-level radix tree with 8-bit slices.
@@ -62,7 +62,7 @@
 
 \*------------------------------------------------------------------------------------------------*/
 
-#define V(v,...) fprintf( stderr, "%s : %lx %s", #v, (unsigned long)v,__VA_ARGS__);
+#define V(v,...) fprintf ( stderr, "%s : %lx %s", #v, (unsigned long)v,__VA_ARGS__);
 
 #include <radix.h>
 #ifdef _KERNEL_                                     // if it is for the kernel
@@ -99,15 +99,15 @@ struct radix_s {
     radix_node_t *root_l3;                                  ///< radix root if L0 == L1 == L2 == 0
 };
 
-radix_t *radix_create(void) {                               ///< create the main structure
-    return calloc(1, sizeof(radix_t));                      //   empty
+radix_t *radix_create (void) {                              ///< create the main structure
+    return calloc (1, sizeof(radix_t));                     //   empty
 }
 
-static radix_node_t *new_node(void) {                       ///< create an empty node
-    return calloc(1, sizeof(radix_node_t));
+static radix_node_t *new_node (void) {                      ///< create an empty node
+    return calloc (1, sizeof(radix_node_t));
 }
 
-void *radix_get(const radix_t *rx, unsigned index) {        ///< get rx[index]
+void *radix_get (const radix_t *rx, unsigned index) {       ///< get rx[index]
     radix_node_t *l0, *l1, *l2, *l3;
     if (index < 0x100) {                                    // if small index < 256
         if (!(l3 = rx->root_l3)) return NULL;               // maybe node absent then NULL
@@ -132,13 +132,13 @@ void *radix_get(const radix_t *rx, unsigned index) {        ///< get rx[index]
     return l3->slots[ L3(index) ];
 }
 
-int radix_set(radix_t *rx, unsigned index, void *val)       ///< rx[index] <-- val
+int radix_set (radix_t *rx, unsigned index, void *val)      ///< rx[index] <-- val
 {
     radix_node_t *l0, *l1, *l2, *l3;
     
     if (index < 0x100) {                                    // index < 256
         if (!(l3 = rx->root_l3)) {                          // if root_l3 not yet allocated
-            if (!(l3 = new_node())) return -1;              // try to allocate the node
+            if (!(l3 = new_node ())) return -1;             // try to allocate the node
             rx->root_l3 = l3;
         }
         l3->slots[ L3(index) ] = val;                       // if success, set the value
@@ -146,12 +146,12 @@ int radix_set(radix_t *rx, unsigned index, void *val)       ///< rx[index] <-- v
     }
     if (index < 0x10000) {                                  // index < 256 x 256
         if (!(l2 = rx->root_l2)) {                          // if root_l2 not yet allocated
-            if (!(l2 = new_node())) return -1;              // try to allocate the node
+            if (!(l2 = new_node ())) return -1;             // try to allocate the node
             l2->slots[ 0 ] = rx->root_l3;                   // if there is already a root_l3;
             rx->root_l2 = l2;                               // new root_l2
         }
         if (!(l3 = l2->slots[ L2(index) ])) {               // find next level & test if allocated
-            if (!(l3 = new_node())) return -1;              // if not try to allocate it
+            if (!(l3 = new_node ())) return -1;             // if not try to allocate it
             l2->slots[ L2(index) ] = l3;                    // connect the mode l3
             if (L2(index) == 0) rx->root_l3 = l3;           // update the root_l3 if needed
         }
@@ -160,21 +160,21 @@ int radix_set(radix_t *rx, unsigned index, void *val)       ///< rx[index] <-- v
     }
     if (index < 0x1000000) {                                // index < 256 x 256 x 256
         if (!(l1 = rx->root_l1)) {
-            if (!(l1 = new_node())) return -1;
+            if (!(l1 = new_node ())) return -1;
             if (!rx->root_l2 && rx->root_l3) {
-                if (!(rx->root_l2 = new_node())) return -1;
+                if (!(rx->root_l2 = new_node ())) return -1;
                 rx->root_l2->slots[0] = rx->root_l3;
             }    
             l1->slots[ 0 ] = rx->root_l2;
             rx->root_l1 = l1;
         }
         if (!(l2 = l1->slots[ L1(index) ])) {
-            if (!(l2 = new_node())) return -1;
+            if (!(l2 = new_node ())) return -1;
             l1->slots[ L1(index) ] = l2;
             if (L1(index) == 0) rx->root_l2 = l2;
         }
         if (!(l3 = l2->slots[ L2(index) ])) {
-            if (!(l3 = new_node())) return -1;
+            if (!(l3 = new_node ())) return -1;
             l2->slots[ L2(index) ] = l3;
             if (L2(index) == 0) rx->root_l3 = l3;
         }
@@ -183,30 +183,30 @@ int radix_set(radix_t *rx, unsigned index, void *val)       ///< rx[index] <-- v
     }                                                       // general case
 
     if (!(l0 = rx->root_l0)) {
-        if (!(l0 = new_node())) return -1;
+        if (!(l0 = new_node ())) return -1;
         if (!rx->root_l2 && rx->root_l3) {
-            if (!(rx->root_l2 = new_node())) return -1;
+            if (!(rx->root_l2 = new_node ())) return -1;
             rx->root_l2->slots[0] = rx->root_l3;
         }     
         if (!rx->root_l1 && rx->root_l2) {
-            if (!(rx->root_l1 = new_node())) return -1;
+            if (!(rx->root_l1 = new_node ())) return -1;
             rx->root_l1->slots[0] = rx->root_l2;
         }     
         l0->slots[ 0 ] = rx->root_l1;
         rx->root_l0 = l0;
     }
     if (!(l1 = l0->slots[ L0(index) ])) {
-        if (!(l1 = new_node())) return -1;
+        if (!(l1 = new_node ())) return -1;
         l0->slots[ L0(index) ] = l1;
         if (L0(index) == 0) rx->root_l1 = l1;
     }
     if (!(l2 = l1->slots[ L1(index) ])) {
-        if (!(l2 = new_node())) return -1;
+        if (!(l2 = new_node ())) return -1;
         l1->slots[ L1(index) ] = l2;
         if (L1(index) == 0) rx->root_l2 = l2;
     }
     if (!(l3 = l2->slots[ L2(index) ])) {
-        if (!(l3 = new_node())) return -1;
+        if (!(l3 = new_node ())) return -1;
         l2->slots[ L2(index) ] = l3;
         if (L2(index) == 0) rx->root_l3 = l3;
     }
@@ -214,7 +214,7 @@ int radix_set(radix_t *rx, unsigned index, void *val)       ///< rx[index] <-- v
     return 0;
 }
 
-void radix_destroy(radix_t *rx)                             ///< destroy the entire radix
+void radix_destroy (radix_t *rx)                             ///< destroy the entire radix
 {
     radix_node_t *l0, *l1, *l2, *l3;
     int i0, i1, i2;
@@ -226,31 +226,31 @@ void radix_destroy(radix_t *rx)                             ///< destroy the ent
             for (i1 = 0; i1 < RADIX_SLOTS; i1++) {          // if L1 allocated, scan all L2 nodes
                if (!(l2 = l1->slots[i1])) continue;         // L2 not allocate? give up & continue
                for (i2 = 0; i2 < RADIX_SLOTS; i2++)         // if L2 allocated, scan all L3 nodes
-                   if ((l3 = l2->slots[i2])) free(l3);      // if L3 allocated, free that L3
-               free(l2);                                    // scan done, free that L2
+                   if ((l3 = l2->slots[i2])) free (l3);     // if L3 allocated, free that L3
+               free (l2);                                   // scan done, free that L2
             }
-            free(l1);                                       // scan done, free that L2
+            free (l1);                                      // scan done, free that L2
         }
-        free(l0);                                           // scan done, free the root level
+        free (l0);                                          // scan done, free the root level
     }
     else if ((l1 = rx->root_l1)) {                          // L0 not exists but maybe L1 w. L0==0
         for (i1 = 0; i1 < RADIX_SLOTS; i1++) {              // if L1 allocated, scan all L2 nodes
            if (!(l2 = l1->slots[i1])) continue;             // L2 not allocate? give up & continue
            for (i2 = 0; i2 < RADIX_SLOTS; i2++)             // if L2 allocated, scan all L3 nodes
-               if ((l3 = l2->slots[i2])) free(l3);            // if L3 allocated, free that L3
-           free(l2);                                        // scan done, free that L2
+               if ((l3 = l2->slots[i2])) free (l3);         // if L3 allocated, free that L3
+           free (l2);                                       // scan done, free that L2
         }
-        free(l1);                                           // scan done, free the root level
+        free (l1);                                          // scan done, free the root level
     }
     else if ((l2 = rx->root_l2)) {                          // L0/L1 not exist but maybe L2 
         for (i2 = 0; i2 < RADIX_SLOTS; i2++)                // if L2 allocated scann all L3 nodes
-           if ((l3 = l2->slots[i2])) free(l3);                // if L3 allocated, free that L3
-        free(l2);                                           // scan done free the root level
+           if ((l3 = l2->slots[i2])) free (l3);             // if L3 allocated, free that L3
+        free (l2);                                          // scan done free the root level
     }
-    free(rx);                                               // at last free a radix structure itself
+    free (rx);                                              // at last free a radix structure itself
 }
 
-void radix_foreach(const radix_t *rx, radix_callback_t fn, void *data)   ///< scan all elements
+void radix_foreach (const radix_t *rx, radix_callback_t fn, void *data)   ///< scan all elements
 {
     radix_node_t *l0, *l1, *l2, *l3;    
     unsigned i0, i1, i2, i3;
@@ -266,7 +266,7 @@ void radix_foreach(const radix_t *rx, radix_callback_t fn, void *data)   ///< sc
                     if (!(l3 = l2->slots[i2])) continue;    // if L3 node is empty, goto next L3
                     for (i3 = 0; i3 < RADIX_SLOTS; i3++) {  // scan all values
                         if ((val = l3->slots[i3])) {        // if value is not NULL
-                            fn(rx,INDEX(i0,i1,i2,i3),val,data);// callback
+                            fn (rx,INDEX(i0,i1,i2,i3),val,data);// callback
     }   }   }   }   }   } 
     else if ((l1 = rx->root_l1)) {
         for (i1 = 0; i1 < RADIX_SLOTS; i1++) {
@@ -275,19 +275,19 @@ void radix_foreach(const radix_t *rx, radix_callback_t fn, void *data)   ///< sc
                 if (!(l3 = l2->slots[i2])) continue;
                 for (i3 = 0; i3 < RADIX_SLOTS; i3++) {
                     if ((val = l3->slots[i3])) {
-                        fn(rx,INDEX(0,i1,i2,i3), val, data);
+                        fn (rx,INDEX(0,i1,i2,i3), val, data);
     }   }   }   }   } 
     else if ((l2 = rx->root_l2)) {
         for (i2 = 0; i2 < RADIX_SLOTS; i2++) {
             if (!(l3 = l2->slots[i2])) continue;
             for (i3 = 0; i3 < RADIX_SLOTS; i3++) {
                 if ((val = l3->slots[i3])) {
-                    fn(rx,INDEX(0,0,i2,i3), val, data);
+                    fn (rx,INDEX(0,0,i2,i3), val, data);
     }   }   }   } 
     else if ((l3 = rx->root_l3)) {
         for (i3 = 0; i3 < RADIX_SLOTS; i3++) {
             if ((val = l3->slots[i3])) {
-                fn(rx,i3, val, data);
+                fn (rx,i3, val, data);
     }   }   }
 }
 
@@ -302,7 +302,7 @@ void radix_foreach(const radix_t *rx, radix_callback_t fn, void *data)   ///< sc
  *           2) set to NULL the parent pointer if the child node is freed
  *              Also clears root_l1/l2/l3 if their respective subtrees become empty.
  */
-static void cleanup_node(radix_t *rx, radix_node_t **pnode, int level, unsigned index) 
+static void cleanup_node (radix_t *rx, radix_node_t **pnode, int level, unsigned index) 
 {
     radix_node_t *node = *pnode;
     int empty = 1;                                          // hyp. the node is empty
@@ -310,13 +310,13 @@ static void cleanup_node(radix_t *rx, radix_node_t **pnode, int level, unsigned 
     for (int i = 0; i < RADIX_SLOTS; ++i) {                 // for all slot at that level
         if (node->slots[i] == NULL) continue;               // the slot is NULL, see next
         if (level == 3) return;                             // slot != 0 && level 3, node not empty 
-        cleanup_node(rx, (radix_node_t **)&node->slots[i],  // cleanup each slot 
+        cleanup_node (rx, (radix_node_t **)&node->slots[i], // cleanup each slot 
                     level + 1, (index<<8) | i);             // next level, compute index
         if (node->slots[i]) empty = 0;                      // test is the sub-tree is empty 
     }
 
     if (empty) {                                            // if all slots of the node are NULL
-        free(node);                                         // free le node
+        free (node);                                        // free le node
         *pnode = NULL;                                      // set the parent pointer to NULL
         if (index == 0) {                                   // index of the intermediate root
                  if (level == 1) rx->root_l1 = NULL;        // erase intermediate roots
@@ -326,16 +326,16 @@ static void cleanup_node(radix_t *rx, radix_node_t **pnode, int level, unsigned 
     }
 }
 
-void radix_cleanup(radix_t *rx) 
+void radix_cleanup (radix_t *rx) 
 {
     if (!rx) return;
-         if (rx->root_l0) cleanup_node(rx, &rx->root_l0, 0, 0); // if root is at leve 0
-    else if (rx->root_l1) cleanup_node(rx, &rx->root_l1, 1, 0); // if root is at leve 1
-    else if (rx->root_l2) cleanup_node(rx, &rx->root_l2, 2, 0); // if root is at leve 2
-    else if (rx->root_l3) cleanup_node(rx, &rx->root_l3, 3, 0); // if root is at leve 3
+         if (rx->root_l0) cleanup_node (rx, &rx->root_l0, 0, 0); // if root is at leve 0
+    else if (rx->root_l1) cleanup_node (rx, &rx->root_l1, 1, 0); // if root is at leve 1
+    else if (rx->root_l2) cleanup_node (rx, &rx->root_l2, 2, 0); // if root is at leve 2
+    else if (rx->root_l3) cleanup_node (rx, &rx->root_l3, 3, 0); // if root is at leve 3
 }
 
-void radix_stat(const radix_t *rx)
+void radix_stat (const radix_t *rx)
 {
     radix_node_t *l0, *l1, *l2, *l3;
     unsigned i0, i1, i2, i3;
@@ -400,42 +400,42 @@ void radix_stat(const radix_t *rx)
 // Debug function
 //--------------------------------------------------------------------------------------------------
 
-void radix_export_dot(const radix_t *rx, const char *filename) {
-    FILE *f = fopen(filename, "w");
+void radix_export_dot (const radix_t *rx, const char *filename) {
+    FILE *f = fopen (filename, "w");
     if (!f) return;
 
-    fprintf(f, "digraph radix {\n");
-    fprintf(f, "  node [shape=record];\n");
+    fprintf (f, "digraph radix {\n");
+    fprintf (f, "  node [shape=record];\n");
 
     // compteur d'ID pour nommer chaque noeud
     unsigned next_id = 0;
 
-    void dump_node(const radix_node_t *node, unsigned level, unsigned id, unsigned index) {
-        fprintf(f, "  node%u [label=\"{", id);
+    void dump_node (const radix_node_t *node, unsigned level, unsigned id, unsigned index) {
+        fprintf (f, "  node%u [label=\"{", id);
         for (int i = 0; i < RADIX_SLOTS; ++i) {
             if (node->slots[i])
-                fprintf(f, "<f%u> %02X %p |", i, i, &(node->slots[i]));
+                fprintf (f, "<f%u> %02X %p |", i, i, &(node->slots[i]));
         }
-        fprintf(f, "}\"];\n");
+        fprintf (f, "}\"];\n");
 
         for (int i = 0; i < RADIX_SLOTS; ++i) {
             if (!node->slots[i]) continue;
             unsigned child_id = ++next_id;
-            fprintf(f, "  node%u:f%u -> node%u;\n", id, i, child_id);
+            fprintf (f, "  node%u:f%u -> node%u;\n", id, i, child_id);
             if (level < 3)
-                dump_node((radix_node_t *)node->slots[i], level + 1, child_id, (index << 8) | i);
+                dump_node ((radix_node_t *)node->slots[i], level + 1, child_id, (index << 8) | i);
             else
-                fprintf(f, "  node%u [label=\"leaf %p\"];\n", child_id, node->slots[i]);
+                fprintf (f, "  node%u [label=\"leaf %p\"];\n", child_id, node->slots[i]);
         }
     }
 
-    if (rx->root_l0) dump_node(rx->root_l0, 0, next_id++, 0);
-    else if (rx->root_l1) dump_node(rx->root_l1, 1, next_id++, 0);
-    else if (rx->root_l2) dump_node(rx->root_l2, 2, next_id++, 0);
-    else if (rx->root_l3) dump_node(rx->root_l3, 3, next_id++, 0);
+    if (rx->root_l0) dump_node (rx->root_l0, 0, next_id++, 0);
+    else if (rx->root_l1) dump_node (rx->root_l1, 1, next_id++, 0);
+    else if (rx->root_l2) dump_node (rx->root_l2, 2, next_id++, 0);
+    else if (rx->root_l3) dump_node (rx->root_l3, 3, next_id++, 0);
 
-    fprintf(f, "}\n");
-    fclose(f);
+    fprintf (f, "}\n");
+    fclose (f);
 }
 
 /*------------------------------------------------------------------------------------------------*\

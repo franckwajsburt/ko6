@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-02-23
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     kernel/kdev.h
   \author   Nolan Bled
@@ -22,40 +22,40 @@
   | .prev = &devList  |
   .-------------------.
 
-  We then allocate a TTY: dev_alloc(TTY_DEV, sizeof(struct tty_s))
+  We then allocate a TTY: dev_alloc (TTY_DEV, sizeof(struct tty_s))
        devList                tty0
   .---------------.      .------------------.
   | .next = tty0  . <--- | .next = devList; |
   | .prev = tty0  . ---> | .prev = devList; |
   .---------------.      .------------------.
-                         | .tag = TTY_DEV   |
-                         | .no  = 0         |
+                         | .tag   = TTY_DEV |
+                         | .minor = 0       |
                          .------------------.
 
-  Then an ICU: dev_alloc(ICU_DEV, sizeof(struct icu_s))
+  Then an ICU: dev_alloc (ICU_DEV, sizeof(struct icu_s))
        devList                tty0                    icu0
   .---------------.      .------------------.      .-------------------.
   | .next = tty0  . <--- | .next = icu0;    | <--- | .next = devList;  |
   | .prev = icu0  . ---> | .prev = devList; | ---> | .prev = tty0;     |
   .---------------.      .------------------.      .-------------------.
-                         | .tag = TTY_DEV   |      | .tag = ICU_DEV    |
-                         | .no  = 0         |      | .no  = 0          |
+                         | .tag   = TTY_DEV |      | .tag   = ICU_DEV  |
+                         | .minor = 0       |      | .minor = 0        |
                          .------------------.      .-------------------.
 
-  And another TTY: dev_alloc(TTY_DEV, sizeof(struct tty_s))
+  And another TTY: dev_alloc (TTY_DEV, sizeof(struct tty_s))
        devList                tty0                    icu0                      tty1
   .---------------.      .------------------.      .-------------------.      .------------------.
   | .next = tty0  . <--- | .next = icu0;    | <--- | .next = tty1;     | <--- | .next = devList; |
   | .prev = icu0  . ---> | .prev = devList; | ---> | .prev = tty0;     | ---> | .prev = icu0;    |
   .---------------.      .------------------.      .-------------------.      .------------------.
-                         | .tag = TTY_DEV   |      | .tag = ICU_DEV    |      | .tag = TTY_DEV   |
-                         | .no  = 0         |      | .no  = 0          |      | .no = 1          |
+                         | .tag   = TTY_DEV |      | .tag   = ICU_DEV  |      | .tag   = TTY_DEV |
+                         | .minor = 0       |      | .minor = 0        |      | .minor = 1       |
                          .------------------.      .-------------------.      .------------------.
 
   Since this module manipulates only dev_s structures, each device should provide macro to
   simplify their manipulation, by example, tty module should provide:
-  #define tty_alloc() (struct tty_s*) (dev_alloc(TTY_DEV, sizeof(struct tty_s))->data)
-  #define tty_get(no) (struct tty_s*) (dev_get(TTY_DEV, no)->data)
+  #define tty_alloc () (struct tty_s*) (dev_alloc(TTY_DEV, sizeof(struct tty_s))->data)
+  #define tty_get (minor) (struct tty_s*) (dev_get(TTY_DEV, minor)->data)
 
 
 \*------------------------------------------------------------------------------------------------*/
@@ -79,7 +79,7 @@ enum dev_tag_e {
  */
 struct dev_s {
     enum dev_tag_e tag; ///< Identify the type of the device (tty, icu, ...)
-    unsigned no;        ///< Minor device number (tty0, tty1, ...)
+    unsigned minor;     ///< Minor device number (tty0, tty1, ...)
     list_t list;        ///< List entry in the global device list
     char data[];        ///< Device specific data, to be filled in with (struct tty_s, icu_s, ...)
 };
@@ -89,32 +89,32 @@ struct dev_s {
  *          To do so, we loop through the device list in a reverse order
  *          Once we found the last device, we add one to his number
  * \param   tag type of the device (tty, icu, ...)
- * \return  the next no (last device of this type no + 1)
+ * \return  the next minor (last device of this type minor + 1)
 */
-extern unsigned dev_next_no(enum dev_tag_e tag);
+extern unsigned dev_next_minor (enum dev_tag_e tag);
 
 /**
- * \brief   Allocate enough size in kernel heap to store device meta data (tag, no, list)
+ * \brief   Allocate enough size in kernel heap to store device meta data (tag, minor, list)
  *          and device data (struct tty_s, struct icu_s, ...) and add it into the global device
  *          list
  * \param   tag type of the device (tty, icu, ...)
- * \param   dsize size of the device-specific structure (ex: sizeof(struct_s))
+ * \param   dsize size of the device-specific structure (ex: sizeof (struct_s))
  * \return  the allocated device
 */
-extern struct dev_s *dev_alloc(enum dev_tag_e tag, unsigned dsize);
+extern struct dev_s *dev_alloc (enum dev_tag_e tag, unsigned dsize);
 
 /**
  * \brief   Get a device based on its type and on its minor number
- * \param   tag type of the device
- * \param   no minor number of the device
+ * \param   tag   type of the device
+ * \param   minor minor number of the device
  * \return  the corresponding device if found, NULL if not
 */
-extern struct dev_s *dev_get(enum dev_tag_e tag, unsigned no);
+extern struct dev_s *dev_get (enum dev_tag_e tag, unsigned minor);
 
 /**
  * \brief   Release a created device (kfree + list_unlink)
  * \param   dev the device to release
 */
-extern void dev_free(struct dev_s *dev);
+extern void dev_free (struct dev_s *dev);
 
 #endif

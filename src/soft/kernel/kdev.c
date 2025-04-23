@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-21
-  | / /(     )/ _ \     \copyright  2025 Sorbonne University
-  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     kernel/kdev.c
   \author   Nolan Bled
@@ -17,52 +17,52 @@ static list_t DevList = {      // Do the same thing the function list_init does
     .prev = &DevList
 };
 
-unsigned dev_next_no(enum dev_tag_e tag)
+unsigned dev_next_minor (enum dev_tag_e tag)
 {
-    list_foreach_rev(&DevList, item) {
-        struct dev_s *dev = list_item(item, struct dev_s, list);
+    list_foreach_rev (&DevList, item) {
+        struct dev_s *dev = list_item (item, struct dev_s, list);
         if (dev->tag == tag)
-            return dev->no + 1;
+            return dev->minor + 1;
     }
     return 0;
 }
 
-struct dev_s *dev_alloc(enum dev_tag_e tag, unsigned dsize)
+struct dev_s *dev_alloc (enum dev_tag_e tag, unsigned dsize)
 {
     /**
-     * Allocate enough space for device metadata (tag, no, list) and device-specific data (ops,...)
+     * Allocate space for device metadata (tag, minor, list) and device-specific data (ops,...)
      */
-    struct dev_s *dev = kmalloc(sizeof(struct dev_s) + dsize);  
+    struct dev_s *dev = kmalloc (sizeof(struct dev_s) + dsize);  
     dev->tag = tag;
-    dev->no = dev_next_no(tag);
-    list_addlast(&DevList, &dev->list);
+    dev->minor = dev_next_minor (tag);
+    list_addlast (&DevList, &dev->list);
     return dev;
 }
 
-struct dev_s *dev_get(enum dev_tag_e tag, unsigned no)
+struct dev_s *dev_get (enum dev_tag_e tag, unsigned minor)
 {
     /**
      * Loop through the list until we find the corresponding entry
      * FIXME We could gain some performance by 
      * - having device-specific linked list but I can't think of a way to do it in a simple manner
-     * - using a hash table indexed with a key formed with [no<<3+tag]
+     * - using a hash table indexed with a key formed with [minor<<3+tag]
      */
-    list_foreach(&DevList, item) {
-        struct dev_s *dev = list_item(item, struct dev_s, list);
-        if (dev->tag == tag && dev->no == no)
+    list_foreach (&DevList, item) {
+        struct dev_s *dev = list_item (item, struct dev_s, list);
+        if (dev->tag == tag && dev->minor == minor)
             return dev;
     }
     return NULL;
 }
 
-void dev_free(struct dev_s *dev)
+void dev_free (struct dev_s *dev)
 {
     /**
-     *  FIXME: should we decrement every other device no in the last, ex: should tty 2 become tty 1
-     *  if tty 0 is removed ? i don't think so but it could be interesting to think about it
+     *  FIXME should we decrement every other device minor in the last, ex: should tty2 become tty1
+     *  if tty0 is removed ? I don't think so but it could be interesting to think about it
      */
-    list_unlink(&dev->list);
-    kfree(dev);
+    list_unlink (&dev->list);
+    kfree (dev);
 }
 
 /*------------------------------------------------------------------------------------------------*\

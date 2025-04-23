@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-20
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     commmon/cstd.c
   \author   Franck Wajsburt, Nolan Bled
@@ -19,9 +19,9 @@
 char Banner_ko6[] =          // banner's text defined on several lines
 EC_WHITE
 "   _   "  EC_CYAN"  ___  "  EC_WHITE"  __ \n"
-"  | |__"  EC_CYAN" /"Y"\\ " EC_WHITE" / /    (c) 2021 Sorbonne University\n"
-"  | / /"  EC_CYAN"(     )"  EC_WHITE"/ _ \\   https://opensource.org/licenses/MIT\n"
-"  |_\\_\\"EC_CYAN  X___X    EC_WHITE"\\___/   " KO6VER "\n\n"
+"  | |__"  EC_CYAN" /"Y"\\ " EC_WHITE" / /    " KO6VER "\n"
+"  | / /"  EC_CYAN"(     )"  EC_WHITE"/ _ \\   SPDX-License-Identifier: MIT\n"
+"  |_\\_\\"EC_CYAN  X___X    EC_WHITE"\\___/   Copyright 2021 Sorbonne University\n\n"
 EC_RESET;
 
 void wzero (void *addr, size_t n)
