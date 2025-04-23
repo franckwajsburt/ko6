@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-14
-  | / /(     )/ _ \     \copyright  2025 Sorbonne University
-  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     hal/devices/timer/soclib-timer.h
   \author   Franck Wajsburt, Nolan Bled
@@ -23,7 +23,7 @@
  * \param   timer device linked to the ISR
  * \return  nothing
  */
-extern void soclib_timer_isr(unsigned irq, struct timer_s *timer);
+extern void soclib_timer_isr (unsigned irq, timer_t *timer);
 
 /**
  * \brief See hal/device/timer.h for the function signature

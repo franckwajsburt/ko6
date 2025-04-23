@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-03-30
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     hal/devices/timer/clint-timer.h
   \author   Nolan Bled
@@ -26,7 +26,7 @@
  * \param   timer device linked to the ISR
  * \return  nothing
  */
-extern void clint_timer_isr(unsigned irq, struct timer_s *timer);
+extern void clint_timer_isr (unsigned irq, timer_t *timer);
 
 /**
  * \brief See hal/device/timer.h for the function signature

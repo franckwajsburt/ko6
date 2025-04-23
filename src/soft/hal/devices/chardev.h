@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-21
-  | / /(     )/ _ \     \copyright  2025 Sorbonne University
-  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     hal/devices/chardev.h
   \author   Franck Wajsburt, Nolan Bled
@@ -18,6 +18,7 @@ struct chardev_ops_s;
 /** \brief Character device informations */
 typedef struct chardev_s {
     unsigned base;                  ///< memory-mapped register base addresses
+    unsigned minor;                 ///< device identifier MINOR number
     unsigned baudrate;              ///< chardev baudrate
     struct chardev_ops_s *ops;      ///< driver specific operations linked to the chardev
     void * driver_data;             ///< private pointer for driver specific info
@@ -31,11 +32,12 @@ struct chardev_ops_s {
     /**
      * \brief   Generic function that initialize the chardev device
      * \param   chardev the char device
+     * \param   minor   minor number is the device instance number
      * \param   base    base address of the device memory-mapped registers 
      * \param   baudrate the device baudrate
      * \note    almo1-mips : soclib_tty_init
      */
-    void (*chardev_init)(chardev_t *chardev, unsigned base, unsigned baudrate);
+    void (*chardev_init)(chardev_t *chardev, unsigned minor, unsigned base, unsigned baudrate);
 
     /**
      * \brief   Generic function that write to the chardev device
@@ -59,14 +61,14 @@ struct chardev_ops_s {
 };
 
 //--------------------------------------------------------------------------------------------------
-// chardev_alloc() is used once by soc_init/soc_tty_init to add a new device in the device tree
-// chardev_count() returns the number of chardevs in the current SoC
-// chardev_get(no) returns the chardev device structure from its instance number
+// chardev_alloc()    is used once by soc_init/soc_tty_init to add a new device in the device tree
+// chardev_count()    returns the number of chardevs in the current SoC
+// chardev_get(minor) returns the chardev device structure from its instance number
 //--------------------------------------------------------------------------------------------------
 
-#define chardev_alloc() (chardev_t *)(dev_alloc(CHAR_DEV, sizeof(chardev_t))->data)
-#define chardev_count() (dev_next_no(CHAR_DEV) - 1)
-#define chardev_get(no) (chardev_t *)(dev_get(CHAR_DEV, no)->data)
+#define chardev_alloc()    (chardev_t *)(dev_alloc(CHAR_DEV, sizeof(chardev_t))->data)
+#define chardev_count()    (dev_next_minor(CHAR_DEV) - 1)
+#define chardev_get(minor) (chardev_t *)(dev_get(CHAR_DEV, minor)->data)
 
 #endif
 

@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2023-08-01
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     hal/devices/icu/plic.c
   \author   Nolan Bled
@@ -14,13 +14,15 @@
 
 /**
  * \brief   Initialize PLIC device
- * \param   icu     icu device to initialize
- * \param   base    The base address of the physical device
+ * \param   icu   icu device to initialize
+ * \param   minor minor number is the device instance number
+ * \param   base  The base address of the physical device
  * \return  nothing
  */
-static void plic_init(struct icu_s *icu, unsigned base)
+static void plic_init (icu_t *icu, unsigned minor, unsigned base)
 {
     icu->ops    = &PlicOps;
+    icu->minor  = minor;
     icu->base   = base;
 }
 
@@ -28,9 +30,9 @@ static void plic_init(struct icu_s *icu, unsigned base)
  * \brief   Get the highest priority IRQ triggered (mclaim register of the PLIC)*
  * \param   icu icu device
  */
-static unsigned plic_get_highest(struct icu_s *icu)
+static unsigned plic_get_highest (icu_t *icu)
 {
-    return *(unsigned*) PLIC_MCLAIM(icu->base, cpuid());
+    return *(unsigned*) PLIC_MCLAIM(icu->base, cpuid ());
 }
 
 /**
@@ -40,7 +42,7 @@ static unsigned plic_get_highest(struct icu_s *icu)
  * \param   pri the new irq priority
  * \return  nothing
  */
-static void plic_set_priority(struct icu_s *icu, unsigned irq, unsigned pri)
+static void plic_set_priority (icu_t *icu, unsigned irq, unsigned pri)
 {
     ((unsigned*)icu->base + PLIC_PRI_OFFSET)[irq] = pri;
 }
@@ -51,7 +53,7 @@ static void plic_set_priority(struct icu_s *icu, unsigned irq, unsigned pri)
  * \param   irq target irq
  * \return  nothing
  */
-static void plic_acknowledge(struct icu_s *icu, unsigned irq)
+static void plic_acknowledge (icu_t *icu, unsigned irq)
 {
     *(unsigned*) PLIC_MCLAIM(icu->base, cpuid()) = irq;
 }
@@ -62,10 +64,10 @@ static void plic_acknowledge(struct icu_s *icu, unsigned irq)
  * \param   irq target irq
  * \return  nothing
  */
-static void plic_unmask(struct icu_s *icu, unsigned irq)
+static void plic_unmask (icu_t *icu, unsigned irq)
 {
     unsigned j = irq % 32;
-    *(unsigned*) PLIC_MENABLE(icu->base, cpuid(), irq) |= (1 << j);
+    *(unsigned*) PLIC_MENABLE(icu->base, cpuid (), irq) |= (1 << j);
 }
 
 /**
@@ -74,7 +76,7 @@ static void plic_unmask(struct icu_s *icu, unsigned irq)
  * \param   irq target irq
  * \return  nothing
  */
-static void plic_mask(struct icu_s *icu, unsigned irq)
+static void plic_mask (icu_t *icu, unsigned irq)
 {
     unsigned j = irq % 32;
     *(unsigned*) PLIC_MENABLE(icu->base, cpuid(), irq) &= ~(1 << j);

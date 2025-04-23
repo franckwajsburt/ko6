@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-21
-  | / /(     )/ _ \     \copyright  2025 Sorbonne University
-  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     hal/devices/timer.h
   \author   Franck Wajsburt, Nolan Bled
@@ -24,6 +24,7 @@ struct timer_event_s {
 /** \brief Timer driver informations */
 typedef struct timer_s {
     unsigned base;                  ///< timer's base address
+    unsigned minor;                 ///< device identifier MINOR number
     unsigned period;                ///< number of ticks between two events
     struct timer_event_s event;     ///< event triggered each nticks
     struct timer_ops_s *ops;        ///< driver-specific operations
@@ -36,11 +37,12 @@ typedef struct timer_s {
 struct timer_ops_s {
     /**
      * \brief   Generic function to initialize the timer device
-     * \param   base the base address of the memory-mapped registers
-     * \param   tick number of ticks between to timer interrupts
+     * \param   base  the base address of the memory-mapped registers
+     * \param   minor minor number is the device instance number
+     * \param   tick  number of ticks between to timer interrupts
      * \note    almo1-mips : soclib_timer_init
      */
-    void (*timer_init)(timer_t *timer, unsigned base, unsigned tick);
+    void (*timer_init)(timer_t *timer, unsigned minor, unsigned base, unsigned tick);
 
     /**
      * \brief   Generic function that allows the kernel to set the number of ticks
@@ -63,14 +65,14 @@ struct timer_ops_s {
 };
 
 //--------------------------------------------------------------------------------------------------
-// timer_alloc() is used once by soc_init/soc_timer_init to add a new device in the device tree
-// timer_count() returns the number of timers in the current SoC
-// timer_get(no) returns the timer device structure from its instance number
+// timer_alloc()    is used once by soc_init/soc_timer_init to add a new device in the device tree
+// timer_count()    returns the number of timers in the current SoC
+// timer_get(minor) returns the timer device structure from its instance number
 //--------------------------------------------------------------------------------------------------
 
-#define timer_alloc() (timer_t *)(dev_alloc(TIMER_DEV, sizeof(timer_t))->data)
-#define timer_count() (dev_next_no(TIMER_DEV) - 1)
-#define timer_get(no) (timer_t *)(dev_get(TIMER_DEV, no)->data)
+#define timer_alloc()    (timer_t *)(dev_alloc(TIMER_DEV, sizeof(timer_t))->data)
+#define timer_count()    (dev_next_minor(TIMER_DEV) - 1)
+#define timer_get(minor) (timer_t *)(dev_get(TIMER_DEV, minor)->data)
 
 #endif
 

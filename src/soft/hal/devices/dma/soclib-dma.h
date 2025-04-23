@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-14
-  | / /(     )/ _ \     \copyright  2025 Sorbonne University
-  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     hal/devices/dma/soclib-dma.h
   \author   Franck Wajsburt, Nolan Bled

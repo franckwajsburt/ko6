@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-14
-  | / /(     )/ _ \     \copyright  2025 Sorbonne University
-  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     hal/devices/timer/soclib-timer.c
   \author   Franck Wajsburt, Nolan Bled
@@ -26,7 +26,7 @@ struct soclib_timer_regs_s {
  * \param   tick number of ticks
  * \return  nothing
  */
-static void soclib_timer_set_tick(struct timer_s *timer, unsigned tick)
+static void soclib_timer_set_tick (timer_t *timer, unsigned tick)
 {
     struct soclib_timer_regs_s *regs = (struct soclib_timer_regs_s *) timer->base;
     regs->period = tick;
@@ -35,18 +35,20 @@ static void soclib_timer_set_tick(struct timer_s *timer, unsigned tick)
 /**
  * \brief   soclib timer initialization 
  * \param   timer   timer device to initialize
+ * \param   minor   minor number is the device instance number
  * \param   base    The base address of the device
  * \param   tick    number of ticks between two interrupts
  * \return  nothing
  */
-static void soclib_timer_init(struct timer_s *timer, unsigned base, unsigned tick)
+static void soclib_timer_init (timer_t *timer, unsigned minor, unsigned base, unsigned tick)
 {
     timer->base  = base;
-    timer->ops      = &SoclibTimerOps;
+    timer->minor = minor;
+    timer->ops   = &SoclibTimerOps;
 
     struct soclib_timer_regs_s *regs = (struct soclib_timer_regs_s *) timer->base;
     regs->resetirq = 1;                       // to be sure there won't be a IRQ when timer start
-    soclib_timer_set_tick(timer, tick);       // next period
+    soclib_timer_set_tick (timer, tick);      // next period
 
     regs->mode = (tick) ? 3 : 0;              // timer ON with IRQ only if (tick != 0)
 }
@@ -58,7 +60,7 @@ static void soclib_timer_init(struct timer_s *timer, unsigned base, unsigned tic
  * \param   arg argument that will be passed to the function
  * \return  nothing
  */
-static void soclib_timer_set_event(struct timer_s *timer, void (*f)(void *arg), void *arg)
+static void soclib_timer_set_event (timer_t *timer, void (*f)(void *arg), void *arg)
 {
     timer->event.f = f;
     timer->event.arg = arg;
@@ -70,14 +72,14 @@ struct timer_ops_s SoclibTimerOps = {
     .timer_set_tick = soclib_timer_set_tick
 };
 
-void soclib_timer_isr (unsigned irq, struct timer_s *timer)
+void soclib_timer_isr (unsigned irq, timer_t *timer)
 {
     struct soclib_timer_regs_s *regs = 
         (struct soclib_timer_regs_s *) timer->base;
     regs->resetirq = 1;                     // IRQ acknoledgement to lower the interrupt signal
     
     if (timer->event.f)
-        timer->event.f(timer->event.arg);
+        timer->event.f (timer->event.arg);
 }
 
 /*------------------------------------------------------------------------------------------------*\

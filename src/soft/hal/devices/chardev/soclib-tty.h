@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-14
-  | / /(     )/ _ \     \copyright  2025 Sorbonne University
-  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     hal/devices/chardev/soclib-tty.h
   \author   Franck Wajsburt, Nolan Bled
@@ -24,7 +24,7 @@
  * \param   cdev the device linked to this isr
  * \return  nothing
  */
-extern void soclib_tty_isr(unsigned irq, struct chardev_s *cdev);
+extern void soclib_tty_isr (unsigned irq, chardev_t *cdev);
 
 /**
  * \brief See hal/device/chardev.h for the function signature

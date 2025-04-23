@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-14
-  | / /(     )/ _ \     \copyright  2025 Sorbonne University
-  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     hal/devices/blockdev/soclib-bd.h
   \author   Franck Wajsburt
@@ -23,7 +23,7 @@
  * \param   bd  device linked to the ISR
  * \return  nothing
  */
-extern void soclib_bd_isr(unsigned irq, struct blockdev_s *bd);
+extern void soclib_bd_isr(unsigned irq, blockdev_t *bd);
 
 /**
  * \brief See hal/device/blockdev.h for the function signature 

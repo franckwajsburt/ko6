@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-21
-  | / /(     )/ _ \     \copyright  2025 Sorbonne University
-  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     hal/devices/dma.h
   \author   Franck Wajsburt, Nolan Bled
@@ -19,8 +19,9 @@ struct dma_ops_s;
  * \brief DMA device specific information 
  */
 typedef struct dma_s {
-    unsigned base;          ///< DMA device base address
-    struct dma_ops_s *ops;  ///< driver-specific operations
+    unsigned base;                  ///< DMA device base address
+    unsigned minor;                 ///< device identifier MINOR number
+    struct dma_ops_s *ops;          ///< driver-specific operations
 } dma_t;
 
 /** 
@@ -31,10 +32,11 @@ struct dma_ops_s {
     /**
      * \brief   Generic function that initialize a DMA device
      * \param   dma   the dma device
+     * \param   minor minor number is the device instance number
      * \param   base  the base address of the memory-mapped registers
      * \note    almo1-mips : soclib_dma_init
      */
-    void (*dma_init)(dma_t *dma, unsigned base);
+    void (*dma_init)(dma_t *dma, unsigned minor, unsigned base);
 
     /**
      * \brief   Generic function that copy a buffer from a ocation to another using a DMA device
@@ -49,14 +51,14 @@ struct dma_ops_s {
 };
 
 //--------------------------------------------------------------------------------------------------
-// dma_alloc() is used once by soc_init/soc_dma_init to add a new device in the device tree
-// dma_count() returns the number of dmas in the current SoC
-// dma_get(no) returns the dma device structure from its instance number
+// dma_alloc()    is used once by soc_init/soc_dma_init to add a new device in the device tree
+// dma_count()    returns the number of dmas in the current SoC
+// dma_get(minor) returns the dma device structure from its instance number
 //--------------------------------------------------------------------------------------------------
 
-#define dma_alloc() (dma_t *)(dev_alloc(DMA_DEV, sizeof(dma_t))->data)
-#define dma_count() (dev_next_no(DMA_DEV) - 1)
-#define dma_get(no) (dma_t *)(dev_get(DMA_DEV, no)->data)
+#define dma_alloc()    (dma_t *)(dev_alloc(DMA_DEV, sizeof(dma_t))->data)
+#define dma_count()    (dev_next_minor(DMA_DEV) - 1)
+#define dma_get(minor) (dma_t *)(dev_get(DMA_DEV, minor)->data)
 
 #endif
 

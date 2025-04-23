@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-21
-  | / /(     )/ _ \     \copyright  2025 Sorbonne University
-  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     hal/devices/blockdev.h
   \author   Franck Wajsburt
@@ -26,6 +26,7 @@ struct blockdev_event_s {
 /** \brief block device informations */
 typedef struct blockdev_s {
     unsigned base;                  ///< memory-mapped register base addresses
+    unsigned minor;                 ///< device identifier MINOR number
     unsigned blocks;                ///< Total number of available logical blocks (disk size) 
     unsigned block_size;            ///< Size (in bytes) of a logical block
     unsigned ppb;                   ///< physical blocks per logical block
@@ -42,11 +43,12 @@ struct blockdev_ops_s {
     /**
      * \brief   Generic function that initialize the block device
      * \param   bdev        the block device
+     * \param   minor       minor number is the device instance number
      * \param   base        base address of the device memory-mapped registers
      * \param   block_size  size of a logic block chosen by ko6
      * \note    almo1-mips : soclib_bd_init
      */
-    void (*blockdev_init)(blockdev_t *bdev, unsigned base, unsigned block_size);
+    void (*blockdev_init)(blockdev_t *bdev, unsigned minor, unsigned base, unsigned block_size);
 
     /**
      * \brief   Generic function that write to the block device
@@ -83,14 +85,14 @@ struct blockdev_ops_s {
 };
 
 //--------------------------------------------------------------------------------------------------
-// blockdev_alloc() is used once by soc_init/soc_bd_init to add a new device in the device tree
-// blockdev_count() returns the number of blockdevs in the current SoC
-// blockdev_get(no) returns the blockdev device structure from its instance number
+// blockdev_alloc()    is used once by soc_init/soc_bd_init to add a new device in the device tree
+// blockdev_count()    returns the number of blockdevs in the current SoC
+// blockdev_get(minor) returns the blockdev device structure from its instance number
 //--------------------------------------------------------------------------------------------------
 
-#define blockdev_alloc() (blockdev_t *)(dev_alloc(BLOCK_DEV, sizeof(blockdev_t))->data)
-#define blockdev_count() (dev_next_no(BLOCK_DEV) - 1)
-#define blockdev_get(no) (blockdev_t *)(dev_get(BLOCK_DEV, no)->data)
+#define blockdev_alloc()    (blockdev_t *)(dev_alloc(BLOCK_DEV, sizeof(blockdev_t))->data)
+#define blockdev_count()    (dev_next_minor(BLOCK_DEV) - 1)
+#define blockdev_get(minor) (blockdev_t *)(dev_get(BLOCK_DEV, minor)->data)
 
 #endif
 

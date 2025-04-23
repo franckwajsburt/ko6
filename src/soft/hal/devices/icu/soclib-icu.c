@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-14
-  | / /(     )/ _ \     \copyright  2025 Sorbonne University
-  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     hal/devices/icu/soclib-icu.h
   \author   Franck Wajsburt, Nolan Bled
@@ -28,12 +28,14 @@ struct soclib_icu_regs_s {
 /**
  * \brief   Initialize the soclib icu device
  * \param   icu     icu device to initialize
+ * \param   minor   minor number is the device instance number
  * \param   base    base of the physical device
  * \return  nothing
  */
-static void soclib_icu_init(struct icu_s *icu, unsigned base)
+static void soclib_icu_init (icu_t *icu, unsigned minor, unsigned base)
 {
     icu->ops     = &SoclibICUOps;
+    icu->minor   = minor;
     icu->base    = base;
 }
 
@@ -42,20 +44,20 @@ static void soclib_icu_init(struct icu_s *icu, unsigned base)
  * \param     icu  icu the icu struct
  * \return    the highest priorty irq number that is for this ICU the lowest irq number
  */
-static unsigned soclib_icu_get_highest(struct icu_s *icu)
+static unsigned soclib_icu_get_highest (icu_t *icu)
 {
     struct soclib_icu_regs_s *regs =
         (struct soclib_icu_regs_s *) icu->base;
     return regs->highest;
 }
 
-static void soclib_icu_set_priority(struct icu_s *icu, unsigned irq, unsigned pri)
+static void soclib_icu_set_priority (icu_t *icu, unsigned irq, unsigned pri)
 {
     /* Not implemented */
     ;
 }
 
-static void soclib_icu_acknowledge(struct icu_s *icu, unsigned irq)
+static void soclib_icu_acknowledge (icu_t *icu, unsigned irq)
 {
     /* Not implemented */
     ;
@@ -67,26 +69,26 @@ static void soclib_icu_acknowledge(struct icu_s *icu, unsigned irq)
  * \param   irq target irq
  * \return  nothing
  */
-static void soclib_icu_unmask(struct icu_s *icu, unsigned irq)
+static void soclib_icu_unmask (icu_t *icu, unsigned irq)
 {
     struct soclib_icu_regs_s *regs =
         (struct soclib_icu_regs_s *) icu->base;
     regs->set = 1 << irq;
 }
 
-static void soclib_icu_mask(struct icu_s *icu, unsigned irq)
+static void soclib_icu_mask (icu_t *icu, unsigned irq)
 {
     /* Not implemented */
     ;
 }
 
 struct icu_ops_s SoclibICUOps = {
-    .icu_acknowledge = soclib_icu_acknowledge,
-    .icu_get_highest = soclib_icu_get_highest,
-    .icu_init = soclib_icu_init,
-    .icu_mask = soclib_icu_mask,
-    .icu_set_priority = soclib_icu_set_priority,
-    .icu_unmask = soclib_icu_unmask
+    .icu_acknowledge    = soclib_icu_acknowledge,
+    .icu_get_highest    = soclib_icu_get_highest,
+    .icu_init           = soclib_icu_init,
+    .icu_mask           = soclib_icu_mask,
+    .icu_set_priority   = soclib_icu_set_priority,
+    .icu_unmask         = soclib_icu_unmask
 };
 
 /*------------------------------------------------------------------------------------------------*\

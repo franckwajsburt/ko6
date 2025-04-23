@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-14
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     hal/soc/almo1-mips/soc.c
   \author   Franck Wajsburt, Nolan Bled
@@ -22,14 +22,16 @@
 #include <hal/devices/timer/soclib-timer.h>
 #include <hal/devices/icu/soclib-icu.h>
 #include <hal/devices/dma/soclib-dma.h>
+#include <external/libfdt/libfdt.h>
+#include <kernel/klibc.h>
 
+/*
 #include <hal/cpu/irq.h>
 
 #include <kernel/kthread.h>
-#include <kernel/klibc.h>
-#include <kernel/kirq.h>
+*/
+//#include <kernel/kirq.h>
 
-#include <external/libfdt/libfdt.h>
 
 /**
  * \brief   Get the base address of a FDT device node (reg property)
@@ -69,8 +71,8 @@ static void soc_icu_init (void *fdt)
     while (icu_off != -FDT_ERR_NOTFOUND) {
         unsigned addr = get_base_address (fdt, icu_off);
 
-        struct icu_s *icu = icu_alloc ();
-        SoclibICUOps.icu_init (icu, addr);
+        struct dev_s * dev = dev_alloc (ICU_DEV, sizeof(icu_t));
+        SoclibICUOps.icu_init ((icu_t *)dev->data, dev->minor, addr);
 
         icu_off = fdt_node_offset_by_compatible (fdt, icu_off, "soclib,icu");
     }
@@ -107,13 +109,14 @@ static int soc_tty_init (void *fdt)
         unsigned irq = get_irq (fdt, tty_off);
 
         // Allocate the structure and add it in the global device list
-        struct chardev_s *tty = chardev_alloc ();
+        struct dev_s * dev = dev_alloc (CHAR_DEV, sizeof(chardev_t));
         // Initialize the device
-        SoclibTTYOps.chardev_init (tty, addr, 0);
+        SoclibTTYOps.chardev_init ((chardev_t *)dev->data, dev->minor, addr, 0);
+
         // Unmask the interrupt
         icu->ops->icu_unmask (icu, irq);
         // Register the corresponding ISR
-        register_interrupt (irq, (isr_t) soclib_tty_isr, tty);
+        register_interrupt (irq, (isr_t) soclib_tty_isr, dev->data);
 
         // Find the next compatible tty
         tty_off = fdt_node_offset_by_compatible (fdt, tty_off, "soclib,tty");
@@ -142,8 +145,10 @@ static int soc_timer_init (void *fdt, unsigned tick)
         unsigned addr = get_base_address (fdt, timer_off);
         unsigned irq = get_irq (fdt, timer_off);
 
-        struct timer_s *timer = timer_alloc ();
-        SoclibTimerOps.timer_init (timer, addr, tick);
+        struct dev_s * dev = dev_alloc (TIMER_DEV, sizeof(timer_t));
+        timer_t * timer = (timer_t*)dev->data;
+        SoclibTimerOps.timer_init (timer, dev->minor, addr, tick);
+
         timer->ops->timer_set_event (timer,
             (void (*)(void *)) tick_event, (void *) 0);
         //  (void (*)(void *)) thread_yield, (void *) 0);
@@ -170,8 +175,8 @@ static void soc_dma_init (void *fdt)
     while (dma_off != -FDT_ERR_NOTFOUND) {
         unsigned addr = get_base_address (fdt, dma_off);
 
-        struct dma_s *dma = dma_alloc ();
-        SoclibDMAOps.dma_init (dma, addr);
+        struct dev_s * dev = dev_alloc (DMA_DEV, sizeof(dma_t));
+        SoclibDMAOps.dma_init ((dma_t *)dev->data, dev->minor, addr);
 
         dma_off = fdt_node_offset_by_compatible (fdt, dma_off, "soclib,dma");
     }
@@ -198,11 +203,11 @@ static int soc_bd_init (void *fdt)
     unsigned addr = get_base_address (fdt, bd_off);
     unsigned irq = get_irq (fdt, bd_off);
 
-    struct blockdev_s *bd = blockdev_alloc ();
-    SoclibBDOps.blockdev_init (bd, addr, LOGICAL_BLOCK_SIZE);
+    struct dev_s * dev = dev_alloc (BLOCK_DEV, sizeof(blockdev_t));
+    SoclibBDOps.blockdev_init ((blockdev_t *)dev->data, dev->minor, addr, LOGICAL_BLOCK_SIZE);
 
     icu->ops->icu_unmask (icu, irq);
-    register_interrupt (irq, (isr_t) soclib_bd_isr, bd);
+    register_interrupt (irq, (isr_t) soclib_bd_isr, dev->data);
 
     bd_off = fdt_node_offset_by_compatible (fdt, bd_off, "soclib,db");
 

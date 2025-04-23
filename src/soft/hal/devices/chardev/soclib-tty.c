@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-14
-  | / /(     )/ _ \     \copyright  2025 Sorbonne University
-  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     hal/devices/chardev/soclib-tty.c
   \author   Franck Wajsburt, Nolan Bled
@@ -28,18 +28,20 @@ struct soclib_tty_regs_s {
 
 /**
  * \brief   Init the soclib tty device
- * \param   cdev soclib device
- * \param   base the soclib tty base address 
+ * \param   cdev  soclib device
+ * \param   minor minor number is the device instance number
+ * \param   base  the soclib tty base address 
  * \param   baudrate the soclib tty baudrate (unused for this device)
  * \return  nothing
  */
-static void soclib_tty_init(struct chardev_s *cdev, unsigned base, unsigned baudrate)
+static void soclib_tty_init (chardev_t *cdev, unsigned minor, unsigned base, unsigned baudrate)
 {
     cdev->ops       = &SoclibTTYOps;
+    cdev->minor     = minor;
     cdev->base      = base;
     cdev->baudrate  = baudrate;
 
-    struct fifo_s *fifo = kmalloc(sizeof(struct fifo_s));
+    struct fifo_s *fifo = kmalloc (sizeof(struct fifo_s));
     cdev->driver_data = (void*) fifo;
 }
 
@@ -53,7 +55,7 @@ static void soclib_tty_init(struct chardev_s *cdev, unsigned base, unsigned baud
  * \return  if count > 0 then number of read bytes, else SUCCESS or FAILURE
  * FIXME    FIFO is not is the right place, it must be in the upper layer!
  */
-static int soclib_tty_read(struct chardev_s *cdev, char *buf, unsigned count)
+static int soclib_tty_read (chardev_t *cdev, char *buf, unsigned count)
 {
     struct fifo_s *fifo = (struct fifo_s *) cdev->driver_data;
 
@@ -62,10 +64,10 @@ static int soclib_tty_read(struct chardev_s *cdev, char *buf, unsigned count)
         int res = 0;                                    // nb of read char
         char c;                                         // char read
         while (count--) {
-            while (fifo_pull(fifo, &c) == FAILURE) {    // wait for a char from the keyboard
-                thread_yield();                         // nothing then we yield the processor
-                irq_enable();                           // get few characters if thread is alone
-                irq_disable();                          // close enter
+            while (fifo_pull (fifo, &c) == FAILURE) {   // wait for a char from the keyboard
+                thread_yield ();                        // nothing then we yield the processor
+                irq_enable ();                          // get few characters if thread is alone
+                irq_disable ();                         // close enter
             }
             *buf++ = c;
             res++;
@@ -73,7 +75,7 @@ static int soclib_tty_read(struct chardev_s *cdev, char *buf, unsigned count)
         return res;                                     // return the number of char read
     }         
     // non-blocking behavior
-    return fifo_pull(fifo, buf);                        // return SUCCESS or FAILURE
+    return fifo_pull (fifo, buf);                       // return SUCCESS or FAILURE
 }
 
 /**
@@ -83,7 +85,7 @@ static int soclib_tty_read(struct chardev_s *cdev, char *buf, unsigned count)
  * \param   count number of bytes to write
  * \return  number of bytes written
  */
-static int soclib_tty_write(struct chardev_s *cdev, char *buf, unsigned count)
+static int soclib_tty_write (chardev_t *cdev, char *buf, unsigned count)
 {
     int res = 0;                                        // nb of written char
     struct soclib_tty_regs_s *regs = 
@@ -91,7 +93,7 @@ static int soclib_tty_write(struct chardev_s *cdev, char *buf, unsigned count)
 
     while (count--) {                                   // while there are chars
         regs->write = *buf;                             // send the char to TTY
-        delay(150);
+        delay (150);
         res++;                                          // nb of written char
         buf++;		                                    // but is the next address in buffer
     }
@@ -99,20 +101,21 @@ static int soclib_tty_write(struct chardev_s *cdev, char *buf, unsigned count)
 }
 
 struct chardev_ops_s SoclibTTYOps = {
-    .chardev_init = soclib_tty_init,
-    .chardev_read = soclib_tty_read,
-    .chardev_write = soclib_tty_write
+    .chardev_init   = soclib_tty_init,
+    .chardev_read   = soclib_tty_read,
+    .chardev_write  = soclib_tty_write
 };
 
-void soclib_tty_isr(unsigned irq, struct chardev_s *cdev)
+void soclib_tty_isr (unsigned irq, chardev_t *cdev)
 {
     struct soclib_tty_regs_s *regs = 
         (struct soclib_tty_regs_s *) cdev->base;
     
     struct fifo_s *fifo = (struct fifo_s *) cdev->driver_data;
     char c = regs->read;
-    fifo_push(fifo, c);
+    fifo_push (fifo, c);
 }
+
 /*------------------------------------------------------------------------------------------------*\
    Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
    vim: set ts=4 sw=4 sts=4 et tw=100:

@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-21
-  | / /(     )/ _ \     \copyright  2025 Sorbonne University
-  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     hal/devices/icu.h
   \author   Franck Wajsburt, Nolan Bled
@@ -18,6 +18,7 @@ struct icu_ops_s;
 /** \brief ICU driver informations */
 typedef struct icu_s {
     unsigned base;              ///< ICU's base address
+    unsigned minor;             ///< device identifier MINOR number
     struct icu_ops_s *ops;      ///< driver-specific operations
 } icu_t;
 
@@ -28,10 +29,11 @@ typedef struct icu_s {
 struct icu_ops_s {
     /**
      * \brief   Generic function to initialize the ICU device
-     * \param   base the base address of the memory-mapped registers
+     * \param   base  the base address of the memory-mapped registers
+     * \param   minor minor number is the device instance number
      * \note    almo1-mips : soclib_icu_init
      */
-    void        (*icu_init)(icu_t *icu, unsigned base);
+    void        (*icu_init)(icu_t *icu, unsigned minor, unsigned base);
 
     /**
      * \brief   Generic function that fetch the highest priority IRQ from the ICU device
@@ -76,14 +78,14 @@ struct icu_ops_s {
 };
 
 //--------------------------------------------------------------------------------------------------
-// icu_alloc() is used once by soc_init/soc_icu_init to add a new device in the device tree
-// icu_count() returns the number of icus in the current SoC
-// icu_get(no) returns the icu device structure from its instance number
+// icu_alloc()    is used once by soc_init/soc_icu_init to add a new device in the device tree
+// icu_count()    returns the number of icus in the current SoC
+// icu_get(minor) returns the icu device structure from its instance number
 //--------------------------------------------------------------------------------------------------
 
-#define icu_alloc() (icu_t *)(dev_alloc(ICU_DEV, sizeof(icu_t))->data)
-#define icu_count() (dev_next_no(ICU_DEV) - 1)
-#define icu_get(no) (icu_t *)(dev_get(ICU_DEV, no)->data)
+#define icu_alloc()    (icu_t *)(dev_alloc(ICU_DEV, sizeof(icu_t))->data)
+#define icu_count()    (dev_next_minor(ICU_DEV) - 1)
+#define icu_get(minor) (icu_t *)(dev_get(ICU_DEV, minor)->data)
 
 #endif
 

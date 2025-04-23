@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2023-07-10
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     hal/devices/chardev/ns16550.c
   \author   Franck Wajsburt, Nolan Bled
@@ -19,17 +19,19 @@
  *              * Configure register: 8bits word, no parity check, 1 stop bit
  *              * Enable interrupts
  *              * Disable FIFO
- * \param   cdev the char device
- * \param   base the base NS16550 MMIO address
+ * \param   cdev   the char device
+ * \param   minor  Minor device number (instance number)
+ * \param   base   the base NS16550 MMIO address
  * \param   baudrate the baudrate of the UART
  */
-static void ns16550_init(struct chardev_s *cdev, unsigned base, unsigned baudrate)
+static void ns16550_init (chardev_t *cdev, unsigned minor, unsigned base, unsigned baudrate)
 {
     cdev->ops       = &NS16550Ops;
+    cdev->minor     = minor;
     cdev->base      = base;
     cdev->baudrate  = baudrate;
     
-    struct fifo_s *fifo = kmalloc(sizeof(struct fifo_s));
+    struct fifo_s *fifo = kmalloc (sizeof(struct fifo_s));
     cdev->driver_data = (void*) fifo;
 
     volatile struct ns16550_general_regs_s *gregs =
@@ -68,17 +70,17 @@ static void ns16550_init(struct chardev_s *cdev, unsigned base, unsigned baudrat
  * \param   count number of bytes to read from the UART
  * \return  number of bytes read
  */
-static int ns16550_read(struct chardev_s *cdev, char *buf, unsigned count)
+static int ns16550_read (chardev_t *cdev, char *buf, unsigned count)
 {
     int res = 0;
     char c;
 
     struct fifo_s *fifo = (struct fifo_s *) cdev->driver_data;
     while (count--) {
-        while (fifo_pull(fifo, &c) == FAILURE) {        // wait for a char from the keyboard
-            thread_yield();                             // nothing then we yield the processor
-            irq_enable();                               // get few characters if thread is alone
-            irq_disable();                              // close enter
+        while (fifo_pull (fifo, &c) == FAILURE) {       // wait for a char from the keyboard
+            thread_yield ();                            // nothing then we yield the processor
+            irq_enable ();                              // get few characters if thread is alone
+            irq_disable ();                             // close enter
         }
         *buf++ = c;
         res++;
@@ -93,7 +95,7 @@ static int ns16550_read(struct chardev_s *cdev, char *buf, unsigned count)
  * \param   count number of bytes to write
  * \return  number of bytes written
  */
-static int ns16550_write(struct chardev_s *cdev, char *buf, unsigned count)
+static int ns16550_write (chardev_t *cdev, char *buf, unsigned count)
 {
     int res = 0;                                        // nb of written char
     volatile struct ns16550_general_regs_s *regs = 
@@ -113,12 +115,12 @@ struct chardev_ops_s NS16550Ops = {
     .chardev_write = ns16550_write
 };
 
-void ns16550_isr(unsigned irq, struct chardev_s *cdev)
+void ns16550_isr (unsigned irq, chardev_t *cdev)
 {
     volatile struct ns16550_general_regs_s *regs = 
         (struct ns16550_general_regs_s *) cdev->base;
     
     struct fifo_s *fifo = (struct fifo_s *) cdev->driver_data;
     char c = regs->hr;
-    fifo_push(fifo, c);
+    fifo_push (fifo, c);
 }

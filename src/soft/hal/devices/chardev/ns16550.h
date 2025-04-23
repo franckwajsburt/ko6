@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-03-30
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-23
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     hal/devices/chardev/ns16550.h
   \author   Nolan Bled
@@ -70,7 +70,7 @@ struct ns16550_dlab_regs_s {
  * \param   irq the irq linked to this ISR
  * \param   cdev the device linked to this ISR
  */
-extern void ns16550_isr(unsigned irq, struct chardev_s *cdev);
+extern void ns16550_isr(unsigned irq, chardev_t *cdev);
 
 /**
  * \brief See hal/device/chardev.h for the function signature
