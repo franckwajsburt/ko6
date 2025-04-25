@@ -40,6 +40,8 @@ SRC    += $(COMDIR)/cstd.c $(COMDIR)/cstd.h
 SRC    += $(COMDIR)/ctype.c $(COMDIR)/ctype.h
 SRC    += $(COMDIR)/htopen.c $(COMDIR)/htopen.h
 SRC    += $(FSDIR)/pvfs.c $(FSDIR)/pvfs.h
+SRC    += $(FSDIR)/vfs.c $(FSDIR)/vfs.h
+SRC    += $(FSDIR)/fs1/fs1.c $(FSDIR)/fs1/fs1..h
 SRC    += kmemkernel.c kmemkernel.h
 SRC    += kmemuser.c kmemuser.h
 SRC    += kblockio.c kblockio.h
@@ -128,6 +130,11 @@ $(OBJDIR)/%.o : $(COMDIR)/%.c
 	$(OD) -D $@ > $@.s
 
 $(OBJDIR)/%.o : $(FSDIR)/%.c
+	@echo "- compil  --> "$(notdir $@)
+	$(CC) -o $@ $(CFLAGS) $<
+	$(OD) -D $@ > $@.s
+
+$(OBJDIR)/%.o : $(FSDIR)/fs1/%.c
 	@echo "- compil  --> "$(notdir $@)
 	$(CC) -o $@ $(CFLAGS) $<
 	$(OD) -D $@ > $@.s
