@@ -43,8 +43,7 @@
 #include <common/usermem.h>         // user data region usage
 #include <common/htopen.h>          // hash table open addressing
 #include <common/ctype.h>           // ascii types
-
-#include <fs/pvfs.h>                // pseudo vitual file system
+#include <common/vfs_stat.h>        // types and defined used by file system
 
 #include <hal/cpu/atomic.h>         // Locks
 #include <hal/cpu/cache.h>          // L1 cache function prototypes
@@ -59,6 +58,10 @@
 #include <hal/devices/icu.h>        // interrupt component unit
 #include <hal/devices/timer.h>      // timers
 #include <hal/soc/soc.h>
+
+#include <fs/pvfs.h>                // pseudo vitual file system
+#include <fs/vfs.h>                 // vitual file system
+#include <fs/fs1/fs1.h>             // file system 1 directory
 
 #include <kernel/kirq.h>            // irq registering
 #include <kernel/kdev.h>            // dynamic devices allocation
