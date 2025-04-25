@@ -40,11 +40,34 @@ void *memset (void *s, int c, unsigned n)
     return s;
 }
 
-void *memcpy (char *dest, const char *src, unsigned n)
+void *memcpy (void *dest, const void *src, size_t n)
 {
     char *d = dest;
-    while (n--)
-        *d++ = *src++;
+    const char *s = src;
+
+    if (((unsigned long)d % sizeof(long)) ==              // if dest & src have the same alignment
+        ((unsigned long)s % sizeof(long))) 
+    { 
+        while (((unsigned long)d % sizeof(long)) && n) {  // copy all char until first long word
+            *d++ = *s++;
+            n--;
+        }
+
+        long *dl = (long *)d;                             // then copy per long word
+        const long *sl = (const long *)s;
+        while (n >= sizeof(long)) {
+            *dl++ = *sl++;
+            n -= sizeof(long);
+        }
+
+        d = (char *)dl;                                   // retrieve the last words addresses
+        s = (const char *)sl;
+    }
+
+    while (n--) {                                         // copy the remaing chars
+        *d++ = *s++;
+    }
+
     return dest;
 }
 
@@ -151,6 +174,20 @@ int strcmp (const char *s1, const char *s2)
         if (c1 == 0)
             return c1 - c2;
     } while (c1 == c2);
+
+    return c1 - c2;
+}
+
+int strncmp (const char *s1, const char *s2, unsigned n)
+{
+    unsigned char c1, c2;
+    if (n == 0) return 0;
+    do {
+        c1 = (unsigned char) *s1++;
+        c2 = (unsigned char) *s2++;
+        if (c1 == 0)
+            return c1 - c2;
+    } while ((c1 == c2) && (--n));
 
     return c1 - c2;
 }

@@ -54,7 +54,7 @@ extern void wzero (void *addr, size_t n);
  * \param     n  number of bytes to copy
  * \return    the dest buffer address
  */
-extern void *memcpy (char *dest, const char *src, unsigned n);
+extern void *memcpy (void *dest, const void *src, unsigned n);
 
 /**
  * \brief     compare two buffers byte per byte
@@ -132,6 +132,15 @@ extern char *strrchr (const char *s, int c);
 */
 extern int strcmp (const char *s1, const char *s2);
 
+/**
+ * \brief     compare two null-terminated strings
+ * \param     s1 first string
+ * \param     s2 second string
+ * \param     n  number of compared char
+ * \return    return less than, equal to or greater than 0 if s1 is less than, equal to or 
+ *            greater than s2
+*/
+extern int strncmp (const char *s1, const char *s2, unsigned n);
 /**
  * \brief     Split a string into tokens.
  * \param     str       Input string to split (will be modified).
