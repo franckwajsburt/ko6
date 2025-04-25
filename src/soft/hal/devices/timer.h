@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-23
+  | |__ /'v'\  / /      \date 2025-04-24
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -63,16 +63,6 @@ struct timer_ops_s {
     */
     void (*timer_set_event)(timer_t *timer, void (*f)(void *arg), void *arg);
 };
-
-//--------------------------------------------------------------------------------------------------
-// timer_alloc()    is used once by soc_init/soc_timer_init to add a new device in the device tree
-// timer_count()    returns the number of timers in the current SoC
-// timer_get(minor) returns the timer device structure from its instance number
-//--------------------------------------------------------------------------------------------------
-
-#define timer_alloc()    (timer_t *)(dev_alloc(TIMER_DEV, sizeof(timer_t))->data)
-#define timer_count()    (dev_next_minor(TIMER_DEV) - 1)
-#define timer_get(minor) (timer_t *)(dev_get(TIMER_DEV, minor)->data)
 
 #endif
 

@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-23
+  | |__ /'v'\  / /      \date 2025-04-24
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -76,16 +76,6 @@ struct icu_ops_s {
      */   
     void        (*icu_unmask)(icu_t *icu, unsigned irq);
 };
-
-//--------------------------------------------------------------------------------------------------
-// icu_alloc()    is used once by soc_init/soc_icu_init to add a new device in the device tree
-// icu_count()    returns the number of icus in the current SoC
-// icu_get(minor) returns the icu device structure from its instance number
-//--------------------------------------------------------------------------------------------------
-
-#define icu_alloc()    (icu_t *)(dev_alloc(ICU_DEV, sizeof(icu_t))->data)
-#define icu_count()    (dev_next_minor(ICU_DEV) - 1)
-#define icu_get(minor) (icu_t *)(dev_get(ICU_DEV, minor)->data)
 
 #endif
 

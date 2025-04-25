@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-23
+  | |__ /'v'\  / /      \date 2025-04-24
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -83,16 +83,6 @@ struct blockdev_ops_s {
      */
     void (*blockdev_set_event)(blockdev_t *bdev, void(*f)(void *arg, int status), void *arg);
 };
-
-//--------------------------------------------------------------------------------------------------
-// blockdev_alloc()    is used once by soc_init/soc_bd_init to add a new device in the device tree
-// blockdev_count()    returns the number of blockdevs in the current SoC
-// blockdev_get(minor) returns the blockdev device structure from its instance number
-//--------------------------------------------------------------------------------------------------
-
-#define blockdev_alloc()    (blockdev_t *)(dev_alloc(BLOCK_DEV, sizeof(blockdev_t))->data)
-#define blockdev_count()    (dev_next_minor(BLOCK_DEV) - 1)
-#define blockdev_get(minor) (blockdev_t *)(dev_get(BLOCK_DEV, minor)->data)
 
 #endif
 

@@ -34,7 +34,7 @@ static void * dma_memcpy_user (int * dest, int * src, size_t n)
     if (n >= 0x80000000) return NULL;
 
     // Get the DMA device
-    struct dma_s *dma = dma_get(0);
+    struct dma_s *dma = dmadev_get(0);
     if (!dma)
         // If no DMA is available, do a reguler memcpy
         // TODO: verify this isn't dangerous

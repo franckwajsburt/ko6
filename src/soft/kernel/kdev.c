@@ -17,29 +17,29 @@ static list_t DevList = {      // Do the same thing the function list_init does
     .prev = &DevList
 };
 
-unsigned dev_next_minor (enum dev_tag_e tag)
+unsigned dev_next_minor (dev_tag_t tag)
 {
     list_foreach_rev (&DevList, item) {
-        struct dev_s *dev = list_item (item, struct dev_s, list);
+        dev_t *dev = list_item (item, dev_t, list);
         if (dev->tag == tag)
             return dev->minor + 1;
     }
     return 0;
 }
 
-struct dev_s *dev_alloc (enum dev_tag_e tag, unsigned dsize)
+dev_t *dev_alloc (dev_tag_t tag, unsigned dsize)
 {
     /**
      * Allocate space for device metadata (tag, minor, list) and device-specific data (ops,...)
      */
-    struct dev_s *dev = kmalloc (sizeof(struct dev_s) + dsize);  
+    dev_t *dev = kmalloc (sizeof(dev_t) + dsize);  
     dev->tag = tag;
     dev->minor = dev_next_minor (tag);
     list_addlast (&DevList, &dev->list);
     return dev;
 }
 
-struct dev_s *dev_get (enum dev_tag_e tag, unsigned minor)
+dev_t *dev_get (dev_tag_t tag, unsigned minor)
 {
     /**
      * Loop through the list until we find the corresponding entry
@@ -48,14 +48,14 @@ struct dev_s *dev_get (enum dev_tag_e tag, unsigned minor)
      * - using a hash table indexed with a key formed with [minor<<3+tag]
      */
     list_foreach (&DevList, item) {
-        struct dev_s *dev = list_item (item, struct dev_s, list);
+        dev_t *dev = list_item (item, dev_t, list);
         if (dev->tag == tag && dev->minor == minor)
             return dev;
     }
     return NULL;
 }
 
-void dev_free (struct dev_s *dev)
+void dev_free (dev_t *dev)
 {
     /**
      *  FIXME should we decrement every other device minor in the last, ex: should tty2 become tty1

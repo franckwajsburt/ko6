@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-23
+  | |__ /'v'\  / /      \date 2025-04-24
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -56,19 +56,9 @@ struct chardev_ops_s {
      * \param   count   the number of bytes that should be written into the buffer
      * \return  number of bytes actually read
      * \note    almo1-mips : soclib_tty_read
-    */
+     */
     int (*chardev_read)(chardev_t *chardev, char *buf, unsigned count);
 };
-
-//--------------------------------------------------------------------------------------------------
-// chardev_alloc()    is used once by soc_init/soc_tty_init to add a new device in the device tree
-// chardev_count()    returns the number of chardevs in the current SoC
-// chardev_get(minor) returns the chardev device structure from its instance number
-//--------------------------------------------------------------------------------------------------
-
-#define chardev_alloc()    (chardev_t *)(dev_alloc(CHAR_DEV, sizeof(chardev_t))->data)
-#define chardev_count()    (dev_next_minor(CHAR_DEV) - 1)
-#define chardev_get(minor) (chardev_t *)(dev_get(CHAR_DEV, minor)->data)
 
 #endif
 

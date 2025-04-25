@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-23
+  | |__ /'v'\  / /      \date 2025-04-24
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -49,16 +49,6 @@ struct dma_ops_s {
     */
     void *(*dma_memcpy)(dma_t *dma, int *dst, int *src, unsigned n);
 };
-
-//--------------------------------------------------------------------------------------------------
-// dma_alloc()    is used once by soc_init/soc_dma_init to add a new device in the device tree
-// dma_count()    returns the number of dmas in the current SoC
-// dma_get(minor) returns the dma device structure from its instance number
-//--------------------------------------------------------------------------------------------------
-
-#define dma_alloc()    (dma_t *)(dev_alloc(DMA_DEV, sizeof(dma_t))->data)
-#define dma_count()    (dev_next_minor(DMA_DEV) - 1)
-#define dma_get(minor) (dma_t *)(dev_get(DMA_DEV, minor)->data)
 
 #endif
 

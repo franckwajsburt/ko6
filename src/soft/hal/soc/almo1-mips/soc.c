@@ -25,14 +25,6 @@
 #include <external/libfdt/libfdt.h>
 #include <kernel/klibc.h>
 
-/*
-#include <hal/cpu/irq.h>
-
-#include <kernel/kthread.h>
-*/
-//#include <kernel/kirq.h>
-
-
 /**
  * \brief   Get the base address of a FDT device node (reg property)
  *          TODO: take in account the cells attribute of a node
@@ -93,11 +85,9 @@ static void soc_icu_init (void *fdt)
  */
 static int soc_tty_init (void *fdt)
 {
-    // Fetch the ICU device
-    struct icu_s *icu = icu_get (0);
-    // Check that the ICU has already been initialized
-    if (!icu)
-        return -1;
+    // Fetch the ICU device &  Check that the ICU has already been initialized
+    icu_t *icu = icudev_get(0);
+    if (!icu) return -1;
 
     // Find the first TTY device
     int tty_off = fdt_node_offset_by_compatible (fdt, -1, "soclib,tty");
@@ -134,10 +124,8 @@ static int soc_tty_init (void *fdt)
  */
 static int soc_timer_init (void *fdt, unsigned tick)
 {
-    // Fetch the ICU device
-    struct icu_s *icu = icu_get (0);
-    if (!icu)
-        return -1;
+    icu_t *icu = icudev_get(0);
+    if (!icu) return -1;
 
     int timer_off = fdt_node_offset_by_compatible (fdt, -1, "soclib,timer");
 
@@ -190,10 +178,8 @@ static void soc_dma_init (void *fdt)
  */
 static int soc_bd_init (void *fdt)
 {
-    // Fetch the ICU device
-    struct icu_s *icu = icu_get (0);
-    if (!icu)
-        return -1;
+    icu_t *icu = icudev_get(0);
+    if (!icu) return -1;
 
     int bd_off = fdt_node_offset_by_compatible (fdt, -1, "soclib,bd");
 
@@ -267,9 +253,10 @@ int soc_init (void *fdt, int tick)
  */
 void isrcall ()
 {
-    struct icu_s *icu = icu_get (cpuid());           // get the ICU which has dev.no == cpuid()
-    int irq = icu->ops->icu_get_highest (icu);       // IRQ nb with the highest prio
-    route_interrupt (irq);                           // launch the ISR for the bound device
+
+    icu_t *icu = icudev_get(cpuid());                       // get the ICU which has no == cpuid()
+    int irq = icu->ops->icu_get_highest (icu);              // IRQ nb with the highest prio
+    route_interrupt (irq);                                  // launch the ISR for the bound device
 }
 
 /*------------------------------------------------------------------------------------------------*\
