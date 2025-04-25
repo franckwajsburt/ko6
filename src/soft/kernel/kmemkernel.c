@@ -98,7 +98,7 @@ typedef union {                         // page usage description
         unsigned type:2;                // type of page BLOCK
         unsigned bdev:4;                // to have several disks 
         unsigned dirty:1;               // dirty  --> must be written on disk
-        unsigned locked:1;              // locked --> once read, must remains on memory
+        unsigned lock:1;                // lock --> once read, must remains on memory
         unsigned valid:1;               // valid  --> data can be read or write
         unsigned reserved:15;           // not used yet
         unsigned refcount:8;            // the same block can be open several times
@@ -116,23 +116,23 @@ static size_t ObjectsThisSize[256];     // ObjectsThisSize[i]= allocated objets 
 // Page descriptor accessor functions
 //--------------------------------------------------------------------------------------------------
 
-void page_set_free (void *page)     { Page[PAGE(page)].block.type   = PAGE_FREE;  }
-void page_set_block (void *page)    { Page[PAGE(page)].block.type   = PAGE_BLOCK; }
-void page_set_slab (void *page)     { Page[PAGE(page)].block.type   = PAGE_SLAB;  }
-void page_set_valid (void *page)    { Page[PAGE(page)].block.valid  = 1; }
-void page_set_locked (void *page)   { Page[PAGE(page)].block.locked = 1; }
-void page_set_dirty (void *page)    { Page[PAGE(page)].block.dirty  = 1; }
+void page_set_free (void *page)  { Page[PAGE(page)].block.type   = PAGE_FREE;  }
+void page_set_block (void *page) { Page[PAGE(page)].block.type   = PAGE_BLOCK; }
+void page_set_slab (void *page)  { Page[PAGE(page)].block.type   = PAGE_SLAB;  }
+void page_set_valid (void *page) { Page[PAGE(page)].block.valid  = 1; }
+void page_set_lock (void *page)  { Page[PAGE(page)].block.lock = 1; }
+void page_set_dirty (void *page) { Page[PAGE(page)].block.dirty  = 1; }
 
-void page_clear_valid (void *page)  { Page[PAGE(page)].block.valid  = 0; }
-void page_clear_locked (void *page) { Page[PAGE(page)].block.locked = 0; }
-void page_clear_dirty (void *page)  { Page[PAGE(page)].block.dirty  = 0; }
+void page_clr_valid (void *page) { Page[PAGE(page)].block.valid  = 0; }
+void page_clr_lock (void *page)  { Page[PAGE(page)].block.lock = 0; }
+void page_clr_dirty (void *page) { Page[PAGE(page)].block.dirty  = 0; }
 
-int  page_is_free (void *page)      { return Page[PAGE(page)].block.type == PAGE_FREE;  }
-int  page_is_block (void *page)     { return Page[PAGE(page)].block.type == PAGE_BLOCK; }
-int  page_is_slab (void *page)      { return Page[PAGE(page)].block.type == PAGE_SLAB;  }
-int  page_is_valid (void *page)     { return Page[PAGE(page)].block.valid;  }
-int  page_is_locked (void *page)    { return Page[PAGE(page)].block.locked; }
-int  page_is_dirty (void *page)     { return Page[PAGE(page)].block.dirty;  }
+int  page_is_free (void *page)   { return Page[PAGE(page)].block.type == PAGE_FREE;  }
+int  page_is_block (void *page)  { return Page[PAGE(page)].block.type == PAGE_BLOCK; }
+int  page_is_slab (void *page)   { return Page[PAGE(page)].block.type == PAGE_SLAB;  }
+int  page_is_valid (void *page)  { return Page[PAGE(page)].block.valid;  }
+int  page_is_lock (void *page)   { return Page[PAGE(page)].block.lock; }
+int  page_is_dirty (void *page)  { return Page[PAGE(page)].block.dirty;  }
 
 int  page_get_refcount (void *page) { return Page[PAGE(page)].block.refcount; }
 

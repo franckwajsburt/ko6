@@ -15,7 +15,7 @@
 
 struct blockdev_ops_s;
 
-#define LOGICAL_BLOCK_SIZE 4096
+#define BLOCK_SIZE 4096
 
 /** \brief Structure describing what to do when we receive a bd interrupt */
 struct blockdev_event_s {

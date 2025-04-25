@@ -63,7 +63,7 @@ static void soc_icu_init (void *fdt)
     while (icu_off != -FDT_ERR_NOTFOUND) {
         unsigned addr = get_base_address (fdt, icu_off);
 
-        struct dev_s * dev = dev_alloc (ICU_DEV, sizeof(icu_t));
+        device_t * dev = dev_alloc (ICU_DEV, sizeof(icu_t));
         SoclibICUOps.icu_init ((icu_t *)dev->data, dev->minor, addr);
 
         icu_off = fdt_node_offset_by_compatible (fdt, icu_off, "soclib,icu");
@@ -99,7 +99,7 @@ static int soc_tty_init (void *fdt)
         unsigned irq = get_irq (fdt, tty_off);
 
         // Allocate the structure and add it in the global device list
-        struct dev_s * dev = dev_alloc (CHAR_DEV, sizeof(chardev_t));
+        device_t * dev = dev_alloc (CHAR_DEV, sizeof(chardev_t));
         // Initialize the device
         SoclibTTYOps.chardev_init ((chardev_t *)dev->data, dev->minor, addr, 0);
 
@@ -133,7 +133,7 @@ static int soc_timer_init (void *fdt, unsigned tick)
         unsigned addr = get_base_address (fdt, timer_off);
         unsigned irq = get_irq (fdt, timer_off);
 
-        struct dev_s * dev = dev_alloc (TIMER_DEV, sizeof(timer_t));
+        device_t * dev = dev_alloc (TIMER_DEV, sizeof(timer_t));
         timer_t * timer = (timer_t*)dev->data;
         SoclibTimerOps.timer_init (timer, dev->minor, addr, tick);
 
@@ -163,7 +163,7 @@ static void soc_dma_init (void *fdt)
     while (dma_off != -FDT_ERR_NOTFOUND) {
         unsigned addr = get_base_address (fdt, dma_off);
 
-        struct dev_s * dev = dev_alloc (DMA_DEV, sizeof(dma_t));
+        device_t * dev = dev_alloc (DMA_DEV, sizeof(dma_t));
         SoclibDMAOps.dma_init ((dma_t *)dev->data, dev->minor, addr);
 
         dma_off = fdt_node_offset_by_compatible (fdt, dma_off, "soclib,dma");
@@ -189,8 +189,8 @@ static int soc_bd_init (void *fdt)
     unsigned addr = get_base_address (fdt, bd_off);
     unsigned irq = get_irq (fdt, bd_off);
 
-    struct dev_s * dev = dev_alloc (BLOCK_DEV, sizeof(blockdev_t));
-    SoclibBDOps.blockdev_init ((blockdev_t *)dev->data, dev->minor, addr, LOGICAL_BLOCK_SIZE);
+    device_t * dev = dev_alloc (BLOCK_DEV, sizeof(blockdev_t));
+    SoclibBDOps.blockdev_init ((blockdev_t *)dev->data, dev->minor, addr, BLOCK_SIZE);
 
     icu->ops->icu_unmask (icu, irq);
     register_interrupt (irq, (isr_t) soclib_bd_isr, dev->data);

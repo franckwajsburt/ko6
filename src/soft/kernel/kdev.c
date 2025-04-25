@@ -20,26 +20,26 @@ static list_t DevList = {      // Do the same thing the function list_init does
 unsigned dev_next_minor (dev_tag_t tag)
 {
     list_foreach_rev (&DevList, item) {
-        dev_t *dev = list_item (item, dev_t, list);
+        device_t *dev = list_item (item, device_t, list);
         if (dev->tag == tag)
             return dev->minor + 1;
     }
     return 0;
 }
 
-dev_t *dev_alloc (dev_tag_t tag, unsigned dsize)
+device_t *dev_alloc (dev_tag_t tag, unsigned dsize)
 {
     /**
      * Allocate space for device metadata (tag, minor, list) and device-specific data (ops,...)
      */
-    dev_t *dev = kmalloc (sizeof(dev_t) + dsize);  
+    device_t *dev = kmalloc (sizeof(device_t) + dsize);  
     dev->tag = tag;
     dev->minor = dev_next_minor (tag);
     list_addlast (&DevList, &dev->list);
     return dev;
 }
 
-dev_t *dev_get (dev_tag_t tag, unsigned minor)
+device_t *dev_get (dev_tag_t tag, unsigned minor)
 {
     /**
      * Loop through the list until we find the corresponding entry
@@ -48,14 +48,14 @@ dev_t *dev_get (dev_tag_t tag, unsigned minor)
      * - using a hash table indexed with a key formed with [minor<<3+tag]
      */
     list_foreach (&DevList, item) {
-        dev_t *dev = list_item (item, dev_t, list);
+        device_t *dev = list_item (item, device_t, list);
         if (dev->tag == tag && dev->minor == minor)
             return dev;
     }
     return NULL;
 }
 
-void dev_free (dev_t *dev)
+void dev_free (device_t *dev)
 {
     /**
      *  FIXME should we decrement every other device minor in the last, ex: should tty2 become tty1

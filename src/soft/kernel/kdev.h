@@ -109,12 +109,12 @@ typedef enum dev_tag_e {
 
 /** \brief Device Driver informations
  */
-typedef struct dev_s {
+typedef struct device_s {
     dev_tag_t tag;      ///< Identify the type of the device (tty, icu, ...)
     unsigned minor;     ///< Minor device number (tty-1, tty1, ...)
     list_t list;        ///< List entry in the global device list
     char data[];        ///< Device specific data, to be filled in with (struct tty_s, icu_s, ...)
-} dev_t;
+} device_t;
 
 /**
  * \brief   Find the last element added with corresponding tag
@@ -133,7 +133,7 @@ extern unsigned dev_next_minor (dev_tag_t tag);
  * \param   dsize size of the device-specific structure (ex: sizeof (struct_s))
  * \return  the allocated device
 */
-extern struct dev_s *dev_alloc (dev_tag_t tag, unsigned dsize);
+extern device_t *dev_alloc (dev_tag_t tag, unsigned dsize);
 
 /**
  * \brief   Get a device based on its type and on its minor number
@@ -141,13 +141,13 @@ extern struct dev_s *dev_alloc (dev_tag_t tag, unsigned dsize);
  * \param   minor minor number of the device
  * \return  the corresponding device if found, NULL if not
 */
-extern struct dev_s *dev_get (dev_tag_t tag, unsigned minor);
+extern device_t *dev_get (dev_tag_t tag, unsigned minor);
 
 /**
  * \brief   Release a created device (kfree + list_unlink)
  * \param   dev the device to release
 */
-extern void dev_free (struct dev_s *dev);
+extern void dev_free (device_t *dev);
 
 //--------------------------------------------------------------------------------------------------
 // Device helpers

@@ -68,7 +68,7 @@ int blockio_sync (void *page)
     if (!dev || !dev->ops || !dev->ops->blockdev_write) return -EIO;
 
     int err = dev->ops->blockdev_write (dev, lba, page, 1);
-    page_clear_dirty (page);
+    page_clr_dirty (page);
 
     return err;
 }
