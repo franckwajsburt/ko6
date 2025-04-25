@@ -46,8 +46,6 @@
 
 #include <fs/pvfs.h>                // pseudo vitual file system
 
-#include <hal/devices/chardev.h>
-
 #include <hal/cpu/atomic.h>         // Locks
 #include <hal/cpu/cache.h>          // L1 cache function prototypes
 #include <hal/cpu/thread.h>         // threads context
@@ -60,16 +58,14 @@
 #include <hal/devices/dma.h>        // direct memory access
 #include <hal/devices/icu.h>        // interrupt component unit
 #include <hal/devices/timer.h>      // timers
-#include <kernel/kirq.h>            // irq registering
-#include <kernel/kdev.h>            // generic devive management
-
 #include <hal/soc/soc.h>
 
+#include <kernel/kirq.h>            // irq registering
+#include <kernel/kdev.h>            // dynamic devices allocation
 #include <kernel/kmemkernel.h>      // kernel allocators
 #include <kernel/kmemuser.h>        // kernel part of user allocators 
 #include <kernel/kthread.h>         // thread functions and scheduler
 #include <kernel/ksynchro.h>        // mutex, barrier and similar functions
-#include <kernel/kdev.h>            // dynamic devices allocation
 #include <kernel/kshell.h>          // kshell syscall
 #include <kernel/kblockio.h>        // block device's request queue and buffer cache
 
