@@ -28,6 +28,13 @@
 
 #include <hal/devices/blockdev.h>
 
+typedef struct superblock_s {
+    blockdev_t *bdev;               ///< Block device on which this FS is mounted
+    const struct fs_ops_s *ops;     ///< Phisical filesystem operation table
+    struct vfs_inode_s *root;       ///< Virtual root inode of the mounted filesystem
+    void *fs_data;                  ///< Private data (disk volume)
+} superblock_t;
+
 typedef struct vfs_inode_s {
     struct superblock_s *sb;        ///< Filesystem this inode belongs to
     unsigned index;                 ///< Inode identifile in the current superblock
@@ -37,12 +44,10 @@ typedef struct vfs_inode_s {
     void *data;                     ///< physucak fs specific data (real inode)
 } vfs_inode_t;
 
-typedef struct superblock_s {
-    blockdev_t *bdev;               ///< Block device on which this FS is mounted
-    const struct fs_ops_s *ops;     ///< Phisical filesystem operation table
-    struct vfs_inode_s *root;       ///< Virtual root inode of the mounted filesystem
-    void *fs_data;                  ///< Private data (disk volume)
-} superblock_t;
+typedef struct vfs_file_s {
+    struct vfs_inode_s *inode;      ///< vfs inode of the open file 
+    unsigned offset;                ///< current read/write position
+} vfs_file_t;
 
 struct fs_ops_s {
     /**
@@ -157,6 +162,32 @@ struct fs_ops_s {
      */
     int (*setattr)(vfs_inode_t *ino, const struct stat *statbuf);
 };
+
+/**
+ * \brief Mount a filesystem on a block device.
+ * \param sb   Pointer to an empty superblock (allocated by the caller).
+ * \param bdev Block device where the filesystem is located.
+ * \param ops  Filesystem operations (e.g., fs1_ops).
+ * \return 0 on success, negative error code on failure.
+ */
+extern int vfs_mount(superblock_t *sb, blockdev_t *bdev, struct fs_ops_s *ops);
+
+/**
+ * \brief Open a file from its path.
+ * \param sb    Pointer to the superblock where the file is located.
+ * \param path  Path of the file (relative to root, no slashes for now).
+ * \return Pointer to an allocated vfs_file_t, or NULL on error.
+ */
+extern vfs_file_t *vfs_open (superblock_t *sb, const char *path);
+
+/**
+ * \brief Read data from an open file.
+ * \param file   Open file pointer.
+ * \param buffer Destination buffer.
+ * \param size   Number of bytes to read.
+ * \return Number of bytes read, or negative error code on failure.
+ */
+extern int vfs_read (vfs_file_t *file, void *buffer, unsigned size);
 
 #endif//_VFS_H_
 

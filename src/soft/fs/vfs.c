@@ -12,6 +12,54 @@
 
 #include <klibc.h>
 
+int vfs_mount (superblock_t *sb, blockdev_t *bdev, struct fs_ops_s *ops)
+{
+    if (!sb || !bdev || !ops) return -EINVAL;               // check arguments validity
+                                                            
+    sb->ops = ops;                                          // assign the filesystem operations
+    sb->bdev = bdev;                                        // assign the block device
+    sb->fs_data = NULL;                                     // will be init by fs-specific mount
+                                                            
+    int ret = ops->mount(sb, bdev);                         // Call the fs-specific mount function
+    if (ret < 0) sb->ops = NULL;                            // Mount failed, cleanup 
+    return ret;                                             // 0 on success, < 0 on fealure
+}
+
+vfs_file_t *vfs_open (superblock_t *sb, const char *path)
+{
+    if (!sb || !path) return NULL;                          // check arguments validity
+
+    vfs_inode_t *root = sb->root;                           // Only support root dir lookup for now
+    if (!root) return NULL;
+
+    vfs_inode_t *ino = sb->ops->lookup(sb, root, path);     // Lookup the file
+    if (!ino) return NULL;
+
+    vfs_file_t *file = kmalloc(sizeof(vfs_file_t));         // Allocate a file descriptors
+    if (!file) { kfree(ino); return NULL; }                 // Release the inode if allocation fails
+
+    file->inode = ino;
+    file->offset = 0;
+
+    return file;
+}
+
+int vfs_read (vfs_file_t *file, void *buffer, unsigned size)
+{
+    if (!file || !buffer || !size) return -EINVAL;                  // check arguments validity
+
+    vfs_inode_t *ino = file->inode;                                 // retreive file's vfs_inode
+    if (!ino || !ino->sb || !ino->sb->ops || !ino->sb->ops->read)   // check structures well formed
+        return -EINVAL;
+
+    int ret = ino->sb->ops->read(ino, buffer, file->offset, size);  // Perform the read
+    if (ret < 0) return ret;
+
+    file->offset += ret;                                            // Advance the file offset
+
+    return ret;
+}
+
 /*------------------------------------------------------------------------------------------------*\
    Editor config (vim/emacs): tabs are 4 spaces, max line length is 100 characters
    vim: set ts=4 sw=4 sts=4 et tw=100:
