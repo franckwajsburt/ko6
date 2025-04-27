@@ -1,10 +1,10 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-03-14
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-27
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
-  \file     kernel/kinit.c
+  \file     tools/elfloader/elfloader.h
   \author   Franck Wajsburt
   \brief    section loader for an executable
 
@@ -93,4 +93,4 @@ void elf_close(elf_t *elf);
  */
 int elf_load_section (elf_t *elf, int section_index, char *output_filename);
 
-#endif // _ELFLOADER_H_
+#endif//_ELFLOADER_H_

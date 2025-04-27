@@ -1,10 +1,10 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-03-14
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-27
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
-  \file     kernel/kinit.c
+  \file     tools/elfloader/elfminimal.h
   \brief    extracted from elf.h (Linux)
 
 \*------------------------------------------------------------------------------------------------*/
@@ -59,5 +59,5 @@ typedef struct {
     uint32_t sh_entsize;        ///< Entry size if section holds a table
 } Elf32_Shdr;
 
-#endif // ELF_H_MINIMAL
+#endif//ELF_H_MINIMAL
 

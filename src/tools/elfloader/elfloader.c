@@ -1,10 +1,10 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-03-14
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-27
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
-  \file     tools/elfloader.c
+  \file     tools/elfloader/elfloader.c
   \author   Franck Wajsburt
   \brief    section loader for an executable
             
@@ -13,14 +13,14 @@
   │  └────────────┘      
   │  ┌────────────┐◄───┐ 
   │  │    text    │    │ 
-  │  ┌────────────┐◄─┐ │ 
+  │  ├────────────┤◄─┐ │ 
   │  │    data    │  │ │ 
   │  │            │  │ │ 
   │  └────────────┘  │ │ 
   └─►┌────────────┐  │ │ 
      │ Elf32_Shdr │──┘ │ 
      │            │────┘ 
-     └────────────┘      (draw with https://asciiflow.com)
+     └────────────┘      https://asciiflow.com
 \*------------------------------------------------------------------------------------------------*/
 
 #include <elfloader.h>
