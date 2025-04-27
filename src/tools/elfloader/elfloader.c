@@ -8,19 +8,19 @@
   \author   Franck Wajsburt
   \brief    section loader for an executable
             
-     ┌────────────┐      
-  ┌──┼ elf32_Ehdr │      
-  │  └────────────┘      
-  │  ┌────────────┐◄───┐ 
-  │  │    text    │    │ 
-  │  ├────────────┤◄─┐ │ 
-  │  │    data    │  │ │ 
-  │  │            │  │ │ 
+     ┌────────────┐         Header information for a 32-bit ELF file, including the file type, 
+  ┌──┼ elf32_Ehdr │         machine type, entry point address, and offsets in the section headers.
+  │  └────────────┘         
+  │  ┌────────────┐◄───┐    Each section is raw content stored as a continuous array of bytes.   
+  │  │    text    │    │    For the ko6 loader, the loadable sections are .text, .data, and .bss.
+  │  ├────────────┤◄─┐ │    The .text section contains binary code, the .data section contains 
+  │  │    data    │  │ │    initialized global variables, and the .bss section reserves space 
+  │  │            │  │ │    for uninitialized global variables. 
   │  └────────────┘  │ │ 
-  └─►┌────────────┐  │ │ 
-     │ Elf32_Shdr │──┘ │ 
-     │            │────┘ 
-     └────────────┘      https://asciiflow.com
+  └─►┌────────────┐  │ │    Section header: array of Elf32_Shdr structures describes all sections
+     │ Elf32_Shdr │──┘ │    of a 32-bit ELF file, with each entry giving the properties 
+     │            │────┘    (name, type, address, size, etc.) of one section
+     └────────────┘                                                           https://asciiflow.com
 \*------------------------------------------------------------------------------------------------*/
 
 #include <elfloader.h>
