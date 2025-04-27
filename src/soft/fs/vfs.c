@@ -12,6 +12,13 @@
 
 #include <klibc.h>
 
+static void vfs_inode_release(vfs_inode_t *inode)
+{
+    if (--(inode->refcount) == 0) {
+        kfree(inode);
+    }
+}
+
 int vfs_mount (superblock_t *sb, blockdev_t *bdev, struct fs_ops_s *ops)
 {
     if (!sb || !bdev || !ops) return -EINVAL;               // check arguments validity
@@ -38,6 +45,7 @@ vfs_file_t *vfs_open (superblock_t *sb, const char *path)
     vfs_file_t *file = kmalloc(sizeof(vfs_file_t));         // Allocate a file descriptors
     if (!file) { kfree(ino); return NULL; }                 // Release the inode if allocation fails
 
+    ino->refcount++;
     file->inode = ino;
     file->offset = 0;
 
@@ -58,6 +66,32 @@ int vfs_read (vfs_file_t *file, void *buffer, unsigned size)
     file->offset += ret;                                            // Advance the file offset
 
     return ret;
+}
+
+int vfs_seek (vfs_file_t *file, int offset, int whence)
+{
+    unsigned size;
+    switch (whence) {
+    case SEEK_SET:
+        file->offset = offset;
+        return 0;
+    case SEEK_CUR:
+        file->offset += offset;
+        return 0;
+    case SEEK_END:
+        size = file->inode->size;
+        file->offset = size + offset;
+        return 0;
+    default:
+        return -1;
+    }
+}
+
+int vfs_close (vfs_file_t *file)
+{
+    vfs_inode_release (file->inode);
+    kfree(file);
+    return 0;
 }
 
 /*------------------------------------------------------------------------------------------------*\

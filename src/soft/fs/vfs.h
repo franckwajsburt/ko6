@@ -6,20 +6,35 @@
 
   \file     fs/vfs.c
   \author   Franck Wajsburt
-  \brief    Virtual File System
+  \brief    VFS - Virtual File System layer
 
-   Each element isolates a level of abstraction
+  Responsibilities:
+   - Manage file opening, reading, seeking and closing
+   - Manage inode lifetime via reference counting
+   - Provide a clean abstraction between filesystems and user programs
+ 
+  Each element isolates a level of abstraction
+  Level       Role
+  ------------------------------------------------------------------------------------------
+  vfs_inode   Information about a file or directory
+              inode: generic, abstracted by the VFS, with no direct knowledge of the device
+  superblock  Information about a mounted volume
+              superblock: represents the entire file system mounted on a block device
+  blockdev    Physical interface to the device
+              blockdev: represents physical access to storage (via block driver)
+  minor       Physical device number (type + instance)
+              minor: identifies the hardware device (storage, partition, etc.)
 
-   Level       Role
-   ------------------------------------------------------------------------------------------
-   vfs_inode   Information about a file or directory
-               inode: generic, abstracted by the VFS, with no direct knowledge of the device
-   superblock  Information about a mounted volume
-               superblock: represents the entire file system mounted on a block device
-   blockdev    Physical interface to the device
-               blockdev: represents physical access to storage (via block driver)
-   minor       Physical device number (type + instance)
-               minor: identifies the hardware device (storage, partition, etc.)
+  There are no shortcuts like embedding a superblock pointer directly into the file structure. 
+  This is intentional, each abstraction has its own role:
+  - A file represents an open file instance.
+  - An inode represents the file metadata.
+  - A superblock represents the mounted filesystem.
+
+  Respecting these separations keeps the architecture clean, understandable, and easy to evolve.
+  Shortcuts may bring minor speed gains, but they destroy the clarity and independence of layers, 
+  making future maintenance harder. In this system, clarity, correctness, and long-term 
+  maintainability are prioritized over premature optimizations.
 
 \*------------------------------------------------------------------------------------------------*/
 
@@ -49,6 +64,27 @@ typedef struct vfs_file_s {
     unsigned offset;                ///< current read/write position
 } vfs_file_t;
 
+enum whence_e {
+    SEEK_SET,                       ///< file offset is set to offset bytes
+    SEEK_CUR,                       ///< file offset is set to current location plus offset bytes
+    SEEK_END                        ///< file offset is set to the file size plus offset bytes
+};
+
+/** 
+ * \brief real file system API
+ *
+ *  mount     Mount the a real filesystem on a given block device.
+ *  lookup    Lookup a file or directory name in a parent directory.
+ *  read      Read data from a file stored in the real file system.
+ *  unmount   Unmount the filesystem and release its resources.
+ *  write     Write data to a file stored in the filesystem.
+ *  create    Create a new regular file in the directory.
+ *  mkdir     Create a new directory.
+ *  unlink    Remove a file or directory.
+ *  readdir   Read the contents of a directory (enumerate entries).
+ *  getattr   Retrieve file attributes (stat-like information).
+ *  setattr   Change file attributes (e.g., permissions).
+ */
 struct fs_ops_s {
     /**
      * \brief  Mount the a real filesystem on a given block device.
@@ -188,6 +224,21 @@ extern vfs_file_t *vfs_open (superblock_t *sb, const char *path);
  * \return Number of bytes read, or negative error code on failure.
  */
 extern int vfs_read (vfs_file_t *file, void *buffer, unsigned size);
+
+/**
+ * \brief Move the current file offset.
+ * \param file   Open file pointer.
+ * \param offset Byte offset to move.
+ * \param whence One of SEEK_SET, SEEK_CUR, or SEEK_END.
+ * \return 0 on success, negative error code on failure.
+ */
+extern int vfs_seek (vfs_file_t *file, int offset, int whence);
+
+/**
+ * \brief close file
+ * \return 0 on success
+ */
+extern int vfs_close (vfs_file_t *file);
 
 #endif//_VFS_H_
 
