@@ -24,13 +24,6 @@ EC_WHITE
 "  |_\\_\\"EC_CYAN  X___X    EC_WHITE"\\___/   Copyright 2021 Sorbonne University\n\n"
 EC_RESET;
 
-void wzero (void *addr, size_t n)
-{
-    unsigned *a = addr;
-    if (a)
-    do { *a++ = 0; } while (n -= sizeof(unsigned));
-}
-
 void *memset(void *s, int c, size_t n) {
     unsigned char *p = s;
     unsigned long clong = (unsigned char)c;

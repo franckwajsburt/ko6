@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2022-06-17
-  | / /(     )/ _ \     \copyright  2021-2022 Sorbonne University
-  |_\_\ x___x \___/                 https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-27
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     ulib/crt0.c
   \author   Franck Wajsburt
@@ -33,8 +33,8 @@ void _start (void)
 {
     int res;
 //    urandseed = 1;
-//
     for (int *a = &__bss_origin; a != &__bss_end; *a++ = 0);
+    memset (&__bss_origin, 0, __bss_end - __bss_origin);
     malloc_init (__usermem.uheap_beg);
     res = main ();
     exit (res);

@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-23
+  | |__ /'v'\  / /      \date 2025-04-27
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -205,7 +205,7 @@ void * kmalloc (size_t size)
     Page[PAGE(res)].slab.lines = lines % MaxLineSlab;       // this page is used as a slab of nbline
     Page[PAGE(res)].slab.nbused++;                          // one more times
 
-    wzero (res, size);                                      // clear allocated memory
+    memset (res, 0, size);                                  // clear allocated memory
     return res;                                             // finally returns res
 }
 

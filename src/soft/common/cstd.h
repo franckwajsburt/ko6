@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-05
+  | |__ /'v'\  / /      \date 2025-04-27
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -39,13 +39,6 @@ extern char Banner_ko6[];    ///< ko6 banner on 4 lines
  * \param     n number of bytes to write
 */
 extern void *memset (void *s, int c, unsigned n);
-
-/**
- * \brief     write 0 in a buffer 
- * \param     addr address word aligned
- * \param     n  number of bytes to erase must be a multiple of sizeof word
- */
-extern void wzero (void *addr, size_t n);
 
 /**
  * \brief     copies buffer src to the buffer dest (the buffers must be disjoints)
