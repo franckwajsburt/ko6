@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-23
+  | |__ /'v'\  / /      \date 2025-04-27
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -31,12 +31,28 @@ void wzero (void *addr, size_t n)
     do { *a++ = 0; } while (n -= sizeof(unsigned));
 }
 
-void *memset (void *s, int c, unsigned n)
-{
-    char *p = s;
+void *memset(void *s, int c, size_t n) {
+    unsigned char *p = s;
+    unsigned long clong = (unsigned char)c;
+    clong |= clong << 8;
+    clong |= clong << 16;                                   // Build a 32-bit constant
+#ifdef __LP64__
+    clong |= clong << 32;                                   // 64-bit systems
+#endif
 
-    while (n--)
+    while ((unsigned long)p % sizeof(unsigned long) && n) { // Align address to unsigned long
         *p++ = c;
+        n--;
+    }
+    unsigned long *pword = (unsigned long *)p;              // Fill by unsigned long word
+    while (n >= sizeof(unsigned long)) {
+        *pword++ = clong;
+        n -= sizeof(unsigned long);
+    }
+    p = (unsigned char *)pword;                             // Fill remaining bytes
+    while (n--) {
+        *p++ = c;
+    }
     return s;
 }
 
@@ -45,29 +61,25 @@ void *memcpy (void *dest, const void *src, size_t n)
     char *d = dest;
     const char *s = src;
 
-    if (((unsigned long)d % sizeof(long)) ==              // if dest & src have the same alignment
+    if (((unsigned long)d % sizeof(long)) ==                // if dest & src have the same alignment
         ((unsigned long)s % sizeof(long))) 
     { 
-        while (((unsigned long)d % sizeof(long)) && n) {  // copy all char until first long word
+        while (((unsigned long)d % sizeof(long)) && n) {    // copy all char until first long word
             *d++ = *s++;
             n--;
         }
-
-        long *dl = (long *)d;                             // then copy per long word
+        long *dl = (long *)d;                               // then copy per long word
         const long *sl = (const long *)s;
         while (n >= sizeof(long)) {
             *dl++ = *sl++;
             n -= sizeof(long);
         }
-
-        d = (char *)dl;                                   // retrieve the last words addresses
+        d = (char *)dl;                                     // retrieve the last words addresses
         s = (const char *)sl;
     }
-
-    while (n--) {                                         // copy the remaing chars
+    while (n--) {                                           // copy the remaing chars
         *d++ = *s++;
     }
-
     return dest;
 }
 
@@ -80,7 +92,6 @@ int memcmp (const void *str1, const void *str2, size_t n)
         if (*s1++ != *s2++)
             return s1[-1] < s2[-1] ? -1 : 1;
     }
-    
     return 0;
 }
 
@@ -97,7 +108,6 @@ void *memmove (void *dest, const void *src, size_t n)
         while (n--)
             *lastd-- = *lasts--;
     }
-
     return dest;
 }
 
@@ -110,7 +120,6 @@ void *memchr (const void *src, int c, size_t n)
             return (void *)csrc;
         csrc++;
     }
-
     return NULL;
 }
 
@@ -128,7 +137,6 @@ size_t strnlen (const char *s, size_t n)
     for (i = 0; i < n; ++i)
         if (s[i] == '\0')
             break;
-    
     return i;
 }
 
@@ -139,7 +147,6 @@ char *strchr (const char *s, int c)
 	        return (char*)s;
         }
     } while (*s++);
-  
     return (0);
 }
 
@@ -174,7 +181,6 @@ int strcmp (const char *s1, const char *s2)
         if (c1 == 0)
             return c1 - c2;
     } while (c1 == c2);
-
     return c1 - c2;
 }
 
@@ -188,7 +194,6 @@ int strncmp (const char *s1, const char *s2, unsigned n)
         if (c1 == 0)
             return c1 - c2;
     } while ((c1 == c2) && (--n));
-
     return c1 - c2;
 }
 
@@ -247,7 +252,6 @@ int atoi (char *val)
         res = (res * 10) + (*val - '0');        // add  to the result
         val++;
     }
-
     return (neg) ? -res : res;                  // return the right result
 }
 
