@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date       2025-04-21
-  | / /(     )/ _ \     \copyright  2021 Sorbonne University
-  |_\_\ x___x \___/     \license    https://opensource.org/licenses/MIT
+  | |__ /'v'\  / /      \date 2025-04-28
+  | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
+  |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     fs/fs1/fs1.c
   \author   Franck Wajsburt
@@ -13,12 +13,12 @@
   │DIR│   app1.x  │app2.x │     app3.x    │  disk image built
   └───└───────────└───────└───────────────┘
       ┌─────────────────┐
-  DIR:│  0:             │ name[24],LBA,size
+  DIR:│  0: <unused>    │ name[24],LBA,size
       │  1:app1.x 1 11kB│
       │  2:app2.x 4 7kB │
       │  3.app3.x 6 15kB│
       │...:...... . ....│
-      │127:             │ 128 file descr.
+      │127:             │ 127 file descriptors
       └─────────────────┘                                                     https://asciiflow.com
 \*------------------------------------------------------------------------------------------------*/
 
@@ -58,41 +58,41 @@ static fs1_volume_t *fs1_get_vol(const superblock_t *sb)
 }
 
 /**
- * \brief Retrieve the pointer to the fs1 inode structure from its index.
+ * \brief Retrieve the pointer to the fs1 inode structure from its ino.
  * \param sb    Pointer to the superblock.
- * \param index Index of the inode in the volume table.
+ * \param ino Index of the inode in the volume table.
  * \return Pointer to the fs1_inode_t entry if valid, NULL otherwise.
  */
-static fs1_inode_t *fs1_get_inode (const superblock_t *sb, unsigned index) 
+static fs1_inode_t *fs1_get_inode (const superblock_t *sb, ino_t ino) 
 {
     fs1_volume_t *vol = fs1_get_vol(sb);
-    return (index < vol->entry_count) ? &vol->entries[index] : NULL;
+    return (ino < vol->entry_count) ? &vol->entries[ino] : NULL;
 }
 
 /**
  * \brief Create a VFS inode from a real fs1 inode.
- * \param sb    Pointer to the superblock.
- * \param index Index of the real inode in the fs1 volume.
+ * \param sb Pointer to the superblock.
+ * \param ino Index of the real inode in the fs1 volume.
  * \return A pointer to the allocated vfs_inode_t, or NULL on error.
  * \note Index 0 is reserved for the synthetic root inode and should not be used for regular files
  *       FIXME This function create a vfs_inode because there is no vfs_inode cache yet 
  */
-static vfs_inode_t *fs1_create_inode (superblock_t *sb, unsigned index)
+static vfs_inode_t *fs1_create_inode (superblock_t *sb, ino_t ino)
 {
-    fs1_inode_t *entry = fs1_get_inode (sb, index);         // retreive the fs1_inode from the index
+    fs1_inode_t *entry = fs1_get_inode (sb, ino);           // retreive the fs1_inode from the ino
     if (!entry) return NULL;
-    vfs_inode_t *ino = kmalloc (sizeof(vfs_inode_t));       // allocate a new vfs_inode
-    if (!ino) return NULL;
+    vfs_inode_t *inode = kmalloc (sizeof(vfs_inode_t));     // allocate a new vfs_inode
+    if (!inode) return NULL;
 
-    ino->sb = sb;                                           // superblock to know thi ino come from
-    ino->index = index;                                     // real inode indentifier (for this fs)
-    ino->size  = (index) ? entry->size : BLOCK_SIZE;        // specical case for the root directory
-    ino->mode |= (index) ? S_IFREG : S_IFDIR;               // index 0 --> DIR, else REGular file 
-    ino->mode  = S_IROTH|S_IXOTH|S_IRUSR|S_IXUSR;           // All can read and execute
-    ino->data  = (void *)entry;                             // fs1_inode itself
-    ino->refcount = 1;                                      // new vfs_inode so use once
+    inode->sb = sb;                                         // sb to know this inode come from
+    inode->ino = ino;                                       // real inode indentifier (for this fs)
+    inode->size  = (ino) ? entry->size : BLOCK_SIZE;        // specical case for the root directory
+    inode->mode  = (ino) ? S_IFREG : S_IFDIR;               // ino 0 --> DIR, else REGular file 
+    inode->mode |= S_IROTH|S_IXOTH|S_IRUSR|S_IXUSR;         // All can read and execute
+    inode->data  = (void *)entry;                           // fs1_inode itself
+    inode->refcount = 1;                                    // new vfs_inode so use once
 
-    return ino;
+    return inode;
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -116,7 +116,7 @@ static int fs1_mount (superblock_t *sb, blockdev_t *bdev)
 
     sb->root = fs1_create_inode (sb, 0);                    // inode root of the superblock
     if (!sb->root) {                                        // no more memory space
-        page_clr_lock (vol->entries);                         // unlock the metadata papge
+        page_clr_lock (vol->entries);                       // unlock the metadata papge
         blockio_release (vol->entries);                     // release the block
         kfree (vol);                                        // volume is unuseful
         return -ENOMEM;                                     // return the error
@@ -124,21 +124,59 @@ static int fs1_mount (superblock_t *sb, blockdev_t *bdev)
     return 0;                                               // success
 }
 
-static vfs_inode_t *fs1_lookup (superblock_t *sb, vfs_inode_t *dir, const char *name) 
+static int fs1_unmount(superblock_t *sb)
 {
-    fs1_volume_t *vol = fs1_get_vol (sb);                   // volume of the superblock
-    for (unsigned i = 0; i < vol->entry_count; ++i) {       // for all possible files 
-        char * curname = vol->entries[i].name;              // get the current name
-        if (strncmp (name, curname, FS1_NAME_LEN) == 0) {   // check if name is found
-            return fs1_create_inode (sb, i);                // if yes return the inode
-        }
-    }
-    return NULL;                                            // or NULL on failure
+    (void)sb;
+    return -ENOSYS;
 }
 
-static int fs1_read (vfs_inode_t *ino, void *buffer, unsigned offset, unsigned size) 
+/**
+ * \note Inode reference counting model:
+ * 
+ * When a new vfs_inode_t is created (e.g., by fs1_create_inode()), its reference count (refcount) 
+ * is set to 1. This 1st reference represents the presence of the inode in memory it is in the VFS.
+ *
+ * When an inode is actively used (for example by lookup, open, or other operations),
+ * the function vfs_inode_get() must be called to increment the refcount.
+ * Each user must hold its own reference to the inode while it uses it.
+ *
+ * Therefore, after fs1_lookup() creates a new inode and calls vfs_inode_get(),
+ * the refcount becomes 2:
+ *   - One reference for the inode being stored in memory (created).
+ *   - One reference for the active usage by the lookup (or open).
+ *
+ * When the user is finished (e.g., after vfs_close()), it must call vfs_inode_release(),
+ * decrementing the refcount.
+ * When the refcount reaches zero, the inode is automatically freed from memory.
+ *
+ * This model ensures safe sharing and lifetime management of inodes,
+ * without shortcuts or hidden dependencies.
+ */
+static vfs_inode_t *fs1_lookup(superblock_t *sb, vfs_inode_t *dir, const char *name) 
 {
-    const fs1_inode_t *ent = (const fs1_inode_t *)ino->data;
+    (void)dir;
+    fs1_volume_t *vol = fs1_get_vol(sb);                    // volume of the superblock
+    for (unsigned i = 0; i < vol->entry_count; ++i) {       // for all possible files in dir
+        char *curname = vol->entries[i].name;               // get the current name
+        if (strncmp(name, curname, FS1_NAME_LEN) == 0) {    // check if name is found
+            vfs_inode_t *inode = vfs_inode_lookup(sb, i);   // if yes lookup the vfs_inode
+            if (inode) {                                    // if found
+                vfs_inode_get(inode);                       // incrément it
+                return inode;                               // return it
+            }
+            inode = fs1_create_inode(sb, i);                // if not found create it refcount <- 1
+            if (inode) {                                    // if success 
+                vfs_inode_get(inode);                       // then refcount <- 2
+            }
+            return inode;
+        }
+    }
+    return NULL;
+}
+
+static int fs1_read (vfs_inode_t *inode, void *buffer, unsigned offset, unsigned size) 
+{
+    const fs1_inode_t *ent = (const fs1_inode_t *)inode->data;
     if (offset >= ent->size) return 0;
     if (offset + size > ent->size) size = ent->size - offset;
 
@@ -147,7 +185,7 @@ static int fs1_read (vfs_inode_t *ino, void *buffer, unsigned offset, unsigned s
     unsigned lba_offset = offset % BLOCK_SIZE;
     unsigned copied = 0;
 
-    unsigned minor = ino->sb->bdev->minor; // see header of fs/vfs.h to get an explanation
+    unsigned minor = inode->sb->bdev->minor; // see header of fs/vfs.h to get an explanation
 
     for (unsigned lba = start_lba; lba <= end_lba; lba++) {
         void *page = blockio_get (minor, lba);
@@ -165,23 +203,78 @@ static int fs1_read (vfs_inode_t *ino, void *buffer, unsigned offset, unsigned s
     return copied;
 }
 
+static int fs1_write (vfs_inode_t *inode, const void *buffer, unsigned offset, unsigned size)
+{
+    (void)inode;
+    (void)buffer;
+    (void)offset;
+    (void)size;
+    return -ENOSYS;
+}
+
+static vfs_inode_t *fs1_create(vfs_inode_t *dir, const char *name, unsigned mode)
+{
+    (void)dir;
+    (void)name;
+    (void)mode;
+    return NULL; 
+}
+
+static vfs_inode_t *fs1_mkdir(vfs_inode_t *dir, const char *name, mode_t mode)
+{
+    (void)dir;
+    (void)name;
+    (void)mode;
+    return NULL; 
+}
+
+static int fs1_unlink(vfs_inode_t *dir, const char *name)
+{
+    (void)dir;
+    (void)name;
+    return -ENOSYS;
+}
+
+static int fs1_readdir(vfs_inode_t *dir, unsigned index, char *name, unsigned maxlen)
+{
+    (void)dir;
+    (void)index;
+    (void)name;
+    (void)maxlen;
+    return -ENOSYS;
+}
+
+static int fs1_getattr(vfs_inode_t *inode, struct stat *stbuf)
+{
+    (void)inode;
+    (void)stbuf;
+    return -ENOSYS;
+}
+
+static int fs1_setattr(vfs_inode_t *inode, const struct stat *stbuf)
+{
+    (void)inode;
+    (void)stbuf;
+    return -ENOSYS;
+}
+
 /**
  * \brief VFS operation table for the fs1 filesystem.
  *        Only a subset of the VFS operations is implemented.
  *        Unsupported operations are set to NULL.
  */
 struct fs_ops_s fs1_ops = {
-    .mount    = fs1_mount,
-    .unmount  = NULL,
-    .lookup   = fs1_lookup,
-    .read     = fs1_read,
-    .write    = NULL,
-    .create   = NULL,
-    .mkdir    = NULL,
-    .unlink   = NULL,
-    .readdir  = NULL,
-    .getattr  = NULL,
-    .setattr  = NULL
+    .mount    = fs1_mount   ,
+    .unmount  = fs1_unmount ,   // not used with fs1
+    .lookup   = fs1_lookup  ,
+    .read     = fs1_read    ,
+    .write    = fs1_write   ,   // not used with fs1
+    .create   = fs1_create  ,   // not used with fs1
+    .mkdir    = fs1_mkdir   ,   // not used with fs1
+    .unlink   = fs1_unlink  ,   // not used with fs1
+    .readdir  = fs1_readdir ,   // not used with fs1
+    .getattr  = fs1_getattr ,   // not used with fs1
+    .setattr  = fs1_setattr     // not used with fs1
 };
 
 /*------------------------------------------------------------------------------------------------*\

@@ -1,12 +1,12 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-25
+  | |__ /'v'\  / /      \date 2025-04-28
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     fs/fs1/fs1.h
   \author   Franck Wajsburt
-  \brief    Minimalist file system, only 1 directory
+  \brief    Minimalist Read Only File System 1 directory --> FS1
 
 \*------------------------------------------------------------------------------------------------*/
 
