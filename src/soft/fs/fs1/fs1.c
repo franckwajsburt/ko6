@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-28
+  | |__ /'v'\  / /      \date 2025-04-29
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -79,18 +79,16 @@ static fs1_inode_t *fs1_get_inode (const superblock_t *sb, ino_t ino)
  */
 static vfs_inode_t *fs1_create_inode (superblock_t *sb, ino_t ino)
 {
-    fs1_inode_t *entry = fs1_get_inode (sb, ino);           // retreive the fs1_inode from the ino
+    fs1_inode_t *entry = fs1_get_inode (sb, ino);           // retrieve the fs1_inode from the ino
     if (!entry) return NULL;
     vfs_inode_t *inode = kmalloc (sizeof(vfs_inode_t));     // allocate a new vfs_inode
     if (!inode) return NULL;
 
-    inode->sb = sb;                                         // sb to know this inode come from
-    inode->ino = ino;                                       // real inode indentifier (for this fs)
-    inode->size  = (ino) ? entry->size : BLOCK_SIZE;        // specical case for the root directory
+    vfs_inode_init (inode, sb, ino);                        // initialize also refcount to 1
+    inode->size  = (ino) ? entry->size : BLOCK_SIZE;        // special case for the root directory
     inode->mode  = (ino) ? S_IFREG : S_IFDIR;               // ino 0 --> DIR, else REGular file 
     inode->mode |= S_IROTH|S_IXOTH|S_IRUSR|S_IXUSR;         // All can read and execute
     inode->data  = (void *)entry;                           // fs1_inode itself
-    inode->refcount = 1;                                    // new vfs_inode so use once
 
     return inode;
 }
@@ -102,7 +100,7 @@ static vfs_inode_t *fs1_create_inode (superblock_t *sb, ino_t ino)
 static int fs1_mount (superblock_t *sb, blockdev_t *bdev)     
 {
     fs1_volume_t *vol = kmalloc (sizeof (fs1_volume_t));    // create a new volume
-    if (!vol) return -ENOMEM;                               // return if no memmory
+    if (!vol) return -ENOMEM;                               // return if no memory
     vol->entries = blockio_get (bdev->minor, 0);            // read the disk metadata (first block)
     if (!vol->entries) { kfree (vol); return -EIO; }        // return if impossible to read disk
     page_set_lock (vol->entries);                           // lock the metada block page
@@ -116,9 +114,9 @@ static int fs1_mount (superblock_t *sb, blockdev_t *bdev)
 
     sb->root = fs1_create_inode (sb, 0);                    // inode root of the superblock
     if (!sb->root) {                                        // no more memory space
-        page_clr_lock (vol->entries);                       // unlock the metadata papge
+        page_clr_lock (vol->entries);                       // unlock the metadata page
         blockio_release (vol->entries);                     // release the block
-        kfree (vol);                                        // volume is unuseful
+        kfree (vol);                                        // volume no longer needed (cleanup)
         return -ENOMEM;                                     // return the error
     }
     return 0;                                               // success
@@ -176,7 +174,7 @@ static vfs_inode_t *fs1_lookup(superblock_t *sb, vfs_inode_t *dir, const char *n
 
 static int fs1_read (vfs_inode_t *inode, void *buffer, unsigned offset, unsigned size) 
 {
-    const fs1_inode_t *ent = (const fs1_inode_t *)inode->data;
+    fs1_inode_t *ent = inode->data;
     if (offset >= ent->size) return 0;
     if (offset + size > ent->size) size = ent->size - offset;
 
