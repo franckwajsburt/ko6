@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2022-07-02
+  | |__ /'v'\  / /      \date 2025-04-29
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -100,7 +100,7 @@ static inline unsigned list_isempty (list_t * root) {
  * \brief   Tests if an item is the first item of the list root.
  * \param   root root of list
  * \param   item an item of the list
- * \return  true if elmenent is the first one, false otherwise
+ * \return  true if elenent is the first one, false otherwise
  */
 static inline unsigned list_isfirst (list_t * root, list_t * item) {
     return item == root->next;
@@ -110,7 +110,7 @@ static inline unsigned list_isfirst (list_t * root, list_t * item) {
  * \brief   Tests if an item is the last item of the list root.
  * \param   root root of list
  * \param   item an item of the list
- * \return  true if elmenent is the last one, false otherwise
+ * \return  true if elenent is the last one, false otherwise
  */
 static inline unsigned list_islast (list_t *  root, list_t * item) {
     return item == root->prev;
@@ -120,7 +120,7 @@ static inline unsigned list_islast (list_t *  root, list_t * item) {
 
 
 /**
- * \brief   Give the first item of the list, do not detache it
+ * \brief   Give the first item of the list, do not detach it
  * \param   root root of list
  * \return  A pointer to the first elenent if there is, NULL if the list is empty
  */
@@ -130,7 +130,7 @@ static inline list_t * list_first (list_t * root) {
 #define list_next(item) list_first(item)
 
 /**
- * \brief   Give the last item of the list, do not detache it.
+ * \brief   Give the last item of the list, do not detach it.
  * \param   root root of list
  * \return  A pointer to the last elenent if there is, NULL if the list is empty
  */
@@ -176,7 +176,7 @@ static inline list_t * list_last (list_t * root) {
 /**
  * \brief   Macro to get the address of the container of a list item.
  * \param   ITEM : pointer the list_t variable created by foreach()
- * \param   TYPE C tyoe of the container
+ * \param   TYPE C type of the container
  * \param   MEMBER member name of the list item in the container TYPE
  * \return  A pointer to the container
  */
