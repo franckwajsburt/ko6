@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-29
+  | |__ /'v'\  / /      \date 2025-05-01
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -52,20 +52,20 @@ typedef struct fs1_volume_s {
  * \param sb super block
  * \return a pointer to the volume
  */
-static fs1_volume_t *fs1_get_vol(const superblock_t *sb) 
+static fs1_volume_t *fs1_get_volume (const superblock_t *sb) 
 {
     return (fs1_volume_t *) sb->fs_data;
 }
 
 /**
  * \brief Retrieve the pointer to the fs1 inode structure from its ino.
- * \param sb    Pointer to the superblock.
+ * \param sb  Pointer to the superblock.
  * \param ino Index of the inode in the volume table.
  * \return Pointer to the fs1_inode_t entry if valid, NULL otherwise.
  */
-static fs1_inode_t *fs1_get_inode (const superblock_t *sb, ino_t ino) 
+static fs1_inode_t *fs1_retrieve_inode (const superblock_t *sb, ino_t ino) 
 {
-    fs1_volume_t *vol = fs1_get_vol(sb);
+    fs1_volume_t *vol = fs1_get_volume (sb);
     return (ino < vol->entry_count) ? &vol->entries[ino] : NULL;
 }
 
@@ -75,22 +75,18 @@ static fs1_inode_t *fs1_get_inode (const superblock_t *sb, ino_t ino)
  * \param ino Index of the real inode in the fs1 volume.
  * \return A pointer to the allocated vfs_inode_t, or NULL on error.
  * \note Index 0 is reserved for the synthetic root inode and should not be used for regular files
- *       FIXME This function create a vfs_inode because there is no vfs_inode cache yet 
  */
-static vfs_inode_t *fs1_create_inode (superblock_t *sb, ino_t ino)
+static vfs_inode_t *fs1_new_inode (superblock_t *sb, ino_t ino) 
 {
-    fs1_inode_t *entry = fs1_get_inode (sb, ino);           // retrieve the fs1_inode from the ino
+    const fs1_inode_t *entry = fs1_retrieve_inode (sb, ino);// retrieve the fs1_inode from the ino
     if (!entry) return NULL;
-    vfs_inode_t *inode = kmalloc (sizeof(vfs_inode_t));     // allocate a new vfs_inode
-    if (!inode) return NULL;
 
-    vfs_inode_init (inode, sb, ino);                        // initialize also refcount to 1
-    inode->size  = (ino) ? entry->size : BLOCK_SIZE;        // special case for the root directory
-    inode->mode  = (ino) ? S_IFREG : S_IFDIR;               // ino 0 --> DIR, else REGular file 
-    inode->mode |= S_IROTH|S_IXOTH|S_IRUSR|S_IXUSR;         // All can read and execute
-    inode->data  = (void *)entry;                           // fs1_inode itself
+    size_t size = (ino) ? entry->size : BLOCK_SIZE;         // special case for the root directory
+    mode_t mode = (ino) ? S_IFREG : S_IFDIR;                // ino 0 --> DIR, else REGular file 
+    mode       |= S_IROTH|S_IXOTH|S_IRUSR|S_IXUSR;          // All can read and execute
+    void *data  = (ino) ? (void *)entry : NULL;             // fs1_inode itself
 
-    return inode;
+    return vfs_inode_create (sb, ino, size, mode, data);    // finally create the vfs_inode
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -112,7 +108,7 @@ static int fs1_mount (superblock_t *sb, blockdev_t *bdev)
     sb->ops = &fs1_ops;                                     // API implementation
     sb->fs_data = vol;                                      // real file system
 
-    sb->root = fs1_create_inode (sb, 0);                    // inode root of the superblock
+    sb->root = fs1_new_inode (sb, 0);                       // inode root of the superblock
     if (!sb->root) {                                        // no more memory space
         page_clr_lock (vol->entries);                       // unlock the metadata page
         blockio_release (vol->entries);                     // release the block
@@ -122,7 +118,7 @@ static int fs1_mount (superblock_t *sb, blockdev_t *bdev)
     return 0;                                               // success
 }
 
-static int fs1_unmount(superblock_t *sb)
+static int fs1_unmount (superblock_t *sb)
 {
     (void)sb;
     return -ENOSYS;
@@ -131,7 +127,7 @@ static int fs1_unmount(superblock_t *sb)
 /**
  * \note Inode reference counting model:
  * 
- * When a new vfs_inode_t is created (e.g., by fs1_create_inode()), its reference count (refcount) 
+ * When a new vfs_inode_t is created (e.g., by fs1_new_inode ()), its reference count (refcount) 
  * is set to 1. This 1st reference represents the presence of the inode in memory it is in the VFS.
  *
  * When an inode is actively used (for example by lookup, open, or other operations),
@@ -150,21 +146,21 @@ static int fs1_unmount(superblock_t *sb)
  * This model ensures safe sharing and lifetime management of inodes,
  * without shortcuts or hidden dependencies.
  */
-static vfs_inode_t *fs1_lookup(superblock_t *sb, vfs_inode_t *dir, const char *name) 
+static vfs_inode_t *fs1_lookup (superblock_t *sb, vfs_inode_t *dir, const char *name) 
 {
     (void)dir;
-    fs1_volume_t *vol = fs1_get_vol(sb);                    // volume of the superblock
+    fs1_volume_t *vol = fs1_get_volume (sb);                // volume of the superblock
     for (unsigned i = 0; i < vol->entry_count; ++i) {       // for all possible files in dir
         char *curname = vol->entries[i].name;               // get the current name
-        if (strncmp(name, curname, FS1_NAME_LEN) == 0) {    // check if name is found
-            vfs_inode_t *inode = vfs_inode_lookup(sb, i);   // if yes lookup the vfs_inode
+        if (strncmp (name, curname, FS1_NAME_LEN) == 0) {   // check if name is found
+            vfs_inode_t *inode = vfs_inode_lookup (sb, i);  // if yes lookup the vfs_inode
             if (inode) {                                    // if found
-                vfs_inode_get(inode);                       // incrément it
+                vfs_inode_get (inode);                      // incrément it
                 return inode;                               // return it
             }
-            inode = fs1_create_inode(sb, i);                // if not found create it refcount <- 1
+            inode = fs1_new_inode (sb, i);                  // if not found create it refcount <- 1
             if (inode) {                                    // if success 
-                vfs_inode_get(inode);                       // then refcount <- 2
+                vfs_inode_get (inode);                      // then refcount <- 2
             }
             return inode;
         }
@@ -210,7 +206,7 @@ static int fs1_write (vfs_inode_t *inode, const void *buffer, unsigned offset, u
     return -ENOSYS;
 }
 
-static vfs_inode_t *fs1_create(vfs_inode_t *dir, const char *name, unsigned mode)
+static vfs_inode_t *fs1_create (vfs_inode_t *dir, const char *name, unsigned mode)
 {
     (void)dir;
     (void)name;
@@ -218,7 +214,7 @@ static vfs_inode_t *fs1_create(vfs_inode_t *dir, const char *name, unsigned mode
     return NULL; 
 }
 
-static vfs_inode_t *fs1_mkdir(vfs_inode_t *dir, const char *name, mode_t mode)
+static vfs_inode_t *fs1_mkdir (vfs_inode_t *dir, const char *name, mode_t mode)
 {
     (void)dir;
     (void)name;
@@ -226,14 +222,14 @@ static vfs_inode_t *fs1_mkdir(vfs_inode_t *dir, const char *name, mode_t mode)
     return NULL; 
 }
 
-static int fs1_unlink(vfs_inode_t *dir, const char *name)
+static int fs1_unlink (vfs_inode_t *dir, const char *name)
 {
     (void)dir;
     (void)name;
     return -ENOSYS;
 }
 
-static int fs1_readdir(vfs_inode_t *dir, unsigned index, char *name, unsigned maxlen)
+static int fs1_readdir (vfs_inode_t *dir, unsigned index, char *name, unsigned maxlen)
 {
     (void)dir;
     (void)index;
@@ -242,14 +238,14 @@ static int fs1_readdir(vfs_inode_t *dir, unsigned index, char *name, unsigned ma
     return -ENOSYS;
 }
 
-static int fs1_getattr(vfs_inode_t *inode, struct stat *stbuf)
+static int fs1_getattr (vfs_inode_t *inode, struct stat *stbuf)
 {
     (void)inode;
     (void)stbuf;
     return -ENOSYS;
 }
 
-static int fs1_setattr(vfs_inode_t *inode, const struct stat *stbuf)
+static int fs1_setattr (vfs_inode_t *inode, const struct stat *stbuf)
 {
     (void)inode;
     (void)stbuf;

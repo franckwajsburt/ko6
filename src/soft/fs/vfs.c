@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-29
+  | |__ /'v'\  / /      \date 2025-05-01
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -62,17 +62,23 @@ static void vfs_inode_cache_remove (vfs_inode_t *inode)
     // TODO: Implement inode cache removal when cache will exist
 }
 
-void vfs_inode_init (vfs_inode_t *inode, superblock_t *sb, ino_t ino) {
+extern vfs_inode_t *vfs_inode_create (superblock_t *sb, ino_t ino, size_t size, mode_t mode, void * data)
+{
+    vfs_inode_t *inode = kmalloc (sizeof(vfs_inode_t));     // allocate a new vfs_inode
+    if (!inode) return NULL;
+
     inode->sb = sb;
     inode->ino = ino;
-    inode->size = 0;
-    inode->mode = 0;
+    inode->size = size;
+    inode->mode = mode;
     inode->refcount = 1;
     inode->flags = 0;
-    inode->data = NULL;
+    inode->data = data;
     inode->mapping = NULL;
     inode->dentries = NULL;
     list_init (&inode->list);
+
+    return inode;
 }
 
 vfs_inode_t *vfs_inode_lookup (superblock_t *sb, ino_t ino)

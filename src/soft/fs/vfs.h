@@ -1,10 +1,10 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-29
+  | |__ /'v'\  / /      \date 2025-05-01
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
-  \file     fs/vfs.c
+  \file     fs/vfs.h
   \author   Franck Wajsburt
   \brief    Core structures and API for the Virtual File System (VFS)
 
@@ -40,7 +40,7 @@
   - A superblock represents the mounted filesystem.
 
   Respecting these separations keeps the architecture clean, understandable, and easy to evolve.
-  Shortcuts may bring minor speed gains, but they destroy the clarity and independence of layers, 
+  Shortcuts may bring small speed gains, but they destroy the clarity and independence of layers, 
   making future maintenance harder. In this system, clarity, correctness, and long-term 
   maintainability are prioritized over premature optimizations.
 
@@ -397,12 +397,15 @@ extern void vfs_dentry_destroy (vfs_dentry_t *dentry);
 //--------------------------------------------------------------------------------------------------
 
 /**
- * \brief Initialize the given inode
- * \param inode Pointer to the inode to initialize
+ * \brief Creater and initialize the given inode
  * \param sb    Pointer to the superblock where the inode should belong.
  * \param ino   Index of the inode to search for.
+ * \param size  file size
+ * \param mode  file mode : permission and type
+ * \param data  file private data (depends on real file system)
+ * \return Pointer to the newly created vfs_inode_t.
  */
-extern void vfs_inode_init (vfs_inode_t *inode, superblock_t *sb, ino_t ino);
+extern vfs_inode_t *vfs_inode_create (superblock_t *sb, ino_t ino, size_t size, mode_t mode, void * data);
 
 /**
  * \brief Lookup an inode in the VFS inode cache.
