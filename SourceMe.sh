@@ -1,8 +1,8 @@
 # ------------------------------------------------------------------------------
 #    _     ___    __
-#   | |__ /'v'\  / /    \date        2025-03-30
-#   | / /(     )/ _ \   \copyright   2021 Sorbonne University
-#   |_\_\ \___/ \___/                https://opensource.org/licenses/MIT
+#   | |__ /'v'\  / /    \date 2025-05-01
+#   | / /(     )/ _ \   Copyright (c) 2021 Sorbonne University
+#   |_\_\ x___x \___/   SPDX-License-Identifier: MIT
 #
 # ------------------------------------------------------------------------------
 
@@ -24,7 +24,7 @@ export MKSOC=src/soft/hal/soc/$SOC/Makefile
 echo "  _     ___    __   "
 echo " | |__ /'v'\  / /   SoC: $SOC"
 echo " | / /(     )/ _ \  edit $ko6/SourceMe.sh to change default CPU & SOC"
-echo " |_\_\ \___/ \___/  GIT: $KO6VER"
+echo " |_\_\ x___x \___/  GIT: $KO6VER"
 echo ""
 
 # Do not change the line after, unless you know what you are doing
