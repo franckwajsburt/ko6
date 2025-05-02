@@ -7,6 +7,7 @@
 extern int yylex();
 extern int yyerror();
 extern int yylex_destroy();
+extern hto_t *envars; 			/* environment variables here */
 
 stmt_s *curr;
 stmt_s *chkpnt;
@@ -47,7 +48,11 @@ int yydebug = 1;
 %type<expr> factor mult_expr add_expr bool_expr expr rel_expr arithmetic_expansion
 
 
-%destructor { yylex_destroy(); } script
+%destructor { 
+	yylex_destroy();
+	/* \TODO hash table destruction */
+
+} script
 
 %%
 

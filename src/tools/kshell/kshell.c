@@ -274,7 +274,6 @@ void expr_print(expr_s *expr)
 
 char *eval_expr(expr_s *expr)
 {
-    
     return NULL;
 }
 
@@ -583,8 +582,106 @@ int kbool2i(int v)
     return !v;
 }
 
+
+struct varenv *varenv_create(void)
+{
+    struct varenv *new = malloc(sizeof*new);
+    new->v = NULL;
+    new->attr = 0;
+
+    return new;
+}
+
+
+void varenv_destroy(struct varenv *victim)
+{
+    if (!victim) return;
+
+    if (victim->v) free(victim->v);
+
+    free(victim);
+}
+
+
+int varenv_value_set(struct varenv *var, const char * v)
+{
+    if (!var) return 0;
+
+    if (var->v) free(var->v);
+
+    var->v = strdup(v);
+    var->attr = 0;
+
+    return 1;
+}
+
+
+int varenv_attr_set(struct varenv *var, int mask)
+{
+    if (!var) return 0;
+
+    var->attr |= mask; // note that it's just a logic OR
+
+    return 1;
+}
+
+
+int varenv_attr_unset(struct varenv *var, int mask)
+{
+    if (!var) return 0;
+
+    var->attr &= ~mask;
+
+    return 1;
+}
+
+/* the next code is just for the kshell */
+
+int kshell_record_varenv(ht, n, v, flags)
+hto_t *ht;
+char *n;
+const char *v;
+int flags;
+{
+    if (!ht) return 0;
+
+    struct varenv *var = varenv_create();
+    varenv_value_set(var, v);
+    varenv_attr_set(var, flags);
+
+    return hto_set(ht, n, var);
+}
+
+int kshell_unset_varenv(ht, name)
+hto_t *ht;
+char *name;
+{
+    if (!ht) return -1;
+
+    varenv_s *victim = hto_del(ht, name);
+    varenv_destroy(victim);
+
+    return 0;
+}
+
+void varenv_print(hto_t *ht, unsigned pos, void *key, void *val, void *data)
+{
+    printf("%d\t %s : %s\n", pos, (char *)key, (char *)val);    
+}
+
+void kshell_print_env(hto_t *ht)
+{
+    hto_foreach(ht, varenv_print, NULL);
+
+}
+
+hto_t *envars;
+
+
 int main(int argc, char **argv) {
+    envars = hto_create(71, 0);
     printf("hello, kshell! :)\n");
+
     if (!yyparse()) {
         printf("parsed!\n");
     } else {

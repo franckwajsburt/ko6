@@ -61,7 +61,7 @@
  #   include <common/cstd.h>    
  #endif
 
- #include <htopen.h>
+ #include "htopen.h"
 
 /**
  * linked list to handle words
@@ -528,10 +528,11 @@ int varenv_attr_set(struct varenv *var, int mask);
  */
 int varenv_attr_unset(struct varenv *var, int mask);
 
-int kshell_record_varenv(hto_t *ht, const char *n, const char *v, int flags);
+int kshell_record_varenv(hto_t *ht, char *n, const char *v, int flags);
 
 void kshell_print_env(hto_t *ht);
-int kshell_unset_varenv(hto_t *ht, const char *name);
+
+int kshell_unset_varenv(hto_t *ht, char *name);
 
 #endif
 
