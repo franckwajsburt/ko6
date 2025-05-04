@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-27
+  | |__ /'v'\  / /      \date 2025-05-04
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -196,7 +196,6 @@ void * kmalloc (size_t size)
     if ((size!=PAGE_SIZE) && list_isempty (&Slab[lines])) { // if no more object in the slab
         char *page = kmalloc (PAGE_SIZE);                   // ask for a free page (i.e. slab)
         Page[PAGE(page)].slab.nbused = 0;                   // reset the allocated counter
-        Page[PAGE(page)].slab.type = PAGE_SLAB;             // page used as a slab
         for (char *p=page; p+size<=page+PAGE_SIZE; p+=size) // cut the slab into objects
             list_addlast (&Slab[lines], (list_t *)p);       // and chain them together
     }
@@ -204,6 +203,7 @@ void * kmalloc (size_t size)
     ObjectsThisSize [lines % MaxLineSlab]++;                // increment the number of objects
     Page[PAGE(res)].slab.lines = lines % MaxLineSlab;       // this page is used as a slab of nbline
     Page[PAGE(res)].slab.nbused++;                          // one more times
+    Page[PAGE(res)].slab.type = PAGE_SLAB;                  // page used as a slab
 
     memset (res, 0, size);                                  // clear allocated memory
     return res;                                             // finally returns res
