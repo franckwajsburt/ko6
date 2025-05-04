@@ -82,7 +82,7 @@ extern void *memchr (const void *src, int c, size_t n);
  * \param     n    size of the dest buffer
  * \return    the dest buffer address
  */
-extern void *strncpy (char *dest, char *src, unsigned n);
+extern void *strncpy (char *dest, const char *src, unsigned n);
 
 /**
  * \brief     calculates the length of the string s, excluding the terminating null byte

@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-27
+  | |__ /'v'\  / /      \date 2025-05-03
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -24,7 +24,7 @@ EC_WHITE
 "  |_\\_\\"EC_CYAN  X___X    EC_WHITE"\\___/   Copyright 2021 Sorbonne University\n\n"
 EC_RESET;
 
-void *memset(void *s, int c, size_t n) {
+void *memset (void *s, int c, size_t n) {
     unsigned char *p = s;
     unsigned long clong = (unsigned char)c;
     clong |= clong << 8;
@@ -155,7 +155,7 @@ char *strrchr (const char *s, int c)
     return (rtnval);
 }
 
-void *strncpy (char *dest, char *src, unsigned n)
+void *strncpy (char *dest, const char *src, unsigned n)
 {
     unsigned i;
     for (i = 0; i < n && src[i] != '\0'; i++)
@@ -190,7 +190,7 @@ int strncmp (const char *s1, const char *s2, unsigned n)
     return c1 - c2;
 }
 
-int strsplit(char *str, const char *delim, char *tokens[], int maxtoken)
+int strsplit (char *str, const char *delim, char *tokens[], int maxtoken)
 {
     int count = 0;
     while (*str && strchr (delim, *str)) str++;
@@ -205,7 +205,7 @@ int strsplit(char *str, const char *delim, char *tokens[], int maxtoken)
     return count;
 }
 
-char *itoa(char buffer[34], int val, int base) 
+char *itoa (char buffer[34], int val, int base) 
 {
     if (base != 2 && base != 10 && base != 16) return NULL;
 
@@ -371,17 +371,17 @@ int vsnprintf (char * buffer, unsigned size, char *fmt, va_list ap)
     return res;                                 // and return it
 }
 
-int snprintf(char *str, unsigned size, char *fmt, ...)
+int snprintf (char *str, unsigned size, char *fmt, ...)
 {
     va_list ap;
     va_start (ap, fmt);
-    int res = vsnprintf(str, size, fmt, ap);
-    va_end(ap);
+    int res = vsnprintf (str, size, fmt, ap);
+    va_end (ap);
     return res;
 }
 
 // https://cplusplus.com/reference/cstdlib/strtol/
-unsigned long int strtoul(char *s, char **endptr, int base)
+unsigned long int strtoul (char *s, char **endptr, int base)
 {
     while (*s == ' ' 
         || *s == '\t' 
