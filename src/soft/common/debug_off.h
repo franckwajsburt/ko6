@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-23
+  | |__ /'v'\  / /      \date 2025-05-04
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -18,14 +18,12 @@
 #   undef BIP
 #   undef VAR
 #   undef VARN
-#   undef INFO
 #   undef ASSERT
 #endif
 
 #define BIP(c)
 #define VAR(fmt,arg)
 #define VARN(fmt,arg)
-#define INFO(fmt,arg...)
 #define ASSERT(cond,fmt,arg...)
 
 /*------------------------------------------------------------------------------------------------*\

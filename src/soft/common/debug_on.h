@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-23
+  | |__ /'v'\  / /      \date 2025-05-04
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -9,13 +9,14 @@
   \brief    Debug messages
             Permanent
             - PANIC_IF( cond, fmt, arg...) to stop the execution in case of a fatal condition
+            - INFO( fmt, arg...) to log important messages
             Temporary
-            - Macros BIP(), VAR(), VARN(), INFO() & ASSERT() adds temporary debug messages
+            - Macros BIP(), VAR(), VARN(), ASSERT() adds temporary debug messages
             - This is useful to find and fix errors, 
               but we don't want to display messages if there is no bugs
             - Add #include <degug_on.h> before the messages you want to display 
-              so that the BIP(), VAR(), VARN(), INFO() and ASSERT() macros produce messages.
-            - Add #include <degug_off.h> to stop messages from BIP(), INFO() and so on.
+              so that the BIP(), VAR(), VARN() and ASSERT() macros produce messages.
+            - Add #include <degug_off.h> to stop messages from BIP() and so on.
             - It is possible to include these files several times per c file
 
 \*------------------------------------------------------------------------------------------------*/
@@ -24,6 +25,7 @@
 #define _DEBUG_ON_H_
 
 #define _FMT_(T,F,C) "[%d:%d:%s/%s] "T" (%s) "F"\n",cpuid(),clock(),__FILE__,__func__,C
+#define _FMT2_(T,F,C) "[%d:%d] "T" (%s) "F"\n",cpuid(),clock(),C
 
 /**
  * \brief   Check a condition and write a formated message on console if false and stop execution
@@ -38,6 +40,17 @@
 #define PANIC_IF(cond,fmt,arg...) if (cond) {fprintf(0,_FMT_("PANIC",fmt,#cond),##arg);exit(1);}
 #endif//_KERNEL_
 
+/**
+ * \brief   Write a formated message on console
+ * \param   fmt Format of printed string
+ * \param   arg Variadic aguments used to form the string
+ */
+#ifdef _KERNEL_
+#define INFO(fmt,arg...) kprintf(_FMT2_("INFO",fmt,""),##arg)
+#else
+#define INFO(fmt,arg...) fprintf(0,_FMT2_("INFO",fmt,""),##arg)
+#endif//_KERNEL_
+
 #endif//_DEBUG_
 
 //-------------------------------------------------------------------------------------------------
@@ -46,7 +59,7 @@
 #   undef BIP
 #   undef VAR
 #   undef VARN
-#   undef INFO
+//#   undef INFO
 #   undef ASSERT
 #endif
 
@@ -71,17 +84,6 @@
 #else
 #define VAR(fmt,var) fprintf(0,"-- %s: "#var"\t "#fmt,__func__,var)
 #define VARN(fmt,var) fprintf(0,"-- %s: "#var"\t "#fmt,var)
-#endif//_KERNEL_
-
-/**
- * \brief   Write a formated message on console
- * \param   fmt Format of printed string
- * \param   arg Variadic aguments used to form the string
- */
-#ifdef _KERNEL_
-#define INFO(fmt,arg...) kprintf(_FMT_("INFO",fmt,""),##arg)
-#else
-#define INFO(fmt,arg...) fprintf(0,_FMT_("INFO",fmt,""),##arg)
 #endif//_KERNEL_
 
 /**
