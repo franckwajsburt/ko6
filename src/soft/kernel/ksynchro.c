@@ -24,6 +24,7 @@ int ksynchro_init (void)
 {
     list_init (&MutexGroot);
     list_init (&BarrierGroot);
+    INFO ("Synchronization mecanismes successfully initialized");
     return 0;
 }
 

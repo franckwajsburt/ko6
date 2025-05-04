@@ -1,10 +1,10 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-23
+  | |__ /'v'\  / /      \date 2025-05-04
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
-  \file     kernel/kmemory.c
+  \file     kernel/kmemuser.c
   \author   Franck Wajsburt
   \brief    user memory allocators from the kernel point of view
 
@@ -22,10 +22,16 @@ static size_t CacheLineSize;            // max between 16 and the true cache lin
 
 static list_t FreeUserStack;            // free stack
 
+extern int __kbss_end;                  // 1st char above kbss section see kernel.ld (page aligned)
+extern int __kdata_end;                 // 1st char above the kernel data region (page aligned)
+#define kmb (char*)&__kbss_end          // kernel memory begin
+#define kme (char*)&__kdata_end         // kernel memory end 
+
 void kmemuser_init() 
 {
     CacheLineSize = CEIL(cachelinesize(),16);               // true line size, but expand to 16 min
     list_init (&FreeUserStack);                             // initialize the free user stack list
+    INFO("Slab allocator successfully initialize %d pages", (kme-kmb)/PAGE_SIZE);
 }
 
 int * malloc_ustack (void)
