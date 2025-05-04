@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-28
+  | |__ /'v'\  / /      \date 2025-05-03
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -19,7 +19,7 @@
  * .lookup Lookup a file from its name in a single fs1 directory.
  * .read   Read data from a file stored in the fs1 file system. 
  */
-extern struct fs_ops_s fs1_ops;
+extern vfs_fs_type_t fs1_ops;
 
 #endif//_FS1_H_
 

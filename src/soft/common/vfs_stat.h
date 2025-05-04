@@ -1,10 +1,10 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-29
+  | |__ /'v'\  / /      \date 2025-05-03
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
-  \file     vfs_stat.h
+  \file     common/vfs_stat.h
   \author   Franck Wajsburt
   \brief    Defines types, modes and permission flags for VFS and user applications.
 
@@ -31,7 +31,8 @@
 //--------------------------------------------------------------------------------------------------
 
 typedef unsigned int mode_t;   ///< File mode (type + permissions)
-typedef unsigned int ino_t;    ///< Inode number
+typedef   signed int mnt_id_t; ///< Unique identifier for a mounted VFS filesystem (-1: not mounted)
+typedef unsigned int ino_t;    ///< Inode number in the real file system
 typedef unsigned int nlink_t;  ///< Number of hard links
 typedef unsigned int uid_t;    ///< User ID
 typedef unsigned int dev_t;    ///< Device ID (major and minor combined)
@@ -44,7 +45,8 @@ typedef unsigned long time_t;  ///< Time in seconds since UNIX epoch
 
 struct stat {
     dev_t     st_dev;     ///< Device ID containing the file (minor number of the blockdev)
-    ino_t     st_ino;     ///< Inode number
+    mnt_id_t  st_mnt_id;  ///< VFS mount identifier (used to globally identify the FS)
+    ino_t     st_ino;     ///< Inode number in the real file system 
     mode_t    st_mode;    ///< File type and permissions
     nlink_t   st_nlink;   ///< Number of hard links
     uid_t     st_uid;     ///< User ID of owner

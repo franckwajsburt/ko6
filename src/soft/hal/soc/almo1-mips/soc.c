@@ -241,6 +241,7 @@ int soc_init (void *fdt, int tick)
     if (soc_timer_init (fdt, tick) < 0)
         return -1;
 
+    INFO("SoC Successfully initialialized");
     return 0;
 }
 

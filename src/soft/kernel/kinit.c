@@ -28,8 +28,8 @@ void kinit (void *fdt)
 
     kmemkernel_init ();                         // kernel mem initialization, do it before soc_init
     PANIC_IF (soc_init (fdt, TICK) < 0, "SoC initialization failed");
-    kmemuser_init ();                           // user memory initialization 
     kprintf (Banner_ko6);                       // ko6 banner
+    kmemuser_init ();                           // user memory initialization 
     ksynchro_init ();                           // initialize all synchronization mecanisms
 
     // Then, create the thread structure for the thread main()
@@ -64,7 +64,8 @@ void kinit (void *fdt)
     test_ustack (10);
 #   endif
 
-    blockio_init ();
+    //blockio_init ();
+    vfs_init ();
     
     // Finally, load the main user programm
     // We never return of thread_load() here because thread_load() change $31 to thread_bootstap()

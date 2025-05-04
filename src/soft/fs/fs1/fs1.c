@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-05-01
+  | |__ /'v'\  / /      \date 2025-05-03
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -257,7 +257,8 @@ static int fs1_setattr (vfs_inode_t *inode, const struct stat *stbuf)
  *        Only a subset of the VFS operations is implemented.
  *        Unsupported operations are set to NULL.
  */
-struct fs_ops_s fs1_ops = {
+vfs_fs_type_t fs1_ops = {
+    .name     = "fs1"       ,
     .mount    = fs1_mount   ,
     .unmount  = fs1_unmount ,   // not used with fs1
     .lookup   = fs1_lookup  ,
