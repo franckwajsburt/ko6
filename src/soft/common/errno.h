@@ -1,13 +1,24 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-23
+  | |__ /'v'\  / /      \date 2025-05-03
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
   \file     common/errno.h
   \author   Franck Wajsburt
-  \brief    Standard error numbers (https://man7.org/linux/man-pages/man3/errno.3.html)
+  \brief    Standard error numbers 
 
+  This header defines:
+  * A standard list of error codes consistent with POSIX conventions.
+      See https://man7.org/linux/man-pages/man3/errno.3.html
+  * A thread-local mechanism to access the current error (errno).
+  * A typedef (errno_t) used to make error-returning functions more explicit.
+
+  Note:
+  * All functions returning an errno_t use negative values to indicate errors (e.g., -EINVAL).
+  * A return value of 0 means success (SUCCESS).
+  * This enum is typedef’d as `errno_t` for better code clarity, even though it is just an int.
+  
 \*------------------------------------------------------------------------------------------------*/
 
 #ifndef _ERRNO_H_
@@ -29,41 +40,59 @@
 #endif
 
 /**
- * errno_mess contains the error messages for each error code
- * this table is define in both files libc.c and klib.c but should be identical
+ * \brief errno_mess contains the error messages for each error code
+ *        this table is define in both files libc.c and klib.c but should be identical
  */
-extern char * errno_mess[];
+extern char * errno_mess_table[];
+#define errno_mess(err)  errno_mess_table[1+(err)]
+
+/**
+ * \brief Typedef for error codes, used to make function signatures more expressive.
+ */
+typedef enum errno_code errno_t;
 
 enum errno_code {
-    FAILURE = -1,
-    SUCCESS ,
-    E2BIG   ,   // Argument list too long 
-    EACCES  ,   // Permission denied 
-    EAGAIN  ,   // Resource temporarily unavailable
-    EBUSY   ,   // Device or resource busy
-    EDEADLK ,   // Resource deadlock avoided
-    EFAULT  ,   // Bad address
-    EFBIG   ,   // File too large
-    EINTR   ,   // Interrupted function call (https://man7.org/linux/man-pages/man7/signal.7.html)
-    EINVAL  ,   // Invalid argument
-    EIO     ,   // Input/output error
-    EBADF   ,   // Bad file descriptor
-    EISDIR  ,   // operation forbidden on a directory
-    EEXIST  ,   // file/directory already exist
-    ENOBUFS ,   // No buffer space available
-    ENODEV  ,   // No such device
-    ENOMEM  ,   // Not enough space/cannot allocate memory
-    ENOSPC  ,   // No space left on device
-    ENOSYS  ,   // Function not implemented
-    ENOTTY  ,   // Inappropriate I/O control operation
-    ENOTDIR ,   // file is not a directory
-    ENOENT  ,   // file/directory not found
-    ENOEXEC ,   // not an executable
-    ENXIO   ,   // No such device or address
-    EPERM   ,   // Operation not permitted
-    ERANGE  ,   // Result too large
-    ESRCH       // No such process
+    FAILURE = -1, ///< Generic failure (used when no specific errno is set)
+    SUCCESS,      ///< No error (operation succeeded)
+ 
+    // Argument or permission errors
+    E2BIG,        ///< Argument list too long
+    EACCES,       ///< Permission denied
+    EAGAIN,       ///< Resource temporarily unavailable
+    EBADF,        ///< Bad file descriptor
+    EEXIST,       ///< File or directory already exists
+    EFAULT,       ///< Bad address
+    EINVAL,       ///< Invalid argument
+    EPERM,        ///< Operation not permitted
+    EROFS,        ///< Read-only file system
+
+    // System or resource limits
+    ENOMEM,       ///< Not enough space/cannot allocate memory
+    ENOBUFS,      ///< No buffer space available
+    EFBIG,        ///< File too large
+    ENOSPC,       ///< No space left on device
+    EDEADLK,      ///< Resource deadlock avoided
+    ERANGE,       ///< Result too large (overflow)
+
+    // File system / I/O errors
+    ENOENT,       ///< file/directory not found
+    ENOTDIR,      ///< file is not a directory
+    EISDIR,       ///< operation forbidden on a directory
+    ENODEV,       ///< No such device
+    ENXIO,        ///< No such device or address
+    ENOEXEC,      ///< Not an executable
+    ENOTTY,       ///< Inappropriate I/O control operation
+    EIO,          ///< Input/output error
+    EBUSY,        ///< Device or resource busy
+
+    // Signals / processes
+    EINTR,        ///< Interrupted funct call (https://man7.org/linux/man-pages/man7/signal.7.html)
+    ESRCH,        ///< No such process
+
+    // Unimplemented features
+    ENOSYS        ///< Function not implemented
 };
+
 
 #endif//_ERRNO_H_
 
