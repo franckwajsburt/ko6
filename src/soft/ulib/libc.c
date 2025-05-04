@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------------------------------*\
    _     ___    __
-  | |__ /'v'\  / /      \date 2025-04-23
+  | |__ /'v'\  / /      \date 2025-05-03
   | / /(     )/ _ \     Copyright (c) 2021 Sorbonne University
   |_\_\ x___x \___/     SPDX-License-Identifier: MIT
 
@@ -15,9 +15,9 @@
 void perror (char *s)
 {
     if (s && *s)
-        fprintf (0, "%s: %s\n", s, errno_mess[errno + 1]); // first number of errno is -1
+        fprintf (0, "%s: %s\n", s, errno_mess(errno));
     else
-        fprintf (0, "%s\n", errno_mess[errno + 1]);
+        fprintf (0, "%s\n", errno_mess(errno));
 }
 
 void exit (int status)
