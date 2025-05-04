@@ -206,7 +206,7 @@ void sched_dump (void)
             kprintf (Y"----------------------------------------------------------------------- ");
             kprintf (D"\n", thread->tid);
             kprintf ("["D"] thread: "P,  clock (), thread);
-            kprintf ("   errmsg: "S"\n", errno_mess[/*errno+*/1]);
+            kprintf ("   errmsg: "S"\n", errno_mess(errno));
             kprintf (" - state:     "S"\t", state_name[thread->state]);
             kprintf ("   wait.next: "P"\t", thread->wait.next);
             kprintf ("   wait.prev: "P"\n", thread->wait.prev);
