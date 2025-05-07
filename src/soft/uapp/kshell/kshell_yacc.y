@@ -7,10 +7,10 @@
 extern int yylex();
 extern int yyerror();
 extern int yylex_destroy();
-extern hto_t *envars; 			/* environment variables here */
 
-stmt_s *curr;
-stmt_s *chkpnt;
+extern stmt_s *curr;
+extern stmt_s *chkpnt;
+extern expr_s *aux;
 
 #ifdef KSHELL_DEBUG
 int yydebug = 1;
@@ -56,15 +56,11 @@ int yydebug = 1;
 
 %%
 
-script : list seq_separator
+script : linebreak list linebreak
 	  {
 		printf("script!\n");
 	  }
-	| list
-	  {
-		printf("list list list\n");
-	  } 
-	| /* empty */
+	| linebreak
 	;
 
 list:
@@ -72,15 +68,19 @@ list:
 	  {
 		printf("list -> top_level!\n");
 		stmt_print($3);
+		kshell_stmt_execute($3);
 		//$$ = $3;
 		stmt_destroy($3);
+		kshell_print_env();
 	  }
 	| top_level
 	  { 
 		printf("top_level in list!\n");
 		stmt_print($1);
+		kshell_stmt_execute($1);
 		//$$ = $1;
 		stmt_destroy($1);
+		kshell_print_env();
 	  }
 	;
 
@@ -184,9 +184,9 @@ top_level_list :
 	;
 
 arithmetic_expansion : 
-	OBRKT expr CBRKT
+	'$' OBRKT expr CBRKT
 	  { 
-		$$ = $2;
+		$$ = $3;
 	  }
 	;
 
@@ -195,7 +195,7 @@ expr :
 	  {
 		$$ = expr_create();
 		expr_s *id_expr = expr_create();
-		expr_set_var(id_expr, $1);
+		expr_set_word(id_expr, $1);
 		expr_set_op($$, ASSIGN_OP, id_expr, $3);
 	  }
 	| bool_expr
@@ -255,7 +255,7 @@ rel_expr :
 	| add_expr NEQ add_expr
 	  {
 		$$ = expr_create();
-		expr_set_op($$, EQ_OP, $1, $3);
+		expr_set_op($$, NEQ_OP, $1, $3);
 	  }
 	| add_expr
 	  {
@@ -303,10 +303,10 @@ factor :
 		$$ = expr_create();
 		expr_set_int($$, $1);
 	  }
-	| IDENTIFIER
+	| WORD
 	  {
 		$$ = expr_create();
-		expr_set_var($$, $1);
+		expr_set_word($$, $1);
 	  }
 	| OPAR expr CPAR
 	  {

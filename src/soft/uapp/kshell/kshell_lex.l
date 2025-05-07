@@ -6,7 +6,7 @@ void count();
 
 %}
 
-filename			[a-zA-Z0-9\-@!_]+
+filename			[a-zA-Z0-9\-@!?_]+
 alpha				[a-zA-Z]
 digit				[0-9]
 integer				{digit}+

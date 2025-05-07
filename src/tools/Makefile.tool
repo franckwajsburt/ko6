@@ -94,12 +94,12 @@ $(BIN) : $(SRC)
 	@echo "- compil  --> "$(notdir $@)
 	$(CC) -o $@ $(CFLAGS) $^
 
-%.c : $(SRCDIR)/%.y
+%.c : %.y
 	@echo "- bison   --> "$(notdir $@)
 	echo "_$(BISONVER)_"
 	$(YACC) $(BISONDEF) $< -o $@
 
-%.c : $(SRCDIR)/%.l
+%.c : %.l
 	@echo "- flex    --> "$(notdir $@)
 	$(LEX) -o $@ $<
 
