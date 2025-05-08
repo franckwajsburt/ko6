@@ -2,7 +2,7 @@
 
 stmt_s *stmt_create(void)
 {
-    stmt_s *new = malloc(sizeof(*new));
+    stmt_s *new = MALLOC(sizeof(*new));
 
     if (!new) {
         return NULL;
@@ -43,7 +43,7 @@ void stmt_destroy(stmt_s *victim)
 
 if_stmt_s *if_stmt_create(void)
 {
-    struct if_stmt *new = malloc(sizeof(*new));
+    struct if_stmt *new = MALLOC(sizeof(*new));
 
     if (!new) {
         return NULL;
@@ -75,7 +75,7 @@ void if_stmt_destroy(if_stmt_s *victim)
 
 while_stmt_s *while_stmt_create(void)
 {
-    struct while_stmt *new = malloc(sizeof(*new));
+    struct while_stmt *new = MALLOC(sizeof(*new));
 
     if (!new) {
         return NULL;
@@ -211,7 +211,7 @@ void stmt_print(stmt_s *stmt)
 
 struct expr *expr_create(void)
 {
-    expr_s *new = malloc(sizeof(*new));
+    expr_s *new = MALLOC(sizeof(*new));
 
     if (!new) {
         return NULL;
@@ -338,11 +338,11 @@ struct q_t {
 
 struct q_t *q_create(size_t sz)
 {
-    struct q_t *q = malloc(sizeof(*q));
+    struct q_t *q = MALLOC(sizeof(*q));
 
     if (!q) exit(1);
 
-    q->b = malloc(sz * sizeof(*q->b));
+    q->b = MALLOC(sz * sizeof(*q->b));
 
     if (!q->b) exit(1);
 
@@ -375,55 +375,55 @@ void expr_print_(expr_s *expr, struct q_t *q)
         switch (expr->t)
         {
         case NULL_EXPR:
-            printf("NULL\n");
+            PRINT("NULL\n");
             break;
         case AND_OP:
-            printf("AND\n");
+            PRINT("AND\n");
             break;
         case OR_OP:
-            printf("OR\n");
+            PRINT("OR\n");
             break;
         case PLUS_OP:
-            printf("PLUS\n");
+            PRINT("PLUS\n");
             break;
         case MINUS_OP:
-            printf("MINUS\n");
+            PRINT("MINUS\n");
             break;
         case MULT_OP:
-            printf("MULT\n");
+            PRINT("MULT\n");
             break;
         case DIV_OP:
-            printf("DIV\n");
+            PRINT("DIV\n");
             break;
         case EQ_OP:
-            printf("EQ\n");
+            PRINT("EQ\n");
             break;
         case NEQ_OP:
-            printf("NEQ\n");
+            PRINT("NEQ\n");
             break;
         case ASSIGN_OP:
-            printf("ASSIGN\n");
+            PRINT("ASSIGN\n");
             break;
         case LT_OP:
-            printf("LT\n");
+            PRINT("LT\n");
             break;
         case GT_OP:
-            printf("GT\n");
+            PRINT("GT\n");
             break;
         case LEQ_OP:
-            printf("LEQ\n");
+            PRINT("LEQ\n");
             break;
         case GEQ_OP:
-            printf("GEQ\n");
+            PRINT("GEQ\n");
             break;
         case NOT_OP:
-            printf("NOT\n");
+            PRINT("NOT\n");
             break;
         case INT_EXPR:
-            printf("%d\n", expr->v.v);
+            PRINT("%d\n", expr->v.v);
             return;
         case WORD_EXPR:
-            printf("%s\n", expr->v.word);
+            PRINT("%s\n", expr->v.word);
             return;
         case STMT_EXPR:
             stmt_print(expr->v.stmt);
@@ -433,30 +433,30 @@ void expr_print_(expr_s *expr, struct q_t *q)
         }
 
         for (int i = 0; i < q->h; i++)
-            if (q->b[i]) printf(" \u2502");
-            else printf("   ");
+            if (q->b[i]) PRINT(" \u2502");
+            else PRINT("   ");
         
-        printf(" \u251c");
+        PRINT(" \u251c");
         q_push(q, 1);
         expr_print_(expr->v.e[0], q);
         q_pop(q);
 
         for (int i = 0; i < q->h; i++)
-            if (q->b[i]) printf(" \u2502");
-            else printf("   ");
+            if (q->b[i]) PRINT(" \u2502");
+            else PRINT("   ");
         
-        printf(" \u2514");
+        PRINT(" \u2514");
         q_push(q, 0);
         expr_print_(expr->v.e[1], q);
         q_pop(q);
     } else {
-        printf("\u259e\n");
+        PRINT("\u259e\n");
     }
 }
 
 void expr_print(expr_s *expr)
 {
-    if (!expr) printf("\u259e");
+    if (!expr) PRINT("\u259e");
     
     struct q_t *q = q_create(64);
     expr_print_(expr, q);

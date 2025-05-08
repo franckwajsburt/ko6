@@ -51,14 +51,15 @@
  #   define OPENW(f) open (f, O_WRONLY | O_CREAT | O_TRUNC, 0644)
  #   define PRINT(fmt,...) printf(fmt, ##__VA_ARGS__)
  #else
- #   define MALLOC(s) kmalloc(s)
- #   define FREE(s) kfree(s)
+ #   define MALLOC(s) malloc(s)
+ #   define FREE(s) free(s)
  #   define P(fmt,var) 
  #   define RETURN(e,c,m,...) if(c){kprintf("Error "m"\n");__VA_ARGS__;return e;}
  #   define OPENR(f) open (f)
  #   define OPENW(f)
  #   define PRINT(fmt,...)
- #   include <common/cstd.h>    
+ #   include <common/cstd.h>
+ #   include <ulib/memory.h>
  #endif
 
 #include <htopen.h>
@@ -81,6 +82,8 @@ int kshell_while_stmt_execute(while_stmt_s *wstmt);
 int kshell_if_stmt_execute(if_stmt_s *istmt);
 int kshell_built_in_execute(stmt_s *bstmt);
 int kshell_cmd_execute(stmt_s *cstmt);
+
+char *kshell_parse_assing(const char *assgn);
 
 int kshell_ls(wordlist_s *args);
 int kshell_cat(wordlist_s *args);

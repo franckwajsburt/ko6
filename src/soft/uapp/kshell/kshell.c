@@ -79,7 +79,7 @@ int kshell_expr_eval(expr_s *expr)
         retval = kshell_expr_eval(expr->v.e[0]) != kshell_expr_eval(expr->v.e[1]);
         break;
     case ASSIGN_OP:
-        /* TODO: VERIFY THIS  */
+        //kshell_set_varenv(expr->v.e[0], expr->v.e[1], 0);
         retval = 0;
         break;
     case LT_OP:
@@ -101,7 +101,7 @@ int kshell_expr_eval(expr_s *expr)
         retval = expr->v.v;
         break;
     case WORD_EXPR:
-        /* every word will have value 0 */
+        /* every non defined word will have value 0 */
         
         v = hto_get(envars, expr->v.word);
         
@@ -137,6 +137,7 @@ int kshell_stmt_execute(stmt_s *stmt)
     int retval = 0;
     wordlist_s *w;
     stmt_s *curr = stmt;
+    char *v;
 
     while (curr) {
         switch(curr->t)
@@ -161,7 +162,9 @@ int kshell_stmt_execute(stmt_s *stmt)
             break;
         case ENV_ASSIGN_TYPE:
             w = curr->stmt.simple_stmt;
+            v = kshell_parse_assing(w->nxt->word);
             kshell_set_varenv(w->word, w->nxt->word, 0);
+            free(v);
             break;
         default:
             break;
@@ -171,6 +174,7 @@ int kshell_stmt_execute(stmt_s *stmt)
 
     return retval;
 }
+
 
 int kshell_while_stmt_execute(while_stmt_s *wstmt)
 {
@@ -241,6 +245,17 @@ int kshell_built_in_execute(stmt_s *bstmt)
     return 0;
 }
 
+char *kshell_parse_assing(const char *assgn)
+{
+    if (assgn[0] == '$') {
+        /* arithmetic expansion */
+    } else {
+        /* copy the string */
+    }
+
+    return NULL;
+}
+
 int kshell_ls(wordlist_s *args)
 {
     PRINT("ls: NOT IMPLEMENTED BUILT-IN. args: ");
@@ -248,6 +263,8 @@ int kshell_ls(wordlist_s *args)
 
     return 1;
 }
+
+
 int kshell_cat(wordlist_s *args)
 {
     PRINT("cat: NOT IMPLEMENTED BUILT-IN. args: ");

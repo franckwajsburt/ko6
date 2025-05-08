@@ -31,7 +31,7 @@ void wordlist_print(struct wordlist *wordlist)
         p = p->nxt;
     }
 
-    printf("NULL\n");
+    PRINT("NULL\n");
 }
 
 

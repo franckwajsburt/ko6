@@ -1,7 +1,36 @@
 %{
 
-#include <stdio.h>
-#include <stdlib.h>
+
+#ifdef _HOST_
+#   include <stdio.h>
+#   include <stdlib.h>
+#   include <stdint.h>
+#   include <fcntl.h>
+#   include <unistd.h>
+#   include <string.h>
+#   include <sys/types.h>
+#   include <stdint.h>
+#   define MALLOC(s) malloc(s)
+#   define FREE(s) free(s)
+#   define P(fmt,var) fprintf(stderr, #var" : "fmt, var)
+#   define RETURN(e,c,m,...) if(c){fprintf(stderr,"Error "m"\n");__VA_ARGS__;return e;}
+#   define OPENR(f) open (f, O_RDONLY)
+#   define OPENW(f) open (f, O_WRONLY | O_CREAT | O_TRUNC, 0644)
+#   define PRINT(fmt,...) printf(fmt, ##__VA_ARGS__)
+#else
+#   define MALLOC(s) malloc(s)
+#   define FREE(s) free(s)
+#   define P(fmt,var) 
+#   define RETURN(e,c,m,...) if(c){kprintf("Error "m"\n");__VA_ARGS__;return e;}
+#   define OPENR(f) open (f)
+#   define OPENW(f)
+#   define PRINT(fmt,...)
+#   include <common/cstd.h>    
+#	include <ulib/libc.h>
+#	include <ulib/memory.h>
+#endif
+
+
 #include "kshell.h"
 
 extern int yylex();
@@ -58,7 +87,7 @@ int yydebug = 1;
 
 script : linebreak list linebreak
 	  {
-		printf("script!\n");
+		PRINT("script!\n");
 	  }
 	| linebreak
 	;
@@ -66,7 +95,7 @@ script : linebreak list linebreak
 list:
 	  list separator top_level 
 	  {
-		printf("list -> top_level!\n");
+		PRINT("list -> top_level!\n");
 		stmt_print($3);
 		kshell_stmt_execute($3);
 		//$$ = $3;
@@ -75,7 +104,7 @@ list:
 	  }
 	| top_level
 	  { 
-		printf("top_level in list!\n");
+		PRINT("top_level in list!\n");
 		stmt_print($1);
 		kshell_stmt_execute($1);
 		//$$ = $1;
@@ -88,11 +117,11 @@ top_level:
 	  pipeline
 	| top_level LAND linebreak pipeline
 	  {
-		printf("top_level in AND PIPELINE\n");
+		PRINT("top_level in AND PIPELINE\n");
 	  }
 	| top_level LOR linebreak pipeline 
 	  {
-		printf("top_level in LOR PIPELINE\n");
+		PRINT("top_level in LOR PIPELINE\n");
 	  }
 	;
 
@@ -367,8 +396,8 @@ extern int line;
 
 int yyerror(const char * s)
 {
-	fflush(stdout);
-	printf("\n%*s\n%*s at line %d\n", column, "^", column, s, line);
+	//fflush(stdout);
+	PRINT("\n%*s\n%*s at line %d\n", column, "^", column, s, line);
 	
 	return 1;
 }

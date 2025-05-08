@@ -1,6 +1,36 @@
 %{
 
-#include "kshell_yacc.h"    
+#ifdef _HOST_
+#   include <stdio.h>
+#   include <stdlib.h>
+#   include <stdint.h>
+#   include <fcntl.h>
+#   include <unistd.h>
+#   include <string.h>
+#   include <sys/types.h>
+#   include <stdint.h>
+#   define MALLOC(s) malloc(s)
+#   define FREE(s) free(s)
+#   define P(fmt,var) fprintf(stderr, #var" : "fmt, var)
+#   define RETURN(e,c,m,...) if(c){fprintf(stderr,"Error "m"\n");__VA_ARGS__;return e;}
+#   define OPENR(f) open (f, O_RDONLY)
+#   define OPENW(f) open (f, O_WRONLY | O_CREAT | O_TRUNC, 0644)
+#   define PRINT(fmt,...) printf(fmt, ##__VA_ARGS__)
+#else
+#   define MALLOC(s) malloc(s)
+#   define FREE(s) free(s)
+#   define P(fmt,var) 
+#   define RETURN(e,c,m,...) if(c){kprintf("Error "m"\n");__VA_ARGS__;return e;}
+#   define OPENR(f) open (f)
+#   define OPENW(f)
+#   define PRINT(fmt,...)
+#   include <common/cstd.h>    
+#	include <ulib/libc.h>
+#	include <ulib/memory.h>
+#   include <lextypes.h>
+#endif
+
+#include "kshell_yacc.h"
 
 void count();
 

@@ -20,14 +20,15 @@
 #   define OPENW(f) open (f, O_WRONLY | O_CREAT | O_TRUNC, 0644)
 #   define PRINT(fmt,...) printf(fmt, ##__VA_ARGS__)
 #else
-#   define MALLOC(s) kmalloc(s)
-#   define FREE(s) kfree(s)
+#   define MALLOC(s) malloc(s)
+#   define FREE(s) free(s)
 #   define P(fmt,var) 
 #   define RETURN(e,c,m,...) if(c){kprintf("Error "m"\n");__VA_ARGS__;return e;}
 #   define OPENR(f) open (f)
 #   define OPENW(f)
 #   define PRINT(fmt,...)
-#   include <common/cstd.h>    
+#   include <common/cstd.h>  
+#   include <ulib/memory.h>  
 #endif
 
 #define ATTR_EXPORTED 0x1
