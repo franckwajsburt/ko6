@@ -16,7 +16,6 @@
 #ifndef _USERMEM_H_
 #define _USERMEM_H_
 
-#define PAGE_SIZE       4096            ///< page size, can't be changed
 #define USTACK_SIZE     (16*PAGE_SIZE)  ///< thread stack size (all thread have the same size)
 #define MAGIC_STACK     0xDEADF00D      ///< used to tag user stack (to check corruption)
 #define MAGIC_HEAP      0x5A            ///< used to tag user heap block (to check corruption)
