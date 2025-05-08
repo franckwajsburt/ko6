@@ -24,7 +24,8 @@
 #ifndef _DEBUG_ON_H_
 #define _DEBUG_ON_H_
 
-#define _FMT_(T,F,C) "[%d:%d:%s/%s] "T" (%s) "F"\n",cpuid(),clock(),__FILE__,__func__,C
+#define _FMT_(T,F,C)  "[%d:%d] [%s] "T" (%s) "F"\n",cpuid(),clock(),__func__,C
+#define _FMT1_(T,F,C) "[%d:%d] [%s/%s] "T" (%s) "F"\n",cpuid(),clock(),__FILE__,__func__,C
 #define _FMT2_(T,F,C) "[%d:%d] "T" (%s) "F"\n",cpuid(),clock(),C
 
 /**
