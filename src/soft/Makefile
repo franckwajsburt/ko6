@@ -8,12 +8,12 @@
 # \author   Franck Wajsburt
 # \brief    General Makefile to compile all ko6's code : kernel; libraries and user applications
 #
-#--------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 # General settings, directories and tools specific to the SOC 
 # --------------------------------------------------------------------------------------------------
 
-VERBOSE?= 0#				verbose mode to print INFO(), BIP(), ASSERT, VAR()
+VERBOSE?= 1#				verbose mode to print INFO(), BIP(), ASSERT, VAR()
 MAKOPT ?= -s#				comment the -s to get command details
 
 SOC    ?= almo1-mips#		default SOC name
