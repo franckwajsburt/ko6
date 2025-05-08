@@ -52,13 +52,13 @@ typedef struct hto_s hto_t;
  *          The function initializes a hash table of the given size,
  *          ensuring that the table size is a prime number to optimize double hashing.
  *          All slots are initialized as empty.
- * \param   size    The requested initial size of the hash table.
+ * \param   nb      The number of initial entries requested in the hash table.
  * \param   type    0 if key are "char *" strings ; 1 if key are "void *"
  * \return  A pointer to the newly allocated hash table, or NULL if allocation fails.
  * \note    The actual size of the table may be slightly larger than the requested size
  *          because it is adjusted to the nearest prime number for better hashing performance.
  */
-hto_t * hto_create (unsigned size, int type);
+hto_t * hto_create (unsigned nb, int type);
 
 /**
  * \brief   destroy a hash table and all its content

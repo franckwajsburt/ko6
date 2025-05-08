@@ -8,14 +8,20 @@
   \author   Franck Wajsburt
   \brief    see comment in common/htopen.h
 
+  FIXME should use a bitmap to know if a entry is empty or not, not a forbidden key KEYFREED
+  FIXME key type should be an union to avoid cast :
+        typedef union { void * v; unsigned long u; char *s } hto_key_t;
+
 \*------------------------------------------------------------------------------------------------*/
 
-#define KEYFREED ((void *)0x80000001)               ///< key used when a slot is freed 
+#define KEYFREED ((void *)0xF0000001)               ///< key used when a slot is freed 
 
 #include <htopen.h>
+#include <errno.h>
 
 #ifdef _KERNEL_                                     // if it is for the kernel
 #   include <kernel/klibc.h>
+#   define PAGE_SIZE    4096
 #   define MALLOC       kmalloc                     // allocates in the slab allocator
 #   define STRDUP       kstrdup                     // allocates a new key (when it is a string)
 #   define FREE(k)      kfree(k)                    // free a key (when it is a string)
@@ -57,10 +63,10 @@
 // This definition is private for this file only. All accesses are done through API functions only. 
 //--------------------------------------------------------------------------------------------------
 
-struct hto_slot_s {          
+typedef struct hto_slot_s {          
     void *key;                                      ///< key is always a string
     void *val;                                      ///< value is a generic pointer (could be int)
-};
+} hto_slot_t;
 
 struct hto_s {
     unsigned type:1;                                ///< ket=y type:  0=string  1=void*
@@ -150,21 +156,20 @@ static void * keydup (const hto_t *ht, void *k)
 // public API functions
 //--------------------------------------------------------------------------------------------------
 
-hto_t * hto_create (unsigned size, int type)        // see comment in htopen.h
+hto_t * hto_create (unsigned nb, int type)          // type: 0 key "char *" ; 1 if key "void *"
 {
-    size = largest_prime (size);                     // size must be a prime
-    hto_t *ht = MALLOC(                            // allocate the hash table
-                  3 * sizeof (unsigned) +            // header part
-                  3 * sizeof (void *) +              // header part
-                  size * sizeof (struct hto_slot_s));// bucket part
+    nb = largest_prime (nb);                        // the number of entries must be a prime
+    size_t s = sizeof(hto_t)+nb*sizeof(hto_slot_t); // header part + bucket part
+    if (s > 4096) return NULL;                      // FIXME should be PAGE_SIZE for this version
+    hto_t *ht = MALLOC(s);                          // allocate the hash table
     if (ht) {                                       // if alloc is a success    
-        for (int i = 0; i < size; i++) {            // for each slot
+        for (int i = 0; i < nb; i++) {              // for each slot
             ht->bucket[i].key = NULL;               // erase all
             ht->bucket[i].val = NULL;               // erase all
         }
-        ht->size = ht->empty = size;                // table is empty
+        ht->size = ht->empty = nb;                  // table is empty
         ht->freed = 0;                              // thus no freed yet
-        ht->type = type&1;                          // even keys are char*; odd  keys are void*
+        ht->type = type & 1;                        // even keys are char*; odd  keys are void*
     }
     return ht;                                      // return a real pointer or NULL
 }
@@ -213,7 +218,7 @@ int hto_set (hto_t *ht, void *key, void *val)       // see comment in htopen.h
     struct hto_slot_s * slot = NULL;                // will be the best slot
     int try_forthisslot = 0;
     if (key == KEYFREED) return -2;                 // wrong key, KEYFREED is forbidden
-    FOREACH_PROBE(ht, key, try, h) {               // For each possible slot for this key
+    FOREACH_PROBE(ht, key, try, h) {                // For each possible slot for this key
         void * current_key = ht->bucket[h].key;     // get the key at position h
         if (current_key == KEYFREED) {              // if first freed slot, will be the best slot
             if (!slot) {                            // it is the fist freed slot found
@@ -230,7 +235,7 @@ int hto_set (hto_t *ht, void *key, void *val)       // see comment in htopen.h
                 try = try_forthisslot;              // redefine the try counter
                 ht->freed--;                        // reused slot, thus one less freed slot
             }
-            slot->key = keydup (ht, key);            // we need to allocate the new key
+            slot->key = keydup (ht, key);           // we need to allocate the new key
             slot->val = val;                        // then attach the new val 
             return try;                             // return the number of try
         }
@@ -253,16 +258,16 @@ int hto_set (hto_t *ht, void *key, void *val)       // see comment in htopen.h
         slot->val = val;                            // then attach the new val 
         return try_forthisslot;                     // return the number of try for this slot
     }
-    return -1;                                      // -1 means hash table is full
+    return -ENOSPC;                                 // -ENOSPC means hash table is full
 }
 
 int hto_set_grow (hto_t **pht, void *key, void *val, int maxtry)// see comment in htopen.h
 {
     int try;
-    for (try = hto_set (*pht, key, val);             // try to set an new item
+    for (try = hto_set (*pht, key, val);            // try to set an new item
         (try == -1) || (try > maxtry);              // if ht full or too much try
          hto_rehash (pht, 200),                     // rehash after growing the table
-         try = hto_set (*pht, key, val));            // try again
+         try = hto_set (*pht, key, val));           // try again
     return try;
 }
 
@@ -290,7 +295,7 @@ void hto_foreach (hto_t *ht, hto_callback_t fn, void * data) // see comment in h
         void *key = ht->bucket[h].key;              // get the current key
         if (key != NULL && key != KEYFREED) {       // if the slot is used
             void *val = ht->bucket[h].val;          // get the current val
-            fn (ht, h, key, val, data);              // call the callback function 
+            fn (ht, h, key, val, data);             // call the callback function 
         }
     }
 }
