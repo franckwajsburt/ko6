@@ -24,8 +24,10 @@
 #define INT_MAX		    ((int)(~0U >> 1))   // maximum value of a signed integer on the system
 #define INT32_MAX	    INT_MAX             // maximum value of a 32bit signed integer (0x7fffffff)
 #define UINT_MAX	    ((unsigned int)~0U) // maximum value of a unsigned integer on the system
-#define UINT32_MAX	    UINT_MAX            // maximum value of a 32bit unsigned integer (0xffffffff)
+#define UINT32_MAX	    UINT_MAX            // maximum value of a 32bit unsigned int (0xffffffff)
 #define ULONG_MAX 	    UINT_MAX            // maximum value of an unsigned long on the system
+
+#define PAGE_SIZE       4096
 
 #define false   0
 #define true    (!false)
