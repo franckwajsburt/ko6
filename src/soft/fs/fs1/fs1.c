@@ -24,6 +24,7 @@
 
 #include <klibc.h>
 
+extern errno_t V;
 //--------------------------------------------------------------------------------------------------
 // Internal Stuctures & functions
 //--------------------------------------------------------------------------------------------------
@@ -93,8 +94,9 @@ static vfs_inode_t *fs1_new_inode (superblock_t *sb, ino_t ino)
 // Physical File System API, function signatures are documented in fs/vfs.h
 //--------------------------------------------------------------------------------------------------
 
-static int fs1_mount (superblock_t *sb, blockdev_t *bdev)     
-{
+static errno_t fs1_mount (superblock_t *sb, blockdev_t *bdev)     
+{ 
+    ASSERT (V,"sb %x bdev %x", sb, bdev);
     fs1_volume_t *vol = kmalloc (sizeof (fs1_volume_t));    // create a new volume
     if (!vol) return -ENOMEM;                               // return if no memory
     vol->entries = blockio_get (bdev->minor, 0);            // read the disk metadata (first block)
@@ -115,10 +117,10 @@ static int fs1_mount (superblock_t *sb, blockdev_t *bdev)
         kfree (vol);                                        // volume no longer needed (cleanup)
         return -ENOMEM;                                     // return the error
     }
-    return 0;                                               // success
+    return SUCCESS;                                         // success
 }
 
-static int fs1_unmount (superblock_t *sb)
+static errno_t fs1_unmount (superblock_t *sb)
 {
     (void)sb;
     return -ENOSYS;
@@ -148,6 +150,7 @@ static int fs1_unmount (superblock_t *sb)
  */
 static vfs_inode_t *fs1_lookup (superblock_t *sb, vfs_inode_t *dir, const char *name) 
 {
+    ASSERT (V,"sb %x dir %x name %s",sb,dir,name);
     (void)dir;
     fs1_volume_t *vol = fs1_get_volume (sb);                // volume of the superblock
     for (unsigned i = 0; i < vol->entry_count; ++i) {       // for all possible files in dir
@@ -168,10 +171,10 @@ static vfs_inode_t *fs1_lookup (superblock_t *sb, vfs_inode_t *dir, const char *
     return NULL;
 }
 
-static int fs1_read (vfs_inode_t *inode, void *buffer, unsigned offset, unsigned size) 
+static errno_t fs1_read (vfs_inode_t *inode, void *buffer, unsigned offset, unsigned size) 
 {
     fs1_inode_t *ent = inode->data;
-    if (offset >= ent->size) return 0;
+    if (offset >= ent->size) return SUCCESS;
     if (offset + size > ent->size) size = ent->size - offset;
 
     unsigned start_lba = ent->lba + offset / BLOCK_SIZE;
@@ -197,7 +200,7 @@ static int fs1_read (vfs_inode_t *inode, void *buffer, unsigned offset, unsigned
     return copied;
 }
 
-static int fs1_write (vfs_inode_t *inode, const void *buffer, unsigned offset, unsigned size)
+static errno_t fs1_write (vfs_inode_t *inode, const void *buffer, unsigned offset, unsigned size)
 {
     (void)inode;
     (void)buffer;
@@ -222,30 +225,47 @@ static vfs_inode_t *fs1_mkdir (vfs_inode_t *dir, const char *name, mode_t mode)
     return NULL; 
 }
 
-static int fs1_unlink (vfs_inode_t *dir, const char *name)
+static errno_t fs1_evict (vfs_inode_t *inode)
+{
+    (void)inode;
+    return SUCCESS;
+}
+
+static errno_t fs1_unlink (vfs_inode_t *dir, const char *name)
 {
     (void)dir;
     (void)name;
     return -ENOSYS;
 }
 
-static int fs1_readdir (vfs_inode_t *dir, unsigned index, char *name, unsigned maxlen)
+static errno_t fs1_readdir (vfs_inode_t *dir, vfs_dirent_t *ent, size_t offset)
 {
-    (void)dir;
-    (void)index;
-    (void)name;
-    (void)maxlen;
-    return -ENOSYS;
+/*
+    if (!dir || !ent) return -EINVAL;
+    if (dir->type != VFS_DIR) return -ENOTDIR;
+
+    fs1_volume_t *vol = (fs1_volume_t *) dir->sb->fs_data;
+    if (!vol || offset >= vol->entry_count) return 0;               // no more entry
+
+    fs1_entry_t *entry = &vol->entries[offset];                     // fs1 directory
+
+    ent->inode = entry->inode;
+    ent->type  = VFS_REG;                                           // fs1 has only on directory
+    strncpy(ent->name, entry->name, sizeof(ent->name) - 1);
+    ent->name[sizeof(ent->name) - 1] = '\0';                        // to be sure
+
+*/
+    return 1;                                                       // one read entry.
 }
 
-static int fs1_getattr (vfs_inode_t *inode, struct stat *stbuf)
+static errno_t fs1_getattr (vfs_inode_t *inode, struct stat *stbuf)
 {
     (void)inode;
     (void)stbuf;
     return -ENOSYS;
 }
 
-static int fs1_setattr (vfs_inode_t *inode, const struct stat *stbuf)
+static errno_t fs1_setattr (vfs_inode_t *inode, const struct stat *stbuf)
 {
     (void)inode;
     (void)stbuf;
@@ -266,8 +286,9 @@ vfs_fs_type_t fs1_ops = {
     .write    = fs1_write   ,   // not used with fs1
     .create   = fs1_create  ,   // not used with fs1
     .mkdir    = fs1_mkdir   ,   // not used with fs1
+    .evict    = fs1_evict   ,   // not used with fs1
     .unlink   = fs1_unlink  ,   // not used with fs1
-    .readdir  = fs1_readdir ,   // not used with fs1
+    .readdir  = fs1_readdir ,   
     .getattr  = fs1_getattr ,   // not used with fs1
     .setattr  = fs1_setattr     // not used with fs1
 };

@@ -66,6 +66,7 @@ void kinit (void *fdt)
 
     //blockio_init ();
     vfs_init ();
+    vfs_test ();
     
     // Finally, load the main user programm
     // We never return of thread_load() here because thread_load() change $31 to thread_bootstap()

@@ -12,10 +12,61 @@
 
 #include <klibc.h>
 
+int V=0;
+
+void vfs_test(void)
+{
+    kprintf("[VFS TEST] Start\n");
+
+    // 1. Lire le répertoire racine
+    vfs_inode_t *root = vfs_resolve(NULL, "/");
+    if (!root) {
+        kprintf("[VFS TEST] Failed to resolve root inode\n");
+        return;
+    }
+    vfs_inode_t *inode = vfs_resolve (NULL,"/");
+    VAR (%x\n,inode);
+/*
+    vfs_dirent_t entry;
+    kprintf("[VFS TEST] Directory listing of '/':\n");
+    while (vfs_readdir(root, &entry) == 0) {
+        kprintf(" - %s\n", entry.name);
+    }
+
+    // 2. Résoudre un fichier
+    const char *path = "/hello.txt";
+    vfs_inode_t *inode = vfs_resolve(NULL, path);
+    if (!inode) {
+        kprintf("[VFS TEST] File '%s' not found\n", path);
+        return;
+    }
+
+    // 3. Ouvrir le fichier
+    vfs_file_t *file = vfs_file_open(inode);
+    if (!file) {
+        kprintf("[VFS TEST] Failed to open file '%s'\n", path);
+        return;
+    }
+
+    // 4. Lire le contenu
+    char buf[128];
+    int len = vfs_read(file, buf, sizeof(buf) - 1);
+    buf[len] = '\0';
+    kprintf("[VFS TEST] Contents of '%s':\n%s\n", path, buf);
+
+    vfs_file_close(file);
+*/
+    kprintf("[VFS TEST] End\n");
+}
+
 //--------------------------------------------------------------------------------------------------
 // General VFS initialisation
 //--------------------------------------------------------------------------------------------------
 
+hto_t *Vfs_icache;                                          ///< inode cache
+list_t Vfs_icache_lru;                                      ///< list of not referenced inode 
+
+static int vfs_icache_init (size_t nbentries);              // defined bellow
 errno_t vfs_init (void)
 {
     errno_t err = vfs_filesystem_register (&fs1_ops);       // Register the filesystem type first
@@ -27,9 +78,12 @@ errno_t vfs_init (void)
     blockdev_t *bdev = blockdev_get (0);                    // default block dev 0 for partition '/'
     if (!bdev) { kfree (sb); return -ENODEV; }
 
-    int ret = vfs_mount ("/", sb, bdev, &fs1_ops);          // root '/' fs --> create root inode
-    if (ret != 0) { kfree (sb); return ret; }
+    err = vfs_mount ("/", sb, bdev, &fs1_ops);              // root '/' fs --> create root inode
+    if (err != 0) { kfree (sb); return err; }
 
+    err = vfs_icache_init (512);                            // 509 inodes (must be < 4KiB)
+    if (err != 0) { kfree (sb); return err; }
+    
     INFO ("vfs_init: '/' (fs1) successfully mounted on block device 0");
     return SUCCESS;
 }
@@ -46,6 +100,7 @@ static const vfs_fs_type_t *fs_registry[VFS_FILESYSTEM_MAX];///< Static registry
 
 const vfs_fs_type_t *vfs_filesystem_get (const char *name)
 {
+    ASSERT (V,"name %s", name);
     if (!name) return NULL;                                 // nothing to search
     for (int i = 0; i < VFS_FILESYSTEM_MAX; ++i) {          // browse the registery table
         const vfs_fs_type_t *fs = fs_registry[i];           // get the registered fs
@@ -57,6 +112,7 @@ const vfs_fs_type_t *vfs_filesystem_get (const char *name)
 
 errno_t vfs_filesystem_register (const vfs_fs_type_t *ops)
 {
+    ASSERT (V,"ops %x", ops);
     if (!ops || !ops->name) return -EINVAL;                 // check argument validity
     if (vfs_filesystem_get (ops->name)) return -EEXIST;     // already registered
     for (int i = 0; i < VFS_FILESYSTEM_MAX; ++i) {          // Find a free slot
@@ -66,6 +122,17 @@ errno_t vfs_filesystem_register (const vfs_fs_type_t *ops)
         }
     }
     return -ENOSPC;                                         // registry full
+}
+
+//-------------------------------------------------------------------------------------- file mapper
+
+/**
+ * FIXME To be implemented
+ */
+errno_t vfs_mapping_destroy (vfs_inode_t *inode)
+{
+    (void)inode;
+    return SUCCESS;
 }
 
 //---------------------------------------- mounted file system tables: definition & helper functions
@@ -146,6 +213,7 @@ static errno_t vfs_mount_alloc (void)
  */
 static errno_t vfs_mount_register (const char *path, vfs_inode_t *inode, superblock_t *sb)
 {
+    ASSERT (V,"path %s inode %x sb %x",path,inode,sb);
     mnt_id_t id = vfs_mount_alloc ();                       // get a place in mount table
     if (id < 0) return -ENOSPC;                             // no space left
     sb->mnt_id = id;                                        // sb identifier in the mount table
@@ -178,14 +246,15 @@ static superblock_t *vfs_mount_unregister (const char *path)
 
 superblock_t *vfs_superblock_alloc (void) 
 {
-    superblock_t *sb = kmalloc (sizeof(superblock_t));
-    if (!sb) return NULL;               // no space left
-    sb->mnt_id = -1;                    // unregistered by default
+    superblock_t *sb = kmalloc (sizeof(superblock_t));      // new superblock
+    if (!sb) return NULL;                                   // no space left
+    sb->mnt_id = -1;                                        // unregistered by default
     return sb;
 }
 
 errno_t vfs_kern_mount (superblock_t *sb, blockdev_t *bdev, const vfs_fs_type_t *ops)
 {
+    ASSERT (V,"sb %x bdev %x ops %x", sb, bdev, ops);
     if (!sb || !bdev || !ops) return -EINVAL;               // check arguments validity
     sb->ops = ops;                                          // assign the filesystem operations
     sb->bdev = bdev;                                        // assign the block device
@@ -201,7 +270,9 @@ errno_t vfs_kern_unmount (superblock_t *sb)
 
 errno_t vfs_mount (const char *path, superblock_t *sb, blockdev_t *bdev, const vfs_fs_type_t *ops)
 {
-    vfs_inode_t *inode = vfs_inode_resolve (path);          // retreive path's inode BEFORE mounting
+    ASSERT (V,"path %s sb %x bdev %x ops %x", path, sb, bdev, ops);
+    vfs_inode_t *inode = vfs_resolve (NULL, path);          // retreive path's inode BEFORE mounting
+    VAR(%x\n,inode);
     int ret = vfs_kern_mount (sb, bdev, ops);               // mount the new file system
     if (ret >= 0) {
         ret = vfs_mount_register (path, inode, sb);         // find a place in vfs_mount_table
@@ -229,9 +300,12 @@ mnt_id_t vfs_mount_lookup (const char *path)
 
 superblock_t *vfs_mount_resolve (const char *path)
 {
+    ASSERT(V,"path %s", path);
+    if (!path || path[0] != '/') return NULL;               // path has to be absolute
+
     superblock_t *best_sb = NULL;                           // will the the best superblock
     int best_len = -1;                                      // the one with the greater path length
-    if (!path || path[0] != '/') return NULL;               // path has to be absolute
+
     vfs_mount_foreach_id (id) {                             // browse the mount table
         const char *mnt = vfs_mount_path_get (id);          // get the current mount path
         superblock_t *sb = vfs_mount_sb_get (id);           // and its superblock
@@ -244,13 +318,15 @@ superblock_t *vfs_mount_resolve (const char *path)
             best_len = len;                                 // for that length
         }
     }
+    VAR(%x\n, best_sb);
     return best_sb;                                         // return the best superblock
 }
 
 //---------------------------------------------------------------------------- lookup / open / close
 
-vfs_inode_t *vfs_resolve (vfs_inode_t *dir, const char *path)
+vfs_inode_t *vfs_resolve (vfs_inode_t *base, const char *path)
 {
+    ASSERT(V,"base %p path %s", base, path);
     if (!path || path[0] == '\0') return NULL;              // nothing to resolve
 
     superblock_t *sb;
@@ -261,19 +337,19 @@ vfs_inode_t *vfs_resolve (vfs_inode_t *dir, const char *path)
     path_copy[PAGE_SIZE - 1] = '\0';                        // ensure null-termination
 
     char *parts[32];                                        // max 32 path segments
-    int count = strsplit(path_copy, "/", parts, 32);        // split path into components
+    int count = strsplit (path_copy, "/", parts, 32);       // split path into components
 
     if (path[0] == '/') {
-        if (dir != NULL) goto resolve_fail;                 // inconsistent: absolute path + dir
-        sb = vfs_mount_resolve(path);                       // find the matching superblock
+        if (base != NULL) goto resolve_fail;                // inconsistent: absolute path + base
+        sb = vfs_mount_resolve (path);                      // find the matching superblock
         if (!sb || !sb->root) goto resolve_fail;            // no root found
         inode = sb->root;
     } else {
-        if (dir == NULL) goto resolve_fail;                 // relative path needs a base inode
-        sb = dir->sb;
-        inode = dir;
+        if (base == NULL) goto resolve_fail;                // relative path needs a base inode
+        sb = base->sb;
+        inode = base;
     }
-
+    VAR(%d\n,count);
     for (int i = 0; i < count; ++i) {
         if (parts[i][0] == '\0' || strcmp(parts[i], ".") == 0) continue;  // skip empty or "."
 
@@ -289,18 +365,17 @@ vfs_inode_t *vfs_resolve (vfs_inode_t *dir, const char *path)
             }
         }
     }
+    kfree(path_copy);                                       // at last free the patah copy
+    return inode;                                           // and return the resolution result
 
-    kfree(path_copy);
-    return inode;
-
-resolve_fail:
-    kfree(path_copy);
-    return NULL;
+resolve_fail:                                               // if something wrong happened
+    kfree(path_copy);                                       // free the path copy
+    return NULL;                                            // an return NULL
 }
 
-vfs_file_t *vfs_open (vfs_inode_t *dir, const char *path)
+vfs_file_t *vfs_open (vfs_inode_t *base, const char *path)
 {
-    vfs_inode_t *inode = vfs_resolve (dir, path);           // retrieve the path's inode 
+    vfs_inode_t *inode = vfs_resolve (base, path);          // retrieve the path's inode 
     if (!inode) return NULL;
     vfs_file_t *file = kmalloc (sizeof(vfs_file_t));        // allocate a new file 
     if (!file) { vfs_inode_release (inode); return NULL; }  
@@ -317,6 +392,20 @@ errno_t vfs_close (vfs_file_t *file)
     return SUCCESS;
 }
 
+vfs_file_t *vfs_opendir (vfs_inode_t *base, const char *path)
+{
+/*
+    vfs_inode_t *inode = vfs_resolve (base, path);          // retrieve the path's inode 
+    if (!inode || !vfs_inode_is_dir(inode)) return NULL;
+    vfs_file_t *file = kmalloc(sizeof(vfs_file_t));
+    if (!file) return NULL;
+    file->inode = inode;
+    file->offset = 0;
+    return file;
+*/
+    return NULL;
+}
+
 //-------------------------------------------------------------------- read / write / seek / readdir
 
 errno_t vfs_read (vfs_file_t *file, void *buffer, size_t size)
@@ -325,9 +414,9 @@ errno_t vfs_read (vfs_file_t *file, void *buffer, size_t size)
     vfs_inode_t *inode = file->inode;                                 // retreive file's vfs_inode
     if (!inode||!inode->sb||!inode->sb->ops||!inode->sb->ops->read)   // check structures
         return -EINVAL;
-    int ret = inode->sb->ops->read (inode, buffer, file->offset, size);// Perform the read
+    int ret = inode->sb->ops->read(inode, buffer, file->offset, size);// Perform the read
     if (ret < 0) return ret;
-    file->offset += ret;                                               // Advance the file offset
+    file->offset += ret;                                              // Advance the file offset
     return ret;
 }
 
@@ -358,13 +447,21 @@ errno_t vfs_seek (vfs_file_t *file, int offset, int whence)
     }
 }
 
-errno_t vfs_readdir (vfs_file_t *dir, unsigned index, char *name, unsigned maxlen)
+vfs_dirent_t *vfs_readdir (vfs_file_t *dir)
 {
-    (void)dir;
-    (void)index;
-    (void)name;
-    (void)maxlen;
-    return -ENOSYS;
+/*
+    if (!dir || !dir->inode || !dir->inode->sb || !dir->inode->sb->ops) return NULL;
+    const vfs_fs_type_t *ops = dir->inode->sb->ops;                 // retreive the fs API
+    if (!ops->readdir) return NULL;                                 // fs does not support readdir
+
+    vfs_dirent_t *entry = NULL;                                     // allocated by ops->readdir()
+    errno_t err = ops->readdir (dir->inode, dir->offset, &entry);   // call the real fs readir
+    if (err == SUCCESS && entry != NULL) {                          // there is a entry
+        dir->offset++;                                              // advance to next entry
+        return entry;                                               // HAVE TO BE FREED AFTER USE!
+    }
+*/
+    return NULL;                                                    // no more entries or error
 }
 
 //-------------------------------------------------------------------------------- getattr / setattr
@@ -408,30 +505,78 @@ void vfs_dentry_destroy (vfs_dentry_t *dentry)
 }
 
 //--------------------------------------------------------------------------------------------------
-// inode cache API
+// inode API
 //--------------------------------------------------------------------------------------------------
 
-/**
- * \brief Insert an inode into the VFS inode cache.
- * \param inode Pointer to the vfs_inode_t to insert.
- * \note For now, this function does nothing because there is no inode cache yet.
- */
-static void vfs_inode_cache_insert (vfs_inode_t *inode)
-{
-    (void)inode;
-    // TODO: Implement inode cache insertion when cache will exist
-}
+#define INO_KEY(mnt_id,ino) ((void *)((unsigned long)((mnt_id << 28)| (ino & 0x0FFFFFFF))))
+#define INODE_KEY(inode)    INO_KEY((inode)->sb->mnt_id,(inode)->ino)
 
 /**
- * \brief Remove an inode from the VFS inode cache.
- * \param inode Pointer to the vfs_inode_t to remove.
- * \note For now, this function does nothing because there is no inode cache yet.
+ * \brief Initialize icache
+ * \param nbentries maximum number of working inodes
+ * \return SUCCESS or -ENOMEM, if there is not enough memory
+ * FIXME improve comments
  */
-static void vfs_inode_cache_remove (vfs_inode_t *inode)
+static int vfs_icache_init (size_t nbentries) 
 {
-    (void)inode;
-    // TODO: Implement inode cache removal when cache will exist
+    Vfs_icache = hto_create (nbentries, 1);                     // max inodes 
+    if (!Vfs_icache) return -ENOMEM;                            // impossible to create icache
+    list_init (&Vfs_icache_lru);                                // initialize releasable inode list
+    return SUCCESS;                                             // success
 }
+    
+/**
+ * \brief Evict a VFS inode and release all associated resources.
+ *        This function must only be called for inodes with refcount == 0,
+ *        and after they have been removed from the inode cache.
+ *        It releases:
+ *        - the filesystem-specific data (via fs->destroy_inode),
+ *        - the file mapping if any (e.g. directory entries, page cache),
+ *        - and the inode structure itself.
+ * \param inode Pointer to the vfs_inode_t to destroy.
+static void vfs_icache_evict (vfs_inode_t *inode)
+{
+    if (!inode) return;
+    PANIC_IF (inode->refcount, "inode still referenced");
+    hto_del (Vfs_icache, INODE_KEY(inode)); 
+    inode->sb->ops->evict (inode);                          // Call the fs-specific destroy fun
+    if (inode->mapping)                                     // Destroy file mapping if present
+        vfs_mapping_destroy (inode);                // To be implemented
+    // TODO: release associated dentries when dentry cache is implemented
+    // Free the inode itself
+    kfree(inode);
+}
+ */
+
+/**
+ * \brief Insert an inode into the global VFS inode cache.
+ *        If the cache is full, this function evicts the oldest unused inode (refcount == 0) 
+ *        from the LRU list to make space. The victim is removed from the cache and is eviscted
+ *        with vfs_inode_evict(). The given inode is inserted or the system panics.
+ * \param inode Pointer to the vfs_inode_t to insert.
+static void vfs_icache_insert(vfs_inode_t *inode)
+{
+    void *key = INODE_KEY(inode);
+    while (hto_set (Vfs_icache, key, inode) < 0) {              // try to insert the inode
+        list_t *victim = list_getlast (&Vfs_icache_lru);        // if no space, get the lru
+        PANIC_IF (!victim, "icache full: no evictable inode");  // too much file/dir openened
+        list_unlink (victim);                                   // unlink victim from the lru list
+        vfs_inode_t *inode = list_item(victim,vfs_inode_t,list);// retreive inode from list pointer
+        vfs_icache_evict (inode);                               // remove that inode from icache 
+    }
+}
+ */
+
+/**
+ * \brief Lookup an inode in the VFS inode cache.
+ * \param sb  Pointer to the superblock where the inode should belong.
+ * \param ino Index of the inode to search for.
+ * \return Pointer to the vfs_inode_t if found, NULL otherwise.
+static vfs_inode_t *vfs_icache_lookup(superblock_t *sb, ino_t ino)
+{
+    return hto_get (Vfs_icache, INO_KEY(sb->mnt_id, ino));         
+}
+ */
 
 vfs_inode_t *vfs_inode_create (superblock_t *sb, ino_t ino, size_t size, mode_t mode, void *data)
 {
@@ -450,35 +595,22 @@ vfs_inode_t *vfs_inode_create (superblock_t *sb, ino_t ino, size_t size, mode_t 
     return inode;
 }
 
-vfs_inode_t *vfs_inode_lookup (superblock_t *sb, ino_t ino)
+vfs_inode_t *vfs_inode_lookup (superblock_t *sb, ino_t ino) 
 {
-    (void)sb;       // not used since no cache
-    (void)ino;      // not used since no cache
-    vfs_inode_cache_insert (NULL);
-    return NULL;    // No cache yet
+    return NULL;
 }
 
-vfs_inode_t *vfs_inode_resolve (const char *path)
-{
-    superblock_t *sb = vfs_mount_resolve(path);             // Find the sb matching the path prefix
-    if (!sb) return NULL;                                   // No mount point found for this path
-    const char *subpath;                                    // remaining path without point prefix
-    subpath = path + strlen(vfs_mount_path_get(sb->mnt_id));// Remove mount point prefix
-    if (*subpath == '/') subpath++;                         // Skip leading slash if present
-    return vfs_resolve (sb->root, subpath);                 // resolve the remaining relative path
-}
-
-void vfs_inode_get (vfs_inode_t *inode)
+void vfs_inode_get (vfs_inode_t *inode)                     // FIXME : should be atomic
 {
     inode->refcount++;                                      // there is another reference
 }
 
-void vfs_inode_release (vfs_inode_t *inode)
+void vfs_inode_release(vfs_inode_t *inode)
 {
-    if (--(inode->refcount) == 0) {                         // decrement ref nb, if 0 then
-        vfs_inode_cache_remove (inode);                     // remode the inode from cache
-        kfree (inode);                                      // and the inode itself
-    }
+    if (!inode) return;
+    PANIC_IF (inode->refcount == 0, "refcount already 0");
+    if (--(inode->refcount) == 0)                           // decrement ref nb, if 0 then
+        list_addfirst (&Vfs_icache_lru, &inode->list);      // add inode to the releasable inodes
 }
 
 /*------------------------------------------------------------------------------------------------*\

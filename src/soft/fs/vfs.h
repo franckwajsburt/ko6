@@ -14,7 +14,7 @@
   The VFS separates filesystem concepts into three main categories:
    - Superblocks (`superblock_t`): Represent mounted volumes (filesystems).
    - Dentries and Inodes (`vfs_dentry_t`, `vfs_inode_t`): Represent file and directory metadata.
-   - Files (`vfs_file_t`): Represent active file descriptors opened by processes.
+   - Files (`vfs_file_t`, `vfs_dirent_t`): Represent active file descriptors opened by processes.
   
   VFS Responsibilities:
    - Manage file opening, reading, seeking and closing
@@ -57,6 +57,7 @@
 //--------------------------------------------------------------------------------------------------
 
 errno_t vfs_init (void);
+void vfs_test (void);
 
 //--------------------------------------------------------------------------------------------------
 // VFS main API : Types & Variables
@@ -117,8 +118,8 @@ typedef struct vfs_inode_s {
     superblock_t *sb;                   ///< Filesystem this inode belongs to
     ino_t    ino;                       ///< Inode identifier in the current superblock
     size_t   size;                      ///< File size in bytes
-    unsigned short mode;                ///< File type and permissions (S_IFDIR, S_IFREG, etc.)
-    unsigned short refcount;            ///< Reference count 
+    mode_t   mode;                      ///< File type and permissions (S_IFDIR, S_IFREG, etc.)
+    size_t   refcount;                  ///< Reference count 
     unsigned flags;                     ///< Internal VFS state flags (e.g. dirty, pinned)
     void     *data;                     ///< Real fs specific data (real inode pointer)
     struct   vfs_mapping_s *mapping;    ///< Data mapping for files or directory contents
@@ -126,17 +127,33 @@ typedef struct vfs_inode_s {
     list_t   list;                      ///< used to chain inodes
 } vfs_inode_t;
 
-//-------------------------------------------------------------------------------------- opened file
+//--------------------------------------------------------------------- opened files and directories
 
 /**
  * \brief Represents an open file in the VFS.
- *        A VFS file structure tracks the state of an open file descriptor,
+ *        A VFS file structure tracks the state of an open file or directory descriptor,
  *        including the associated inode and the current read/write offset.
  */
 typedef struct vfs_file_s {
-    struct vfs_inode_s *inode;          ///< vfs inode of the open file 
-    unsigned offset;                    ///< current read/write position
+    vfs_inode_t *inode;                 ///< vfs inode of the open file 
+    unsigned offset;                    ///< current offset read/write position in file or directory
+    void *data;                         ///< Optional opaque pointer for FS-specific state
 } vfs_file_t;
+
+/**
+ * \brief Represents a single entry in a directory listing.
+ *        This structure describes a file or subdirectory inside a directory,
+ *        as returned by functions like vfs_readdir(). It includes a global identifier
+ *        (via mount ID and inode number), file type and permission flags, and the entry name.
+ *        It uses a flexible array member (`name[]`) to store the null-terminated name,
+ *        allowing dynamic allocation depending on the actual name length.
+ */
+typedef struct vfs_dirent_s {
+    mnt_id_t mnt_id;                    ///< ID of the mounted filesystem, <mnt_id,ino>==identifier
+    ino_t ino;                          ///< Inode number within the filesystem
+    mode_t mode;                        ///< File type and permissions (see vfs_stat.h)
+    char name[];                        ///< Flexible array member for the file or directory name
+} vfs_dirent_t;
 
 //--------------------------------------------------------------------------------------------------
 // VFS API exposed to the other kernel module (syscall, ...)
@@ -173,7 +190,7 @@ superblock_t *vfs_superblock_alloc (void);
 
 /**
  * \brief Mount & register a filesystem on a block device.
- * \param path  absolute path name where the new file system has to be mounted
+ * \param path  Absolute path name where the new file system has to be mounted
  * \param sb    Pointer to an empty superblock (allocated by the caller).
  * \param bdev  Block device where the filesystem is located.
  * \param ops   Pointer to the filesystem operations structure (fs1_ops, etc).
@@ -246,67 +263,80 @@ vfs_file_t *vfs_open (vfs_inode_t *dir, const char *path);
  */
 errno_t vfs_close (vfs_file_t *file);
 
+/**
+ * \brief Opens a directory stream for reading entries.
+ * \param path Absolute or relative path to the directory.
+ * \return A pointer to a newly allocated vfs_file_t, or NULL on failure.
+ */
+vfs_file_t *vfs_opendir (vfs_inode_t *base, const char *path);
+
+/**
+* \brief Closes a directory stream and releases associated resources.
+* \param dir Pointer to the open directory stream to close.
+*/
+void vfs_closedir (vfs_file_t *dir);
+
 //-------------------------------------------------------------------- read / write / seek / readdir
 
 /**
- * \brief Read data from an open file.
- * \param file   Open file pointer.
- * \param buffer Destination buffer.
- * \param size   Number of bytes to read.
- * \return Number of bytes read, or negative error code on failure.
- */
+* \brief Read data from an open file.
+* \param file   Open file pointer.
+* \param buffer Destination buffer.
+* \param size   Number of bytes to read.
+* \return Number of bytes read, or negative error code on failure.
+*/
 errno_t vfs_read (vfs_file_t *file, void *buffer, unsigned size);
 
 /**
- * \brief Write data to an open file.
- * \param file   Open file pointer.
- * \param buffer Source buffer.
- * \param size   Number of bytes to write.
- * \return Number of bytes written, or negative error code on failure.
- */
+* \brief Write data to an open file.
+* \param file   Open file pointer.
+* \param buffer Source buffer.
+* \param size   Number of bytes to write.
+* \return Number of bytes written, or negative error code on failure.
+*/
 errno_t vfs_write (vfs_file_t *file, const void *buffer, unsigned size);
 
 enum whence_e {
-    SEEK_SET,  ///< file offset is set to offset bytes
-    SEEK_CUR,  ///< file offset is set to current location plus offset bytes
-    SEEK_END   ///< file offset is set to the file size plus offset bytes
+SEEK_SET,  ///< file offset is set to offset bytes
+SEEK_CUR,  ///< file offset is set to current location plus offset bytes
+SEEK_END   ///< file offset is set to the file size plus offset bytes
 };
 
 /**
- * \brief Move the current file offset.
- * \param file   Open file pointer.
- * \param offset Byte offset to move.
- * \param whence One of SEEK_SET, SEEK_CUR, or SEEK_END.
- * \return 0 on success, negative error code on failure.
- */
+* \brief Move the current file offset.
+* \param file   Open file pointer.
+* \param offset Byte offset to move.
+* \param whence One of SEEK_SET, SEEK_CUR, or SEEK_END.
+* \return 0 on success, negative error code on failure.
+*/
 errno_t vfs_seek (vfs_file_t *file, int offset, int whence);
 
 /**
- * \brief Read a directory entry.
- * \param file   Open directory file pointer.
- * \param index  Index of the entry.
- * \param name   Buffer to store the entry name.
- * \param maxlen Size of the name buffer.
- * \return 0 on success, negative error code on failure.
- */
-errno_t vfs_readdir (vfs_file_t *file, unsigned index, char *name, unsigned maxlen);
+* \brief Reads the next directory entry in an open directory stream.
+*        This function returns a dynamically allocated vfs_dirent_t describing the next
+*        file or directory in the directory opened with vfs_opendir().
+* \param dir Pointer to an open directory stream (vfs_file_t)
+* \return A newly allocated vfs_dirent_t on success, or NULL when no more entries.
+*         The caller must free the returned structure with kfree().
+*/
+vfs_dirent_t *vfs_readdir (vfs_file_t *dir);
 
 //-------------------------------------------------------------------------------- getattr / setattr
 
 /**
- * \brief Get attributes of an inode.
- * \param inode  Pointer to the inode.
- * \param statbuf Output buffer for the attributes.
- * \return 0 on success, negative error code on failure.
- */
+* \brief Get attributes of an inode.
+* \param inode  Pointer to the inode.
+* \param statbuf Output buffer for the attributes.
+* \return 0 on success, negative error code on failure.
+*/
 errno_t vfs_getattr (vfs_inode_t *inode, struct stat *statbuf);
 
 /**
- * \brief Set attributes of an inode.
- * \param inode  Pointer to the inode.
- * \param statbuf New attributes to apply.
- * \return 0 on success, negative error code on failure.
- */
+* \brief Set attributes of an inode.
+* \param inode  Pointer to the inode.
+* \param statbuf New attributes to apply.
+* \return 0 on success, negative error code on failure.
+*/
 errno_t vfs_setattr (vfs_inode_t *inode, const struct stat *statbuf);
 
 //--------------------------------------------------------------------------------------------------
@@ -314,20 +344,21 @@ errno_t vfs_setattr (vfs_inode_t *inode, const struct stat *statbuf);
 //--------------------------------------------------------------------------------------------------
 
 /** 
- *    mount     Mount a real filesystem on a given block device.
- *    unmount   Unmount the filesystem and release its resources.
- *    lookup    Lookup a file or directory name in a parent directory.
- *    read      Read data from a file stored in the real file system.
- *    write     Write data to a file stored in the filesystem.
- *    create    Create a new regular file in the directory.
- *    mkdir     Create a new directory.
- *    unlink    Remove a file or directory.
- *    readdir   Read the contents of a directory (enumerate entries).
- *    getattr   Retrieve file attributes (stat-like information).
- *    setattr   Change file attributes (e.g., permissions).
+ *  mount     Mount a real filesystem on a given block device.
+ *  unmount   Unmount the filesystem and release its resources.
+ *  lookup    Lookup a file or directory name in a parent directory.
+ *  read      Read data from a file stored in the real file system.
+ *  write     Write data to a file stored in the filesystem.
+ *  create    Create a new regular file in the directory.
+ *  mkdir     Create a new directory.
+ *  evict     Clean the fs-specific data from the inode
+ *  unlink    Remove a file or directory.
+ *  readdir   Read the contents of a directory (enumerate entries).
+ *  getattr   Retrieve file attributes (stat-like information).
+ *  setattr   Change file attributes (e.g., permissions).
  */
 struct vfs_fs_type_s {
-    
+
     /**
      * \brief  real file system name, such as "fs1"
      */
@@ -410,6 +441,14 @@ struct vfs_fs_type_s {
     vfs_inode_t * (*mkdir)(vfs_inode_t *dir, const char *name, mode_t mode);
 
     /**
+     * \brief  Clean the fs-specific data from the inode
+     * \param  inode inode to clean.
+     * \return 0 on success, or a negative error code.
+     * \note   fs1 : fs1_evict
+     */
+    errno_t (*evict)(vfs_inode_t *inode);
+
+    /**
      * \brief  Remove a file or directory.
      * \param  dir  Parent directory inode.
      * \param  name Name of the file or directory to remove.
@@ -419,15 +458,14 @@ struct vfs_fs_type_s {
     errno_t (*unlink)(vfs_inode_t *dir, const char *name);
 
     /**
-     * \brief  Read the contents of a directory (enumerate entries).
-     * \param  dir    Directory inode.
-     * \param  ino    Index of the entry to retrieve (0-based).
-     * \param  name   Output buffer for the entry name.
-     * \param  maxlen Maximum number of characters to write into name.
-     * \return 0 on success, or -ENOENT if ino is out of bounds.
+     * \brief  Read data from a directory stored in the real file system.
+     * \param  inode  Pointer to the VFS inode representing the file.
+     * \param  dirent Pointer to the buffer to fill with the diectory entry
+     * \param  offset Offset in item from the beginning of the directory.
+     * \return The number of entry read (0 or 1) or < 0 on I/O error.
      * \note   fs1 : fs1_readdir
      */
-    errno_t (*readdir)(vfs_inode_t *dir, ino_t ino, char *name, unsigned maxlen);
+    errno_t (*readdir)(vfs_inode_t *dir, vfs_dirent_t *ent, size_t offset);
 
     /**
      * \brief  Retrieve file attributes (stat-like information).
@@ -488,7 +526,6 @@ void vfs_dentry_destroy (vfs_dentry_t *dentry);
  * \param data  file private data (depends on real file system)
  * \return Pointer to the newly created vfs_inode_t.
  */
-
 vfs_inode_t *vfs_inode_create (superblock_t *sb, ino_t ino, size_t size, mode_t mode, void *data);
 
 /**
@@ -498,16 +535,6 @@ vfs_inode_t *vfs_inode_create (superblock_t *sb, ino_t ino, size_t size, mode_t 
  * \return Pointer to the vfs_inode_t if found, NULL otherwise.
  */
 vfs_inode_t *vfs_inode_lookup (superblock_t *sb, ino_t ino);
-
-/**
- * \brief Resolves an absolute path into a VFS inode.
- *        This function resolves a global path across mounted filesystems,
- *        starting from the appropriate superblock (determined via mount resolution),
- *        and then performing a lookup from the root inode.
- * \param path Absolute path to resolve (e.g., "/mnt/data/file.txt")
- * \return Pointer to the resolved inode, or NULL if resolution fails.
- */
-vfs_inode_t *vfs_inode_resolve (const char *path);
 
 /**
  * \brief Increment the reference count of an inode.
