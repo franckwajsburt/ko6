@@ -31,7 +31,7 @@ void kmemuser_init()
 {
     CacheLineSize = CEIL(cachelinesize(),16);               // true line size, but expand to 16 min
     list_init (&FreeUserStack);                             // initialize the free user stack list
-    INFO("Slab allocator successfully initialize %d pages", (kme-kmb)/PAGE_SIZE);
+    INFO("Memory allocators successfully initialized %d pages", (kme-kmb)/PAGE_SIZE);
 }
 
 int * malloc_ustack (void)
