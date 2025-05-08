@@ -160,7 +160,8 @@ static void destroy_dir(struct pfs_s **elem)
 
     list_t *item_unused;
 
-    if ((*elem)->flags & DIR_T)
+    if (IS_TYPE((*elem)->flags, DIR_T))
+
     {
         if (list_isempty(&((*elem)->root)) == 0)
         {
@@ -306,15 +307,6 @@ static struct pfs_s *put_Fd(int fd)
     return res;
 }
 
-int get_newDd()
-{
-    for (int i = 0; i < MAX_FD; i++)
-    {
-        if (dirDesciptors[i] == NULL)
-            return i;
-    }
-    return -1;
-}
 
 struct dirent_s *put_Dd(int fd)
 {
@@ -366,7 +358,7 @@ int open(const char *pathname, int flags)
             else
             { // basic case
                 directory = open_any(dir);
-                if (directory == NULL || (directory->flags & DIR_T) != 0)
+                if (directory == NULL || (IS_TYPE(directory->flags, DIR_T)))
                 {
                     return -1;
                 }
@@ -385,7 +377,7 @@ int open(const char *pathname, int flags)
             return -1;
     }
 
-    if (file && file->flags & FILE_T)
+    if (file && (IS_TYPE(file->flags, FILE_T)))
     {
         int fd = get_newFd();
         fileDesciptors[fd] = file;
@@ -408,7 +400,7 @@ int close(int fd)
     return -1;
 }
 
-int _write(int fd, const void *buf, int count)
+int file_write(int fd, const void *buf, int count)
 {
     // securité des arguments
     if (fd < 0 || fd >= MAX_FD || buf == NULL || count > PAGE_SIZE)
@@ -418,7 +410,7 @@ int _write(int fd, const void *buf, int count)
 
     // verifie que le fd est valide
     struct pfs_s *file = fileDesciptors[fd];
-    if (file == NULL || file->flags & DIR_T)
+    if (file == NULL || (IS_TYPE(file->flags, DIR_T)))
     {
         return -1;
     }
@@ -443,7 +435,7 @@ int _write(int fd, const void *buf, int count)
  * \param buf is the buffer to put the data
  * \param count is the size of the buffer
  */
-int _read(int fd, void *buf, int count)
+int file_read(int fd, void *buf, int count)
 {
     // securité des arguments
     if (fd < 0 || fd >= MAX_FD || buf == NULL || count > PAGE_SIZE)
@@ -452,7 +444,7 @@ int _read(int fd, void *buf, int count)
     }
 
     struct pfs_s *file = fileDesciptors[fd];
-    if (file == NULL || !(file->flags & FILE_T) || file->data == NULL)
+    if (file == NULL || !(IS_TYPE(file->flags, FILE_T)) || file->data == NULL)
     {
         return -1;
     }
@@ -484,7 +476,7 @@ DIR *opendir(char *pathname)
     }
 
     // Verifie que c'est un repertoire
-    if (embedded && (embedded->flags & DIR_T))
+    if (embedded && (IS_TYPE(embedded->flags, DIR_T)))
     {
         int *res = (int *)malloc(sizeof(int)); // in order to respect POSIX API
         if (res == NULL)
@@ -604,7 +596,7 @@ int chdir(const char *pathname)
     struct pfs_s *embedded = open_any(pathname);
 
     // Verifie que c'est un repertoire
-    if (embedded && (embedded->flags & DIR_T))
+    if (embedded && (IS_TYPE(embedded->flags, DIR_T)))
     {
         currentDir = embedded;
         return 0;
@@ -621,6 +613,8 @@ int main(int argc, char **argv)
 
     init_pfs(&root, "/", RWX, DIR_T);
     currentDir = &root; // home
+
+
 
     /** next_slash Test ========================================================================= */
 
@@ -761,7 +755,7 @@ int main(int argc, char **argv)
     }
 
     char buf[PAGE_SIZE + 1] = {0};
-    int size = _read(fd_int, buf, PAGE_SIZE);
+    int size = file_read(fd_int, buf, PAGE_SIZE);
     buf[size] = '\0';  // Assurer une terminaison propre
 
     printf("%s", buf);

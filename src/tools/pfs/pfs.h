@@ -5,22 +5,26 @@
   |_\_\ x___x \___/                  https://opensource.org/licenses/MIT
 
   \file     /tools/pfs/pfs.h
-  \author   Franck Wajsburt
+  \author   Lili Zheng
   \brief    pfs a pseudo file system in order to test the kshell, 
   
-  State: building
+  State: with bug but almost done
 
   NB:   it is a naive version,
-        to replace de real file system while it is not ready
+        to replace de real file system while it is not ready,
+        it's not meant to be flush on any partition, thus we won't have to parse 
+
+  \remarks we added the field o_file[MAX_O_FILE] on _usermem_s structure, it represent open file. 
+        we put it there because we need 1 array per task.
                                                                                                         
    ┌===================┐                                                                           
-   .For example        .                                                                           
-   .                   .                                                                           
-   ;  /                .                                                                           
-   ;  ├── data         .                                                                           
-   ;  │   └── read.txt .                                          ┌──────────┐                     
-   ;  └── etc          .                                          │ FILE     │                     
-   ;                   .                                          ├──────────┤                     
+   ;For example        ;                                                                           
+   ;                   ;                                                                           
+   ;  /                ;                                                                           
+   ;  ├── data         ;                                                                          
+   ;  │   └── read.txt ;                                          ┌──────────┐                     
+   ;  └── etc          ;                                          │ FILE     │                     
+   ;                   ;                                          ├──────────┤                     
    └===================┘                                          │ read.txt │                     
                               ┌──────────┐    ┌──────────┐        ├──────────┤                     
                               │ DIR      │    │ DIR      │        │┌────────┐│                     
@@ -42,7 +46,7 @@
            ││ │ NULL     │                                 ││                                      
            ││ └──────────┘                                 ││                                      
            │└──────────────────────────────────────────────┘│                                      
-           └────────────────────────────────────────────────┘     
+           └────────────────────────────────────────────────┘      (made with www.asciiflow.com)    
            
     \remarks it's ok if it don't define everything, the worse is to have incompatible function.
                                                                                                    
@@ -86,15 +90,19 @@
 // FLAGS Value (1 octet)
 //--------------------------------------------------------------------------------------------------
 
-    // Type 5 bit => 32 type possible but that's a lot, we can shrink it later
-#define FILE_T    (1 << 4)
-#define DIR_T     (1 << 5)
-#define EXEC_T    (1 << 6)
+    // Type 5 bit => 32 values
+#define FILE_T      (1 << 3)
+#define DIR_T       (2 << 3)
+#define EXEC_T      (3 << 3)
+#define STDIN_T     (4 << 3)
+#define STDOUT_T    (5 << 3)
+#define STDERR_T    (6 << 3)
+#define IS_TYPE(flag, type) (((flag) & 0xF8) == (type) )
 
     // Rights
-#define R       (1 << 1)
-#define W       (1 << 2)
-#define X       (1 << 3)
+#define R       (1 << 0)
+#define W       (1 << 1)
+#define X       (1 << 2)
 #define RWX     R|X|W
 #define RW      R|W
 
@@ -131,7 +139,7 @@
  * \todo    faire une breve description Lili
  * \remarks le nom des champs est toujours sujet a debat
  */
-struct pfs_s{
+typedef struct pfs_s{
     char flags;         /**< \var flags give a type for different usage */
     char name[NAME_SIZE];      /**< \var name of file or directory. */
     void* data;         /**< \var data block of data if not a directory*/
@@ -140,16 +148,15 @@ struct pfs_s{
     list_t brothers;    /**< \var brother object in the same directory */
     struct pfs_s * parent;
     
-};
-typedef struct pfs_s pfs_t;
+} pfs_t;
 
 int open(const char* pathname, int flags);
 
 int close(int fd);
 
-int _write(int fd, const void *buf, int count);
+int file_write(int fd, const void *buf, int count);
 
-int _read(int fd, void *buf, int count);
+int file_read(int fd, void *buf, int count);
 
 //--------------------------------------------------------------------------------------------------
 // Dirent in User Space (need to have his own header not sure)
@@ -173,5 +180,12 @@ int closedir(DIR* dirp);
 struct dirent_s* readdir(DIR* dirp);
 
 void rewinddir(DIR *dirp);
+
+
+typedef struct file_operations {
+    int  (*open)(const char* path, int flags);
+    int  (*read)(int fd, void* buf, size_t count);
+    int  (*write)(int fd, const void* buf, size_t count);
+} file_operations_t;
 
 #endif // _PSF_H_
