@@ -388,6 +388,12 @@ void kshell_print_env()
 
 }
 
+
+void kshell_varenv_free(void * ptr)
+{
+    varenv_destroy((varenv_s *)ptr);
+}
+
 hto_t *envars;
 
 
@@ -400,6 +406,8 @@ int main(int argc, char **argv) {
     } else {
         PRINT("wut ?\n");
     }
+
+    hto_destroy(envars, free, kshell_varenv_free);
 
     return 0;
 }

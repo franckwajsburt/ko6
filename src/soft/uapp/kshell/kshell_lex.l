@@ -1,4 +1,5 @@
 %option nounistd
+%option noline
 
 %{
 
@@ -32,7 +33,7 @@
 #   include <lexcompat.h>
 #endif
 
-#include "kshell_yacc.h"
+#include <kshell_yacc.h>
 
 void count();
 
@@ -44,6 +45,7 @@ digit				[0-9]
 integer				{digit}+
 identifier			{alpha}[a-zA-Z0-9_]*
 assignment_word                 {identifier}=[^[:space:]]*
+quoted_word                     \"[^"\n]*\"
 
 %%
 
@@ -88,6 +90,7 @@ su				count(); strncpy(yylval.str, yytext, MAX_NAM_SZ); return BUILTIN;
 "="				count(); return ASSIGN;
 ";"				count(); return SEMICOLON;
 {assignment_word}               count(); strncpy(yylval.str, yytext, MAX_NAM_SZ); return ASSIGNMENT_WORD;
+{identifier}={quoted_word}      count(); strncpy(yylval.str, yytext, MAX_NAM_SZ); return ASSIGNMENT_WORD;
 {integer}			count(); yylval.num = atoi(yytext); return NUM;
 {filename}			count(); strncpy(yylval.str, yytext, MAX_NAM_SZ); return WORD;
 {identifier}			count(); strncpy(yylval.str, yytext, MAX_NAM_SZ); return IDENTIFIER;

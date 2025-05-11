@@ -31,6 +31,7 @@ void stmt_destroy(stmt_s *victim)
             if_stmt_destroy(victim->stmt.if_stmt);
             break;
         case EXPR_TYPE:
+            expr_print(victim->stmt.expr);
             expr_destroy(victim->stmt.expr);
             break;
         default: /* NULL_TYPE ? */
@@ -61,9 +62,7 @@ void if_stmt_destroy(if_stmt_s *victim)
 {
     if (!victim) return;
 
-    /**
-     * \todo destroy condition
-     */
+    if (victim->condition) stmt_destroy(victim->condition);
 
     if (victim->branch[0]) stmt_destroy(victim->branch[0]);
 
@@ -91,10 +90,8 @@ while_stmt_s *while_stmt_create(void)
 void while_stmt_destroy(while_stmt_s *victim)
 {
     if (!victim) return;
-    /**
-     * if (victim->condition) 
-     * \todo destroy condition
-     */
+    
+    if (!victim->condition) stmt_destroy(victim->condition);
 
     if (victim->execute) stmt_destroy(victim->execute);
 

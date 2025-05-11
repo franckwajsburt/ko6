@@ -79,7 +79,6 @@ int yydebug = 1;
 
 %destructor { 
 	yylex_destroy();
-	/* \TODO hash table destruction */
 
 } script
 
