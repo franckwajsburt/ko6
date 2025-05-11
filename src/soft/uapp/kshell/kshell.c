@@ -130,7 +130,6 @@ int kshell_expr_eval(expr_s *expr)
 int kshell_stmt_execute(stmt_s *stmt)
 {
     if (!stmt) {
-        PRINT("stmt is NULL. Returning 0");
         return 0;
     }
 
@@ -190,7 +189,6 @@ int kshell_while_stmt_execute(while_stmt_s *wstmt)
 int kshell_if_stmt_execute(if_stmt_s *istmt)
 {
     int b = kshell_stmt_execute(istmt->condition);
-    PRINT("b: %d\n", b);
 
     return kshell_stmt_execute(istmt->branch[!!b]);
 }

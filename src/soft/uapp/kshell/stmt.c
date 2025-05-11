@@ -31,13 +31,14 @@ void stmt_destroy(stmt_s *victim)
             if_stmt_destroy(victim->stmt.if_stmt);
             break;
         case EXPR_TYPE:
-            expr_print(victim->stmt.expr);
             expr_destroy(victim->stmt.expr);
             break;
         default: /* NULL_TYPE ? */
             break;
     }
 
+    if (victim->nxt) stmt_destroy(victim->nxt);
+    
     free(victim);
 }
 

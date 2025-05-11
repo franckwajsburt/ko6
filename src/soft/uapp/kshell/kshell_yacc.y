@@ -94,8 +94,8 @@ script : linebreak list linebreak
 list:
 	  list separator top_level 
 	  {
-		PRINT("list -> top_level!\n");
-		stmt_print($3);
+		//PRINT("list -> top_level!\n");
+		//stmt_print($3);
 		kshell_stmt_execute($3);
 		//$$ = $3;
 		stmt_destroy($3);
@@ -103,8 +103,8 @@ list:
 	  }
 	| top_level
 	  { 
-		PRINT("top_level in list!\n");
-		stmt_print($1);
+		//PRINT("top_level in list!\n");
+		//stmt_print($1);
 		kshell_stmt_execute($1);
 		//$$ = $1;
 		stmt_destroy($1);
@@ -202,12 +202,14 @@ while_bloc : WHILE top_level_list DO top_level_list DONE
 top_level_list :
 	  top_level_list top_level separator
 	  {
-		stmt_set_next($1, $2);
+		stmt_set_next(chkpnt, $2);
 		$$ = $1;
+		chkpnt = $2;
 	  }
 	| maybe_separator top_level separator
 	  {
 		$$ = $2;
+		chkpnt = $2;
 	  }
 	;
 
