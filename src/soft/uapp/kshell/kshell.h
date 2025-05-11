@@ -62,7 +62,7 @@
  #   include <ulib/memory.h>
  #endif
 
-#include <common/htopen.h>
+#include <htopen.h>
 #include <stmt.h>
 #include <varenv.h>
 
