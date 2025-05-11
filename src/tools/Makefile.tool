@@ -94,14 +94,16 @@ $(BIN) : $(SRC)
 	@echo "- compil  --> "$(notdir $@)
 	$(CC) -o $@ $(CFLAGS) $^
 
-%.c : %.y
+%.c : $(SRCDIR)/%.y
 	@echo "- bison   --> "$(notdir $@)
 	echo "_$(BISONVER)_"
-	$(YACC) $(BISONDEF) $< -o $@
+	$(YACC) $(BISONDEF) $< -o $(notdir $@)
+#	$(CC) -D_HOST_ -I$(SRCDIR) -o $(notdir ${@:.c=.o}) $(notdir ${^:.y=.c})
 
-%.c : %.l
+%.c : $(SRCDIR)/%.l
 	@echo "- flex    --> "$(notdir $@)
-	$(LEX) -o $@ $<
+	$(LEX) -o $(notdir $@) $<
+#	$(CC) -D_HOST_ -I$(SRCDIR) -o $(notdir ${@:.c=.o}) $(notdir ${^:.l=.c})
 
 # makedepend analyzes the source files to determine automatically what are the dependencies
 # of the object files on the source files (see https://linux.die.net/man/1/makedepend for details)

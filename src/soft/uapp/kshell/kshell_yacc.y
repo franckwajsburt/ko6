@@ -31,7 +31,7 @@
 #endif
 
 
-#include "kshell.h"
+#include <kshell.h>
 
 extern int yylex();
 extern int yyerror();

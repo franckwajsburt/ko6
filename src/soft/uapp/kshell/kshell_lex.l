@@ -1,3 +1,5 @@
+%option nounistd
+
 %{
 
 #ifdef _HOST_
@@ -25,9 +27,9 @@
 #   define OPENW(f)
 #   define PRINT(fmt,...)
 #   include <common/cstd.h>    
-#	include <ulib/libc.h>
-#	include <ulib/memory.h>
-#   include <lextypes.h>
+#   include <ulib/libc.h>
+#   include <ulib/memory.h>
+#   include <lexcompat.h>
 #endif
 
 #include "kshell_yacc.h"

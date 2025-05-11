@@ -11,7 +11,7 @@
 \*------------------------------------------------------------------------------------------------*/
 
 #include <kshell.h>
-#include "kshell_yacc.h"
+#include <kshell_yacc.h>
 #include <varenv.h>
 #include <wordlist.h>
 #include <stmt.h>
